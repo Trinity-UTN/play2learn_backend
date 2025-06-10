@@ -3,6 +3,7 @@ package trinity.play2learn.backend.pruebaConfigs;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.exceptions.ForbiddenException;
@@ -25,6 +26,7 @@ public class TestController {
     }
 
     // ✅ CREATED
+    @SessionRequired
     @PostMapping("/created")
     public ResponseEntity<BaseResponse<String>> testCreated() {
         return ResponseFactory.created("Recurso creado", "Respuesta CREATED");
