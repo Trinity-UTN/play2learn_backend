@@ -26,7 +26,6 @@ public class TestController {
     }
 
     // ✅ CREATED
-    @SessionRequired
     @PostMapping("/created")
     public ResponseEntity<BaseResponse<String>> testCreated() {
         return ResponseFactory.created("Recurso creado", "Respuesta CREATED");

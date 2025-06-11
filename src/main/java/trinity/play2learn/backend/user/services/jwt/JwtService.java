@@ -27,6 +27,7 @@ public class JwtService implements IJwtService {
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+    
     @Override
     public String generateToken(UserDetails userDetails) {
         return generateToken(new HashMap<>(), userDetails);
@@ -53,6 +54,9 @@ public class JwtService implements IJwtService {
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
@@ -80,4 +84,5 @@ public class JwtService implements IJwtService {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+    
 }
