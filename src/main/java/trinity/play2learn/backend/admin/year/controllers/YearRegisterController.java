@@ -21,7 +21,6 @@ import trinity.play2learn.backend.configs.response.ResponseFactory;
  */
 @RequestMapping("/admin/years")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 public class YearRegisterController {
     
     private final YearRegisterService yearRegisterService;
