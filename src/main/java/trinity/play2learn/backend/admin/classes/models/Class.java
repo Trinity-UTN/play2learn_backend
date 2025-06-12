@@ -1,5 +1,4 @@
-package trinity.play2learn.backend.admin.year.models;
-
+package trinity.play2learn.backend.admin.classes.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -7,31 +6,43 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.admin.year.models.Year;
 
-/**
- * Entidad que representa un año académico en el sistema.
- */
+
+/*
+ * Representa una clase en el sistema.
+ * Cada clase tiene un nombre y año asociado, los cuales su combinacion debe ser única.
+*/
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "years")
-public class Year {
-    
+@Table(
+    name = "classes",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "year_id"})
+    }
+)
+public class Class {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
-    @Column (unique = true, length = 50)
+    @Column (length = 50)
     private String name;
+
+    @ManyToOne (optional = false)
+    private Year year;
 
     @Column(nullable = true)
     private LocalDateTime deleted_at;

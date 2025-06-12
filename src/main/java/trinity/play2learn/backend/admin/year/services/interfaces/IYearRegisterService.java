@@ -7,5 +7,4 @@ public interface IYearRegisterService {
 
     public YearResponseDto cu7RegisterYear(YearRequestDto yearRequestDto);
 
-    
 }
