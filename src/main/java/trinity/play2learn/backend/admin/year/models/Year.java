@@ -38,11 +38,11 @@ public class Year {
     @Column(nullable = true)
     private LocalDateTime deleted_at;
 
-    private void delete () {
+    public void delete () {
         this.deleted_at = LocalDateTime.now();
     }
 
-    private void restore () {
+    public void restore () {
         this.deleted_at = null;
     }
 }
