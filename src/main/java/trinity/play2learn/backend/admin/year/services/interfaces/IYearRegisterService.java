@@ -7,7 +7,7 @@ import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 
 public interface IYearRegisterService {
 
-    public YearResponseDto cu7RegisterYear(YearRequestDto yearRequestDto, BindingResult result);
+    public YearResponseDto cu7RegisterYear(YearRequestDto yearRequestDto);
 
     
 }

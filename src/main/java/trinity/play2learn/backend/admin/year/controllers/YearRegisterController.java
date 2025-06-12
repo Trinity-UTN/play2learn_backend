@@ -33,7 +33,7 @@ public class YearRegisterController {
      * @return ResponseEntity con el año creado y mensaje de éxito.
      */
     @PostMapping
-    public ResponseEntity<BaseResponse<YearResponseDto>> create(@Valid @RequestBody YearRequestDto yearDto, BindingResult result) {
-        return ResponseFactory.created(yearRegisterService.cu7RegisterYear(yearDto, result), "Created succesfully");
+    public ResponseEntity<BaseResponse<YearResponseDto>> create(@Valid @RequestBody YearRequestDto yearDto) {
+        return ResponseFactory.created(yearRegisterService.cu7RegisterYear(yearDto), "Created succesfully");
     }
 }

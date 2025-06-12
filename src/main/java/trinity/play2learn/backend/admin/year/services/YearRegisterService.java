@@ -35,10 +35,10 @@ public class YearRegisterService implements IYearRegisterService {
      * @throws BadRequestException si el nombre es vacio.
      */
     @Override
-    public YearResponseDto cu7RegisterYear (YearRequestDto yearRequestDto, BindingResult result) {
-        if (result.hasFieldErrors()) {
+    public YearResponseDto cu7RegisterYear (YearRequestDto yearRequestDto) {
+        /*if (result.hasFieldErrors()) {
             throw new BadRequestException("An error ocurred.", result.getFieldErrors().stream().map(err -> err.getField() + ": " + err.getDefaultMessage()).toList());
-        }
+        }*/
         if (yearExistService.validate(yearRequestDto.getName())) {
             throw new BadRequestException("Year already exists.");
         }
