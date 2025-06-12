@@ -21,8 +21,8 @@ import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 @AllArgsConstructor
 public class YearRegisterService implements IYearRegisterService {
 
-    private IYearExistService  yearExistService;
-    private IYearRepository yearRepository;
+    private final IYearExistService  yearExistService;
+    private final IYearRepository yearRepository;
 
     /**
      * Crea un nuevo año si no existe uno con el mismo nombre.
