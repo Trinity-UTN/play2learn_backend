@@ -3,6 +3,7 @@ package trinity.play2learn.backend.admin.year.services;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.dtos.YearRequestDto;
 import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 import trinity.play2learn.backend.admin.year.mappers.YearMapper;
@@ -17,15 +18,11 @@ import trinity.play2learn.backend.configs.exceptions.BadRequestException;
  * Encapsula validaciones y operaciones sobre el modelo Year.
  */
 @Service
+@AllArgsConstructor
 public class YearRegisterService implements IYearRegisterService {
 
     private IYearExistService  yearExistService;
     private IYearRepository yearRepository;
-
-    public YearRegisterService(IYearExistService yearExistService, IYearRepository yearRepository) {
-        this.yearExistService = yearExistService;
-        this.yearRepository = yearRepository;
-    }
 
     /**
      * Crea un nuevo año si no existe uno con el mismo nombre.
