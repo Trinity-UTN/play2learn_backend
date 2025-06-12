@@ -23,10 +23,7 @@ public class YearExistService implements IYearExistService {
      */
     @Override
     public boolean validate(String name) {
-        if (yearRepository.findByName(name).isPresent()) {
-            return true;
-        }
-        return false;
+        return yearRepository.existsByName(name);
     }
     
 }

@@ -1,7 +1,6 @@
 package trinity.play2learn.backend.admin.year.services;
 
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.dtos.YearRequestDto;
@@ -36,9 +35,6 @@ public class YearRegisterService implements IYearRegisterService {
      */
     @Override
     public YearResponseDto cu7RegisterYear (YearRequestDto yearRequestDto) {
-        /*if (result.hasFieldErrors()) {
-            throw new BadRequestException("An error ocurred.", result.getFieldErrors().stream().map(err -> err.getField() + ": " + err.getDefaultMessage()).toList());
-        }*/
         if (yearExistService.validate(yearRequestDto.getName())) {
             throw new BadRequestException("Year already exists.");
         }

@@ -18,4 +18,11 @@ public interface IYearRepository extends CrudRepository<Year, Long> {
      * @return Year encontrado.
      */
     Optional<Year> findByName(String name);
+    /**
+     * Busca si existe un año por su nombre.
+     *
+     * @param name Nombre del año.
+     * @return boolean.
+     */
+    boolean existsByName(String name);
 } 
