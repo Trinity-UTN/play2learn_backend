@@ -3,7 +3,6 @@ package trinity.play2learn.backend.pruebaConfigs;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.exceptions.ForbiddenException;
