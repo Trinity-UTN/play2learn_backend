@@ -9,8 +9,8 @@ import org.springframework.validation.BindingResult;
 
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
-import trinity.play2learn.backend.user.dtos.SigninRequestDto;
-import trinity.play2learn.backend.user.dtos.SigninResponseDto;
+import trinity.play2learn.backend.user.dtos.signin.SigninRequestDto;
+import trinity.play2learn.backend.user.dtos.signin.SigninResponseDto;
 import trinity.play2learn.backend.user.mapper.UserMapper;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.user.repository.IUserRepository;
@@ -42,7 +42,7 @@ public class SigninService implements ISigninService {
         String encryptPassword = passwordEncoder.encode(signinDto.getPassword());
         User userToSave = UserMapper.toModel(signinDto, encryptPassword);
 
-        return UserMapper.toDto(userRepository.save(userToSave));
+        return UserMapper.toSignInDto(userRepository.save(userToSave));
     }
     
 }

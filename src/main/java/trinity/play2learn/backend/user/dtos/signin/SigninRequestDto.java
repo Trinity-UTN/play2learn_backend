@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.user.dtos;
+package trinity.play2learn.backend.user.dtos.signin;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

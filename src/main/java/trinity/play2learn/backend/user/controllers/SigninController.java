@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
-import trinity.play2learn.backend.user.dtos.SigninRequestDto;
-import trinity.play2learn.backend.user.dtos.SigninResponseDto;
+import trinity.play2learn.backend.user.dtos.signin.SigninRequestDto;
+import trinity.play2learn.backend.user.dtos.signin.SigninResponseDto;
 import trinity.play2learn.backend.user.services.signin.interfaces.ISigninService;
 
 @RequestMapping("/signin")

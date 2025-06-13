@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.user.dtos;
+package trinity.play2learn.backend.user.dtos.signin;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
