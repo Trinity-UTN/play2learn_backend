@@ -25,5 +25,15 @@ public class YearExistService implements IYearExistService {
     public boolean validate(String name) {
         return yearRepository.existsByName(name);
     }
+    /**
+     * Valida si ya existe un año con el mismo id.
+     *
+     * @param Long id
+     * @return boolean
+     */
+    @Override
+    public boolean validate(Long id) {
+        return yearRepository.existsById(id);
+    }
     
 }
