@@ -30,20 +30,19 @@ public class JwtService implements IJwtService {
     
     @Override
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        return generateToken(getExtraClaims(userDetails), userDetails);
     }
 
     // Sobrecarga para generar token con claims adicionales
     @Override
     public String generateToken( Map<String, Object> extraClaims, UserDetails userDetails) {
 
-        long validityInMilliseconds = 1000 * 60 * 60 * 24; // Token expira en 24 horas
 
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + validityInMilliseconds))
+                .setExpiration(new Date(System.currentTimeMillis() + getExpirationTime()))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256) 
                 .compact();
     }
@@ -72,6 +71,11 @@ public class JwtService implements IJwtService {
                 .getBody();
     }
 
+    //Setea el tiempo de expiracion
+    private long getExpirationTime() {
+        return 1000 * 60 * 60 * 24; // Token expira en 24 horas
+    }
+
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
@@ -83,6 +87,23 @@ public class JwtService implements IJwtService {
     private Key getSignKey() {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    //Devuelve las extraclaims del JWT. Por el momento se usa unicamente para el rol.
+    private HashMap<String , Object> getExtraClaims(UserDetails userDetails) {
+        HashMap<String , Object> claims = new HashMap<>();
+        
+        //Extraigo el rol del UserDetails.Esto teniendo en cuenta que los usuarios tienen un unico rol en el sistema
+        String role = userDetails.getAuthorities()
+        .stream()
+        .findFirst()
+        .map(grantedAuthority -> grantedAuthority.getAuthority())
+        .orElse("ROLE_STUDENT"); // De no tener ningun rol asignado, se le asigna el de STUDENT por defecto (Para evitar nullPointerException)
+
+
+        claims.put("role" , role);
+
+        return claims;
     }
     
 }
