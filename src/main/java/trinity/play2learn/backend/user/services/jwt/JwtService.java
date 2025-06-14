@@ -3,18 +3,17 @@ package trinity.play2learn.backend.user.services.jwt;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails; 
 import org.springframework.stereotype.Service;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm; 
 import io.jsonwebtoken.security.Keys;
+import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService;
 
 @Service
@@ -23,6 +22,8 @@ public class JwtService implements IJwtService {
     @Value("${jwt.secret}")
     private String secretKey;
 
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 8; // Token expira en 8 horas
+
     @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -30,20 +31,19 @@ public class JwtService implements IJwtService {
     
     @Override
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        return generateToken(getExtraClaims(userDetails), userDetails);
     }
 
     // Sobrecarga para generar token con claims adicionales
     @Override
     public String generateToken( Map<String, Object> extraClaims, UserDetails userDetails) {
 
-        long validityInMilliseconds = 1000 * 60 * 60 * 24; // Token expira en 24 horas
 
         return Jwts.builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + validityInMilliseconds))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256) 
                 .compact();
     }
@@ -83,6 +83,22 @@ public class JwtService implements IJwtService {
     private Key getSignKey() {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    //Devuelve las extraclaims del JWT. Por el momento se usa unicamente para el rol.
+     private Map<String , Object> getExtraClaims(UserDetails userDetails) {
+        
+        return getRoleClaim(userDetails);
+    }
+    
+    private Map<String, Object> getRoleClaim(UserDetails userDetails) {
+        return Map.of(
+            "role",
+            userDetails.getAuthorities()
+                .stream().findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse(Role.ROLE_STUDENT.name())
+        );
     }
     
 }

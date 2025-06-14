@@ -1,6 +1,7 @@
-package trinity.play2learn.backend.user.dtos;
+package trinity.play2learn.backend.user.dtos.signUp;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,9 +14,10 @@ import trinity.play2learn.backend.user.models.Role;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SigninRequestDto {
+public class SignUpRequestDto {
 
     @Email
+    @NotBlank
     private String email;
 
     @NotEmpty
