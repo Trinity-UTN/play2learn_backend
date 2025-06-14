@@ -12,7 +12,8 @@ import trinity.play2learn.backend.user.models.Role;
 @AllArgsConstructor
 public class LoginResponseDto {
 
-    //El frontend unicamente necesita de token. El email y role sirven para testear desde el postman. 
+    //El frontend unicamente necesita del token. El email y role sirven para testear desde el postman. 
+    private Long id;
     private String email;
     private Role role;
     private String token;

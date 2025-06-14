@@ -25,6 +25,7 @@ public class UserMapper {
 
     public static LoginResponseDto toLoginDto(User user , String token) {
         return LoginResponseDto.builder()
+            .id(user.getId())
             .email(user.getEmail())
             .role(user.getRole())
             .token(token)
