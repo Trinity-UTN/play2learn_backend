@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.user.dtos.signin;
+package trinity.play2learn.backend.user.dtos.signUp;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import trinity.play2learn.backend.user.models.Role;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SigninResponseDto {
+public class SignUpResponseDto {
 
     private Long id;
     private String token;

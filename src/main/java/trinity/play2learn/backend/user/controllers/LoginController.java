@@ -22,7 +22,7 @@ public class LoginController {
     private final ILoginService loginService;
     
     @PostMapping
-    public ResponseEntity<BaseResponse<LoginResponseDto>> signin(@Valid @RequestBody LoginRequestDto loginDto) {
+    public ResponseEntity<BaseResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto loginDto) {
         return ResponseFactory.ok(loginService.login(loginDto), "Logged in successfully");
     }
 }

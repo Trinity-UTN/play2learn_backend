@@ -12,24 +12,24 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
-import trinity.play2learn.backend.user.dtos.signin.SigninRequestDto;
-import trinity.play2learn.backend.user.dtos.signin.SigninResponseDto;
-import trinity.play2learn.backend.user.services.signin.interfaces.ISigninService;
+import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
+import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
+import trinity.play2learn.backend.user.services.signUp.interfaces.ISignUpService;
 
-@RequestMapping("/signin")
+@RequestMapping("/signUp")
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-public class SigninController {
+public class SignUpController {
     
-    private final ISigninService signinService;
+    private final ISignUpService signUpService;
 
-    public SigninController(ISigninService signinService) {
-        this.signinService = signinService;
+    public SignUpController(ISignUpService signUpService) {
+        this.signUpService = signUpService;
     }
 
     @PostMapping
-    public ResponseEntity<BaseResponse<SigninResponseDto>> signin(@Valid @RequestBody SigninRequestDto signinDto, BindingResult result) {
-        return ResponseFactory.created(signinService.signin(signinDto, result), "Created succesfully");
+    public ResponseEntity<BaseResponse<SignUpResponseDto>> signUp(@Valid @RequestBody SignUpRequestDto signUpDto, BindingResult result) {
+        return ResponseFactory.created(signUpService.signUp(signUpDto, result), "Created succesfully");
     }
 
 }
