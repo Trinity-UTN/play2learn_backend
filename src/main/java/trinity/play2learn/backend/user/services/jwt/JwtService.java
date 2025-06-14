@@ -3,18 +3,17 @@ package trinity.play2learn.backend.user.services.jwt;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
-
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails; 
 import org.springframework.stereotype.Service;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm; 
 import io.jsonwebtoken.security.Keys;
+import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService;
 
 @Service
@@ -90,20 +89,19 @@ public class JwtService implements IJwtService {
     }
 
     //Devuelve las extraclaims del JWT. Por el momento se usa unicamente para el rol.
-    private HashMap<String , Object> getExtraClaims(UserDetails userDetails) {
-        HashMap<String , Object> claims = new HashMap<>();
+     private Map<String , Object> getExtraClaims(UserDetails userDetails) {
         
-        //Extraigo el rol del UserDetails.Esto teniendo en cuenta que los usuarios tienen un unico rol en el sistema
-        String role = userDetails.getAuthorities()
-        .stream()
-        .findFirst()
-        .map(grantedAuthority -> grantedAuthority.getAuthority())
-        .orElse("ROLE_STUDENT"); // De no tener ningun rol asignado, se le asigna el de STUDENT por defecto (Para evitar nullPointerException)
-
-
-        claims.put("role" , role);
-
-        return claims;
+        return getRoleClaim(userDetails);
+    }
+    
+    private Map<String, Object> getRoleClaim(UserDetails userDetails) {
+        return Map.of(
+            "role",
+            userDetails.getAuthorities()
+                .stream().findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse(Role.ROLE_STUDENT.name())
+        );
     }
     
 }
