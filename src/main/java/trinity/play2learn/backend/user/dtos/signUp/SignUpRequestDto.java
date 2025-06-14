@@ -17,6 +17,7 @@ import trinity.play2learn.backend.user.models.Role;
 public class SignUpRequestDto {
 
     @Email
+    @NotBlank
     private String email;
 
     @NotEmpty
