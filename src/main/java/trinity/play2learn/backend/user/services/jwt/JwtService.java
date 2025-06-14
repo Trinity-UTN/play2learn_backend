@@ -22,6 +22,8 @@ public class JwtService implements IJwtService {
     @Value("${jwt.secret}")
     private String secretKey;
 
+    private final long EXPIRATION_TIME = 1000 * 60 * 60 * 8; // Token expira en 8 horas
+
     @Override
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -41,7 +43,7 @@ public class JwtService implements IJwtService {
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + getExpirationTime()))
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSignKey(), SignatureAlgorithm.HS256) 
                 .compact();
     }
@@ -68,11 +70,6 @@ public class JwtService implements IJwtService {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
-    }
-
-    //Setea el tiempo de expiracion
-    private long getExpirationTime() {
-        return 1000 * 60 * 60 * 24; // Token expira en 24 horas
     }
 
     private boolean isTokenExpired(String token) {
