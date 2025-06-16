@@ -1,7 +1,5 @@
 package trinity.play2learn.backend.user.services.user.commons;
 
-import java.util.Optional;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
