@@ -37,5 +37,5 @@ public class StudentRequestDto {
     private String email;
 
     @NotNull(message = "Year ID is required.")
-    private Long classId;
+    private Long class_id;
 }
