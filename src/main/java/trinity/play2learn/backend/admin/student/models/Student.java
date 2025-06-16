@@ -28,7 +28,7 @@ import trinity.play2learn.backend.user.models.User;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "students")
-public class Studen {
+public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
