@@ -3,6 +3,7 @@ package trinity.play2learn.backend.user.mapper;
 import trinity.play2learn.backend.user.dtos.login.LoginResponseDto;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
+import trinity.play2learn.backend.user.dtos.user.UserResponseDto;
 import trinity.play2learn.backend.user.models.User;
 
 public class UserMapper {
@@ -29,6 +30,13 @@ public class UserMapper {
             .email(user.getEmail())
             .role(user.getRole())
             .token(token)
+            .build();
+    }
+
+    public static UserResponseDto toUserDto(User user) {
+        return UserResponseDto.builder()
+            .id(user.getId())
+            .email(user.getEmail())
             .build();
     }
 }
