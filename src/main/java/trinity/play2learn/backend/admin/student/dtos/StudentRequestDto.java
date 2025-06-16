@@ -27,7 +27,6 @@ public class StudentRequestDto {
     private String lastname;
 
     @NotEmpty(message = "DNI is required.")
-    @Size(max = 8, message = "Maximum length for DNI is 8 characters.")
     @Pattern(regexp = "^[0-9]{8}$", message = "DNI must be exactly 8 digits.")
     private String dni;
 
