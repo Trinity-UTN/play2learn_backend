@@ -33,6 +33,5 @@ public interface IClassRepository extends CrudRepository<Class, Long> {
      * @return boolean.
      */
     boolean existsByName(String name);
-
     
 }

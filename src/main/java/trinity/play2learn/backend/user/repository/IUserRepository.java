@@ -10,4 +10,6 @@ import trinity.play2learn.backend.user.models.User;
 @Repository
 public interface IUserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }
