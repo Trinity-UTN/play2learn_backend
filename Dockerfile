@@ -26,10 +26,12 @@ FROM openjdk:21-slim
 WORKDIR /app
 
 # Copia el .jar generado desde la fase de construcción
-COPY --from=build /app/target/mega_store-0.0.1-SNAPSHOT.jar /app/mega_store.jar
+COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar /app/backend.jar
+
+COPY .env /app/.env
 
 # Expone el puerto 8080 para que la aplicación sea accesible
-EXPOSE 8081
+EXPOSE 8082
 
 # Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "play2learn_backend.jar"]
+ENTRYPOINT ["java", "-jar", "/app/backend.jar"]
