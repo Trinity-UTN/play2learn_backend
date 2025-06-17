@@ -35,6 +35,6 @@ public class StudentRequestDto {
     @Email(message = "Email must be a valid email address.")
     private String email;
 
-    @NotNull(message = "Year ID is required.")
+    @NotNull(message = "Class ID is required.")
     private Long class_id;
 }
