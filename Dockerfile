@@ -28,6 +28,7 @@ WORKDIR /app
 # Copia el .jar generado desde la fase de construcción
 COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar /app/backend.jar
 
+COPY .env /app/.env
 
 # Expone el puerto 8080 para que la aplicación sea accesible
 EXPOSE 8082
