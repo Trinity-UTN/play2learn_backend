@@ -41,10 +41,6 @@ public class StudentRegisterService implements IStudentRegisterService{
         */
         Course course = courseGetByIdService.get(studentRequestDto.getCourse_id());
 
-        if (userExistService.validate(studentRequestDto.getEmail())) {
-            throw new BadRequestException("A user with the same email already exists.");
-        }
-
         User user = userCreateService.create(studentRequestDto.getEmail(), studentRequestDto.getDni(), Role.ROLE_STUDENT);
         
         Student studentToSave = StudentMapper.toModel(studentRequestDto, course, user);
