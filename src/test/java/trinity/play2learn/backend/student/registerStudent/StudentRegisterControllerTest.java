@@ -15,8 +15,7 @@ import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
 
-
-import trinity.play2learn.backend.admin.classes.dtos.ClassResponseDto;
+import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.student.controllers.StudentRegisterController;
 import trinity.play2learn.backend.admin.student.dtos.StudentRequestDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
@@ -53,7 +52,7 @@ class StudentRegisterControllerTest {
                     .lastname("Pérez")
                     .email("juan.perez@example.com")
                     .dni("12345678")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             StudentResponseDto responseDto = StudentResponseDto.builder()
@@ -65,7 +64,7 @@ class StudentRegisterControllerTest {
                             .id(2L)
                             .email("juan.perez@example.com")
                             .build())
-                    .classes(ClassResponseDto.builder()
+                    .course(CourseResponseDto.builder()
                             .id(1L)
                             .name("3ro B")
                             .year(YearResponseDto.builder()
@@ -87,8 +86,8 @@ class StudentRegisterControllerTest {
                     .andExpect(jsonPath("$.data.lastname").value("Pérez"))
                     .andExpect(jsonPath("$.data.dni").value("12345678"))
                     .andExpect(jsonPath("$.data.user.email").value("juan.perez@example.com"))
-                    .andExpect(jsonPath("$.data.classes.name").value("3ro B"))
-                    .andExpect(jsonPath("$.data.classes.year.name").value("2025"))
+                    .andExpect(jsonPath("$.data.course.name").value("3ro B"))
+                    .andExpect(jsonPath("$.data.course.year.name").value("2025"))
                     .andExpect(jsonPath("$.message").value("Created succesfully"));
         }
     }
@@ -106,7 +105,7 @@ class StudentRegisterControllerTest {
                     .lastname("Pérez")
                     .email("juan.perez") // inválido
                     .dni("12345678")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             // Act + Assert
@@ -131,7 +130,7 @@ class StudentRegisterControllerTest {
                     .lastname("Gómez")
                     .dni("87654321")
                     .email("")  // vacío
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -156,7 +155,7 @@ class StudentRegisterControllerTest {
                     .lastname("Gómez")
                     .dni("87654321")
                     .email(emailMuyLargo)
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -186,7 +185,7 @@ class StudentRegisterControllerTest {
                     .lastname("Pérez")
                     .email("juan.perez@example.com")
                     .dni("12.345.678") // <-- inválido por puntos
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             // Act + Assert
@@ -209,7 +208,7 @@ class StudentRegisterControllerTest {
                     .lastname("García")
                     .dni("")  // vacío
                     .email("pedro.garcia@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -232,7 +231,7 @@ class StudentRegisterControllerTest {
                     .lastname("García")
                     .dni("123456789")  // 9 dígitos, inválido
                     .email("pedro.garcia@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -254,7 +253,7 @@ class StudentRegisterControllerTest {
                     .lastname("Fernández")
                     .dni("1234567")  // 7 dígitos, inválido
                     .email("lucas.fernandez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -282,7 +281,7 @@ class StudentRegisterControllerTest {
                     .lastname("Perez")
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -308,7 +307,7 @@ class StudentRegisterControllerTest {
                     .lastname("Perez")
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             StudentResponseDto responseDto = StudentResponseDto.builder()
@@ -317,7 +316,7 @@ class StudentRegisterControllerTest {
                     .lastname("Perez")
                     .dni("12345678")
                     .user(UserResponseDto.builder().id(2L).email("juan.perez@example.com").build())
-                    .classes(ClassResponseDto.builder().id(1L).name("3ro B").year(YearResponseDto.builder().id(5L).name("2025").build()).build())
+                    .course(CourseResponseDto.builder().id(1L).name("3ro B").year(YearResponseDto.builder().id(5L).name("2025").build()).build())
                     .build();
 
             Mockito.when(studentRegisterService.cu4registerStudent(Mockito.any())).thenReturn(responseDto);
@@ -339,7 +338,7 @@ class StudentRegisterControllerTest {
                     .lastname("Perez")
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -363,7 +362,7 @@ class StudentRegisterControllerTest {
                     .lastname("Perez")
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -392,7 +391,7 @@ class StudentRegisterControllerTest {
                     .lastname("Perez123!")
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -418,7 +417,7 @@ class StudentRegisterControllerTest {
                     .lastname(validLastname)
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             StudentResponseDto responseDto = StudentResponseDto.builder()
@@ -427,7 +426,7 @@ class StudentRegisterControllerTest {
                     .lastname(validLastname)
                     .dni("12345678")
                     .user(UserResponseDto.builder().id(2L).email("juan.perez@example.com").build())
-                    .classes(ClassResponseDto.builder().id(1L).name("3ro B").year(YearResponseDto.builder().id(5L).name("2025").build()).build())
+                    .course(CourseResponseDto.builder().id(1L).name("3ro B").year(YearResponseDto.builder().id(5L).name("2025").build()).build())
                     .build();
 
             Mockito.when(studentRegisterService.cu4registerStudent(Mockito.any())).thenReturn(responseDto);
@@ -449,7 +448,7 @@ class StudentRegisterControllerTest {
                     .lastname(invalidLastname)
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")
@@ -474,7 +473,7 @@ class StudentRegisterControllerTest {
                     .lastname("")
                     .dni("12345678")
                     .email("juan.perez@example.com")
-                    .class_id(1L)
+                    .course_id(1L)
                     .build();
 
             mockMvc.perform(post("/admin/students")

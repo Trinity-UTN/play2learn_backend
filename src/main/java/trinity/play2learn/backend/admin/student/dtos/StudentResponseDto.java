@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.admin.classes.dtos.ClassResponseDto;
+import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.user.dtos.user.UserResponseDto;
 
 @Data
@@ -23,6 +23,6 @@ public class StudentResponseDto {
     
     private UserResponseDto user;
 
-    private ClassResponseDto classes;
+    private CourseResponseDto course;
 
 }

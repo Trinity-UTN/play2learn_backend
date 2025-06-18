@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.admin.classes.models;
+package trinity.play2learn.backend.admin.course.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
@@ -18,8 +18,8 @@ import trinity.play2learn.backend.admin.year.models.Year;
 
 
 /*
- * Representa una clase en el sistema.
- * Cada clase tiene un nombre y año asociado, los cuales su combinacion debe ser única.
+ * Representa un curso en el sistema.
+ * Cada curso tiene un nombre y año asociado, los cuales su combinacion debe ser única.
 */
 @Entity
 @Data
@@ -27,12 +27,12 @@ import trinity.play2learn.backend.admin.year.models.Year;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(
-    name = "classes",
+    name = "courses",
     uniqueConstraints = {
         @UniqueConstraint(columnNames = {"name", "year_id"})
     }
 )
-public class Class {
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

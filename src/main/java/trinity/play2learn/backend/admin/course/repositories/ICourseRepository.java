@@ -1,15 +1,15 @@
-package trinity.play2learn.backend.admin.classes.repositories;
+package trinity.play2learn.backend.admin.course.repositories;
 
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import trinity.play2learn.backend.admin.classes.models.Class;
+import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.year.models.Year;
 
 @Repository
-public interface IClassRepository extends CrudRepository<Class, Long> {
+public interface ICourseRepository extends CrudRepository<Course, Long> {
 
     /**
      * Busca un año por su nombre.
@@ -19,7 +19,7 @@ public interface IClassRepository extends CrudRepository<Class, Long> {
      */
     Optional<Year> findByName(String name);
     /**
-     * Busca si existe una clase por su nombre y año.
+     * Busca si existe un curso por su nombre y año.
      *
      * @param name Nombre del año.
      * @param year Año de la clase.
@@ -27,7 +27,7 @@ public interface IClassRepository extends CrudRepository<Class, Long> {
      */
     boolean existsByNameAndYear(String name, Year year);
     /**
-     * Busca si existe una clase por su nombre.
+     * Busca si existe un curso por su nombre.
      *
      * @param name Nombre del año.
      * @return boolean.
