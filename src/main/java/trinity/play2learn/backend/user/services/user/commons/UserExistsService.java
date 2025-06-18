@@ -11,7 +11,6 @@ public class UserExistsService implements IUserExistService {
 
     private final IUserRepository userRepository;
 
-
     @Override
     public boolean validate(String email) {
         return userRepository.existsByEmail(email);
