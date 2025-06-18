@@ -3,7 +3,8 @@ package trinity.play2learn.backend.admin.student.services;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.admin.classes.services.commons.ClassGetByIdService;
+import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.admin.course.services.commons.CourseGetByIdService;
 import trinity.play2learn.backend.admin.student.dtos.StudentRequestDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
@@ -15,13 +16,12 @@ import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserCreateService;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserExistService;
-import trinity.play2learn.backend.admin.classes.models.Class;
 
 @Service
 @AllArgsConstructor
 public class StudentRegisterService implements IStudentRegisterService{
 
-    private final ClassGetByIdService classGetByIdService;
+    private final CourseGetByIdService courseGetByIdService;
 
     private final IUserExistService userExistService;
 
@@ -39,7 +39,7 @@ public class StudentRegisterService implements IStudentRegisterService{
          * Luego creo el estudiante
          * Luego retorno el Dto de respuesta con los datos del estudiante creado
         */
-        Class classes = classGetByIdService.get(studentRequestDto.getClass_id());
+        Course course = courseGetByIdService.get(studentRequestDto.getCourse_id());
 
         if (userExistService.validate(studentRequestDto.getEmail())) {
             throw new BadRequestException("A user with the same email already exists.");
@@ -47,7 +47,7 @@ public class StudentRegisterService implements IStudentRegisterService{
 
         User user = userCreateService.create(studentRequestDto.getEmail(), studentRequestDto.getDni(), Role.ROLE_STUDENT);
         
-        Student studentToSave = StudentMapper.toModel(studentRequestDto, classes, user);
+        Student studentToSave = StudentMapper.toModel(studentRequestDto, course, user);
 
         return StudentMapper.toDto(studentRepository.save(studentToSave));
     }

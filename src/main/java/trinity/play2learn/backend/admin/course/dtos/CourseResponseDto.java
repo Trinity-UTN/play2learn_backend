@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.admin.classes.dtos;
+package trinity.play2learn.backend.admin.course.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +10,7 @@ import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassResponseDto {
+public class CourseResponseDto {
 
     private Long id;
     private String name;

@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.admin.classes.models.Class;
+import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.user.models.User;
 
 /**
@@ -46,8 +46,8 @@ public class Student {
     private String dni;
 
     @ManyToOne
-    @JoinColumn(name = "class_id", referencedColumnName = "id", nullable = false)
-    private Class classes;
+    @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)
+    private Course course;
 
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

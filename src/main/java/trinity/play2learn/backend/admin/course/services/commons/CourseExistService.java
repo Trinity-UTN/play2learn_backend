@@ -1,11 +1,11 @@
-package trinity.play2learn.backend.admin.classes.services.commons;
+package trinity.play2learn.backend.admin.course.services.commons;
 
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.admin.classes.services.interfaces.IClassExistService;
+import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
+import trinity.play2learn.backend.admin.course.services.interfaces.ICourseExistService;
 import trinity.play2learn.backend.admin.year.models.Year;
-import trinity.play2learn.backend.admin.classes.repositories.IClassRepository;
 
 
 /**
@@ -13,9 +13,9 @@ import trinity.play2learn.backend.admin.classes.repositories.IClassRepository;
  */
 @Service
 @AllArgsConstructor
-public class ClassExistService implements IClassExistService {
+public class CourseExistService implements ICourseExistService {
 
-    private final IClassRepository classRepository;
+    private final ICourseRepository courseRepository;
     /**
      *  Valida si ya existe un curso con el mismo nombre y año. 
      *
@@ -25,7 +25,7 @@ public class ClassExistService implements IClassExistService {
      */
     @Override
     public boolean validate(String name, Year year) {
-        return classRepository.existsByNameAndYear(name, year);
+        return courseRepository.existsByNameAndYear(name, year);
     }
     /**
      * Valida si ya existe un curso con el mismo id.
@@ -35,7 +35,7 @@ public class ClassExistService implements IClassExistService {
      */
     @Override
     public boolean validate(Long id) {
-        return classRepository.existsById(id);
+        return courseRepository.existsById(id);
     }
     /**
      * Valida si ya existe un curso con el mismo nombre.
@@ -45,7 +45,7 @@ public class ClassExistService implements IClassExistService {
      */
     @Override
     public boolean validate(String name) {
-        return classRepository.existsByName(name);
+        return courseRepository.existsByName(name);
     }
     
 }

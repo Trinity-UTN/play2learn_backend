@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.admin.classes.dtos;
+package trinity.play2learn.backend.admin.course.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClassRequestDto {
+public class CourseRequestDto {
 
     @NotEmpty(message = "Name is required.")
     @Size(max = 50, message = "Maximum length for name is 50 characters.")
