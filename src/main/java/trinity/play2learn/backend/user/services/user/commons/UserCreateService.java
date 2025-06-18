@@ -2,9 +2,8 @@ package trinity.play2learn.backend.user.services.user.commons;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
 import trinity.play2learn.backend.user.mapper.UserMapper;
 import trinity.play2learn.backend.user.models.Role;
@@ -27,7 +26,7 @@ public class UserCreateService implements IUserCreateService {
     public User create(String email, String password, Role role) {
 
         if (userExistService.validate(email)) {
-            throw new BadRequestException("A user with the same email already exists.");
+            throw new ConflictException("A user with the same email already exists.");
         }
 
         String encryptPassword = passwordEncoder.encode(password);

@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.admin.student.models;
+package trinity.play2learn.backend.admin.teacher.models;
 
 import java.time.LocalDateTime;
 
@@ -8,27 +8,21 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.user.models.User;
 
-/**
- * Entidad que representa un estudiante en el sistema.
- */
 @Entity
-@Data
 @Builder
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
-@Table(name = "students")
-public class Student {
+public class Teacher {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -45,10 +39,6 @@ public class Student {
     @Column (unique = true, length = 8)
     private String dni;
 
-    @ManyToOne
-    @JoinColumn(name = "course_id", referencedColumnName = "id", nullable = false)
-    private Course course;
-
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private User user;
@@ -63,4 +53,5 @@ public class Student {
     public void restore () {
         this.deleted_at = null;
     }
+
 }
