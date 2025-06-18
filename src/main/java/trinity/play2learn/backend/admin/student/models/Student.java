@@ -34,11 +34,11 @@ public class Student {
     private Long id;
 
     @NotBlank
-    @Column (unique = true, length = 50)
+    @Column (length = 50)
     private String name;
 
     @NotBlank
-    @Column (unique = true, length = 50)
+    @Column (length = 50)
     private String lastname;
 
     @NotBlank
