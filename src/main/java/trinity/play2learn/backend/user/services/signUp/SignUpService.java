@@ -5,9 +5,6 @@ import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
-
-import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
@@ -28,11 +25,7 @@ public class SignUpService implements ISignUpService {
     }
 
     @Override
-    public SignUpResponseDto signUp(SignUpRequestDto signUpDto , BindingResult result) {
-    
-        if (result.hasFieldErrors()) {
-            throw new BadRequestException("An error ocurred: ", result.getFieldErrors().stream().map(err -> err.getField() + ": " + err.getDefaultMessage()).toList());
-        }
+    public SignUpResponseDto signUp(SignUpRequestDto signUpDto) {
 
         Optional<User> optionalUser = userRepository.findByEmail(signUpDto.getEmail());
         if (optionalUser.isPresent()) {
