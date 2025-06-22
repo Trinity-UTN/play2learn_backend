@@ -11,19 +11,16 @@ import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentRegisterService;
-import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserCreateService;
-import trinity.play2learn.backend.user.services.user.interfaces.IUserExistService;
 
 @Service
 @AllArgsConstructor
 public class StudentRegisterService implements IStudentRegisterService{
 
     private final CourseGetByIdService courseGetByIdService;
-
-    private final IUserExistService userExistService;
 
     private final IUserCreateService userCreateService;
 
