@@ -11,8 +11,10 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.dtos.StudentRequestDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.services.StudentRegisterService;
+import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 @RequestMapping("/admin/students")
 @RestController
@@ -22,6 +24,7 @@ public class StudentRegisterController {
     private final StudentRegisterService studentRegisterService;
 
     @PostMapping
+    @SessionRequired(role = Role.ROLE_ADMIN)
     public ResponseEntity<BaseResponse<StudentResponseDto>> create(@Valid @RequestBody StudentRequestDto studentDto) {
         return ResponseFactory.created(studentRegisterService.cu4registerStudent(studentDto), "Created succesfully");
     }

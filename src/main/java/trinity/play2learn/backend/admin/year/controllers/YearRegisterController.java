@@ -11,8 +11,10 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.dtos.YearRequestDto;
 import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 import trinity.play2learn.backend.admin.year.services.YearRegisterService;
+import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 /**
  * Controlador REST para gestionar los años académicos del sistema.
@@ -32,6 +34,7 @@ public class YearRegisterController {
      * @return ResponseEntity con el año creado y mensaje de éxito.
      */
     @PostMapping
+    @SessionRequired(role = Role.ROLE_ADMIN)
     public ResponseEntity<BaseResponse<YearResponseDto>> create(@Valid @RequestBody YearRequestDto yearDto) {
         return ResponseFactory.created(yearRegisterService.cu7RegisterYear(yearDto), "Created succesfully");
     }

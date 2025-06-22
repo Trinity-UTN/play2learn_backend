@@ -11,8 +11,10 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.dtos.CourseRequestDto;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.course.services.CourseRegisterService;
+import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 @RequestMapping("/admin/courses")
 @RestController
@@ -28,6 +30,7 @@ public class CourseRegisterController {
      * @return ResponseEntity con el curso creado y mensaje de éxito.
      */
     @PostMapping
+    @SessionRequired(role = Role.ROLE_ADMIN)
     public ResponseEntity<BaseResponse<CourseResponseDto>> create(@Valid @RequestBody CourseRequestDto courseDto) {
         return ResponseFactory.created(courseRegisterService.cu6RegisterCourse(courseDto), "Created succesfully");
     }
