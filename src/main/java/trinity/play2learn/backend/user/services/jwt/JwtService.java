@@ -63,6 +63,8 @@ public class JwtService implements IJwtService {
         return claimsResolver.apply(claims);
     }
 
+    //Este metodo extrae todas las claims del JWT pero ademas, valida la firma del metodo (A traves de parseClaimsJws)
+    //Si la firma del metodo es invalida, este metodo lanza una excepcion
     private Claims extractAllClaims(String token) {
 
         return Jwts.parserBuilder()
@@ -72,7 +74,7 @@ public class JwtService implements IJwtService {
                 .getBody();
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());
     }
 

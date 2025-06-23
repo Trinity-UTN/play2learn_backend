@@ -6,17 +6,10 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import jakarta.servlet.http.HttpServletRequest;
-
-
 import trinity.play2learn.backend.configs.exceptions.InternalServerException;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
-
-
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.JwtException;
 
 import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService; 
 
@@ -30,8 +23,11 @@ public class JwtSessionAspect {
         this.jwtService = jwtService;
     }
 
-    @Before("@annotation(SessionRequired)")
-    public void validateJwt(JoinPoint joinPoint) {
+    @Before("@annotation(sessionRequired)")
+    public void validateJwt(JoinPoint joinPoint , SessionRequired sessionRequired) {
+        
+        String jwtRole = "";
+
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes(); //Obtiene la solicitud actual
         
         if (attrs == null) {
@@ -47,29 +43,26 @@ public class JwtSessionAspect {
 
         String jwt = authHeader.substring(7);
 
-        try {
-            jwtService.extractUsername(jwt); 
-
-        } catch (ExpiredJwtException ex) {
+        //Chequeo que el token no haya expirado
+        if (jwtService.isTokenExpired(jwt)) {
+            throw new UnauthorizedException("Token expired.");
             
-            //El token expiro
-            throw new UnauthorizedException("The JWT has expired.");
-        } catch (MalformedJwtException ex) {
-
-            //Firma del metodo invalida
-            throw new UnauthorizedException("Invalid authentication token.");
-
-        } catch (UnsupportedJwtException ex) {
-
-            // El formato del token no es soportado
-            throw new UnauthorizedException("Unsupported authentication token format.");
-
-        } catch (Exception ex) {
-
-            //Ocurrio cualquier otro error
-            throw new InternalServerException(ex.getMessage());
-
         }
+
+        try {
+            jwtRole = jwtService.extractRole(jwt); //Valida la firma del token y devuelve el role del token de ser valido
+            
+        } catch (JwtException e) {
+            //Si la firma del token no es valida, lanzo una excepcion.
+            throw new UnauthorizedException("Invalid authentication token.");
+        }
+
+        String requiredRole = sessionRequired.role().toString(); //Obtiene el role requerido para la sesion
+
+        if (!jwtRole.equals(requiredRole)) {
+            throw new UnauthorizedException(requiredRole + " role required.");
+        }
+
         //Si no se lanza ninguna de las excepciones anteriores, el token es valido
     }
 }

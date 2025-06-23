@@ -13,4 +13,8 @@ public interface IJwtService {
     String generateToken( Map<String, Object> extraClaims, UserDetails userDetails);
 
     boolean isTokenValid(String token, UserDetails userDetails);
+
+    String extractRole(String token);
+
+    boolean isTokenExpired(String token);
 }

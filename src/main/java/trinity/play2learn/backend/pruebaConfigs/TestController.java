@@ -3,6 +3,7 @@ package trinity.play2learn.backend.pruebaConfigs;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.exceptions.ForbiddenException;
@@ -11,6 +12,7 @@ import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class TestController {
 
     // 👉 OK
     @GetMapping("/ok")
+    @SessionRequired(role = Role.ROLE_ADMIN)
     public ResponseEntity<BaseResponse<String>> testOk() {
         return ResponseFactory.ok("Todo correcto", "Respuesta OK");
     }
