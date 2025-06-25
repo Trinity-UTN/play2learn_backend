@@ -22,13 +22,11 @@ public class YearListService implements IYearListService {
     public List<YearResponseDto> cu8ListYears() {
         Iterable<Year> iterableYears = yearRepository.findAllByDeletedAtIsNull();
 
-        List<YearResponseDto> yearResponseDtos = new ArrayList<>();
-
-        for (Year year : iterableYears) {
-            yearResponseDtos.add(YearMapper.toDto(year));
+        if (iterableYears == null) {
+            return List.of();
         }
-
-        return yearResponseDtos;
+        
+        return YearMapper.toListDto(iterableYears);
     }
 
 }

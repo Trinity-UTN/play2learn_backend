@@ -25,9 +25,7 @@ public class CourseListService  implements ICourseListService{
             return List.of();
         }
 
-        List<CourseResponseDto> courseDtos = CourseMapper.toListDto(courses);
-
-        return courseDtos;
+        return CourseMapper.toListDto(courses);
     }
     
 }
