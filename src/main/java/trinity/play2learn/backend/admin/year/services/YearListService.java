@@ -1,6 +1,4 @@
 package trinity.play2learn.backend.admin.year.services;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -21,14 +19,8 @@ public class YearListService implements IYearListService {
     @Override
     public List<YearResponseDto> cu8ListYears() {
         Iterable<Year> iterableYears = yearRepository.findAllByDeletedAtIsNull();
-
-        List<YearResponseDto> yearResponseDtos = new ArrayList<>();
-
-        for (Year year : iterableYears) {
-            yearResponseDtos.add(YearMapper.toDto(year));
-        }
-
-        return yearResponseDtos;
+        
+        return YearMapper.toListDto(iterableYears);
     }
 
 }

@@ -1,5 +1,8 @@
 package trinity.play2learn.backend.admin.course.mappers;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import trinity.play2learn.backend.admin.course.dtos.CourseRequestDto;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.course.models.Course;
@@ -33,4 +36,12 @@ public class CourseMapper {
             .year(YearMapper.toDto(courseModel.getYear()))
             .build();
     }
+
+    public static List<CourseResponseDto> toListDto(Iterable<Course> courses) {
+        List<CourseResponseDto> courseDtos = new ArrayList<>();
+        for (Course course : courses) {
+            courseDtos.add(toDto(course));
+        }
+        return courseDtos;
+    } 
 }

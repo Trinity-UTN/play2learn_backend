@@ -33,5 +33,12 @@ public interface ICourseRepository extends CrudRepository<Course, Long> {
      * @return boolean.
      */
     boolean existsByName(String name);
+
+    /**
+     * Buscar todos los cursos que no han sido eliminados.
+     *
+     * @return Iterable de cursos.
+     */
+    Iterable<Course> findAllByDeletedAtIsNull();
     
 }
