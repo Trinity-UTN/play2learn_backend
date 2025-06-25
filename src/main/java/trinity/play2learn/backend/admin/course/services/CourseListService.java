@@ -21,10 +21,6 @@ public class CourseListService  implements ICourseListService{
     public List<CourseResponseDto> cu9ListCourses() {
         Iterable<Course> courses = courseRepository.findAllByDeletedAtIsNull();
 
-        if (courses == null) {
-            return List.of();
-        }
-
         return CourseMapper.toListDto(courses);
     }
     
