@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.student.registerStudent;
+package trinity.play2learn.backend.admin.student.registerStudent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
