@@ -7,7 +7,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 public class PaginatedData<T> {
     private final List<T> results;

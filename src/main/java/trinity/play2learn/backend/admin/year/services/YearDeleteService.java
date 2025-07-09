@@ -9,6 +9,7 @@ import trinity.play2learn.backend.admin.year.repositories.IYearRepository;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearDeleteService;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
 @Service
 @AllArgsConstructor
@@ -36,7 +37,7 @@ public class YearDeleteService implements IYearDeleteService{
         }
 
         if (courseExistByYearService.validate(year)) {
-            throw new BadRequestException("Cannot delete year with ID " + id + " because it has associated courses.");
+            throw new ConflictException("Cannot delete year with ID " + id + " because it has associated courses.");
         }
 
         year.delete();

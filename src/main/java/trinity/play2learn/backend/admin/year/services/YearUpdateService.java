@@ -11,6 +11,7 @@ import trinity.play2learn.backend.admin.year.services.interfaces.IYearExistServi
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearGetByIdService;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearUpdateService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
 @Service
 @AllArgsConstructor
@@ -37,7 +38,7 @@ public class YearUpdateService implements IYearUpdateService {
         Year yearToUpdate = yearGetByIdService.get(yearUpdateRequestDto.getId());
 
         if (yearExistService.validate(yearUpdateRequestDto.getName())) {
-            throw new BadRequestException("Year already exists.");
+            throw new ConflictException("Year already exists.");
         }
 
         yearToUpdate.setName(yearUpdateRequestDto.getName());
