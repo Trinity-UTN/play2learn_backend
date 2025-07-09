@@ -38,14 +38,14 @@ public class JwtSessionAspect {
         String authHeader = request.getHeader("Authorization"); //Obtiene el encabezado de autorizacion donde se ubica el token
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new UnauthorizedException("Missing or invalid authentication token.");
+            throw new UnauthorizedException("Missing or invalid authentication access token.");
         }
 
         String jwt = authHeader.substring(7);
 
         //Chequeo que el token no haya expirado
         if (jwtService.isTokenExpired(jwt)) {
-            throw new UnauthorizedException("Token expired.");
+            throw new UnauthorizedException("Access token expired.");
             
         }
 
@@ -54,7 +54,7 @@ public class JwtSessionAspect {
             
         } catch (JwtException e) {
             //Si la firma del token no es valida, lanzo una excepcion.
-            throw new UnauthorizedException("Invalid authentication token.");
+            throw new UnauthorizedException("Invalid authentication access token.");
         }
 
         String requiredRole = sessionRequired.role().toString(); //Obtiene el role requerido para la sesion

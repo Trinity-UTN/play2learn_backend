@@ -23,10 +23,11 @@ public class LoginService implements ILoginService {
 
         User userToLogin = userService.findUserOrThrowException(loginDto.getEmail(), loginDto.getPassword());
 
-        String token = jwtService.generateToken(userToLogin); //El jwtService genera y devuelve el token.
+        String accessToken = jwtService.generateAccessToken(userToLogin); //El jwtService genera y devuelve el access token.
         //El JWT contiene: email, role, issuedAt, expiration
+        String refreshToken = jwtService.generateRefreshToken(userToLogin); //El jwtService genera y devuelve el refresh token.
 
-        return UserMapper.toLoginDto(userToLogin, token);
+        return UserMapper.toLoginDto(userToLogin, accessToken, refreshToken);
     }
      
 }
