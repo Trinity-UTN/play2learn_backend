@@ -18,6 +18,9 @@ public class TeacherMapper {
     }
 
     public static TeacherResponseDto toDto(Teacher teacher) {
+
+        if (teacher == null) return null; //Esto evita un NullPointerException si se registra una materia sin docente.
+
         return TeacherResponseDto.builder()
             .id(teacher.getId())
             .name(teacher.getName())
