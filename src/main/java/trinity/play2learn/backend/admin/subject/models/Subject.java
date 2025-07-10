@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.admin.subject.models;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -8,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
@@ -18,6 +21,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 
 @Entity
@@ -49,6 +53,17 @@ public class Subject {
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     private Teacher teacher;
+
+    @ManyToMany
+    @JoinTable(
+        name = "subject_students",
+        joinColumns = @JoinColumn(name = "subject_id"),
+        inverseJoinColumns = @JoinColumn(name = "student_id")
+    )
+    private List<Student> students;
+
+    @NotNull
+    private Boolean optional; //Si la materia no es opcional, todos los estudiantes del curso deben cursarla
 
     @Column(nullable = true)
     private LocalDateTime deletedAt;

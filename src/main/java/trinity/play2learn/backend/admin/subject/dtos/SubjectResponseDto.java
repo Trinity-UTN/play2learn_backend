@@ -15,4 +15,5 @@ public class SubjectResponseDto {
     private String name;
     private CourseResponseDto course;
     private TeacherResponseDto teacher;
+    private Boolean optional;
 }

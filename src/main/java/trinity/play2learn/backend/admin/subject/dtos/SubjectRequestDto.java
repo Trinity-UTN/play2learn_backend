@@ -22,4 +22,7 @@ public class SubjectRequestDto {
     private Long courseId;
 
     private Long teacherId; // Opcional
+
+    @NotNull(message = "Optional is required.")
+    private Boolean optional;
 }
