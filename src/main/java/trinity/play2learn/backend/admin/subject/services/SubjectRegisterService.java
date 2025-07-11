@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetByIdService;
-import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetStudents;
 import trinity.play2learn.backend.admin.student.models.Student;
+import trinity.play2learn.backend.admin.student.services.interfaces.IGetStudentsByCourse;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectRequestDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
@@ -25,7 +25,7 @@ public class SubjectRegisterService implements ISubjectRegisterService {
 
     private final ICourseGetByIdService courseGetByIdService;
     private final IGetTeacherByIdService getTeacherByIdService;
-    private final ICourseGetStudents courseGetStudentsService;
+    private final IGetStudentsByCourse courseGetStudentsService;
     private final ISubjectRepository subjectRepository;
 
     @Override
