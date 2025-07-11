@@ -44,14 +44,14 @@ public class Teacher {
     private User user;
 
     @Column(nullable = true)
-    private LocalDateTime deleted_at;
+    private LocalDateTime deletedAt;
 
     public void delete () {
-        this.deleted_at = LocalDateTime.now();
+        this.deletedAt = LocalDateTime.now();
     }
 
     public void restore () {
-        this.deleted_at = null;
+        this.deletedAt = null;
     }
 
 }
