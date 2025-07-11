@@ -1,12 +1,12 @@
 package trinity.play2learn.backend.admin.subject.services.commons;
 
 import org.springframework.stereotype.Service;
-
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.IValidateSubjectService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.exceptions.NotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -19,8 +19,17 @@ public class ValidateSubjectService implements IValidateSubjectService {
 
         if (subjectRepository.existsByNameAndCourse(name, course)) {
             throw new ConflictException("Subject with name " + name + " already exists in course " + course.getYear().getName() + " " +course.getName());
-        };
+        }
             
-        
     }
+
+    @Override
+    public void subjectExistById(Long id) {
+        if (!subjectRepository.existsById(id)) {
+            throw new NotFoundException("Subject with id " + id + " does not exist");
+            
+        }
+    }
+
+    
 }
