@@ -23,7 +23,7 @@ public class JwtService implements IJwtService {
     private String secretKey;
 
     private final long ACCESS_TOKEN_EXPIRATION_TIME = 1000 * 60 * 15; // Token expira en 15 minutos
-    private final long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 7; // Token expira en 7 dias
+    private final long REFRESH_TOKEN_EXPIRATION_TIME = 1000 * 60 * 60 * 8; // Token expira en 8 horas
 
     @Override
     public String extractUsername(String token) {
