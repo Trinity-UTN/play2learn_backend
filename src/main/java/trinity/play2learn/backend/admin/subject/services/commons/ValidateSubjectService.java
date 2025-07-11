@@ -6,7 +6,6 @@ import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.IValidateSubjectService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
-import trinity.play2learn.backend.configs.exceptions.NotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -22,14 +21,5 @@ public class ValidateSubjectService implements IValidateSubjectService {
         }
             
     }
-
-    @Override
-    public void subjectExistById(Long id) {
-        if (!subjectRepository.existsById(id)) {
-            throw new NotFoundException("Subject with id " + id + " does not exist");
-            
-        }
-    }
-
     
 }
