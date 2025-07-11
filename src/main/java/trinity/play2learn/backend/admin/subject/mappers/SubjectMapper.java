@@ -13,7 +13,7 @@ import trinity.play2learn.backend.admin.teacher.models.Teacher;
 
 public class SubjectMapper {
     
-    public static Subject toSubject(SubjectRequestDto subjectDto , Course course , Teacher teacher , List<Student> students) {
+    public static Subject toModel(SubjectRequestDto subjectDto , Course course , Teacher teacher , List<Student> students) {
         return Subject.builder()
             .name(subjectDto.getName())
             .course(course)
