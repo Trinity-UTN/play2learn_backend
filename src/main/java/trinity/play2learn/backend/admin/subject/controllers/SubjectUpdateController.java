@@ -10,8 +10,10 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectUpdateService;
+import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 @RestController
 @AllArgsConstructor
@@ -21,6 +23,7 @@ public class SubjectUpdateController {
     private final ISubjectUpdateService subjectService;
 
     @PutMapping
+    @SessionRequired(role = Role.ROLE_ADMIN)
     public ResponseEntity<BaseResponse<SubjectResponseDto>> create(@Valid @RequestBody SubjectUpdateRequestDto subjectDto) {
         return ResponseFactory.created(subjectService.cu29UpdateSubject(subjectDto), "Updated succesfully");
     }
