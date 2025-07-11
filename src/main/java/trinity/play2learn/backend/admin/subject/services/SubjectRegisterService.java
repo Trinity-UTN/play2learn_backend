@@ -45,7 +45,7 @@ public class SubjectRegisterService implements ISubjectRegisterService {
         }
         //Si es opcional, no se asignan estudiantes.
 
-        Subject subjectToSave = SubjectMapper.toSubject(subjectDto, course, teacher, students);
+        Subject subjectToSave = SubjectMapper.toModel(subjectDto, course, teacher, students);
 
         return SubjectMapper.toSubjectDto(subjectRepository.save(subjectToSave));
     }
