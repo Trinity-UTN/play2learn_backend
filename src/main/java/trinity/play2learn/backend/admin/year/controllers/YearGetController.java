@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
-import trinity.play2learn.backend.admin.year.mappers.YearMapper;
-import trinity.play2learn.backend.admin.year.services.commons.YearGetByIdService;
+import trinity.play2learn.backend.admin.year.services.YearGetService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
@@ -20,7 +19,7 @@ import trinity.play2learn.backend.user.models.Role;
 @AllArgsConstructor
 public class YearGetController {
 
-    private final YearGetByIdService yearGetByIdService;
+    private final YearGetService yearGetService;
 
     /**
      * CU7 - Crear un nuevo año académico.
@@ -31,6 +30,6 @@ public class YearGetController {
     @GetMapping("/{id}")
     @SessionRequired(role = Role.ROLE_ADMIN)
     public ResponseEntity<BaseResponse<YearResponseDto>> get(@PathVariable Long id) {
-        return ResponseFactory.ok(YearMapper.toDto(yearGetByIdService.get(id)), "Ok");
+        return ResponseFactory.ok(yearGetService.cu13GetYear(id), "Ok");
     }
 }
