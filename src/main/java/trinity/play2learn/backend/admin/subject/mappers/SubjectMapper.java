@@ -7,6 +7,7 @@ import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectRequestDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.teacher.mapper.TeacherMapper;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
@@ -31,5 +32,16 @@ public class SubjectMapper {
             .teacher(TeacherMapper.toDto(subject.getTeacher()))
             .optional(subject.getOptional())
             .build();
+    }
+
+    public static Subject toUpdateModel(SubjectUpdateRequestDto subjectDto , Course course , Teacher teacher , List<Student> students) {
+        return Subject.builder()
+            .id(subjectDto.getId())
+            .name(subjectDto.getName())
+            .course(course)
+            .teacher(teacher)
+            .students(students)
+            .optional(subjectDto.getOptional())
+            .build();  
     }
 }

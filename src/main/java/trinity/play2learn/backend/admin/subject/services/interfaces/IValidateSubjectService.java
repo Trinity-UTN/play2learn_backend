@@ -5,4 +5,5 @@ import trinity.play2learn.backend.admin.course.models.Course;
 public interface IValidateSubjectService {
     
     void subjectExistByNameAndCourse(String name , Course course);
+
 }
