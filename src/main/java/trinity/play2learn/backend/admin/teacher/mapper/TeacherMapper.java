@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.admin.teacher.mapper;
 
+import java.util.List;
+
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherRequestDto;
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherResponseDto;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
@@ -28,5 +30,12 @@ public class TeacherMapper {
             .dni(teacher.getDni())
             .user(UserMapper.toUserDto(teacher.getUser()))
             .build();
+    }
+
+    public static List<TeacherResponseDto> toListDto(List<Teacher> teachers) {
+        return teachers
+            .stream()
+            .map(TeacherMapper::toDto)
+            .toList();
     }
 }
