@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectDeleteService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
@@ -11,7 +12,7 @@ import trinity.play2learn.backend.configs.exceptions.ConflictException;
 @Service
 @AllArgsConstructor
 public class SubjectDeleteService implements ISubjectDeleteService {
-    
+    private final ISubjectRepository subjectRepository;
     private final IFindSubjectByIdService findSubjectByIdService;
 
     @Override
@@ -26,5 +27,7 @@ public class SubjectDeleteService implements ISubjectDeleteService {
 
         subject.delete();
 
+        subjectRepository.save(subject);
+        
     }
 }
