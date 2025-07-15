@@ -23,7 +23,7 @@ public class SubjectUpdateController {
     private final ISubjectUpdateService subjectService;
 
     @PutMapping
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<SubjectResponseDto>> create(@Valid @RequestBody SubjectUpdateRequestDto subjectDto) {
         return ResponseFactory.created(subjectService.cu29UpdateSubject(subjectDto), "Updated succesfully");
     }

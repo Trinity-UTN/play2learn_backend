@@ -28,7 +28,7 @@ public class CourseListController {
      * @return ResponseEntity con el curso creado y mensaje de éxito.
      */
     @GetMapping
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<List<CourseResponseDto>>> create() {
         return ResponseFactory.ok(courseListService.cu9ListCourses(), "ok");
     }

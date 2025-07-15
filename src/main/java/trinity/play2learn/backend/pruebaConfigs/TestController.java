@@ -22,7 +22,7 @@ public class TestController {
 
     // 👉 OK
     @GetMapping("/ok")
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<String>> testOk() {
         return ResponseFactory.ok("Todo correcto", "Respuesta OK");
     }

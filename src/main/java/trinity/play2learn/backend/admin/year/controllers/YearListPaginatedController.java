@@ -38,7 +38,7 @@ public class YearListPaginatedController {
      * @return ResponseEntity con los datos paginados y mensaje de éxito.
      */
     @GetMapping
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<PaginatedData<YearResponseDto>>> listPaginated(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,

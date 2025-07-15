@@ -34,7 +34,7 @@ public class YearRegisterController {
      * @return ResponseEntity con el año creado y mensaje de éxito.
      */
     @PostMapping
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<YearResponseDto>> create(@Valid @RequestBody YearRequestDto yearDto) {
         return ResponseFactory.created(yearRegisterService.cu7RegisterYear(yearDto), "Created succesfully");
     }
