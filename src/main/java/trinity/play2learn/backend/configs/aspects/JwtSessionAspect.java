@@ -1,5 +1,8 @@
 package trinity.play2learn.backend.configs.aspects;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -10,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import trinity.play2learn.backend.configs.exceptions.InternalServerException;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
 import io.jsonwebtoken.JwtException;
-
+import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService; 
 
 @Aspect
@@ -26,7 +29,7 @@ public class JwtSessionAspect {
     @Before("@annotation(sessionRequired)")
     public void validateJwt(JoinPoint joinPoint , SessionRequired sessionRequired) {
         
-        String jwtRole = "";
+        Role jwtRole;
 
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes(); //Obtiene la solicitud actual
         
@@ -50,17 +53,19 @@ public class JwtSessionAspect {
         }
 
         try {
-            jwtRole = jwtService.extractRole(jwt); //Valida la firma del token y devuelve el role del token de ser valido
+            jwtRole = Role.valueOf(jwtService.extractRole(jwt)); //Valida la firma del token y devuelve el role del token de ser valido
             
         } catch (JwtException e) {
             //Si la firma del token no es valida, lanzo una excepcion.
             throw new UnauthorizedException("Invalid authentication access token.");
         }
 
-        String requiredRole = sessionRequired.role().toString(); //Obtiene el role requerido para la sesion
+        List<Role> requiredRoles = Arrays.asList(sessionRequired.roles()); //Convierte el array de roles permitidos en una lista 
 
-        if (!jwtRole.equals(requiredRole)) {
-            throw new UnauthorizedException(requiredRole + " role required.");
+        if (!requiredRoles.contains(jwtRole)) { //Valida que el role del token sea alguno de los roles permitidos
+
+            throw new UnauthorizedException( "One of this roles is required: " + requiredRoles); 
+            //Si el role del token no matchea con ninguno de los permitidos, lanza una excepcion
         }
 
         //Si no se lanza ninguna de las excepciones anteriores, el token es valido
