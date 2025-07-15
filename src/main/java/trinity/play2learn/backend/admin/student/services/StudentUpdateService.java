@@ -12,6 +12,7 @@ import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentExistByDNIService;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByIdService;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentUpdateService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserExistService;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserUpdateEmail;
 
@@ -52,14 +53,15 @@ public class StudentUpdateService implements IStudentUpdateService{
         student.setLastname(dto.getLastname());
 
         
-        if ((student.getDni() != dto.getDni()) && (studentExistByDNIService.validate(dto.getDni()) == false)) {
-            throw new RuntimeException("Ya existe un estudiante con el DNI: " + dto.getDni());
+        if (!dto.getDni().equals(student.getDni()) && studentExistByDNIService.validate(dto.getDni())) {
+            throw new ConflictException("Ya existe un estudiante con el DNI: " + dto.getDni());
         }
+
 
         student.setDni(dto.getDni());
 
-        if ((dto.getEmail() != student.getUser().getEmail()) && (userExistService.validate(dto.getEmail()) == true)) {
-            throw new RuntimeException("Ya existe un usuario con el email: " + dto.getEmail());  
+        if (!dto.getEmail().equals(student.getUser().getEmail()) && userExistService.validate(dto.getEmail())) {
+            throw new ConflictException("Ya existe un usuario con el email: " + dto.getEmail());  
         }
 
         userUpdateEmail.update(student.getUser(), dto.getEmail());
