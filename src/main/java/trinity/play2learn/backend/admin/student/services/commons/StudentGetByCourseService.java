@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
-import trinity.play2learn.backend.admin.student.services.interfaces.IGetStudentsByCourse;
+import trinity.play2learn.backend.admin.student.services.interfaces.IStudentsGetByCourseService;
 
 @Service
 @AllArgsConstructor
-public class GetStudentsByCourse implements IGetStudentsByCourse{
+public class StudentGetByCourseService implements IStudentsGetByCourseService{
     
     private final IStudentRepository studentRepository;
     
