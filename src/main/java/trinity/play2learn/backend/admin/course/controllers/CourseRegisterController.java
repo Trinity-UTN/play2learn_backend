@@ -30,7 +30,7 @@ public class CourseRegisterController {
      * @return ResponseEntity con el curso creado y mensaje de éxito.
      */
     @PostMapping
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<CourseResponseDto>> create(@Valid @RequestBody CourseRequestDto courseDto) {
         return ResponseFactory.created(courseRegisterService.cu6RegisterCourse(courseDto), "Created succesfully");
     }

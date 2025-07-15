@@ -28,7 +28,7 @@ public class YearDeleteController {
      * @return a response entity indicating the result of the deletion
      */
     @DeleteMapping("/{id}")
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable String id) {
         yearDeleteService.cu11deleteYear(id);
         return ResponseFactory.noContent("Deleted successfully");

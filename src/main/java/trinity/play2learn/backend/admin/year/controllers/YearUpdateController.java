@@ -34,7 +34,7 @@ public class YearUpdateController {
      * @return ResponseEntity con el año creado y mensaje de éxito.
      */
     @PutMapping
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<YearResponseDto>> update(@Valid @RequestBody YearUpdateRequestDto yearDto) {
         return ResponseFactory.ok(yearUpdateService.cu10UpdateYear(yearDto), "Created succesfully");
     }
