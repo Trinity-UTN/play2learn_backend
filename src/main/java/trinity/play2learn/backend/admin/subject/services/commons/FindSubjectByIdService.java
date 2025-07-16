@@ -15,7 +15,16 @@ public class FindSubjectByIdService implements IFindSubjectByIdService {
 
     @Override
     public Subject findByIdOrThrowException(Long id) {
-        return subjectRepository.findById(id)
+        return subjectRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(( ) -> new NotFoundException("Subject with id " + id + " does not exist"));
     }
+
+    @Override
+    public Subject findDeletedById(Long id) {
+        return subjectRepository.findByIdAndDeletedAtIsNotNull(id).orElseThrow(
+            () -> new NotFoundException("Subject with id " + id + " does not exist or is not eliminated")
+        );
+    }
+
+    
 }

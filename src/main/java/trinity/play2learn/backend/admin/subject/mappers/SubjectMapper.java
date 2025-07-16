@@ -44,4 +44,10 @@ public class SubjectMapper {
             .optional(subjectDto.getOptional())
             .build();  
     }
+
+    public static List<SubjectResponseDto> toDtoList(List<Subject> subjects) {
+        return subjects.stream()
+            .map(SubjectMapper::toSubjectDto)
+            .toList();
+    }
 }
