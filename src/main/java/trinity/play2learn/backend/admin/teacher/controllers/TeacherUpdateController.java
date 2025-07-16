@@ -9,10 +9,13 @@ import trinity.play2learn.backend.admin.teacher.dtos.TeacherResponseDto;
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherUpdateDto;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherUpdateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.response.BaseResponse;
+import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
 
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
@@ -25,8 +28,8 @@ public class TeacherUpdateController {
 
     @PutMapping("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public TeacherResponseDto update(@PathVariable Long id, @Valid @RequestBody TeacherUpdateDto teacherDto) {
+    public ResponseEntity<BaseResponse<TeacherResponseDto>> update(@PathVariable Long id, @Valid @RequestBody TeacherUpdateDto teacherDto) {
         
-        return teacherUpdateService.cu23UpdateTeacher(id, teacherDto);
+        return ResponseFactory.ok(teacherUpdateService.cu23UpdateTeacher(id, teacherDto),"Ok");
     }
 }
