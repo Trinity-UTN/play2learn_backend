@@ -15,7 +15,6 @@ import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetB
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentUpdateService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserExistService;
-import trinity.play2learn.backend.user.services.user.interfaces.IUserUpdateEmail;
 
 @Service
 @AllArgsConstructor
@@ -26,8 +25,6 @@ public class StudentUpdateService implements IStudentUpdateService{
     private final IStudentExistByDNIService studentExistByDNIService;
 
     private final IUserExistService userExistService;
-
-    private final IUserUpdateEmail userUpdateEmail;
 
     private final ICourseGetByIdService courseGetByIdService;
 
