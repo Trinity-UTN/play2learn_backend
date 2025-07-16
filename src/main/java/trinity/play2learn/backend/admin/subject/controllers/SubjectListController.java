@@ -1,29 +1,31 @@
 package trinity.play2learn.backend.admin.subject.controllers;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectDeleteService;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectListService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
+import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+
+
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/admin/subjects")
-public class SubjectDeleteController {
+public class SubjectListController {
     
-    private final ISubjectDeleteService subjectDeleteService;
+    private final ISubjectListService subjectListService;
 
-    @DeleteMapping("/{id}")
+    @GetMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id) {
-        subjectDeleteService.cu30DeleteSubject(id);
-        return ResponseFactory.noContent("Deleted successfully");
+    public ResponseEntity<BaseResponse<List<SubjectResponseDto>>> list() {
+        return ResponseFactory.ok(subjectListService.cu31ListSubjects(), "Ok");
     }
+    
 }
