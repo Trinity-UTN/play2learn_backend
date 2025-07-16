@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.admin.subject.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -14,4 +15,6 @@ public interface ISubjectRepository extends CrudRepository<Subject , Long> {
     Optional<Subject> findByIdAndDeletedAtIsNotNull(Long id);
     
     Boolean existsByNameAndCourse(String name, Course course);
+
+    List<Subject> findAllByDeletedAtIsNull();
 }
