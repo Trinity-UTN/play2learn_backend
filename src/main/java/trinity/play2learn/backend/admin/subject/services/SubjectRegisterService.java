@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetByIdService;
 import trinity.play2learn.backend.admin.student.models.Student;
-import trinity.play2learn.backend.admin.student.services.interfaces.IGetStudentsByCourse;
+import trinity.play2learn.backend.admin.student.services.interfaces.IStudentsGetByCourseService;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectRequestDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
@@ -26,7 +26,7 @@ public class SubjectRegisterService implements ISubjectRegisterService {
 
     private final ICourseGetByIdService courseGetByIdService;
     private final IGetTeacherByIdService getTeacherByIdService;
-    private final IGetStudentsByCourse courseGetStudentsService;
+    private final IStudentsGetByCourseService courseGetStudentsService;
     private final ISubjectRepository subjectRepository;
     private final IValidateSubjectService validateSubjectService;
 
