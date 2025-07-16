@@ -11,4 +11,6 @@ public interface ITeacherRepository extends CrudRepository<Teacher,Long> {
     //Busca si existe un profesor distinto del pasado por id con el mismo dni.
     Boolean existsByDniAndIdNot(String dni, Long id);
 
+    Boolean existsByDni(String dni);
+
 }

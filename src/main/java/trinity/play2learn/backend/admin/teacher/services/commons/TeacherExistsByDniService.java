@@ -21,4 +21,12 @@ public class TeacherExistsByDniService implements ITeacherExistsByDniService{
         }
         
     }
+
+    @Override
+    public void validate(String dni) {
+
+        if (teacherRepository.existsByDni(dni)) {
+            throw new ConflictException("Teacher with dni " + dni + " already exists");
+        }
+    }
 }
