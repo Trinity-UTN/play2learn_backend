@@ -14,7 +14,7 @@ public class StudentExistByDNIService implements IStudentExistByDNIService {
 
     @Override
     public boolean validate(String dni) {
-        return studentRepository.existsByDniAndDeletedAtIsNull(dni);
+        return studentRepository.existsByDni(dni);
     }
     
 }

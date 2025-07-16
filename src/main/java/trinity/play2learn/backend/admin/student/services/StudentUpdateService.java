@@ -3,6 +3,7 @@ package trinity.play2learn.backend.admin.student.services;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetByIdService;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentUpdateRequestDto;
@@ -49,23 +50,20 @@ public class StudentUpdateService implements IStudentUpdateService{
          */
         Student student = studentGetByIdService.get(id);
 
-        student.setName (dto.getName());
-        student.setLastname(dto.getLastname());
-
-        
         if (!dto.getDni().equals(student.getDni()) && studentExistByDNIService.validate(dto.getDni())) {
             throw new ConflictException("Ya existe un estudiante con el DNI: " + dto.getDni());
         }
 
-        student.setDni(dto.getDni());
-
+        Course course = null;
         if (student.getCourse().getId() != dto.getCourse_id()) {
-            student.setCourse(courseGetByIdService.get(dto.getCourse_id()));
+            course = courseGetByIdService.get(dto.getCourse_id());
+        } else {
+            course = student.getCourse();
         }
 
-        student = studentRepository.save(student);
+        Student updatedStudente = StudentMapper.toUpdatedEntity(student, dto, course);
          
-        return StudentMapper.toDto(student);
+        return StudentMapper.toDto(studentRepository.save(updatedStudente));
     }
     
 }

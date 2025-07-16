@@ -15,5 +15,5 @@ public interface IStudentRepository extends CrudRepository<Student, Long> {
 
     Optional<Student> findByIdAndDeletedAtIsNull (Long id); // Buscar estudiante por ID, asegurando que no esté eliminado
 
-    boolean existsByDniAndDeletedAtIsNull(String dni); // Verificar si existe un estudiante por DNI, asegurando que no esté eliminado
+    boolean existsByDni (String dni); // Verificar si existe un estudiante por DNI, asegurando que no esté eliminado
 }
