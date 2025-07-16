@@ -35,7 +35,7 @@ public class TeacherListPaginatedService implements ITeacherListPaginatedService
         List<String> filterValues) {
         
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
-        Specification<Teacher> spec = Specification.where(TeacherSpecs.notDeleted());
+        Specification<Teacher> spec = Specification.where(null); //Quite reestriccion notDeleted
         
         if (search != null && !search.isBlank()) {
         spec = spec.and(TeacherSpecs.nameOrLastnameContains(search));
