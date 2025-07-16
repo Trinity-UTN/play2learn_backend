@@ -57,14 +57,7 @@ public class StudentUpdateService implements IStudentUpdateService{
             throw new ConflictException("Ya existe un estudiante con el DNI: " + dto.getDni());
         }
 
-
         student.setDni(dto.getDni());
-
-        if (!dto.getEmail().equals(student.getUser().getEmail()) && userExistService.validate(dto.getEmail())) {
-            throw new ConflictException("Ya existe un usuario con el email: " + dto.getEmail());  
-        }
-
-        userUpdateEmail.update(student.getUser(), dto.getEmail());
 
         if (student.getCourse().getId() != dto.getCourse_id()) {
             student.setCourse(courseGetByIdService.get(dto.getCourse_id()));

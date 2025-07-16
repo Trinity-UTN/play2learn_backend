@@ -1,6 +1,5 @@
 package trinity.play2learn.backend.admin.student.dtos;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -28,11 +27,6 @@ public class StudentUpdateRequestDto {
     @NotEmpty(message = "DNI is required.")
     @Pattern(regexp = "^[0-9]{8}$", message = "DNI must be exactly 8 digits.")
     private String dni;
-
-    @NotEmpty(message = "Email is required.")
-    @Size(max = 100, message = "Maximum length for email is 100 characters.")
-    @Email(message = "Email must be a valid email address.")
-    private String email;
 
     @NotNull(message = "Course ID is required.")
     private Long course_id;    
