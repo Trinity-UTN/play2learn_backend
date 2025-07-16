@@ -4,6 +4,7 @@ import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.student.dtos.StudentRequestDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
+import trinity.play2learn.backend.admin.student.dtos.StudentUpdateRequestDto;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.user.mapper.UserMapper;
 import trinity.play2learn.backend.user.models.User;
@@ -28,6 +29,18 @@ public class StudentMapper {
             .dni(student.getDni())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
+            .build();
+    }
+
+    public static Student toUpdatedEntity (Student model, StudentUpdateRequestDto dto, Course course) {
+        return Student.builder()
+            .id(model.getId())
+            .name(dto.getName())
+            .lastname(dto.getLastname())
+            .dni(dto.getDni())
+            .course(course)
+            .user(model.getUser())
+            .deletedAt(model.getDeletedAt())
             .build();
     }
 }
