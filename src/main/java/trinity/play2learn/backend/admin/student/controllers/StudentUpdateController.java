@@ -13,6 +13,7 @@ import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.http.ResponseEntity;
@@ -25,10 +26,10 @@ public class StudentUpdateController {
 
     private final IStudentUpdateService studentUpdateService;
 
-    @PutMapping
+    @PutMapping ("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<StudentResponseDto>> update(@Valid @RequestBody StudentUpdateRequestDto studentDto) {
-        return ResponseFactory.created(studentUpdateService.cu18updateStudent(studentDto), "Updated succesfully");
+    public ResponseEntity<BaseResponse<StudentResponseDto>> update(@PathVariable Long id, @Valid @RequestBody StudentUpdateRequestDto studentDto) {
+        return ResponseFactory.created(studentUpdateService.cu18updateStudent(studentDto, id), "Updated succesfully");
     }
     
 }

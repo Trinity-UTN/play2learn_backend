@@ -33,7 +33,7 @@ public class StudentUpdateService implements IStudentUpdateService{
     private final IStudentRepository studentRepository;
 
     @Override
-    public StudentResponseDto cu18updateStudent(StudentUpdateRequestDto dto) {
+    public StudentResponseDto cu18updateStudent(StudentUpdateRequestDto dto, Long id) {
         /**
          * Primero busco el objeto mediante el id
          * Luego actualizo los campos que no necesitan mas validaciones como los son:
@@ -47,7 +47,7 @@ public class StudentUpdateService implements IStudentUpdateService{
          * 
          * Reemplazo los datos, guardo el objeto actualizado y retorno el objeto actualizado como StudentResponseDto.
          */
-        Student student = studentGetByIdService.get(dto.getId());
+        Student student = studentGetByIdService.get(id);
 
         student.setName (dto.getName());
         student.setLastname(dto.getLastname());

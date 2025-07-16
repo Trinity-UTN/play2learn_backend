@@ -15,9 +15,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StudentUpdateRequestDto {
 
-    @NotNull(message = "ID is required.")
-    private Long id;
-
     @NotEmpty(message = "Name is required.")
     @Size(max = 50, message = "Maximum length for name is 50 characters.")
     @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "Name can only contain letters, spaces, and the characters áéíóúÁÉÍÓÚñÑ.")
