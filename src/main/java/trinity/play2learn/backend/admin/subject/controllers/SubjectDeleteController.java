@@ -21,7 +21,7 @@ public class SubjectDeleteController {
     private final ISubjectDeleteService subjectDeleteService;
 
     @DeleteMapping("/{id}")
-    @SessionRequired(role = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id) {
         subjectDeleteService.cu30DeleteSubject(id);
         return ResponseFactory.noContent("Deleted successfully");
