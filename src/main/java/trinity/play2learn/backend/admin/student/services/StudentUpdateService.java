@@ -58,9 +58,9 @@ public class StudentUpdateService implements IStudentUpdateService{
             course = student.getCourse();
         }
 
-        Student updatedStudente = StudentMapper.toUpdatedEntity(student, dto, course);
+        Student updatedStudent = StudentMapper.toUpdatedEntity(student, dto, course);
          
-        return StudentMapper.toDto(studentRepository.save(updatedStudente));
+        return StudentMapper.toDto(studentRepository.save(updatedStudent));
     }
     
 }
