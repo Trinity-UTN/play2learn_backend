@@ -20,4 +20,13 @@ public class GetTeacherByIdService implements IGetTeacherByIdService {
         return teacherRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("Teacher not found with id: " + id));
     }
+
+    @Override
+    public Teacher getEliminatedTeacherById(Long id) {
+
+        return teacherRepository.findByIdAndDeletedAtIsNotNull(id)
+            .orElseThrow(() -> new NotFoundException("Teacher not found or not eliminated with id: " + id));
+    }
+
+    
 }

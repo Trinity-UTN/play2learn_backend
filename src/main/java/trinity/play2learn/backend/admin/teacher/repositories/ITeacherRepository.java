@@ -9,6 +9,8 @@ public interface ITeacherRepository extends CrudRepository<Teacher,Long> {
     
     Optional<Teacher> findByIdAndDeletedAtIsNull(Long id);
 
+    Optional<Teacher> findByIdAndDeletedAtIsNotNull(Long id);
+
 
     //Busca si existe un profesor distinto del pasado por id con el mismo dni.
     Boolean existsByDniAndIdNot(String dni, Long id);
