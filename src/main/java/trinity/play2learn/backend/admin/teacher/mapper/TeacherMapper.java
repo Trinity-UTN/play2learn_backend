@@ -31,6 +31,7 @@ public class TeacherMapper {
                 .lastname(teacher.getLastname())
                 .dni(teacher.getDni())
                 .user(UserMapper.toUserDto(teacher.getUser()))
+                .active(teacher.getDeletedAt() == null)
                 .build();
     }
 
