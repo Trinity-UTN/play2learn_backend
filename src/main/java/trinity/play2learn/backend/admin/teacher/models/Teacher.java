@@ -48,10 +48,12 @@ public class Teacher {
 
     public void delete () {
         this.deletedAt = LocalDateTime.now();
+        user.delete(); //Al eliminar al docente, tambien se elimina a su usuario
     }
 
     public void restore () {
         this.deletedAt = null;
+        user.restore(); //Al restaurar al docente, tambien se restaura a su usuario
     }
 
 }
