@@ -25,4 +25,6 @@ public class StudentResponseDto {
 
     private CourseResponseDto course;
 
+    private boolean active;
+
 }
