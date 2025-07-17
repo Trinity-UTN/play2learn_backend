@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,6 +31,9 @@ public class User implements UserDetails {
 
     private Role role;
 
+    @Column(nullable = true)
+    private LocalDateTime deletedAt;
+
     @Override
     public boolean isAccountNonExpired() { return true; } 
     @Override
@@ -48,5 +52,12 @@ public class User implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name())); 
     }
-    
+
+    public void delete(){
+        this.deletedAt = LocalDateTime.now();
+    }
+
+    public void restore(){
+        this.deletedAt = null;
+    }
 }
