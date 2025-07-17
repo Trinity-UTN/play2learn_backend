@@ -4,7 +4,9 @@ import java.util.List;
 
 import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
 import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectAddResponseDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectRequestDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
@@ -49,5 +51,14 @@ public class SubjectMapper {
         return subjects.stream()
             .map(SubjectMapper::toSubjectDto)
             .toList();
+    }
+
+    public static SubjectAddResponseDto toAddDto(Subject subject) {
+        return SubjectAddResponseDto.builder()
+            .id(subject.getId())
+            .subjectName(subject.getName())
+            .courseName(subject.getCourse().getYear().getName() + " " + subject.getCourse().getName())
+            .students(StudentMapper.toSimplificatedDtos(subject.getStudents()))
+            .build();
     }
 }
