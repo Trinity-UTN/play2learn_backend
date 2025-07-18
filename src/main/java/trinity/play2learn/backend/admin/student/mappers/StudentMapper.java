@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.admin.student.mappers;
 
+import java.util.List;
+
 import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.student.dtos.StudentRequestDto;
@@ -29,6 +31,7 @@ public class StudentMapper {
             .dni(student.getDni())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
+            .active(student.getDeletedAt() == null)
             .build();
     }
 
@@ -42,5 +45,11 @@ public class StudentMapper {
             .user(model.getUser())
             .deletedAt(model.getDeletedAt())
             .build();
+    }
+
+    public static List<StudentResponseDto> toListDto (List<Student> students) {
+        return students.stream()
+            .map(StudentMapper::toDto)
+            .toList();
     }
 }
