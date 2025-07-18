@@ -19,5 +19,13 @@ public class StudentGetByIdService implements IStudentGetByIdService {
         return studentRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new NotFoundException("Student not found with id: " + id));
     }
+
+    @Override
+    public Student getDeleted(Long id) {
+        return studentRepository.findByIdAndDeletedAtIsNotNull(id)
+                .orElseThrow(() -> new NotFoundException("Deleted student not found with id: " + id));
+    }
+
+    
     
 }

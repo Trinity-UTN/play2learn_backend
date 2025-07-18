@@ -5,5 +5,7 @@ import trinity.play2learn.backend.admin.student.models.Student;
 public interface IStudentGetByIdService {
 
     public Student get (Long id);
+
+    public Student getDeleted (Long id);
     
 }
