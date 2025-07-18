@@ -75,4 +75,8 @@ public class Subject {
     public void restore () {
         this.deletedAt = null;
     }
+
+    public void removeStudents(List<Student> studentsToRemove) {
+        this.students.removeAll(studentsToRemove);
+    }
 }
