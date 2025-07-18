@@ -61,6 +61,8 @@ public class StudentMapper {
         return students
             .stream()
             .map(student -> toSimplificatedDto(student))
+            .toList();
+    }
 
     public static List<StudentResponseDto> toListDto (List<Student> students) {
         return students.stream()
