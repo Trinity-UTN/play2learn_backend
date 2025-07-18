@@ -18,5 +18,6 @@ public interface IStudentRepository extends CrudRepository<Student, Long>, JpaSp
 
     boolean existsByDni (String dni); // Verificar si existe un estudiante por DNI, asegurando que no esté eliminado
 
+    Optional<Student> findByIdAndDeletedAtIsNotNull(Long id);
 }
 

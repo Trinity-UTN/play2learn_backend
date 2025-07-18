@@ -58,9 +58,11 @@ public class Student {
 
     public void delete () {
         this.deletedAt = LocalDateTime.now();
+        user.delete();
     }
 
     public void restore () {
         this.deletedAt = null;
+        user.restore();
     }
 }
