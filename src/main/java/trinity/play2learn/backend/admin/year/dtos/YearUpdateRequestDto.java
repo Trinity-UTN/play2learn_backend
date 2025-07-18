@@ -1,7 +1,6 @@
 package trinity.play2learn.backend.admin.year.dtos;
 
 import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,9 +13,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class YearUpdateRequestDto {
-
-    @NotNull(message = "ID is required.")
-    private Long id;
 
     @NotEmpty(message = "Name is required.")
     @Size(max = 50, message = "Maximum length for name is 50 characters.")

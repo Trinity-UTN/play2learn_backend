@@ -32,6 +32,7 @@ public class StudentMapper {
             .dni(student.getDni())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
+            .active(student.getDeletedAt() == null)
             .build();
     }
 
@@ -60,6 +61,10 @@ public class StudentMapper {
         return students
             .stream()
             .map(student -> toSimplificatedDto(student))
+
+    public static List<StudentResponseDto> toListDto (List<Student> students) {
+        return students.stream()
+            .map(StudentMapper::toDto)
             .toList();
     }
 }

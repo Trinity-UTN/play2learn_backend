@@ -22,4 +22,5 @@ public class TeacherResponseDto {
 
     private UserResponseDto user;
 
+    private boolean active;
 }

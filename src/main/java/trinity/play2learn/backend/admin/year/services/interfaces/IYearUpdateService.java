@@ -5,6 +5,6 @@ import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 
 public interface IYearUpdateService {
     
-    public YearResponseDto cu10UpdateYear(YearUpdateRequestDto yearUpdateRequestDto);
+    public YearResponseDto cu10UpdateYear(Long id , YearUpdateRequestDto yearUpdateRequestDto);
     
 }

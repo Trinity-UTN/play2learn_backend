@@ -5,5 +5,5 @@ import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
 
 public interface ISubjectUpdateService {
 
-    SubjectResponseDto cu29UpdateSubject(SubjectUpdateRequestDto subjectDto);
+    SubjectResponseDto cu29UpdateSubject(Long id , SubjectUpdateRequestDto subjectDto);
 }

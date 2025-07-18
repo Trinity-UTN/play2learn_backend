@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.admin.subject.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +23,10 @@ public class SubjectUpdateController {
     
     private final ISubjectUpdateService subjectService;
 
-    @PutMapping
+    @PutMapping("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<SubjectResponseDto>> create(@Valid @RequestBody SubjectUpdateRequestDto subjectDto) {
-        return ResponseFactory.created(subjectService.cu29UpdateSubject(subjectDto), "Updated succesfully");
+    public ResponseEntity<BaseResponse<SubjectResponseDto>> create(@PathVariable Long id, @Valid @RequestBody SubjectUpdateRequestDto subjectDto) {
+        return ResponseFactory.created(subjectService.cu29UpdateSubject(id, subjectDto), "Updated succesfully");
     }
 
 }

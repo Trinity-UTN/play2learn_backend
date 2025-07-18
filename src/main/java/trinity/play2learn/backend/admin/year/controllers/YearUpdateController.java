@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.admin.year.controllers;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,10 +34,10 @@ public class YearUpdateController {
      * @param YearRequestDto yearDto Datos del año académico.
      * @return ResponseEntity con el año creado y mensaje de éxito.
      */
-    @PutMapping
+    @PutMapping("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<YearResponseDto>> update(@Valid @RequestBody YearUpdateRequestDto yearDto) {
-        return ResponseFactory.ok(yearUpdateService.cu10UpdateYear(yearDto), "Created succesfully");
+    public ResponseEntity<BaseResponse<YearResponseDto>> update(@PathVariable Long id, @Valid @RequestBody YearUpdateRequestDto yearDto) {
+        return ResponseFactory.ok(yearUpdateService.cu10UpdateYear(id, yearDto), "Created succesfully");
     }
     
 }

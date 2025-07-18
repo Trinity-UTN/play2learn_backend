@@ -12,9 +12,6 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class SubjectUpdateRequestDto {
-
-    @NotNull(message = "ID is required.")
-    private Long id;
     
     @NotEmpty(message = "Name is required.")
     @Size(max = 50, message = "Maximum length for name is 50 characters.")

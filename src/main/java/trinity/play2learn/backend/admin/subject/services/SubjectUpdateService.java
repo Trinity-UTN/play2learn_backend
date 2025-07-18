@@ -1,10 +1,14 @@
 package trinity.play2learn.backend.admin.subject.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetByIdService;
+import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
@@ -27,9 +31,9 @@ public class SubjectUpdateService implements ISubjectUpdateService {
     private final IValidateSubjectService validateSubjectService;
 
     @Override
-    public SubjectResponseDto cu29UpdateSubject(SubjectUpdateRequestDto subjectDto) {
+    public SubjectResponseDto cu29UpdateSubject(Long id , SubjectUpdateRequestDto subjectDto) {
         
-        Subject subjectInDb = findSubjectByIdService.findByIdOrThrowException(subjectDto.getId()); //Lanza un NotFoundException si no se encuentra una materia con el ID proporcionado
+        Subject subjectInDb = findSubjectByIdService.findByIdOrThrowException(id); //Lanza un NotFoundException si no se encuentra una materia con el ID proporcionado
 
         Course course = courseGetByIdService.get(subjectDto.getCourseId()); //De no encontrar un curso con el ID proporcionado, lanza una excepción NotFoundException
         
@@ -43,8 +47,11 @@ public class SubjectUpdateService implements ISubjectUpdateService {
 
         //No es posible actualizar la lista de estudiantes de una materia mediante el endpoint update.
         //Aunque la materia cambie de opcional a obligatoria, se mantiene la lista de estudiantes de la materia original.
-         
-        Subject subjectToUpdate = SubjectMapper.toUpdateModel(subjectDto, course, teacher, subjectInDb.getStudents());
+
+        List<Student> studentsAssigned = new ArrayList<>(subjectInDb.getStudents()); 
+        //Esto evita un error 500 si asigno directamente la lista de estudiantes a la materia a actualizar
+
+        Subject subjectToUpdate = SubjectMapper.toUpdateModel(subjectDto, course, teacher, studentsAssigned);
 
         return SubjectMapper.toSubjectDto(subjectRepository.save(subjectToUpdate));
     }
