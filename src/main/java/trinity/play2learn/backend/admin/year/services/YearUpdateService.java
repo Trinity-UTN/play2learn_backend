@@ -33,9 +33,9 @@ public class YearUpdateService implements IYearUpdateService {
      * @throws BadRequestException si los datos enviados en el dto no son validos
      */
     @Override
-    public YearResponseDto cu10UpdateYear(YearUpdateRequestDto yearUpdateRequestDto) {
+    public YearResponseDto cu10UpdateYear(Long id , YearUpdateRequestDto yearUpdateRequestDto) {
         
-        Year yearToUpdate = yearGetByIdService.get(yearUpdateRequestDto.getId());
+        Year yearToUpdate = yearGetByIdService.get(id);
 
         if (yearExistService.validate(yearUpdateRequestDto.getName())) {
             throw new ConflictException("Year already exists.");
