@@ -21,5 +21,13 @@ public class ValidateSubjectService implements IValidateSubjectService {
         }
             
     }
+
+    @Override
+    public void subjectExistByNameAndCourseExceptId(String name, Course course, Long id) {
+
+        if (subjectRepository.existsByNameAndCourseAndIdNot(name, course, id)) {
+            throw new ConflictException("Subject with name " + name + " already exists in course " + course.getYear().getName() + " " +course.getName());
+        }
+    }
     
 }

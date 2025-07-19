@@ -29,4 +29,5 @@ public interface IYearRepository extends CrudRepository<Year, Long> {
 
     Iterable<Year> findAllByDeletedAtIsNull();
 
+    boolean existsByNameAndIdNot(String name, Long id);
 } 

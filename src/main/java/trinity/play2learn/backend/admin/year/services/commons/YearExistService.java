@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.repositories.IYearRepository;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearExistService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
 /**
  * Servicio para validar si ya existe un año con el mismo nombre.
@@ -34,6 +35,13 @@ public class YearExistService implements IYearExistService {
     @Override
     public boolean validate(Long id) {
         return yearRepository.existsById(id);
+    }
+
+    @Override
+    public void validateExceptId(String name, Long id) {
+        if (yearRepository.existsByNameAndIdNot(name, id)) {
+            throw new ConflictException("A year with the same name already exists.");   
+        }
     }
     
 }

@@ -6,4 +6,6 @@ public interface IValidateSubjectService {
     
     void subjectExistByNameAndCourse(String name , Course course);
 
+    void subjectExistByNameAndCourseExceptId(String name , Course course, Long id);
+
 }

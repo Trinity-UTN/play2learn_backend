@@ -37,7 +37,7 @@ public class SubjectUpdateService implements ISubjectUpdateService {
 
         Course course = courseGetByIdService.get(subjectDto.getCourseId()); //De no encontrar un curso con el ID proporcionado, lanza una excepción NotFoundException
         
-        validateSubjectService.subjectExistByNameAndCourse(subjectDto.getName(), course); //Lanza un conflict exception si la materia ya existe en el curso
+        validateSubjectService.subjectExistByNameAndCourseExceptId(subjectDto.getName(), course, id); //Lanza un conflict exception si la materia ya existe en el curso
 
         Teacher teacher = null;
         if (subjectDto.getTeacherId() != null) {
@@ -51,7 +51,7 @@ public class SubjectUpdateService implements ISubjectUpdateService {
         List<Student> studentsAssigned = new ArrayList<>(subjectInDb.getStudents()); 
         //Esto evita un error 500 si asigno directamente la lista de estudiantes a la materia a actualizar
 
-        Subject subjectToUpdate = SubjectMapper.toUpdateModel(subjectDto, course, teacher, studentsAssigned);
+        Subject subjectToUpdate = SubjectMapper.toUpdateModel(id, subjectDto, course, teacher, studentsAssigned);
 
         return SubjectMapper.toSubjectDto(subjectRepository.save(subjectToUpdate));
     }
