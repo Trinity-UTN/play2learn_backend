@@ -13,7 +13,7 @@ public class UserExistsService implements IUserExistService {
 
     @Override
     public boolean validate(String email) {
-        return userRepository.existsByEmail(email);
+        return userRepository.existsByEmailAndDeletedAtIsNull(email);
     }
     
 }

@@ -10,21 +10,22 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.exceptions.InternalServerException;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
 import io.jsonwebtoken.JwtException;
 import trinity.play2learn.backend.user.models.Role;
-import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService; 
+import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService;
+import trinity.play2learn.backend.user.services.user.interfaces.IUserActiveValidation; 
 
 @Aspect
 @Component
+@AllArgsConstructor
 public class JwtSessionAspect {
 
     private final IJwtService jwtService;
+    private final IUserActiveValidation userActiveValidation;
 
-    public JwtSessionAspect(IJwtService jwtService) {
-        this.jwtService = jwtService;
-    }
 
     @Before("@annotation(sessionRequired)")
     public void validateJwt(JoinPoint joinPoint , SessionRequired sessionRequired) {
@@ -52,8 +53,11 @@ public class JwtSessionAspect {
             
         }
 
+        
         try {
-            jwtRole = Role.valueOf(jwtService.extractRole(jwt)); //Valida la firma del token y devuelve el role del token de ser valido
+            userActiveValidation.validateIfUserIsActive(jwtService.extractUsername(jwt)); //Valida la firma del token y que el usuario este activo en la base de datos
+
+            jwtRole = Role.valueOf(jwtService.extractRole(jwt)); //Devuelve el role del token
             
         } catch (JwtException e) {
             //Si la firma del token no es valida, lanzo una excepcion.
