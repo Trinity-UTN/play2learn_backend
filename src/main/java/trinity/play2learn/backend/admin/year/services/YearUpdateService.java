@@ -11,7 +11,6 @@ import trinity.play2learn.backend.admin.year.services.interfaces.IYearExistServi
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearGetByIdService;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearUpdateService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
-import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
 @Service
 @AllArgsConstructor
@@ -37,9 +36,7 @@ public class YearUpdateService implements IYearUpdateService {
         
         Year yearToUpdate = yearGetByIdService.get(id);
 
-        if (yearExistService.validate(yearUpdateRequestDto.getName())) {
-            throw new ConflictException("Year already exists.");
-        }
+        yearExistService.validateExceptId(yearUpdateRequestDto.getName(), id); //Lanza un 409 si ya existe un año con el mismo nombre y no es el del id
 
         yearToUpdate.setName(yearUpdateRequestDto.getName());
 

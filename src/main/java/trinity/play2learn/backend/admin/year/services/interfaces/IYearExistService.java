@@ -6,4 +6,5 @@ public interface IYearExistService {
 
     public boolean validate(Long id);
     
+    void validateExceptId(String name, Long id);
 } 
