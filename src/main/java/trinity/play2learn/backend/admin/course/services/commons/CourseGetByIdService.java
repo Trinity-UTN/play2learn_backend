@@ -23,7 +23,7 @@ public class CourseGetByIdService implements ICourseGetByIdService {
      */
     @Override
     public Course get(Long id) {
-        return courseRepository.findById(id)
+        return courseRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new NotFoundException("Course not found with id: " + id));
     }
     

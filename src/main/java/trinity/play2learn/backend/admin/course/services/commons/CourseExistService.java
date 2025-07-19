@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseExistService;
 import trinity.play2learn.backend.admin.year.models.Year;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
 
 /**
@@ -46,6 +47,16 @@ public class CourseExistService implements ICourseExistService {
     @Override
     public boolean validate(String name) {
         return courseRepository.existsByName(name);
+    }
+
+    //Valida si ya existe un curso con ese nombre en ese año, exceptuando el curso pasado por ID
+    @Override
+    public void validateExceptId(Long id, String name, Year year) {
+        if (courseRepository.existsByNameAndYearAndIdNot(name, year, id)) {
+            
+            throw new ConflictException("A class with the same name already exists in the selected year.");
+            
+        }
     }
     
 }

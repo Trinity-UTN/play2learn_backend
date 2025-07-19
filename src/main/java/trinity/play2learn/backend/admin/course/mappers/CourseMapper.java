@@ -5,6 +5,7 @@ import java.util.List;
 
 import trinity.play2learn.backend.admin.course.dtos.CourseRequestDto;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
+import trinity.play2learn.backend.admin.course.dtos.CourseUpdateDto;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.year.mappers.YearMapper;
 import trinity.play2learn.backend.admin.year.models.Year;
@@ -44,4 +45,12 @@ public class CourseMapper {
         }
         return courseDtos;
     } 
+
+    public static Course toUpdateModel(Long id, CourseUpdateDto courseDto, Year year) {
+        return Course.builder()
+            .id(id)
+            .name(courseDto.getName())
+            .year(year)
+            .build();
+    }
 }

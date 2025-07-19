@@ -10,4 +10,5 @@ public interface ICourseExistService {
 
     public boolean validate(String name);
     
+    public void validateExceptId(Long id, String name, Year year); 
 }

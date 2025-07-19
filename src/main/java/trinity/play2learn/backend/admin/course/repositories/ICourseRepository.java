@@ -53,5 +53,9 @@ public interface ICourseRepository extends CrudRepository<Course, Long> {
     @Query("SELECT COUNT(c) > 0 FROM Course c WHERE c.year.id = :yearId AND c.deletedAt IS NULL")
     boolean existsByYearIdAndDeletedAtIsNull(@Param("yearId") Long yearId);
 
+    Optional<Course> findByIdAndDeletedAtIsNull(Long id);
+
+    boolean existsByNameAndYearAndIdNot(String name, Year year , Long id);
+
     
 }
