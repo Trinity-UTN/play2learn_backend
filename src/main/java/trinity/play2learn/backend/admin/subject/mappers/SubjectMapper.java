@@ -36,8 +36,9 @@ public class SubjectMapper {
             .build();
     }
 
-    public static Subject toUpdateModel(SubjectUpdateRequestDto subjectDto , Course course , Teacher teacher , List<Student> students) {
+    public static Subject toUpdateModel(Long id, SubjectUpdateRequestDto subjectDto , Course course , Teacher teacher , List<Student> students) {
         return Subject.builder()
+            .id(id)
             .name(subjectDto.getName())
             .course(course)
             .teacher(teacher)
