@@ -2,6 +2,7 @@ package trinity.play2learn.backend.admin.course.repositories;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +12,7 @@ import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.year.models.Year;
 
 @Repository
-public interface ICourseRepository extends CrudRepository<Course, Long> {
+public interface ICourseRepository extends CrudRepository<Course, Long>, JpaSpecificationExecutor<Course> {
 
     /**
      * Busca un año por su nombre.
