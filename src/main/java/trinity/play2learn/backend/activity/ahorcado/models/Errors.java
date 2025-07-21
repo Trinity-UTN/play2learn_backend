@@ -1,12 +1,11 @@
-package trinity.play2learn.backend.activity.activity.models;
+package trinity.play2learn.backend.activity.ahorcado.models;
 
-public enum Attempts {
-    
+public enum Errors {
     TRES(3),CINCO(5);
 
     private final int value;
 
-    private Attempts(int value) {
+    Errors(int value) {
         this.value = value;
     }
 
