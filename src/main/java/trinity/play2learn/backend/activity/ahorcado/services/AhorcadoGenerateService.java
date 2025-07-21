@@ -1,0 +1,33 @@
+package trinity.play2learn.backend.activity.ahorcado.services;
+
+import org.springframework.stereotype.Service;
+
+import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoRequestDto;
+import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoResponseDto;
+import trinity.play2learn.backend.activity.ahorcado.mappers.AhorcadoMapper;
+import trinity.play2learn.backend.activity.ahorcado.models.Ahorcado;
+import trinity.play2learn.backend.activity.ahorcado.repositories.IAhorcadoRepository;
+import trinity.play2learn.backend.activity.ahorcado.services.interfaces.IAhorcadoGenerateService;
+import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+
+@Service
+@AllArgsConstructor
+public class AhorcadoGenerateService implements IAhorcadoGenerateService {
+
+    private final IAhorcadoRepository ahorcadoRepository;
+    private final IFindSubjectByIdService getSubjectByIdService;
+
+    @Override
+    public AhorcadoResponseDto cu39GenerateAhorcado(AhorcadoRequestDto ahorcadoDto) {
+
+        Subject subject = getSubjectByIdService.findByIdOrThrowException(ahorcadoDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
+
+        Ahorcado ahorcadoActivity = AhorcadoMapper.toModel(ahorcadoDto, subject);
+
+        return AhorcadoMapper.toDto(ahorcadoRepository.save(ahorcadoActivity));
+    }
+    
+    
+}
