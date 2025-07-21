@@ -33,4 +33,5 @@ public abstract class ActivityRequestDto {
     @NotNull
     private Long subjectId;
 
+    private int attempts;
 }

@@ -23,4 +23,5 @@ public abstract class ActivityResponseDto {
     private Dificulty dificulty;
     private int maxTime;
     private SubjectResponseDto subject;
+    private int attempts;
 }
