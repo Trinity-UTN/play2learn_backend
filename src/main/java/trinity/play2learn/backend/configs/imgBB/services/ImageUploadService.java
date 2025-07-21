@@ -54,8 +54,7 @@ public class ImageUploadService {
 
             if (imgbbResponse.isSuccess()) {
                 return new ImgBBUploadResultDTO(
-                    imgbbResponse.getData().getUrl(),
-                    imgbbResponse.getData().getDeleteUrl()
+                    imgbbResponse.getData().getUrl()
                 );
             } else {
                 throw new BadRequestException("Fallo en la subida: ImgBB devolvió success = false");

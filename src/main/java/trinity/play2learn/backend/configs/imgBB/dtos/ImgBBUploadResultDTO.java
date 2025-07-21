@@ -7,5 +7,4 @@ import lombok.Data;
 @AllArgsConstructor
 public class ImgBBUploadResultDTO {
     private String imageUrl;
-    private String deleteUrl;
 }
