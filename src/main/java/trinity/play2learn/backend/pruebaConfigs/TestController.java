@@ -2,13 +2,17 @@ package trinity.play2learn.backend.pruebaConfigs;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.exceptions.ForbiddenException;
 import trinity.play2learn.backend.configs.exceptions.NotFoundException;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
+import trinity.play2learn.backend.configs.imgBB.dtos.ImgBBUploadResultDTO;
+import trinity.play2learn.backend.configs.imgBB.services.ImageUploadService;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
@@ -18,6 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/test")
+@AllArgsConstructor
 public class TestController {
 
     // 👉 OK
@@ -87,6 +92,18 @@ public class TestController {
     @GetMapping("/conflict")
     public void throwConflict() {
         throw new ConflictException("Conflicto detectado");
+    }
+
+    private final ImageUploadService imageUploadService;
+
+    @PostMapping("/upload")
+    public ResponseEntity<ImgBBUploadResultDTO> testUpload(@RequestParam("file") MultipartFile file) {
+        try {
+            ImgBBUploadResultDTO result = imageUploadService.uploadImage(file);
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }
