@@ -1,0 +1,25 @@
+package trinity.play2learn.backend.activity.memorama.dtos;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ParejaMemoramaRequestDto {
+    @NotEmpty(message = "Word is required.")
+    @Size(max = 50, message = "Maximum length for word is 50 characters.")
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "Word can only contain letters, spaces, and the characters áéíóúÁÉÍÓÚñÑ.")
+    private String concepto;
+
+    @NotNull(message = "La imagen es obligatoria.")
+    private MultipartFile imagen;
+}
