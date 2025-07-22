@@ -1,10 +1,7 @@
 package trinity.play2learn.backend.activity.preguntados.models;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -37,17 +34,6 @@ public class Preguntados extends Activity{
 
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "preguntados") //Al persistir una actividad se persisten sus preguntas
     private List<Question> questions; //Preguntas con sus posibles respuestas
-
-    @Column(nullable = true)
-    private LocalDateTime deletedAt;
-
-    public void delete(){
-        this.deletedAt = LocalDateTime.now();
-    }
-
-    public void restore(){
-        this.deletedAt = null;
-    }
 
     public void setQuestions(List<Question> questions) {
         if (questions != null) {

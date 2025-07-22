@@ -1,10 +1,8 @@
 package trinity.play2learn.backend.activity.preguntados.models;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -46,17 +44,6 @@ public class Question {
     @ManyToOne
     @JoinColumn(name = "preguntados_id")
     private Preguntados preguntados;
-
-    @Column(nullable = true)
-    private LocalDateTime deletedAt;
-
-    public void delete(){
-        this.deletedAt = LocalDateTime.now();
-    }
-
-    public void restore(){
-        this.deletedAt = null;
-    }
 
     public void setOptions(List<Option> options) {
         if (options != null) {
