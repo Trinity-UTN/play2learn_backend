@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +19,7 @@ public class MemoramaRequestDto extends ActivityRequestDto {
 
     @Valid
     @NotEmpty(message = "Debe haber al menos una pareja")
+    @Size(min = 4, max = 8, message = "La cantidad de parejas debe estar entre 4 y 8")
     private List<CouplesMemoramaRequestDto> couples;
     
 }
