@@ -18,6 +18,6 @@ public class MemoramaRequestDto extends ActivityRequestDto {
 
     @Valid
     @NotEmpty(message = "Debe haber al menos una pareja")
-    private List<ParejaMemoramaRequestDto> parejas;
+    private List<CouplesMemoramaRequestDto> couples;
     
 }

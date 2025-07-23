@@ -29,6 +29,6 @@ public class Memorama extends Activity{
     private Long id;
 
     @OneToMany(mappedBy = "memorama")
-    private List<ParejaMemorama> parejas;
+    private List<CouplesMemorama> couples;
 
 }

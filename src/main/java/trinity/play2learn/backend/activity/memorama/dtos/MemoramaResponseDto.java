@@ -16,6 +16,6 @@ import trinity.play2learn.backend.activity.activity.dtos.ActivityResponseDto;
 @SuperBuilder
 public class MemoramaResponseDto extends ActivityResponseDto {
 
-    private List<ParejaMemoramaResponseDto> parejas; 
+    private List<CouplesMemoramaResponseDto> couples; 
    
 }

@@ -40,8 +40,8 @@ public class MemoramaRegisterController {
         @RequestParam int maxTime,
         @RequestParam Long subjectId,
         @RequestParam int attempts,
-        @RequestParam List<String> conceptos,
-        @RequestParam List<MultipartFile> imagenes
+        @RequestParam List<String> concepts,
+        @RequestParam List<MultipartFile> images
     ) throws BadRequestException, IOException {
         return ResponseFactory.created(
             memoramaRegisterService.cu41GenerarMemorama(MemoramaRequestMapper.toDto(
@@ -52,8 +52,8 @@ public class MemoramaRegisterController {
             maxTime,
             subjectId,
             attempts,
-            conceptos,
-            imagenes
+            concepts,
+            images
         )),
             "Created successfully"
         );

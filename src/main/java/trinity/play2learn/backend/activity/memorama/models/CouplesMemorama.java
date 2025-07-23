@@ -19,8 +19,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "parejas_memorama")
-public class ParejaMemorama {
+@Table(name = "couples_memorama")
+public class CouplesMemorama {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,7 +30,7 @@ public class ParejaMemorama {
     private String url;
 
     @Column(nullable = false)
-    private String concepto;
+    private String concept;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_memorama", nullable = false)

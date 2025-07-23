@@ -11,10 +11,10 @@ import trinity.play2learn.backend.activity.memorama.dtos.MemoramaRequestDto;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.mappers.MemoramaMapper;
 import trinity.play2learn.backend.activity.memorama.models.Memorama;
-import trinity.play2learn.backend.activity.memorama.models.ParejaMemorama;
+import trinity.play2learn.backend.activity.memorama.models.CouplesMemorama;
 import trinity.play2learn.backend.activity.memorama.repositories.IMemoramaRepository;
 import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaRegisterService;
-import trinity.play2learn.backend.activity.memorama.services.interfaces.IParejaMemoramaGenerateService;
+import trinity.play2learn.backend.activity.memorama.services.interfaces.ICouplesMemoramaGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
@@ -27,7 +27,7 @@ public class MemoramaRegisterService implements IMemoramaRegisterService{
 
     private final IMemoramaRepository memoramaRepository;
 
-    private final IParejaMemoramaGenerateService parejaMemoramaGenerateService;
+    private final ICouplesMemoramaGenerateService CouplesMemoramaGenerateService;
 
     @Override
     @Transactional
@@ -37,8 +37,8 @@ public class MemoramaRegisterService implements IMemoramaRegisterService{
          * - Buscar el subject por id 
          * - Generar un Memorama sacando los datos del dto
          * - Guardar el memorama
-         * - Enviar las parejas al service para guardarlas
-         * - Setear las parejas guardadas en el Memorama
+         * - Enviar las Coupless al service para guardarlas
+         * - Setear las Coupless guardadas en el Memorama
          * - Mapear el memorama a un dto de respuesta
          * - Retornar 
          */
@@ -48,9 +48,9 @@ public class MemoramaRegisterService implements IMemoramaRegisterService{
 
         Memorama memorama = memoramaRepository.save(memoramaToSave);
 
-        List<ParejaMemorama> parejas = parejaMemoramaGenerateService.registerList(memoramaRequestDto.getParejas(), memorama);
+        List<CouplesMemorama> Coupless = CouplesMemoramaGenerateService.registerList(memoramaRequestDto.getCouples(), memorama);
 
-        memorama.setParejas(parejas);
+        memorama.setCouples(Coupless);
 
         return MemoramaMapper.toDto (memoramaRepository.save(memorama));
     }

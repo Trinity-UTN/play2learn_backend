@@ -31,7 +31,7 @@ public class MemoramaMapper {
             .endDate(memorama.getEndDate())
             .attempts(memorama.getAttempts())
             .subject(SubjectMapper.toSubjectDto(memorama.getSubject()))
-            .parejas(ParejaMemoramaMapper.toDtoList(memorama.getParejas())) 
+            .couples(CouplesMemoramaMapper.toDtoList(memorama.getCouples())) 
             .build();
     }
 }

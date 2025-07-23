@@ -9,10 +9,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ParejaMemoramaResponseDto {
+public class CouplesMemoramaResponseDto {
 
     private Long id;
-    private String concepto;
-    private String imagen;
+    private String concept;
+    private String image;
     
 }
