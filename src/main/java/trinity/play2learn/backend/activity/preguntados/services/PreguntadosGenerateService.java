@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.preguntados.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.preguntados.Mappers.PreguntadosMapper;
@@ -18,6 +19,8 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
     
     private final IPreguntadosRepository preguntadosRepository;
     private final IFindSubjectByIdService getSubjectByIdService;
+    
+    @Transactional
     @Override
     public PreguntadosResponseDto cu40GeneratePreguntados(PreguntadosRequestDto preguntadosRequestDto) {
         
