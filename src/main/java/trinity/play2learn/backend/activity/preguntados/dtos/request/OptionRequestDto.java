@@ -16,4 +16,6 @@ public class OptionRequestDto {
     @NotBlank
     @Size(max = 100, message = "Maximum length for option is 100 characters.")
     private String option;
+
+    private Boolean isCorrect;
 }

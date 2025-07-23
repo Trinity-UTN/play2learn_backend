@@ -20,12 +20,8 @@ public class QuestionRequestDto {
     @Size(max = 200, message = "Maximum length for question is 200 characters.")
     private String question;
 
-    @NotBlank(message = "Correct answer is required")
-    @Size(max = 100, message = "Maximum length for correctAnswer is 100 characters.")
-    private String correctAnswer;
-
     @Valid
-    @Size(min = 3, max = 3, message = "Must have 3 incorrect options")
+    @Size(min = 4, max = 4, message = "Must have 4 options")
     private List<OptionRequestDto> options; //Maximo de 100 caracteres por opcion
     //Cree un dto de Options para poder validar restricciones dentro de cada elemento de la lista 
 }

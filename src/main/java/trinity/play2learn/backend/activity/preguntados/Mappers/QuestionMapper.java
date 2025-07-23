@@ -11,7 +11,6 @@ public class QuestionMapper {
     public static Question toModel(QuestionRequestDto questionDto) {
         Question question = Question.builder()
             .question(questionDto.getQuestion())
-            .correctAnswer(questionDto.getCorrectAnswer())
             .build();
         
         question.setOptions(OptionMapper.toModelList(questionDto.getOptions())); //Relaciono las opciones con la pregunta
@@ -28,8 +27,7 @@ public class QuestionMapper {
     public static QuestionResponseDto toDto(Question question) {
         return QuestionResponseDto.builder()
             .question(question.getQuestion())
-            .correctAnswer(question.getCorrectAnswer())
-            .options(OptionMapper.toStringList(question.getOptions())) //Lo muestra como un listado de Strings
+            .options(OptionMapper.toDtoList(question.getOptions())) 
             .build();
     }
 

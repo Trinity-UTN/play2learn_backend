@@ -10,6 +10,7 @@ import trinity.play2learn.backend.activity.preguntados.dtos.response.Preguntados
 import trinity.play2learn.backend.activity.preguntados.models.Preguntados;
 import trinity.play2learn.backend.activity.preguntados.repositories.IPreguntadosRepository;
 import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosGenerateService;
+import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosValidateCorrectOptionService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
 
@@ -19,13 +20,17 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
     
     private final IPreguntadosRepository preguntadosRepository;
     private final IFindSubjectByIdService getSubjectByIdService;
-    
+    private final IPreguntadosValidateCorrectOptionService preguntadosValidateCorrectOptionService;
+
     @Transactional
     @Override
     public PreguntadosResponseDto cu40GeneratePreguntados(PreguntadosRequestDto preguntadosRequestDto) {
         
         Subject subject = getSubjectByIdService.findByIdOrThrowException(preguntadosRequestDto.getSubjectId()); 
         //Lanza un 404 si no encuentra la materia con el id proporcionado
+        
+        preguntadosRequestDto.getQuestions().forEach(q -> preguntadosValidateCorrectOptionService.validateOneCorrectOption(q)); 
+        //Valido que una de las opciones sea correcta en cada pregunta
 
         Preguntados preguntados = PreguntadosMapper.toModel(preguntadosRequestDto, subject);
         

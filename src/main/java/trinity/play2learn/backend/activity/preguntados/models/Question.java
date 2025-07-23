@@ -12,7 +12,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,11 +32,8 @@ public class Question {
 
     private String question;
 
-    @NotBlank
-    private String correctAnswer;
-
     @Valid //Sirve para validar restricciones dentro de los elementos
-    @Size(min = 3, max = 3)
+    @Size(min = 4, max = 4, message = "Must have 4 options")
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE} , mappedBy = "question")
     private List<Option> options;
 

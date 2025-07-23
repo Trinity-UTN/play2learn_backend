@@ -13,6 +13,5 @@ public class QuestionResponseDto {
     
     
     private String question;
-    private String correctAnswer;
-    private List<String> options;
+    private List<OptionResponseDto> options;
 }

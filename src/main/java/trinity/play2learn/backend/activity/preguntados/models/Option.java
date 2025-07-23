@@ -30,6 +30,8 @@ public class Option {
     @Size(max = 100, message = "Maximum length for option is 100 characters.")
     private String option;
 
+    private Boolean isCorrect;
+
     @ManyToOne
     @JoinColumn(name = "question_id")
     private Question question;
