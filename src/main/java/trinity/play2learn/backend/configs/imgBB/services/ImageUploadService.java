@@ -31,7 +31,7 @@ public class ImageUploadService {
 
     public ImgBBUploadResultDTO uploadImage(MultipartFile image) throws IOException {
         if (imgbbApiKey == null || imgbbApiKey.isBlank()) {
-            throw new IllegalStateException("IMGBB_API_KEY no está configurada");
+            throw new BadRequestException("IMGBB_API_KEY no está configurada");
         }
 
         String uploadUrl = "https://api.imgbb.com/1/upload?key=" + imgbbApiKey;
