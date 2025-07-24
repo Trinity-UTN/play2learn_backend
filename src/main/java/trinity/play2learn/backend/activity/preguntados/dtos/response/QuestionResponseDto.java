@@ -11,7 +11,7 @@ import lombok.Data;
 @Builder
 public class QuestionResponseDto {
     
-    
+    private Long id;
     private String question;
     private List<OptionResponseDto> options;
 }

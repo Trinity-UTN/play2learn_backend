@@ -26,6 +26,7 @@ public class QuestionMapper {
 
     public static QuestionResponseDto toDto(Question question) {
         return QuestionResponseDto.builder()
+            .id(question.getId())
             .question(question.getQuestion())
             .options(OptionMapper.toDtoList(question.getOptions())) 
             .build();
