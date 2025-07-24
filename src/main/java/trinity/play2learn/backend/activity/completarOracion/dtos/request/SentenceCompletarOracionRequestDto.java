@@ -16,6 +16,6 @@ import lombok.NoArgsConstructor;
 public class SentenceCompletarOracionRequestDto {
 
     @Valid
-    @Size(min = 1 , max = 300, message = "The sentence must have between 1 and 300 words.")
+    @Size(min = 3 , max = 300, message = "The sentence must have between 3 and 300 words.")
     private List<WordCompletarOracionRequestDto> words; 
 }
