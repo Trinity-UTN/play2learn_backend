@@ -16,9 +16,9 @@ public class AhorcadoMapper {
             .subject(subject)
             .startDate(ahorcadoDto.getStartDate())
             .endDate(ahorcadoDto.getEndDate())
+            .attempts(ahorcadoDto.getAttempts())
             .word(ahorcadoDto.getWord())
             .errorsPermited(ahorcadoDto.getErrorsPermited())
-            .attempts(ahorcadoDto.getAttempts())
             .build();
     }
 
