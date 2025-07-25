@@ -1,0 +1,54 @@
+package trinity.play2learn.backend.activity.completarOracion.services;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.activity.completarOracion.dtos.request.CompletarOracionActivityRequestDto;
+import trinity.play2learn.backend.activity.completarOracion.dtos.response.CompletarOracionActivityResponseDto;
+import trinity.play2learn.backend.activity.completarOracion.mappers.CompletarOracionActivityMapper;
+import trinity.play2learn.backend.activity.completarOracion.models.CompletarOracionActivity;
+import trinity.play2learn.backend.activity.completarOracion.repositories.ICompletarOracionRepository;
+import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionGenerateService;
+import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordMissingService;
+import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordsOrderService;
+import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+
+@Service
+@AllArgsConstructor
+public class CompletarOracionGenerateService implements ICompletarOracionGenerateService {
+    
+    private final ICompletarOracionRepository completarOracionRepository;
+    private final IFindSubjectByIdService getSubjectByIdService;
+    private final ICompletarOracionValidateWordsOrderService completarOracionValidateWordsOrderService;
+    private final ICompletarOracionValidateWordMissingService completarOracionValidateWordMissingService;
+
+    @Transactional
+    @Override
+    public CompletarOracionActivityResponseDto cu42generateCompletarOracionActivity(CompletarOracionActivityRequestDto completarOracionActivityRequestDto) {
+
+        Subject subject = getSubjectByIdService.findByIdOrThrowException(completarOracionActivityRequestDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
+
+        //Si alguna validacion falla lanzo un 400
+        completarOracionActivityRequestDto.getSentences().forEach(sentence -> {
+
+           completarOracionValidateWordsOrderService.validateWordsOrder(sentence); 
+            //Valido que cada oracion tenga ordenes de las palabras validos(Sin repetir y dentro del rango de palabras de la oracion)
+
+
+           completarOracionValidateWordMissingService.validateAtLeastOneWordMissing(sentence);
+           //Valido que cada oracion tenga al menos una palabra faltante
+        });
+        
+
+        CompletarOracionActivity activity = CompletarOracionActivityMapper.toModel(completarOracionActivityRequestDto, subject);
+        
+        activity.buildCompleteSentences(); //Cada oracion arma su oracion completa en base al listado de palabras
+
+        return CompletarOracionActivityMapper.toDto(completarOracionRepository.save(activity)); 
+
+    }
+
+    
+}
