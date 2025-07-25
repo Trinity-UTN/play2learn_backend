@@ -8,8 +8,10 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.CompletarOracionActivityRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.dtos.response.CompletarOracionActivityResponseDto;
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionGenerateService;
+import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,6 +26,7 @@ public class CompletarOracionGenerateController {
     private final ICompletarOracionGenerateService completarOracionGenerateService;
 
     @PostMapping
+    @SessionRequired(roles = {Role.ROLE_ADMIN , Role.ROLE_TEACHER})
     public ResponseEntity<BaseResponse<CompletarOracionActivityResponseDto>> generate(@Valid @RequestBody CompletarOracionActivityRequestDto activityRequestDto) {
         
         return ResponseFactory.created(completarOracionGenerateService.cu42generateCompletarOracionActivity(activityRequestDto), "Created successfully");
