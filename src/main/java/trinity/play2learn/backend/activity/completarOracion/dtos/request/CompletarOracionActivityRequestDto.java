@@ -19,7 +19,7 @@ import trinity.play2learn.backend.activity.activity.dtos.ActivityRequestDto;
 public class CompletarOracionActivityRequestDto extends ActivityRequestDto{
     
     @Valid
-    @Size(min = 1, message = "The activity must have at least one sentence.")
+    @Size(min = 1, max = 20, message = "The activity must have between 1 and 20 sentences.")
     private List<SentenceCompletarOracionRequestDto> sentences;
     
 }
