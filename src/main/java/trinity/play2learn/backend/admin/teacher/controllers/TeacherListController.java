@@ -23,7 +23,7 @@ public class TeacherListController {
     private final ITeacherListService teacherListService;
 
     @GetMapping
-    @SessionRequired(roles = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<List<TeacherResponseDto>>> list() {
         return ResponseFactory.ok(teacherListService.cu25ListTeachers(), "Ok");
     }

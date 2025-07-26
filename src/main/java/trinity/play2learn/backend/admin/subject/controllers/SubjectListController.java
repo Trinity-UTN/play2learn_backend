@@ -23,7 +23,7 @@ public class SubjectListController {
     private final ISubjectListService subjectListService;
 
     @GetMapping
-    @SessionRequired(roles = {Role.ROLE_ADMIN})
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<List<SubjectResponseDto>>> list() {
         return ResponseFactory.ok(subjectListService.cu31ListSubjects(), "Ok");
     }
