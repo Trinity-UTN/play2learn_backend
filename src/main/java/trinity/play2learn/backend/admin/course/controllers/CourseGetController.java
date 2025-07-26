@@ -22,7 +22,7 @@ public class CourseGetController {
     private final ICourseGetService courseGetService;
 
     @GetMapping ("/{id}")
-    @SessionRequired(roles = {Role.ROLE_ADMIN})
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<CourseResponseDto>> get (@PathVariable Long id){
         return ResponseFactory.ok(courseGetService.cu17GetCourse(id), "Ok");
     }

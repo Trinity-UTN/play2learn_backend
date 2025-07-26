@@ -33,7 +33,7 @@ public class YearListController {
      * @return ResponseEntity con el año creado y mensaje de éxito.
      */
     @GetMapping
-    @SessionRequired(roles = {Role.ROLE_ADMIN})
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<List<YearResponseDto>>> list() {
         return ResponseFactory.ok(yearListService.cu8ListYears(), "Ok");
     }

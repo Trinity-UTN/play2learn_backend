@@ -28,7 +28,7 @@ public class YearGetController {
      * @return ResponseEntity con el año creado y mensaje de éxito.
      */
     @GetMapping("/{id}")
-    @SessionRequired(roles = {Role.ROLE_ADMIN})
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<YearResponseDto>> get(@PathVariable Long id) {
         return ResponseFactory.ok(yearGetService.cu13GetYear(id), "Ok");
     }

@@ -24,7 +24,7 @@ public class SubjectGetController {
     private final ISubjectGetService subjectGetService;
 
     @GetMapping("/{id}")
-    @SessionRequired(roles = {Role.ROLE_ADMIN})
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<SubjectResponseDto>> getById(@PathVariable Long id) {
         
         return ResponseFactory.ok(subjectGetService.cu33GetSubjectById(id), "Ok");

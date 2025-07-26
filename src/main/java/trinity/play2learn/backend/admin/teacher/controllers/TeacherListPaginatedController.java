@@ -25,7 +25,7 @@ public class TeacherListPaginatedController {
     private final ITeacherListPaginatedService teacherListService;
 
     @GetMapping("/paginated")
-    @SessionRequired(roles = Role.ROLE_ADMIN)
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<PaginatedData<TeacherResponseDto>>> listPaginated(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,

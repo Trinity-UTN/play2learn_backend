@@ -24,7 +24,7 @@ public class StudentGetController {
     private final IStudentGetService studentGetService;
     
     @GetMapping("/{id}")
-    @SessionRequired(roles = {Role.ROLE_ADMIN})
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<StudentResponseDto>> get(@PathVariable Long id) {
         return ResponseFactory.ok (studentGetService.cu22GetStudent(id), "Ok");
     }
