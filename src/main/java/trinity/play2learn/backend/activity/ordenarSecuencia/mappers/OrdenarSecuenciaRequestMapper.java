@@ -43,8 +43,6 @@ public class OrdenarSecuenciaRequestMapper {
 
         DtoValidator.validate(dto);
 
-        System.out.println("OrdenarSecuenciaRequestMapper.toRequestDto: " + dto);
-
         return dto;
     }
 }

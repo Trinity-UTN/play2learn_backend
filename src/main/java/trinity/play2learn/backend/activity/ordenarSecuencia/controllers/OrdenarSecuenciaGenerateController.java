@@ -41,7 +41,6 @@ public class OrdenarSecuenciaGenerateController {
             .flatMap(Collection::stream)
         .collect(Collectors.toList());
 
-        System.out.println(images);
         OrdenarSecuenciaRequestDto dto = OrdenarSecuenciaRequestMapper.toRequestDto(payloadJson, images);
         
         return ResponseFactory.created(
