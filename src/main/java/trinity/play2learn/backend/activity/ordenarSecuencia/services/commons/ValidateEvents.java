@@ -23,8 +23,8 @@ public class ValidateEvents implements IValidateEvents{
         Set<Integer> ordenes = new HashSet<>();
         for (EventRequestDto evento : eventos) {
             Integer orden = evento.getOrder();
-            if (orden == null || orden < 1) {
-                throw new BadRequestException("El orden de cada evento debe ser un número entero mayor o igual a 1");
+            if (orden == null || orden < 0) {
+                throw new BadRequestException("El orden de cada evento debe ser un número entero mayor o igual a 0");
             }
             if (!ordenes.add(orden)) {
                 // Si add devuelve false, el número ya estaba en el set (repetido)
@@ -34,7 +34,7 @@ public class ValidateEvents implements IValidateEvents{
 
         // Validar que no haya saltos
         int maxOrden = Collections.max(ordenes);
-        if (maxOrden != ordenes.size()) {
+        if (maxOrden != ordenes.size()-1) {
             throw new BadRequestException("El orden de eventos no es consecutivo. Se esperaban " + maxOrden + " eventos consecutivos sin saltos.");
         }
     }
