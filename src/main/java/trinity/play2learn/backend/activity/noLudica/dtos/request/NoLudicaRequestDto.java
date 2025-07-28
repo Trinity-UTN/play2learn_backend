@@ -14,7 +14,7 @@ import trinity.play2learn.backend.activity.noLudica.models.TipoEntrega;
 public class NoLudicaRequestDto extends ActivityRequestDto{
     
     @NotNull
-    @Size(max = 300, message = "Maximum length for excercise is 1000 characters.")
+    @Size(max = 300, message = "Maximum length for excercise is 300 characters.")
     private String excercise;
 
     @NotNull
