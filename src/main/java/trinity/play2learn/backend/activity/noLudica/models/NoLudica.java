@@ -26,7 +26,7 @@ public class NoLudica extends Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 300, message = "Maximum length for description is 100 characters.")
+    @Size(max = 300, message = "Maximum length for excercise is 300 characters.")
     private String excercise;
 
     private TipoEntrega tipoEntrega;
