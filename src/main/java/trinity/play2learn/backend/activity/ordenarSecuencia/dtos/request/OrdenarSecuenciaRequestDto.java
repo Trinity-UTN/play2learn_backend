@@ -3,7 +3,6 @@ package trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request;
 import java.util.List;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
