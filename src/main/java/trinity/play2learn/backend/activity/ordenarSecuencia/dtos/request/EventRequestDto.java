@@ -18,7 +18,7 @@ public class EventRequestDto {
     @Size(max = 100, message = "La descripción no puede superar los 100 caracteres")
     private String description;
 
-    @Min(value = 1, message = "El orden debe ser mayor o igual a 1")
+    @Min(value = 0, message = "El orden debe ser mayor o igual a 0")
     private Integer order;
 
     private String imageKey;
