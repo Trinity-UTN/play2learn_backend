@@ -55,8 +55,6 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
         OrdenarSecuencia ordenarSecuenciaSaved = ordenarSecuenciaRepository.save(ordenarSecuenciaToSave);
     
         List <Event> events = eventsGenerateService.generateList(dto.getEvents(), ordenarSecuenciaSaved);
-        
-        ordenarSecuenciaSaved.setEvents(events);
 
         return OrdenarSecuenciaMapper.toDto(ordenarSecuenciaSaved);
     }

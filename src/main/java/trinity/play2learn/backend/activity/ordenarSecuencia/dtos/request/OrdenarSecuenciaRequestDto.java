@@ -20,7 +20,6 @@ import trinity.play2learn.backend.activity.activity.dtos.ActivityRequestDto;
 public class OrdenarSecuenciaRequestDto extends ActivityRequestDto{
     
     @Valid
-    @NotEmpty(message = "Debe haber al menos un evento para ordenar")
     @Size(min = 3, max = 10, message = "Solo se permiten entre 3 y 10 eventos")
     private List<EventRequestDto> events;
     
