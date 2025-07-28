@@ -12,6 +12,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import trinity.play2learn.backend.activity.activity.models.Activity;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @AllArgsConstructor
@@ -28,7 +29,8 @@ public class NoLudica extends Activity {
 
     @Size(max = 300, message = "Maximum length for excercise is 300 characters.")
     private String excercise;
-
+    
+    @NotNull
     private TipoEntrega tipoEntrega;
 
 }
