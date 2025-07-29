@@ -25,7 +25,7 @@ public class SubjectUpdateController {
 
     @PutMapping("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<SubjectResponseDto>> create(@PathVariable Long id, @Valid @RequestBody SubjectUpdateRequestDto subjectDto) {
+    public ResponseEntity<BaseResponse<SubjectResponseDto>> update(@PathVariable Long id, @Valid @RequestBody SubjectUpdateRequestDto subjectDto) {
         return ResponseFactory.created(subjectService.cu29UpdateSubject(id, subjectDto), "Updated succesfully");
     }
 
