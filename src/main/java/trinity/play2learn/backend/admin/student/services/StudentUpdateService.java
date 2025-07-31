@@ -14,6 +14,7 @@ import trinity.play2learn.backend.admin.student.services.interfaces.IStudentExis
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByIdService;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentUpdateService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 @Service
 @AllArgsConstructor
@@ -45,7 +46,13 @@ public class StudentUpdateService implements IStudentUpdateService{
         Student student = studentGetByIdService.findById(id);
 
         if (!dto.getDni().equals(student.getDni()) && studentExistByDNIService.validate(dto.getDni())) {
-            throw new ConflictException("Ya existe un estudiante con el DNI: " + dto.getDni());
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExistsByAtribute(
+                    "Estudiante", 
+                    "DNI", 
+                    String.valueOf(dto.getDni())
+                )
+            );
         }
 
         Course course = null;
