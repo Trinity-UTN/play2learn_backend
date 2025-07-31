@@ -11,6 +11,8 @@ import trinity.play2learn.backend.admin.year.repositories.IYearRepository;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearExistService;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearRegisterService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 /**
  * Servicio para la lógica de negocio relacionada con el caso de uso 7, registrar un año académico.
@@ -36,7 +38,12 @@ public class YearRegisterService implements IYearRegisterService {
     @Override
     public YearResponseDto cu7RegisterYear (YearRequestDto yearRequestDto) {
         if (yearExistService.validate(yearRequestDto.getName())) {
-            throw new BadRequestException("Year already exists.");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExistsByName(
+                    "Año", 
+                    yearRequestDto.getName()
+                )
+            );
         }
         Year yearToSave = YearMapper.toModel(yearRequestDto);
         return YearMapper.toDto(yearRepository.save(yearToSave));
