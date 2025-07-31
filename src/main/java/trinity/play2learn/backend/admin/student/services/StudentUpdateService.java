@@ -42,7 +42,7 @@ public class StudentUpdateService implements IStudentUpdateService{
          * 
          * Reemplazo los datos, guardo el objeto actualizado y retorno el objeto actualizado como StudentResponseDto.
          */
-        Student student = studentGetByIdService.get(id);
+        Student student = studentGetByIdService.findById(id);
 
         if (!dto.getDni().equals(student.getDni()) && studentExistByDNIService.validate(dto.getDni())) {
             throw new ConflictException("Ya existe un estudiante con el DNI: " + dto.getDni());
@@ -50,7 +50,7 @@ public class StudentUpdateService implements IStudentUpdateService{
 
         Course course = null;
         if (student.getCourse().getId() != dto.getCourse_id()) {
-            course = courseGetByIdService.get(dto.getCourse_id());
+            course = courseGetByIdService.findById(dto.getCourse_id());
         } else {
             course = student.getCourse();
         }

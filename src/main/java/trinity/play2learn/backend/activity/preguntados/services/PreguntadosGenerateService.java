@@ -12,21 +12,21 @@ import trinity.play2learn.backend.activity.preguntados.repositories.IPreguntados
 import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosGenerateService;
 import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosValidateCorrectOptionService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 
 @Service
 @AllArgsConstructor
 public class PreguntadosGenerateService implements IPreguntadosGenerateService{
     
     private final IPreguntadosRepository preguntadosRepository;
-    private final IFindSubjectByIdService getSubjectByIdService;
+    private final ISubjectGetByIdService getSubjectByIdService;
     private final IPreguntadosValidateCorrectOptionService preguntadosValidateCorrectOptionService;
 
     @Transactional
     @Override
     public PreguntadosResponseDto cu40GeneratePreguntados(PreguntadosRequestDto preguntadosRequestDto) {
         
-        Subject subject = getSubjectByIdService.findByIdOrThrowException(preguntadosRequestDto.getSubjectId()); 
+        Subject subject = getSubjectByIdService.findById(preguntadosRequestDto.getSubjectId()); 
         //Lanza un 404 si no encuentra la materia con el id proporcionado
         
         preguntadosRequestDto.getQuestions().forEach(q -> preguntadosValidateCorrectOptionService.validateOneCorrectOption(q)); 

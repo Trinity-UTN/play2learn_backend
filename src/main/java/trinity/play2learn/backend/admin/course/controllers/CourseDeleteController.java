@@ -22,7 +22,7 @@ public class CourseDeleteController {
     @DeleteMapping("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id) {
-        courseDeleteService.deleteCourse(id);
+        courseDeleteService.cu15DeleteCourse(id);
         return ResponseFactory.noContent("Deleted successfully");
     }
 }

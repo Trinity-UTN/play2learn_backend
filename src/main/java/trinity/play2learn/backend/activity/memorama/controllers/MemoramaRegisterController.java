@@ -16,7 +16,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.Dificulty;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.mappers.MemoramaRequestMapper;
-import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaRegisterService;
+import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.response.BaseResponse;
@@ -28,7 +28,7 @@ import trinity.play2learn.backend.user.models.Role;
 @RequestMapping("activities/memorama")
 public class MemoramaRegisterController {
     
-    private final IMemoramaRegisterService memoramaRegisterService;
+    private final IMemoramaGenerateService memoramaRegisterService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @SessionRequired (roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER})
@@ -44,7 +44,7 @@ public class MemoramaRegisterController {
         @RequestParam List<MultipartFile> images
     ) throws BadRequestException, IOException {
         return ResponseFactory.created(
-            memoramaRegisterService.cu41GenerarMemorama(MemoramaRequestMapper.toDto(
+            memoramaRegisterService.cu41GenerateMemorama(MemoramaRequestMapper.toDto(
             description,
             startDate,
             endDate,

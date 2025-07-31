@@ -34,7 +34,7 @@ public class YearUpdateService implements IYearUpdateService {
     @Override
     public YearResponseDto cu10UpdateYear(Long id , YearUpdateRequestDto yearUpdateRequestDto) {
         
-        Year yearToUpdate = yearGetByIdService.get(id);
+        Year yearToUpdate = yearGetByIdService.findById(id);
 
         yearExistService.validateExceptId(yearUpdateRequestDto.getName(), id); //Lanza un 409 si ya existe un año con el mismo nombre y no es el del id
 

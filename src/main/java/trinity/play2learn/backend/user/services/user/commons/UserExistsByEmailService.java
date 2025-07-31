@@ -4,12 +4,12 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
-import trinity.play2learn.backend.user.services.user.interfaces.IUserActiveValidation;
+import trinity.play2learn.backend.user.services.user.interfaces.IUserExistsByEmailService;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserExistService;
 
 @Service
 @AllArgsConstructor
-public class UserActiveValidation implements IUserActiveValidation{
+public class UserExistsByEmailService implements IUserExistsByEmailService{
     
     private final IUserExistService userExistService;
 

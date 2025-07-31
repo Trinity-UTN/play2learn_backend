@@ -36,7 +36,7 @@ public class StudentRegisterService implements IStudentRegisterService{
          * Luego creo el estudiante
          * Luego retorno el Dto de respuesta con los datos del estudiante creado
         */
-        Course course = courseGetByIdService.get(studentRequestDto.getCourse_id());
+        Course course = courseGetByIdService.findById(studentRequestDto.getCourse_id());
 
         User user = userCreateService.create(studentRequestDto.getEmail(), studentRequestDto.getDni(), Role.ROLE_STUDENT);
         

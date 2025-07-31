@@ -4,6 +4,6 @@ import trinity.play2learn.backend.admin.year.models.Year;
 
 public interface IYearGetByIdService {
 
-    public Year get (Long id);
+    public Year findById (Long id);
     
 }

@@ -16,7 +16,7 @@ public class YearGetService implements IYearGetService {
 
     @Override
     public YearResponseDto cu13GetYear(Long id) {
-        return YearMapper.toDto(yearGetByIdService.get(id));
+        return YearMapper.toDto(yearGetByIdService.findById(id));
     }
     
 }

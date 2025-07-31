@@ -16,7 +16,7 @@ import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
 import io.jsonwebtoken.JwtException;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService;
-import trinity.play2learn.backend.user.services.user.interfaces.IUserActiveValidation; 
+import trinity.play2learn.backend.user.services.user.interfaces.IUserExistsByEmailService; 
 
 @Aspect
 @Component
@@ -24,7 +24,7 @@ import trinity.play2learn.backend.user.services.user.interfaces.IUserActiveValid
 public class JwtSessionAspect {
 
     private final IJwtService jwtService;
-    private final IUserActiveValidation userActiveValidation;
+    private final IUserExistsByEmailService userActiveValidation;
 
 
     @Before("@annotation(sessionRequired)")

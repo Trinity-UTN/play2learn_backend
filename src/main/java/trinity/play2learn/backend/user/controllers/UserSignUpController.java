@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
@@ -17,14 +18,10 @@ import trinity.play2learn.backend.user.services.signUp.interfaces.ISignUpService
 
 @RequestMapping("/signUp")
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
-public class SignUpController {
+@AllArgsConstructor
+public class UserSignUpController {
     
     private final ISignUpService signUpService;
-
-    public SignUpController(ISignUpService signUpService) {
-        this.signUpService = signUpService;
-    }
 
     @PostMapping
     public ResponseEntity<BaseResponse<SignUpResponseDto>> signUp(@Valid @RequestBody SignUpRequestDto signUpDto) {

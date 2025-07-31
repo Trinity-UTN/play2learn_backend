@@ -17,7 +17,7 @@ public class CourseGetService implements ICourseGetService {
     @Override
     public CourseResponseDto cu17GetCourse(Long courseId) {
         
-        return CourseMapper.toDto(courseGetByIdService.get(courseId));
+        return CourseMapper.toDto(courseGetByIdService.findById(courseId));
         
     }
     

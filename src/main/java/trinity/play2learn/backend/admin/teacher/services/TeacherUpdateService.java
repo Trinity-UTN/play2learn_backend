@@ -8,7 +8,7 @@ import trinity.play2learn.backend.admin.teacher.dtos.TeacherUpdateDto;
 import trinity.play2learn.backend.admin.teacher.mapper.TeacherMapper;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 import trinity.play2learn.backend.admin.teacher.repositories.ITeacherRepository;
-import trinity.play2learn.backend.admin.teacher.services.interfaces.IGetTeacherByIdService;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByIdService;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherExistsByDniService;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherUpdateService;
 
@@ -17,12 +17,12 @@ import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherUpda
 public class TeacherUpdateService implements ITeacherUpdateService{
     
     private final ITeacherRepository teacherRepository;
-    private final IGetTeacherByIdService getTeacherByIdService;
+    private final ITeacherGetByIdService getTeacherByIdService;
     private final ITeacherExistsByDniService teacherExistsByDniService;
     @Override
     public TeacherResponseDto cu23UpdateTeacher(Long id, TeacherUpdateDto teacherDto) {
 
-        Teacher teacherDb = getTeacherByIdService.getTeacherById(id); //Lanza un NotFound si no encuentra un docente con el id proporcionado
+        Teacher teacherDb = getTeacherByIdService.findById(id); //Lanza un NotFound si no encuentra un docente con el id proporcionado
 
         //Lanza un Conflict si existe un profesor con el mismo dni y no es el del id.
         teacherExistsByDniService.validate(teacherDto.getDni(), id); 

@@ -29,7 +29,7 @@ public class CourseListController {
      */
     @GetMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<List<CourseResponseDto>>> create() {
+    public ResponseEntity<BaseResponse<List<CourseResponseDto>>> register() {
         return ResponseFactory.ok(courseListService.cu9ListCourses(), "ok");
     }
 }

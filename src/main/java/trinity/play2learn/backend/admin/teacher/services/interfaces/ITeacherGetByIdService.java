@@ -2,9 +2,9 @@ package trinity.play2learn.backend.admin.teacher.services.interfaces;
 
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 
-public interface IGetTeacherByIdService {
+public interface ITeacherGetByIdService {
     
-    Teacher getTeacherById(Long id);
+    Teacher findById(Long id);
 
-    Teacher getEliminatedTeacherById(Long id);
+    Teacher findDeletedById(Long id);
 }

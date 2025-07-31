@@ -6,8 +6,8 @@ import trinity.play2learn.backend.activity.memorama.dtos.MemoramaRequestDto;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 
-public interface IMemoramaRegisterService {
+public interface IMemoramaGenerateService {
 
-    public MemoramaResponseDto cu41GenerarMemorama (MemoramaRequestDto memoramaRequestDto) throws BadRequestException, IOException;
+    public MemoramaResponseDto cu41GenerateMemorama (MemoramaRequestDto memoramaRequestDto) throws BadRequestException, IOException;
     
 } 

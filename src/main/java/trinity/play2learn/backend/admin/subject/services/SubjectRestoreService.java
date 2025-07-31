@@ -7,7 +7,7 @@ import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRestoreService;
 
 @Service
@@ -15,7 +15,7 @@ import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRest
 public class SubjectRestoreService implements ISubjectRestoreService{
     
     private final ISubjectRepository subjectRepository;
-    private final IFindSubjectByIdService findSubjectByIdService;
+    private final ISubjectGetByIdService findSubjectByIdService;
 
     @Override
     public SubjectResponseDto cu34RestoreSubject(Long id) {

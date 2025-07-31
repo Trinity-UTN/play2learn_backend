@@ -8,7 +8,7 @@ import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
-import trinity.play2learn.backend.admin.course.services.commons.CourseExistService;
+import trinity.play2learn.backend.admin.course.services.commons.CourseExistByService;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseRegisterService;
 import trinity.play2learn.backend.admin.year.models.Year;
 import trinity.play2learn.backend.admin.year.services.commons.YearGetByIdService;
@@ -23,7 +23,7 @@ public class CourseRegisterService implements ICourseRegisterService {
 
     private final YearGetByIdService yearGetByIdService;
 
-    private final CourseExistService courseExistService;
+    private final CourseExistByService courseExistService;
 
     private final ICourseRepository courseRepository;
 
@@ -37,7 +37,7 @@ public class CourseRegisterService implements ICourseRegisterService {
      */
     @Override
     public CourseResponseDto cu6RegisterCourse(CourseRequestDto courseRequestDto) {
-        Year year = yearGetByIdService.get(courseRequestDto.getYear_id());
+        Year year = yearGetByIdService.findById(courseRequestDto.getYear_id());
 
         if (courseExistService.validate(courseRequestDto.getName(), year)){
             throw new BadRequestException("A class with the same name already exists in the selected year.");

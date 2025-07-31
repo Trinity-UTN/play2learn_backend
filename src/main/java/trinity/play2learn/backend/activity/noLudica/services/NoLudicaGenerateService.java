@@ -10,20 +10,20 @@ import trinity.play2learn.backend.activity.noLudica.mappers.NoLudicaMapper;
 import trinity.play2learn.backend.activity.noLudica.repositories.INoLudicaRepository;
 import trinity.play2learn.backend.activity.noLudica.services.interfaces.INoLudicaGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 
 @Service
 @AllArgsConstructor
 public class NoLudicaGenerateService implements INoLudicaGenerateService{
 
-    private final IFindSubjectByIdService findSubjectByIdService;
+    private final ISubjectGetByIdService findSubjectByIdService;
 
     private final INoLudicaRepository noLudicaRepository;
 
     @Override
     public NoLudicaResponseDto cu45GenerateNoLudica(NoLudicaRequestDto dto) {
         
-        Subject subject = findSubjectByIdService.findByIdOrThrowException(dto.getSubjectId());
+        Subject subject = findSubjectByIdService.findById(dto.getSubjectId());
 
         return NoLudicaMapper.toDto(noLudicaRepository.save(NoLudicaMapper.toModel(dto, subject)));
     }

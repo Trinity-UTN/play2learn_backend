@@ -4,13 +4,13 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
-import trinity.play2learn.backend.admin.subject.services.interfaces.ITeacherInSubjectsService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectExistsByTeacherService;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
 @Service
 @AllArgsConstructor
-public class TeacherInSubjectsService implements  ITeacherInSubjectsService{
+public class SubjectExistsByService implements  ISubjectExistsByTeacherService{
     
     private final ISubjectRepository subjectRepository;
 

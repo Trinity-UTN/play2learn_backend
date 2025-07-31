@@ -21,7 +21,7 @@ public class StudentRestoreService implements IStudentRestoreService {
     @Override
     public StudentResponseDto cu38RestoreStudent(Long id) {
         
-        Student student = studentGetByIdService.getDeleted(id);
+        Student student = studentGetByIdService.findDeletedById(id);
 
         student.restore();
 

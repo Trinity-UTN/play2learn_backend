@@ -2,9 +2,9 @@ package trinity.play2learn.backend.admin.subject.services.interfaces;
 
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public interface IFindSubjectByIdService {
+public interface ISubjectGetByIdService {
     
-    Subject findByIdOrThrowException(Long id);
+    Subject findById(Long id);
 
     Subject findDeletedById(Long id);
 }
