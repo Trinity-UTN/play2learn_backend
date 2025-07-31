@@ -17,14 +17,14 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IOrdenarSecuenciaActivityGenerateService;
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IValidateEvents;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 
 @Service
 @AllArgsConstructor
 public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenciaActivityGenerateService{
 
 
-    private final IFindSubjectByIdService subjectGetService;
+    private final ISubjectGetByIdService subjectGetService;
 
     private final IValidateEvents validateEvents;
 
@@ -45,16 +45,19 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
          * - Guardar la actividad
          * - Retornar el dto de respuesta con los datos de la actividad creada 
         */
-        Subject subject = subjectGetService.findByIdOrThrowException(dto.getSubjectId());
+        Subject subject = subjectGetService.findById(dto.getSubjectId());
 
         // Validar los eventos
         validateEvents.validate(dto.getEvents());
 
         OrdenarSecuencia ordenarSecuenciaToSave = OrdenarSecuenciaMapper.toModel(dto, subject);
-
-        OrdenarSecuencia ordenarSecuenciaSaved = ordenarSecuenciaRepository.save(ordenarSecuenciaToSave);
     
-        List <Event> events = eventsGenerateService.generateList(dto.getEvents(), ordenarSecuenciaSaved);
+        //Genero los modelos de eventos con la actividad asignada pero no los guardo en la BD
+        List <Event> events = eventsGenerateService.generateList(dto.getEvents(), ordenarSecuenciaToSave);
+
+        //Persisto en cascada la actividad con sus eventos
+        ordenarSecuenciaToSave.setEvents(events);
+        OrdenarSecuencia ordenarSecuenciaSaved = ordenarSecuenciaRepository.save(ordenarSecuenciaToSave); 
 
         return OrdenarSecuenciaMapper.toDto(ordenarSecuenciaSaved);
     }
