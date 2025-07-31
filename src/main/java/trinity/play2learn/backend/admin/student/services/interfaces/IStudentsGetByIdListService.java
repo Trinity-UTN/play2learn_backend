@@ -4,7 +4,7 @@ import java.util.List;
 
 import trinity.play2learn.backend.admin.student.models.Student;
 
-public interface IStudentsGetByListService {
+public interface IStudentsGetByIdListService {
     
     List<Student> getStudentsByIdList(List<Long> studentIds);
 }

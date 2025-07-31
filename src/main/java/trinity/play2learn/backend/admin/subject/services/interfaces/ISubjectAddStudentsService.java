@@ -6,5 +6,5 @@ import trinity.play2learn.backend.admin.subject.dtos.SubjectAddResponseDto;
 
 public interface ISubjectAddStudentsService {
     
-    SubjectAddResponseDto add(Long subjectId, List<Long> studentIds); ;
+    SubjectAddResponseDto cu36AddStudentsToSubject(Long subjectId, List<Long> studentIds); ;
 }

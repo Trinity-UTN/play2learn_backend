@@ -25,7 +25,7 @@ public class StudentRegisterController {
 
     @PostMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<StudentResponseDto>> create(@Valid @RequestBody StudentRequestDto studentDto) {
+    public ResponseEntity<BaseResponse<StudentResponseDto>> register(@Valid @RequestBody StudentRequestDto studentDto) {
         return ResponseFactory.created(studentRegisterService.cu4registerStudent(studentDto), "Created succesfully");
     }
 }

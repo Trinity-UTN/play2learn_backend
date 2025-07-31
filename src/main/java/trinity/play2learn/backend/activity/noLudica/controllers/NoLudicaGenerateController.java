@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @AllArgsConstructor
 @RequestMapping("activities/no-ludica")
-public class NoLudicaRegisterController {
+public class NoLudicaGenerateController {
 
     private final INoLudicaGenerateService noLudicaGenerateService;
 

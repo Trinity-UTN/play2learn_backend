@@ -22,7 +22,7 @@ public class ClasificacionActivityGenerateController {
     private final IClasificacionGenerateService clasificacionGenerateService;
 
     @PostMapping
-    public ResponseEntity<BaseResponse<ClasificacionActivityResponseDto>> generateClasificacionActivity(@Valid @RequestBody ClasificacionActivityRequestDto activityRequestDto) {
+    public ResponseEntity<BaseResponse<ClasificacionActivityResponseDto>> generateClasificacion(@Valid @RequestBody ClasificacionActivityRequestDto activityRequestDto) {
 
         return ResponseFactory.created(clasificacionGenerateService.cu43GenerateClasificacionActivity(activityRequestDto), "Created successfully");
     }

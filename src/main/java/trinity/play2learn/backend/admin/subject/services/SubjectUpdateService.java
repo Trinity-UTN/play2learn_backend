@@ -14,34 +14,34 @@ import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectUpdateService;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IValidateSubjectService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectExistsByNameAndCourseService;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
-import trinity.play2learn.backend.admin.teacher.services.interfaces.IGetTeacherByIdService;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByIdService;
 
 @Service
 @AllArgsConstructor
 public class SubjectUpdateService implements ISubjectUpdateService {
 
     private final ICourseGetByIdService courseGetByIdService;
-    private final IGetTeacherByIdService getTeacherByIdService;
-    private final IFindSubjectByIdService findSubjectByIdService;
+    private final ITeacherGetByIdService getTeacherByIdService;
+    private final ISubjectGetByIdService findSubjectByIdService;
     private final ISubjectRepository subjectRepository;
-    private final IValidateSubjectService validateSubjectService;
+    private final ISubjectExistsByNameAndCourseService validateSubjectService;
 
     @Override
     public SubjectResponseDto cu29UpdateSubject(Long id , SubjectUpdateRequestDto subjectDto) {
         
-        Subject subjectInDb = findSubjectByIdService.findByIdOrThrowException(id); //Lanza un NotFoundException si no se encuentra una materia con el ID proporcionado
+        Subject subjectInDb = findSubjectByIdService.findById(id); //Lanza un NotFoundException si no se encuentra una materia con el ID proporcionado
 
-        Course course = courseGetByIdService.get(subjectDto.getCourseId()); //De no encontrar un curso con el ID proporcionado, lanza una excepción NotFoundException
+        Course course = courseGetByIdService.findById(subjectDto.getCourseId()); //De no encontrar un curso con el ID proporcionado, lanza una excepción NotFoundException
         
-        validateSubjectService.subjectExistByNameAndCourseExceptId(subjectDto.getName(), course, id); //Lanza un conflict exception si la materia ya existe en el curso
+        validateSubjectService.existByNameAndCourseAndIdNot(subjectDto.getName(), course, id); //Lanza un conflict exception si la materia ya existe en el curso
 
         Teacher teacher = null;
         if (subjectDto.getTeacherId() != null) {
-            teacher = getTeacherByIdService.getTeacherById(subjectDto.getTeacherId()); //De no encontrar un profesor con el ID proporcionado, lanza una excepción NotFoundException
+            teacher = getTeacherByIdService.findById(subjectDto.getTeacherId()); //De no encontrar un profesor con el ID proporcionado, lanza una excepción NotFoundException
         }
         //Si no se proporciona un ID de profesor, se establece en null
 

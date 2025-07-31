@@ -7,7 +7,7 @@ import trinity.play2learn.backend.admin.teacher.dtos.TeacherResponseDto;
 import trinity.play2learn.backend.admin.teacher.mapper.TeacherMapper;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 import trinity.play2learn.backend.admin.teacher.repositories.ITeacherRepository;
-import trinity.play2learn.backend.admin.teacher.services.interfaces.IGetTeacherByIdService;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByIdService;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherRestoreService;
 
 @Service
@@ -15,12 +15,12 @@ import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherRest
 public class TeacherRestoreService implements ITeacherRestoreService{
     
     private final ITeacherRepository teacherRepository;
-    private final IGetTeacherByIdService getTeacherByIdService;
+    private final ITeacherGetByIdService getTeacherByIdService;
 
     @Override
     public TeacherResponseDto cu35RestoreTeacher(Long id) {
 
-        Teacher teacher = getTeacherByIdService.getEliminatedTeacherById(id);
+        Teacher teacher = getTeacherByIdService.findDeletedById(id);
 
         teacher.restore();
 

@@ -8,7 +8,7 @@ import trinity.play2learn.backend.admin.course.dtos.CourseUpdateDto;
 import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
-import trinity.play2learn.backend.admin.course.services.interfaces.ICourseExistService;
+import trinity.play2learn.backend.admin.course.services.interfaces.ICourseExistByService;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetByIdService;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseUpdateService;
 
@@ -17,13 +17,13 @@ import trinity.play2learn.backend.admin.course.services.interfaces.ICourseUpdate
 public class CourseUpdateService implements ICourseUpdateService {
     
     private final ICourseRepository courseRepository;
-    private final ICourseExistService courseExistService;
+    private final ICourseExistByService courseExistService;
     private final ICourseGetByIdService courseGetByIdService;
 
     @Override
     public CourseResponseDto cu14UpdateCourse(Long id , CourseUpdateDto courseDto) {
 
-        Course course = courseGetByIdService.get(id); //Lanza un 404 si no se encuentra un curso con el ID proporcionado
+        Course course = courseGetByIdService.findById(id); //Lanza un 404 si no se encuentra un curso con el ID proporcionado
 
         courseExistService.validateExceptId(id, courseDto.getName(), course.getYear()); //Lanza un 409 si ya existe un curso con el mismo nombre en el mismo año
 

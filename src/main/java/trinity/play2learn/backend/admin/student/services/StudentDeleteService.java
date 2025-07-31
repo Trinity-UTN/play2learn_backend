@@ -19,7 +19,7 @@ public class StudentDeleteService implements IStudentDeleteService {
     @Override
     public void cu19DeleteStudent(Long id) {
         
-        Student student = studentGetByIdService.get(id); 
+        Student student = studentGetByIdService.findById(id); 
 
         student.delete();
 

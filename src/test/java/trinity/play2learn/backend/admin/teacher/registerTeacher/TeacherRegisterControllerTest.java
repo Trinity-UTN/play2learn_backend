@@ -61,7 +61,7 @@ class TeacherRegisterControllerTest {
                             .build())
                     .build();
 
-            Mockito.when(teacherRegisterService.register(Mockito.any()))
+            Mockito.when(teacherRegisterService.cu5RegisterTeacher(Mockito.any()))
                     .thenReturn(responseDto);
 
             // Act + Assert
@@ -309,7 +309,7 @@ class TeacherRegisterControllerTest {
                     .user(UserResponseDto.builder().id(2L).email("laura.ramirez@example.com").build())
                     .build();
 
-            Mockito.when(teacherRegisterService.register(Mockito.any())).thenReturn(responseDto);
+            Mockito.when(teacherRegisterService.cu5RegisterTeacher(Mockito.any())).thenReturn(responseDto);
 
             // Act + Assert
             mockMvc.perform(post("/admin/teachers")
@@ -416,7 +416,7 @@ class TeacherRegisterControllerTest {
                     .user(UserResponseDto.builder().id(2L).email("mario.fernandez@example.com").build())
                     .build();
 
-            Mockito.when(teacherRegisterService.register(Mockito.any())).thenReturn(responseDto);
+            Mockito.when(teacherRegisterService.cu5RegisterTeacher(Mockito.any())).thenReturn(responseDto);
 
             // Act + Assert
             mockMvc.perform(post("/admin/teachers")

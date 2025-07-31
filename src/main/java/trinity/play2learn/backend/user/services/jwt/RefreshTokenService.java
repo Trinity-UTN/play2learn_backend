@@ -9,14 +9,14 @@ import trinity.play2learn.backend.user.dtos.token.RefreshTokenDto;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService;
 import trinity.play2learn.backend.user.services.jwt.interfaces.IRefreshTokenService;
-import trinity.play2learn.backend.user.services.user.interfaces.IUserFindService;
+import trinity.play2learn.backend.user.services.user.interfaces.IUserGetByEmailService;
 
 @Service
 @AllArgsConstructor
 public class RefreshTokenService implements IRefreshTokenService {
 
     private final IJwtService jwtService;
-    private final IUserFindService userFindService;
+    private final IUserGetByEmailService userFindService;
 
     @Override
     public AccessTokenDto refreshAccessToken(RefreshTokenDto refreshTokenDto) {

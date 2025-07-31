@@ -51,7 +51,7 @@ public class EventsGenerateService implements IEventsGenerateService {
         }
         Event event = EventMapper.toModel(dto, ordenarSecuencia, (imagenUpload != null) ? imagenUpload.getImageUrl() : null);
 
-        return eventRepository.save(event);
+        return event; //No guardo el evento en la BD sino que lo retorno con la actividad asignada
     }
    
 }

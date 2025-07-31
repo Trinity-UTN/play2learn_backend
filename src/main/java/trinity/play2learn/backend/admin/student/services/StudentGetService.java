@@ -16,7 +16,7 @@ public class StudentGetService implements IStudentGetService {
 
     @Override
     public StudentResponseDto cu22GetStudent(Long id) {
-        return StudentMapper.toDto(studentGetByIdService.get(id));
+        return StudentMapper.toDto(studentGetByIdService.findById(id));
     }
     
 }

@@ -12,14 +12,14 @@ import trinity.play2learn.backend.activity.clasificacion.services.interfaces.ICl
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionValidateCategoriesNamesService;
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionValidateConceptsNamesService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 
 @Service
 @AllArgsConstructor
 public class ClasificacionActivityGenerateService implements IClasificacionGenerateService {
     
     private final IClasificacionActivityRepository clasificacionRepository;
-    private final IFindSubjectByIdService subjectGetService;
+    private final ISubjectGetByIdService subjectGetService;
     private final IClasificacionValidateCategoriesNamesService validateCategoriesNamesService;
     private final IClasificacionValidateConceptsNamesService validateConceptsNamesService;
 
@@ -27,9 +27,8 @@ public class ClasificacionActivityGenerateService implements IClasificacionGener
     @Transactional
     public ClasificacionActivityResponseDto cu43GenerateClasificacionActivity(ClasificacionActivityRequestDto activityRequestDto) {
         
-        System.out.println(activityRequestDto.getSubjectId());
         //Lanza un 404 si no encuentra la materia con el id proporcionado
-        Subject subject = subjectGetService.findByIdOrThrowException(activityRequestDto.getSubjectId());
+        Subject subject = subjectGetService.findById(activityRequestDto.getSubjectId());
         
         //Lanza un 400 si las categorias tienen nombre repetidos
         validateCategoriesNamesService.validateCategoriesNames(activityRequestDto);

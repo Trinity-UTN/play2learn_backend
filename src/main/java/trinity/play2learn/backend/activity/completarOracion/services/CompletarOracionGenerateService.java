@@ -13,14 +13,14 @@ import trinity.play2learn.backend.activity.completarOracion.services.interfaces.
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordMissingService;
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordsOrderService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 
 @Service
 @AllArgsConstructor
 public class CompletarOracionGenerateService implements ICompletarOracionGenerateService {
     
     private final ICompletarOracionRepository completarOracionRepository;
-    private final IFindSubjectByIdService getSubjectByIdService;
+    private final ISubjectGetByIdService getSubjectByIdService;
     private final ICompletarOracionValidateWordsOrderService completarOracionValidateWordsOrderService;
     private final ICompletarOracionValidateWordMissingService completarOracionValidateWordMissingService;
 
@@ -28,7 +28,7 @@ public class CompletarOracionGenerateService implements ICompletarOracionGenerat
     @Override
     public CompletarOracionActivityResponseDto cu42generateCompletarOracionActivity(CompletarOracionActivityRequestDto completarOracionActivityRequestDto) {
 
-        Subject subject = getSubjectByIdService.findByIdOrThrowException(completarOracionActivityRequestDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
+        Subject subject = getSubjectByIdService.findById(completarOracionActivityRequestDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
 
         //Si alguna validacion falla lanzo un 400
         completarOracionActivityRequestDto.getSentences().forEach(sentence -> {

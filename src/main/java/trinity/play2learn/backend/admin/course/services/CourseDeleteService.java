@@ -20,9 +20,9 @@ public class CourseDeleteService implements ICourseDeleteService{
     private final ISubjectsExistsByCourseService subjectsExistsByCourseService;
 
     @Override
-    public void deleteCourse(Long id) {
+    public void cu15DeleteCourse(Long id) {
 
-        Course course = courseGetByIdService.get(id);
+        Course course = courseGetByIdService.findById(id);
 
         studentsExistByCourseService.validate(course.getId()); //Lanza un 409 si hay estudiantes asociados al curso
 

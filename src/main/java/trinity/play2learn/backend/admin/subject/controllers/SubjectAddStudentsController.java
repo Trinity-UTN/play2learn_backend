@@ -24,6 +24,6 @@ public class SubjectAddStudentsController {
 
     @PatchMapping("/add-students/{subjectId}")
     public ResponseEntity<BaseResponse<SubjectAddResponseDto>> addStudents(@PathVariable Long subjectId, @RequestBody List<Long> studentIds) {
-        return ResponseFactory.ok(subjectAddStudentsService.add(subjectId, studentIds), "Students added successfully");
+        return ResponseFactory.ok(subjectAddStudentsService.cu36AddStudentsToSubject(subjectId, studentIds), "Students added successfully");
     }
 }

@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
-import trinity.play2learn.backend.admin.course.services.interfaces.ICourseExistService;
+import trinity.play2learn.backend.admin.course.services.interfaces.ICourseExistByService;
 import trinity.play2learn.backend.admin.year.models.Year;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
@@ -14,7 +14,7 @@ import trinity.play2learn.backend.configs.exceptions.ConflictException;
  */
 @Service
 @AllArgsConstructor
-public class CourseExistService implements ICourseExistService {
+public class CourseExistByService implements ICourseExistByService {
 
     private final ICourseRepository courseRepository;
     /**

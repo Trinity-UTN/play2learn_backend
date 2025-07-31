@@ -30,7 +30,7 @@ public class YearDeleteService implements IYearDeleteService{
             throw new BadRequestException("Invalid year ID format: " + id);
         }
         
-        Year year = yearGetByIdService.get(yearId);
+        Year year = yearGetByIdService.findById(yearId);
 
         if (year.getDeletedAt() != null) {
             throw new BadRequestException("Year with ID " + id + " is already deleted.");

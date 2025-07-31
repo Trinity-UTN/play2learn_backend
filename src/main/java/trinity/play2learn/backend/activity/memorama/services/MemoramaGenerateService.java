@@ -13,17 +13,17 @@ import trinity.play2learn.backend.activity.memorama.mappers.MemoramaMapper;
 import trinity.play2learn.backend.activity.memorama.models.Memorama;
 import trinity.play2learn.backend.activity.memorama.models.CouplesMemorama;
 import trinity.play2learn.backend.activity.memorama.repositories.IMemoramaRepository;
-import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaRegisterService;
+import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
 import trinity.play2learn.backend.activity.memorama.services.interfaces.ICouplesMemoramaGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IFindSubjectByIdService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 
 @Service
 @AllArgsConstructor
-public class MemoramaRegisterService implements IMemoramaRegisterService{
+public class MemoramaGenerateService implements IMemoramaGenerateService{
 
-    private final IFindSubjectByIdService findSubjectByIdService;
+    private final ISubjectGetByIdService findSubjectByIdService;
 
     private final IMemoramaRepository memoramaRepository;
 
@@ -31,7 +31,7 @@ public class MemoramaRegisterService implements IMemoramaRegisterService{
 
     @Override
     @Transactional
-    public MemoramaResponseDto cu41GenerarMemorama(MemoramaRequestDto memoramaRequestDto) throws BadRequestException, IOException {
+    public MemoramaResponseDto cu41GenerateMemorama(MemoramaRequestDto memoramaRequestDto) throws BadRequestException, IOException {
         /**
          * Que tengo que hacer:
          * - Buscar el subject por id 
@@ -42,7 +42,7 @@ public class MemoramaRegisterService implements IMemoramaRegisterService{
          * - Mapear el memorama a un dto de respuesta
          * - Retornar 
          */
-        Subject subject = findSubjectByIdService.findByIdOrThrowException(memoramaRequestDto.getSubjectId());
+        Subject subject = findSubjectByIdService.findById(memoramaRequestDto.getSubjectId());
         
         Memorama memoramaToSave = MemoramaMapper.toModel(memoramaRequestDto, subject);
 

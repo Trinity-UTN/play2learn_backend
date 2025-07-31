@@ -17,7 +17,7 @@ import trinity.play2learn.backend.user.services.jwt.interfaces.IRefreshTokenServ
 @RestController
 @RequestMapping("/refresh")
 @AllArgsConstructor
-public class TokenRefreshController {
+public class UserRefreshTokenController {
     
     private final IRefreshTokenService refreshTokenService;
 

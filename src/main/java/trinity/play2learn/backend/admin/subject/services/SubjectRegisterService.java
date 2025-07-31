@@ -9,37 +9,37 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetByIdService;
 import trinity.play2learn.backend.admin.student.models.Student;
-import trinity.play2learn.backend.admin.student.services.interfaces.IStudentsGetByCourseService;
+import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByCourseService;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectRequestDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRegisterService;
-import trinity.play2learn.backend.admin.subject.services.interfaces.IValidateSubjectService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectExistsByNameAndCourseService;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
-import trinity.play2learn.backend.admin.teacher.services.interfaces.IGetTeacherByIdService;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByIdService;
 
 @Service
 @AllArgsConstructor
 public class SubjectRegisterService implements ISubjectRegisterService {
 
     private final ICourseGetByIdService courseGetByIdService;
-    private final IGetTeacherByIdService getTeacherByIdService;
-    private final IStudentsGetByCourseService courseGetStudentsService;
+    private final ITeacherGetByIdService getTeacherByIdService;
+    private final IStudentGetByCourseService courseGetStudentsService;
     private final ISubjectRepository subjectRepository;
-    private final IValidateSubjectService validateSubjectService;
+    private final ISubjectExistsByNameAndCourseService validateSubjectService;
 
     @Override
     public SubjectResponseDto cu28RegisterSubject(SubjectRequestDto subjectDto) {
 
-        Course course = courseGetByIdService.get(subjectDto.getCourseId()); //De no encontrar un curso con el ID proporcionado, lanza una excepción NotFoundException
+        Course course = courseGetByIdService.findById(subjectDto.getCourseId()); //De no encontrar un curso con el ID proporcionado, lanza una excepción NotFoundException
         
-        validateSubjectService.subjectExistByNameAndCourse(subjectDto.getName(), course); //Lanza un conflict exception si la materia ya existe en el curso
+        validateSubjectService.existByNameAndCourse(subjectDto.getName(), course); //Lanza un conflict exception si la materia ya existe en el curso
 
         Teacher teacher = null;
         if (subjectDto.getTeacherId() != null) {
-            teacher = getTeacherByIdService.getTeacherById(subjectDto.getTeacherId()); //De no encontrar un profesor con el ID proporcionado, lanza una excepción NotFoundException
+            teacher = getTeacherByIdService.findById(subjectDto.getTeacherId()); //De no encontrar un profesor con el ID proporcionado, lanza una excepción NotFoundException
         }
         //Si no se proporciona un ID de profesor, se establece en null
 

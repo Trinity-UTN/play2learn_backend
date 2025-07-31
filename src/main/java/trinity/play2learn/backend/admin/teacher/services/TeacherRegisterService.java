@@ -23,7 +23,7 @@ public class TeacherRegisterService implements ITeacherRegisterService {
     private final ITeacherExistsByDniService teacherExistsByDniService;
 
     @Override
-    public TeacherResponseDto register(TeacherRequestDto teacherDto) {
+    public TeacherResponseDto cu5RegisterTeacher(TeacherRequestDto teacherDto) {
         
         //Lanza un Conflict si ya existe un docente con el mismo dni
         teacherExistsByDniService.validate(teacherDto.getDni());

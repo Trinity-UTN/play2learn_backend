@@ -27,7 +27,7 @@ public class CompletarOracionGenerateController {
 
     @PostMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN , Role.ROLE_TEACHER})
-    public ResponseEntity<BaseResponse<CompletarOracionActivityResponseDto>> generate(@Valid @RequestBody CompletarOracionActivityRequestDto activityRequestDto) {
+    public ResponseEntity<BaseResponse<CompletarOracionActivityResponseDto>> generateCompletarOracion(@Valid @RequestBody CompletarOracionActivityRequestDto activityRequestDto) {
         
         return ResponseFactory.created(completarOracionGenerateService.cu42generateCompletarOracionActivity(activityRequestDto), "Created successfully");
     }

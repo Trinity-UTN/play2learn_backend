@@ -27,7 +27,7 @@ public class TeacherRegisterController {
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<TeacherResponseDto>> register(@Valid @RequestBody TeacherRequestDto teacherDto) {
 
-        return ResponseFactory.created(teacherRegisterService.register(teacherDto),"Created succesfully");
+        return ResponseFactory.created(teacherRegisterService.cu5RegisterTeacher(teacherDto),"Created succesfully");
     }
     
 }

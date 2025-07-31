@@ -24,7 +24,7 @@ public class SubjectRegisterController {
 
     @PostMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<SubjectResponseDto>> create(@Valid @RequestBody SubjectRequestDto subjectDto) {
+    public ResponseEntity<BaseResponse<SubjectResponseDto>> register(@Valid @RequestBody SubjectRequestDto subjectDto) {
         return ResponseFactory.created(subjectRegisterService.cu28RegisterSubject(subjectDto), "Created succesfully");
     }
 
