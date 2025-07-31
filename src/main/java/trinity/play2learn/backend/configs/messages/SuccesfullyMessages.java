@@ -29,5 +29,13 @@ public class SuccesfullyMessages {
     public static final String okSuccessfully() {
         return "OK";
     }
+
+    public static final String restoredSuccessfully(String resurce) {
+        return resurce + " restaurado correctamente";
+    }
+
+    public static final String restoredSuccessfully() {
+        return "Restaurado correctamente";
+    }
     
 }

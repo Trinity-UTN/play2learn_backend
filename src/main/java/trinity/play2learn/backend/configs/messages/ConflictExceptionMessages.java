@@ -17,4 +17,8 @@ public class ConflictExceptionMessages {
     public static final String resourceAlreadyExistsByName(String resource, String name) {
         return resource + " con el nombre " + name + " ya existe.";
     }
+
+    public static final String resourceAlreadyExistsByDni (String resource, String dni) {
+        return resource + " con el DNI " + dni + " ya existe.";
+    }
 }

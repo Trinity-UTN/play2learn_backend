@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherDeleteService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -25,6 +26,6 @@ public class TeacherDeleteController {
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id) {
 
         teacherDeleteService.cu24DeleteTeacher(id);
-        return ResponseFactory.noContent("Deleted successfully");
+        return ResponseFactory.noContent(SuccesfullyMessages.deletedSuccessfully("Docente"));
     }
 }
