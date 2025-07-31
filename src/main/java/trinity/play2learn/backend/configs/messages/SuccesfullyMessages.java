@@ -37,5 +37,8 @@ public class SuccesfullyMessages {
     public static final String restoredSuccessfully() {
         return "Restaurado correctamente";
     }
-    
+
+    public static final String SUBJECT_ADD_STUDENTS_SUCCESSFULLY = "Estudiantes agregado con exito";
+    public static final String SUBJECT_REMOVE_STUDENTS_SUCCESSFULLY = "Estudiantes removidos con exito";
+
 }

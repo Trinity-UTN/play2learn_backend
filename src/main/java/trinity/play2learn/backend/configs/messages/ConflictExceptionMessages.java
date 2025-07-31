@@ -21,4 +21,8 @@ public class ConflictExceptionMessages {
     public static final String resourceAlreadyExistsByDni (String resource, String dni) {
         return resource + " con el DNI " + dni + " ya existe.";
     }
+
+    public static final String resourceAlreadyExistsByAtribute (String resource, String attribute, String value) {
+        return resource + " con el atributo " + attribute + " con el valor " + value + " ya existe.";
+    }
 }

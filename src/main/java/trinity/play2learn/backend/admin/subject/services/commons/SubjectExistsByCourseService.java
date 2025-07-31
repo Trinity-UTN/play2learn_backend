@@ -7,6 +7,7 @@ import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectsExistsByCourseService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 @Service
 @AllArgsConstructor
@@ -17,7 +18,13 @@ public class SubjectExistsByCourseService implements ISubjectsExistsByCourseServ
     @Override
     public void validate(Course course) {
         if (subjectRepository.existsByCourse(course)) {
-            throw new ConflictException("There are subjects associated with this class.");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExistsByAtribute(
+                    "Materia", 
+                    "curso", 
+                    course.getName()
+                )
+            );
         }
 
     }

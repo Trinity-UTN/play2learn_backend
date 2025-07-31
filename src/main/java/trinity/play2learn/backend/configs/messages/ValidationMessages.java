@@ -16,4 +16,8 @@ public class ValidationMessages {
 
     public static final String NOT_EMPTY_DNI = "El DNI no puede estar vacio.";
     public static final String PATTERN_DNI = "El DNI debe contener 8 numeros.";
+
+    public static final String NOT_NULL_COURSE = "El curso no puede estar vacio.";
+
+    public static final String NOT_NULL_OPTIONAL = "Opcional es un campo requerido.";
 }
