@@ -20,4 +20,6 @@ public class ValidationMessages {
     public static final String NOT_NULL_COURSE = "El curso no puede estar vacio.";
 
     public static final String NOT_NULL_OPTIONAL = "Opcional es un campo requerido.";
+
+    public static final String NOT_NULL_YEAR = "El año no puede estar vacio.";
 }

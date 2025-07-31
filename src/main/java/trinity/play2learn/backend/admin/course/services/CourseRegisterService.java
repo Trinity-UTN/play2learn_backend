@@ -1,7 +1,6 @@
 package trinity.play2learn.backend.admin.course.services;
 
 import org.springframework.stereotype.Service;
-
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.dtos.CourseRequestDto;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
@@ -13,6 +12,8 @@ import trinity.play2learn.backend.admin.course.services.interfaces.ICourseRegist
 import trinity.play2learn.backend.admin.year.models.Year;
 import trinity.play2learn.backend.admin.year.services.commons.YearGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 /**
  * Servicio para registrar una clase.
@@ -40,7 +41,11 @@ public class CourseRegisterService implements ICourseRegisterService {
         Year year = yearGetByIdService.findById(courseRequestDto.getYear_id());
 
         if (courseExistService.validate(courseRequestDto.getName(), year)){
-            throw new BadRequestException("A class with the same name already exists in the selected year.");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExists(
+                    "Curso"
+                )
+            );
         }
 
         Course courseToSave = CourseMapper.toModel(courseRequestDto, year);

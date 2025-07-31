@@ -7,6 +7,7 @@ import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseExistByService;
 import trinity.play2learn.backend.admin.year.models.Year;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 
 /**
@@ -54,7 +55,11 @@ public class CourseExistByService implements ICourseExistByService {
     public void validateExceptId(Long id, String name, Year year) {
         if (courseRepository.existsByNameAndYearAndIdNot(name, year, id)) {
             
-            throw new ConflictException("A class with the same name already exists in the selected year.");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExists(
+                    "Curso"
+                )
+            );
             
         }
     }

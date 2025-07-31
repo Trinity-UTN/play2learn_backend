@@ -13,6 +13,7 @@ import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.course.dtos.CourseUpdateDto;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseUpdateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -27,6 +28,9 @@ public class CourseUpdateController {
     @PutMapping("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<CourseResponseDto>> update(@PathVariable Long id, @Valid @RequestBody CourseUpdateDto courseDto) {
-        return ResponseFactory.ok(courseUpdateService.cu14UpdateCourse(id, courseDto), "Updated succesfully");
+        return ResponseFactory.ok(
+            courseUpdateService.cu14UpdateCourse(id, courseDto),
+            SuccesfullyMessages.updatedSuccessfully("Curso")
+        );
     }
 }

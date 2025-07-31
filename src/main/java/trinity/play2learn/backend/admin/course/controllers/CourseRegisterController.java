@@ -12,6 +12,7 @@ import trinity.play2learn.backend.admin.course.dtos.CourseRequestDto;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.course.services.CourseRegisterService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -32,6 +33,9 @@ public class CourseRegisterController {
     @PostMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<CourseResponseDto>> register(@Valid @RequestBody CourseRequestDto courseDto) {
-        return ResponseFactory.created(courseRegisterService.cu6RegisterCourse(courseDto), "Created succesfully");
+        return ResponseFactory.created(
+            courseRegisterService.cu6RegisterCourse(courseDto),
+            SuccesfullyMessages.createdSuccessfully("Curso")
+        );
     }
 }

@@ -10,6 +10,10 @@ public class ConflictExceptionMessages {
         return "El recurso " + resource + " con id " + id + " no puede ser eliminado porque tiene asociaciones con: " + associations + ".";
     }
 
+    public static final String resourceAlreadyExists(String resource) {
+        return resource + " ya existe.";
+    }
+
     public static final String resourceAlreadyExists(String resource, String id) {
         return resource + " con id " + id + " ya existe.";
     }

@@ -7,6 +7,7 @@ import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.NotFoundException;
+import trinity.play2learn.backend.configs.messages.NotFoundExceptionMesagges;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +25,12 @@ public class CourseGetByIdService implements ICourseGetByIdService {
     @Override
     public Course findById(Long id) {
         return courseRepository.findByIdAndDeletedAtIsNull(id)
-                .orElseThrow(() -> new NotFoundException("Course not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException(
+                    NotFoundExceptionMesagges.resourceNotFound(
+                        "Curso", 
+                        String.valueOf(id)
+                    )
+                ));
     }
     
 }

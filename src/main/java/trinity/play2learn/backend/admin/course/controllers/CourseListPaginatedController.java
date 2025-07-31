@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseListPaginatedService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
@@ -44,7 +45,9 @@ public class CourseListPaginatedController {
             search, 
             filters, 
             filtersValues
-            ), "Ok");
+            ), 
+            SuccesfullyMessages.okSuccessfully()
+        );
     }
     
 }
