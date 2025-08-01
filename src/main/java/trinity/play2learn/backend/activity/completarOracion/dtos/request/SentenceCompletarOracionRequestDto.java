@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @Builder
@@ -16,6 +17,6 @@ import lombok.NoArgsConstructor;
 public class SentenceCompletarOracionRequestDto {
 
     @Valid
-    @Size(min = 3 , max = 300, message = "The sentence must have between 3 and 300 words.")
+    @Size(min = 3 , max = 300, message = ValidationMessages.LENGTH_SENTENCE)
     private List<WordCompletarOracionRequestDto> words; 
 }

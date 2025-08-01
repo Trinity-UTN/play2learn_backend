@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @AllArgsConstructor
@@ -13,8 +14,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class OptionRequestDto {
     
-    @NotBlank
-    @Size(max = 100, message = "Maximum length for option is 100 characters.")
+    @NotBlank (message = ValidationMessages.NOT_EMPTY_OPTION)
+    @Size(max = 100, message = ValidationMessages.MAX_LENGTH_OPTION)
     private String option;
 
     private Boolean isCorrect;

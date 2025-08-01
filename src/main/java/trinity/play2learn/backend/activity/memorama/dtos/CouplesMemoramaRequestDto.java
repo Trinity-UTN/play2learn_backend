@@ -9,17 +9,18 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CouplesMemoramaRequestDto {
-    @NotEmpty(message = "Concepto is required.")
-    @Size(max = 50, message = "Maximum length for concepto is 50 characters.")
-    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "Concepto can only contain letters, spaces, and the characters áéíóúÁÉÍÓÚñÑ.")
+    @NotEmpty(message = ValidationMessages.NOT_NULL_CONCEPT)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_CONCEPT)
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = ValidationMessages.PATTERN_CONCEPT)
     private String concept;
 
-    @NotNull(message = "Imagen is required.")
+    @NotNull(message = ValidationMessages.NOT_NULL_IMAGE)
     private MultipartFile image;
 }

@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.clasificacion.dtos.request.ClasificacionActivityRequestDto;
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionValidateConceptsNamesService;
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IValidateStringListService;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Service
 @AllArgsConstructor
@@ -25,6 +26,6 @@ public class ClasificacionValidateConceptsNamesService implements IClasificacion
         .toList();
 
         //Lanza un 400 si hay conceptos repetidos
-        validateStringListService.validateDuplicateStringsInList(conceptNames, "The concepts names must be unique.");
+        validateStringListService.validateDuplicateStringsInList(conceptNames, ValidationMessages.UNIQUE_CONCEPTS_NAME);
     }
 }

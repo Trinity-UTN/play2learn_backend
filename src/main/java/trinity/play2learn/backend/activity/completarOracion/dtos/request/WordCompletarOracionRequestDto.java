@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @AllArgsConstructor
@@ -14,14 +15,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class WordCompletarOracionRequestDto {
     
-    @NotBlank
-    @Size(min = 1, max = 30, message = "The word must be between 1 and 30 characters.")
+    @NotBlank (message = ValidationMessages.NOT_EMPTY_WORD)
+    @Size(min = 1, max = 30, message = ValidationMessages.LENGTH_WORD)
     private String word;
 
-    @NotNull
+    @NotNull (message = ValidationMessages.NOT_NULL_WORD_ORDER)
     private Integer wordOrder; 
     //Este atributo permite al front enviar las palabras desordenadas. No se guardara en el back, sino que se ordenara el array de words y se guardara ordenado.
     
-    @NotNull
+    @NotNull (message = ValidationMessages.NOT_NULL_IS_MISSING)
     private Boolean isMissing;
 }

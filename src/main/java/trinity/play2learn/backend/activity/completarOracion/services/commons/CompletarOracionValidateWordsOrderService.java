@@ -11,6 +11,7 @@ import trinity.play2learn.backend.activity.completarOracion.dtos.request.Sentenc
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.WordCompletarOracionRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordsOrderService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Service
 @AllArgsConstructor
@@ -28,12 +29,12 @@ public class CompletarOracionValidateWordsOrderService implements ICompletarOrac
 
         //No se pueden repetir los orders
         if (uniqueOrders.size() != orders.size()) {
-            throw new BadRequestException("The words in sentence must have unique orders.");
+            throw new BadRequestException(ValidationMessages.WORD_ORDER);
         }
 
         //Si algun orden es mayor o igual a la cantidad de palabras o es menor a 0, esta fuera de rango
         if (orders.stream().anyMatch(o -> o >= wordsSize || o < 0)) { 
-            throw new BadRequestException("The words in sentence must have orders between 0 and numbers of words.");
+            throw new BadRequestException(ValidationMessages.SENTENCE_ORDER);
         }
     }
     

@@ -19,6 +19,7 @@ import trinity.play2learn.backend.activity.memorama.mappers.MemoramaRequestMappe
 import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -55,7 +56,7 @@ public class MemoramaRegisterController {
             concepts,
             images
         )),
-            "Created successfully"
+            SuccesfullyMessages.createdSuccessfully("Actividad de Memorama")
         );
     }
 }
