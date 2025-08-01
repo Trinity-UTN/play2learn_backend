@@ -12,7 +12,6 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request.EventRe
 import trinity.play2learn.backend.activity.ordenarSecuencia.mappers.EventMapper;
 import trinity.play2learn.backend.activity.ordenarSecuencia.models.Event;
 import trinity.play2learn.backend.activity.ordenarSecuencia.models.OrdenarSecuencia;
-import trinity.play2learn.backend.activity.ordenarSecuencia.repositories.IEventRepository;
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IEventsGenerateService;
 import trinity.play2learn.backend.configs.imgBB.dtos.ImgBBUploadResultDTO;
 import trinity.play2learn.backend.configs.imgBB.services.ImageUploadService;
@@ -22,10 +21,6 @@ import trinity.play2learn.backend.configs.imgBB.services.ImageUploadService;
 public class EventsGenerateService implements IEventsGenerateService {
 
     private final ImageUploadService imageUploadService;
-
-    private final IEventRepository eventRepository;
-
-    
     
     @Override
     @Transactional
