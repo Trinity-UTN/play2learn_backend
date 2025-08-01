@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 import trinity.play2learn.backend.admin.year.services.YearListService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -35,6 +36,6 @@ public class YearListController {
     @GetMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<List<YearResponseDto>>> list() {
-        return ResponseFactory.ok(yearListService.cu8ListYears(), "Ok");
+        return ResponseFactory.ok(yearListService.cu8ListYears(), SuccesfullyMessages.okSuccessfully());
     }
 }

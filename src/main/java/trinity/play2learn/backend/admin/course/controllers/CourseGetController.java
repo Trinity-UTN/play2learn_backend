@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseGetService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -24,7 +25,10 @@ public class CourseGetController {
     @GetMapping ("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<CourseResponseDto>> get(@PathVariable Long id){
-        return ResponseFactory.ok(courseGetService.cu17GetCourse(id), "Ok");
+        return ResponseFactory.ok(
+            courseGetService.cu17GetCourse(id), 
+            SuccesfullyMessages.okSuccessfully()
+        );
     }
 
 }

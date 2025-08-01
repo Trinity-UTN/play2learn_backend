@@ -7,6 +7,7 @@ import trinity.play2learn.backend.admin.year.models.Year;
 import trinity.play2learn.backend.admin.year.repositories.IYearRepository;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.NotFoundException;
+import trinity.play2learn.backend.configs.messages.NotFoundExceptionMesagges;
 
 @Service
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class YearGetByIdService implements IYearGetByIdService{
     @Override
     public Year findById(Long id) {
         return yearRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Year not found with id: " + id));
+                .orElseThrow(() -> new NotFoundException(NotFoundExceptionMesagges.resourceNotFound("Año", String.valueOf(id))));
     }
     
 }

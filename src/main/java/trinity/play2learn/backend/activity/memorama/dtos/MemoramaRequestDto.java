@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.ActivityRequestDto;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @EqualsAndHashCode(callSuper = true) //Esta notacion es necesaria para que el equals y el hashcode hereden de la clase padre (Sino @Data se pone en amarillo)
@@ -18,8 +19,8 @@ import trinity.play2learn.backend.activity.activity.dtos.ActivityRequestDto;
 public class MemoramaRequestDto extends ActivityRequestDto {
 
     @Valid
-    @NotEmpty(message = "Debe haber al menos una pareja")
-    @Size(min = 4, max = 8, message = "La cantidad de parejas debe estar entre 4 y 8")
+    @NotEmpty(message = ValidationMessages.MIN_COUPLES)
+    @Size(min = 4, max = 8, message = ValidationMessages.LENGTH_COUPLES)
     private List<CouplesMemoramaRequestDto> couples;
     
 }

@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @AllArgsConstructor
@@ -16,12 +17,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class QuestionRequestDto {
 
-    @NotBlank(message = "Question is required")
-    @Size(max = 200, message = "Maximum length for question is 200 characters.")
+    @NotBlank(message = ValidationMessages.NOT_EMPTY_QUESTION)
+    @Size(max = 200, message = ValidationMessages.MAX_LENGTH_QUESTION)
     private String question;
 
     @Valid
-    @Size(min = 4, max = 4, message = "Must have 4 options")
+    @Size(min = 4, max = 4, message = ValidationMessages.LENGTH_OPTIONS)
     private List<OptionRequestDto> options; //Maximo de 100 caracteres por opcion
     //Cree un dto de Options para poder validar restricciones dentro de cada elemento de la lista 
 }

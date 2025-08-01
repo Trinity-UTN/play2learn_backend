@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import trinity.play2learn.backend.activity.activity.models.Dificulty;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @AllArgsConstructor
@@ -16,21 +17,21 @@ import trinity.play2learn.backend.activity.activity.models.Dificulty;
 @SuperBuilder
 public abstract class ActivityRequestDto {
     
-    @Size(max = 1000, message = "Maximum length for description is 1000 characters.")
+    @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION)
     private String description;
 
-    @NotNull
+    @NotNull (message = ValidationMessages.NOT_NULL_START_DATE)
     private LocalDateTime startDate;
 
-    @NotNull
+    @NotNull (message = ValidationMessages.NOT_NULL_END_DATE)
     private LocalDateTime endDate;
 
-    @NotNull
+    @NotNull (message = ValidationMessages.NOT_NULL_DIFICULTY)
     private Dificulty dificulty;
 
     private int maxTime; //En minutos
 
-    @NotNull
+    @NotNull (message = ValidationMessages.NOT_NULL_SUBJECT)
     private Long subjectId;
 
     private int attempts;

@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import trinity.play2learn.backend.activity.activity.dtos.ActivityRequestDto;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @EqualsAndHashCode(callSuper = true) //Esta notacion es necesaria para que el equals y el hashcode hereden de la clase padre (Sino @Data se pone en amarillo)
@@ -19,11 +20,11 @@ import trinity.play2learn.backend.activity.activity.dtos.ActivityRequestDto;
 @NoArgsConstructor
 public class PreguntadosRequestDto extends ActivityRequestDto{
 
-    @Min(10)
+    @Min(value = 10, message = ValidationMessages.MIN_TIME_PER_QUESTION)
     private int maxTimePerQuestionInSeconds; 
 
     @Valid
-    @Size(min = 5, message = "Must have at least 5 questions")
+    @Size(min = 5, message = ValidationMessages.MIN_LENGTH_QUESTIONS)
     private List<QuestionRequestDto> questions; //Preguntas
 
 }

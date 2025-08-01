@@ -2,7 +2,6 @@ package trinity.play2learn.backend.user.controllers;
 //Caso de uso 8
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
@@ -25,7 +25,10 @@ public class UserSignUpController {
 
     @PostMapping
     public ResponseEntity<BaseResponse<SignUpResponseDto>> signUp(@Valid @RequestBody SignUpRequestDto signUpDto) {
-        return ResponseFactory.created(signUpService.signUp(signUpDto), "Created succesfully");
+        return ResponseFactory.created(
+            signUpService.signUp(signUpDto),
+            SuccesfullyMessages.createdSuccessfully("Usuario")
+        );
     }
 
 }

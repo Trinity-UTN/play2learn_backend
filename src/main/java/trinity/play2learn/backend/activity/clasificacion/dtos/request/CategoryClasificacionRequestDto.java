@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @Builder
@@ -17,12 +18,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CategoryClasificacionRequestDto {
     
-    @NotBlank
-    @Size(max = 50, message = "Maximum length for name is 50 characters.")
+    @NotBlank (message = ValidationMessages.NOT_EMPTY_NAME)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME)
     private String name;
 
-    @NotNull
-    @Size(min = 1, max = 10,  message = "The category must have between 1 and 10 concepts.")
+    @NotNull (message = ValidationMessages.NOT_NULL_CONCEPTS)
+    @Size(min = 1, max = 10,  message = ValidationMessages.LENGTH_CONCEPTS)
     @Valid
     private List<ConceptClasificacionRequestDto> concepts; 
 }

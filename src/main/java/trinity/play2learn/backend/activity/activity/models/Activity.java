@@ -14,6 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @MappedSuperclass
@@ -22,7 +23,7 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 @SuperBuilder //Esta notacion es necesaria para que el builder herede de la clase padre
 public abstract class Activity {
     //El nombre de la actividad sera el tipo de actividad (Ahorcado, preguntados, etc)
-    @Size(max = 1000, message = "Maximum length for name is 1000 characters.")
+    @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION)
     @Column(nullable = true)
     private String description;
 

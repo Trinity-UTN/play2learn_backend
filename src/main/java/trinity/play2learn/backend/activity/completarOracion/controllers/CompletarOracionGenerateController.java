@@ -9,6 +9,7 @@ import trinity.play2learn.backend.activity.completarOracion.dtos.request.Complet
 import trinity.play2learn.backend.activity.completarOracion.dtos.response.CompletarOracionActivityResponseDto;
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionGenerateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -29,7 +30,10 @@ public class CompletarOracionGenerateController {
     @SessionRequired(roles = {Role.ROLE_ADMIN , Role.ROLE_TEACHER})
     public ResponseEntity<BaseResponse<CompletarOracionActivityResponseDto>> generateCompletarOracion(@Valid @RequestBody CompletarOracionActivityRequestDto activityRequestDto) {
         
-        return ResponseFactory.created(completarOracionGenerateService.cu42generateCompletarOracionActivity(activityRequestDto), "Created successfully");
+        return ResponseFactory.created(
+            completarOracionGenerateService.cu42generateCompletarOracionActivity(activityRequestDto),
+            SuccesfullyMessages.createdSuccessfully("Actividad de completar oración")
+        );
     }
     
 }

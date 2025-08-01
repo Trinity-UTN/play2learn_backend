@@ -17,6 +17,7 @@ import trinity.play2learn.backend.activity.memorama.services.interfaces.ICouples
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.imgBB.dtos.ImgBBUploadResultDTO;
 import trinity.play2learn.backend.configs.imgBB.services.ImageUploadService;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Service
 @AllArgsConstructor
@@ -37,7 +38,7 @@ public class CouplesMemoramaGenerateService implements ICouplesMemoramaGenerateS
          * Finalmente retorno la Couples guardada
          */
         if (dto.getImage() == null || dto.getConcept() == null) {
-            throw new BadRequestException("Image and concept must not be null");
+            throw new BadRequestException(ValidationMessages.NOT_NULL_IMAGE_CONCEPT);
         }
 
         ImgBBUploadResultDTO imagenUpload = imageUploadService.uploadImage(dto.getImage());

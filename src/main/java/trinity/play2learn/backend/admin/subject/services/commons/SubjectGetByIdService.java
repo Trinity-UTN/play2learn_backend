@@ -7,6 +7,7 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.NotFoundException;
+import trinity.play2learn.backend.configs.messages.NotFoundExceptionMesagges;
 
 @Service
 @AllArgsConstructor
@@ -16,13 +17,17 @@ public class SubjectGetByIdService implements ISubjectGetByIdService {
     @Override
     public Subject findById(Long id) {
         return subjectRepository.findByIdAndDeletedAtIsNull(id)
-            .orElseThrow(( ) -> new NotFoundException("Subject with id " + id + " does not exist"));
+            .orElseThrow(( ) -> new NotFoundException(
+                NotFoundExceptionMesagges.resourceNotFound("Materia", String.valueOf(id))
+            ));
     }
 
     @Override
     public Subject findDeletedById(Long id) {
         return subjectRepository.findByIdAndDeletedAtIsNotNull(id).orElseThrow(
-            () -> new NotFoundException("Subject with id " + id + " does not exist or is not eliminated")
+            () -> new NotFoundException(
+                NotFoundExceptionMesagges.resourceDeletedNotFound("Materia", String.valueOf(id))
+            )
         );
     }
 

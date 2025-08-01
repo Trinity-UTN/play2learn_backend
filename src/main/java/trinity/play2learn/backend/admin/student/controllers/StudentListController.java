@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentListService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -25,7 +26,10 @@ public class StudentListController {
     @GetMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<List<StudentResponseDto>>> list() {
-        return ResponseFactory.ok(studentListService.cu20ListStudents(), "Ok");
+        return ResponseFactory.ok(
+            studentListService.cu20ListStudents(), 
+            SuccesfullyMessages.okSuccessfully()
+        );
     }
     
 }

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.teacher.repositories.ITeacherRepository;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherExistsByDniService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 @Service
 @AllArgsConstructor
@@ -17,7 +18,9 @@ public class TeacherExistsByDniService implements ITeacherExistsByDniService{
     public void validate(String dni, Long id) {
 
         if (teacherRepository.existsByDniAndIdNot(dni, id)) {
-            throw new ConflictException("Teacher with dni " + dni + " already exists");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExistsByDni("Docente", dni)
+            );
         }
         
     }
@@ -26,7 +29,9 @@ public class TeacherExistsByDniService implements ITeacherExistsByDniService{
     public void validate(String dni) {
 
         if (teacherRepository.existsByDni(dni)) {
-            throw new ConflictException("Teacher with dni " + dni + " already exists");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExistsByDni("Docente", dni)
+            );
         }
     }
 }

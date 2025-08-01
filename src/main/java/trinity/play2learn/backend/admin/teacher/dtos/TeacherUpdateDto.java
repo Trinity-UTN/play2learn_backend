@@ -6,23 +6,24 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @Builder
 @AllArgsConstructor
 public class TeacherUpdateDto {
 
-    @NotEmpty(message = "Name is required.")
-    @Size(max = 50, message = "Maximum length for name is 50 characters.")
-    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "Name can only contain letters, spaces, and the characters áéíóúÁÉÍÓÚñÑ.")
+    @NotEmpty(message = ValidationMessages.NOT_EMPTY_NAME)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME)
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = ValidationMessages.PATTERN_NAME)
     private String name;
 
-    @NotEmpty(message = "Lastname is required.")
-    @Size(max = 50, message = "Maximum length for Lastname is 50 characters.")
-    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = "Lastname can only contain letters, spaces, and the characters áéíóúÁÉÍÓÚñÑ.")
+    @NotEmpty(message = ValidationMessages.NOT_EMPTY_LASTNAME)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_LASTNAME)
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = ValidationMessages.PATTERN_LASTNAME)
     private String lastname;
 
-    @NotEmpty(message = "DNI is required.")
-    @Pattern(regexp = "^[0-9]{8}$", message = "DNI must be exactly 8 digits.")
+    @NotEmpty(message = ValidationMessages.NOT_EMPTY_DNI)
+    @Pattern(regexp = "^[0-9]{8}$", message = ValidationMessages.PATTERN_DNI)
     private String dni;
 }

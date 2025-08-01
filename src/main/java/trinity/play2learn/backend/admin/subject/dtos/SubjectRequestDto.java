@@ -7,22 +7,23 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @Builder
 @AllArgsConstructor
 public class SubjectRequestDto {
 
-    @NotEmpty(message = "Name is required.")
-    @Size(max = 50, message = "Maximum length for name is 50 characters.")
-    @Pattern(regexp = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$", message = "Name can only contain letters, numbers, spaces, and the characters áéíóúÁÉÍÓÚñÑ.")
+    @NotEmpty(message = ValidationMessages.NOT_EMPTY_NAME)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME)
+    @Pattern(regexp = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$", message = ValidationMessages.PATTERN_NAME)
     private String name;
 
-    @NotNull(message = "Course ID is required.")
+    @NotNull(message = ValidationMessages.NOT_NULL_COURSE)
     private Long courseId;
 
     private Long teacherId; // Opcional
 
-    @NotNull(message = "Optional is required.")
+    @NotNull(message = ValidationMessages.NOT_NULL_OPTIONAL)
     private Boolean optional;
 }

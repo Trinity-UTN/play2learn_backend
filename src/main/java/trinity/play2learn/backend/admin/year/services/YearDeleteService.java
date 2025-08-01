@@ -10,6 +10,8 @@ import trinity.play2learn.backend.admin.year.services.interfaces.IYearDeleteServ
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.BadRequestExceptionMessages;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 @Service
 @AllArgsConstructor
@@ -27,17 +29,27 @@ public class YearDeleteService implements IYearDeleteService{
         try {
             yearId = Long.parseLong(id);
         } catch (NumberFormatException e) {
-            throw new BadRequestException("Invalid year ID format: " + id);
+            throw new BadRequestException(
+                BadRequestExceptionMessages.invalidFormat(id)
+            );
         }
         
         Year year = yearGetByIdService.findById(yearId);
 
         if (year.getDeletedAt() != null) {
-            throw new BadRequestException("Year with ID " + id + " is already deleted.");
+            throw new BadRequestException(
+                ConflictExceptionMessages.resourceAlreadyDeleted("Año", id)
+            );
         }
 
         if (courseExistByYearService.validate(year)) {
-            throw new ConflictException("Cannot delete year with ID " + id + " because it has associated courses.");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceDeletionNotAllowedDueToAssociations(
+                    "Año", 
+                    id, 
+                    "Cursos"
+                )
+            );
         }
 
         year.delete();

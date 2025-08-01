@@ -8,6 +8,7 @@ import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectDeleteService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +23,13 @@ public class SubjectDeleteService implements ISubjectDeleteService {
 
         //No es posible eliminar una materia con estudiantes asociados
         if (!subject.getStudents().isEmpty()) {
-            throw new ConflictException("Cannot delete subject with ID " + id + " because it has associated students.");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceDeletionNotAllowedDueToAssociations(
+                    "Materia", 
+                    String.valueOf(id), 
+                    "estudiantes"
+                )
+            );
         }
 
         subject.delete();

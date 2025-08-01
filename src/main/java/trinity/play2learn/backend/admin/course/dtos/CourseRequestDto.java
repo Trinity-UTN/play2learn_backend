@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @Builder
@@ -15,12 +16,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CourseRequestDto {
 
-    @NotEmpty(message = "Name is required.")
-    @Size(max = 50, message = "Maximum length for name is 50 characters.")
-    @Pattern(regexp = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$", message = "Name can only contain letters, numbers, spaces, and the characters áéíóúÁÉÍÓÚñÑ.")
+    @NotEmpty(message = ValidationMessages.NOT_EMPTY_NAME)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME)
+    @Pattern(regexp = "^[a-zA-ZáéíóúÁÉÍÓÚñÑ\\s]+$", message = ValidationMessages.PATTERN_NAME)
     private String name;
 
-    @NotNull(message = "Year ID is required.")
+    @NotNull(message = ValidationMessages.NOT_NULL_YEAR)
     private Long year_id;
     
 }

@@ -12,6 +12,7 @@ import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectUpdateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -26,7 +27,10 @@ public class SubjectUpdateController {
     @PutMapping("/{id}")
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<SubjectResponseDto>> update(@PathVariable Long id, @Valid @RequestBody SubjectUpdateRequestDto subjectDto) {
-        return ResponseFactory.created(subjectService.cu29UpdateSubject(id, subjectDto), "Updated succesfully");
+        return ResponseFactory.created(
+            subjectService.cu29UpdateSubject(id, subjectDto), 
+            SuccesfullyMessages.updatedSuccessfully("Materia")
+        );
     }
 
 }

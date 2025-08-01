@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.SentenceCompletarOracionRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordMissingService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Service
 @AllArgsConstructor
@@ -14,7 +15,7 @@ public class CompletarOracionValidateWordMissingService implements ICompletarOra
         
         if (!sentenceDto.getWords().stream().anyMatch(w -> w.getIsMissing() == true)) {
 
-            throw new BadRequestException("At least one word must be missing.");
+            throw new BadRequestException(ValidationMessages.WORD_MISSING);
         };
     }
     

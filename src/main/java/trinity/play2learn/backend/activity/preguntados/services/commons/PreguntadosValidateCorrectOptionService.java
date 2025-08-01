@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.preguntados.dtos.request.QuestionRequestDto;
 import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosValidateCorrectOptionService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.messages.BadRequestExceptionMessages;
 
 @Service
 @AllArgsConstructor
@@ -18,7 +19,9 @@ public class PreguntadosValidateCorrectOptionService implements IPreguntadosVali
         
         if (questionDto.getOptions().stream().filter(o -> o.getIsCorrect()).count() != 1) { 
             //Filtra las opciones que sean correctas y verifica que la cuenta no sea distinta de 1
-                throw new BadRequestException("Question: " + questionDto.getQuestion() + " must have one correct option.");
+                throw new BadRequestException(
+                    BadRequestExceptionMessages.oneCorrectOptionPerQuestion(questionDto.getQuestion())
+                );
             }
     }
     
