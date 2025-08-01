@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectDeleteService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -25,6 +25,6 @@ public class SubjectDeleteController {
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable Long id) {
         subjectDeleteService.cu30DeleteSubject(id);
-        return ResponseFactory.noContent(SuccesfullyMessages.deletedSuccessfully("Materia"));
+        return ResponseFactory.noContent(SuccessfulMessages.deletedSuccessfully("Materia"));
     }
 }

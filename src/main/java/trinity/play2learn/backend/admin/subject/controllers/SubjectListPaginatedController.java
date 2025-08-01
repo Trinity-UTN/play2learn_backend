@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectListPaginatedService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
@@ -38,7 +38,7 @@ public class SubjectListPaginatedController {
     ) {
         return ResponseFactory.paginated(
             subjectListPaginatedService.cu32ListSubjectsPaginated(page, pageSize, orderBy, orderType, search, filters, filtersValues), 
-            SuccesfullyMessages.okSuccessfully()
+            SuccessfulMessages.okSuccessfully()
         );
     }
 }

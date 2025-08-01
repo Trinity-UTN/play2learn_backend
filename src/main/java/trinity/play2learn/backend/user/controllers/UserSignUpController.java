@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
@@ -27,7 +27,7 @@ public class UserSignUpController {
     public ResponseEntity<BaseResponse<SignUpResponseDto>> signUp(@Valid @RequestBody SignUpRequestDto signUpDto) {
         return ResponseFactory.created(
             signUpService.signUp(signUpDto),
-            SuccesfullyMessages.createdSuccessfully("Usuario")
+            SuccessfulMessages.createdSuccessfully("Usuario")
         );
     }
 

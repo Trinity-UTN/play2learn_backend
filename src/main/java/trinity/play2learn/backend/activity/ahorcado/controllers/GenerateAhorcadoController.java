@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoRequestDto;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoResponseDto;
 import trinity.play2learn.backend.activity.ahorcado.services.interfaces.IAhorcadoGenerateService;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 
@@ -26,7 +26,7 @@ public class GenerateAhorcadoController {
     public ResponseEntity<BaseResponse<AhorcadoResponseDto>> generateAhorcado(@Valid @RequestBody AhorcadoRequestDto ahorcadoDto) {
         return ResponseFactory.created(
             generateAhorcadoService.cu39GenerateAhorcado(ahorcadoDto), 
-            SuccesfullyMessages.createdSuccessfully("Actividad de ahorcado")
+            SuccessfulMessages.createdSuccessfully("Actividad de ahorcado")
         );
     }
 }

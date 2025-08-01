@@ -12,7 +12,7 @@ import trinity.play2learn.backend.admin.year.dtos.YearRequestDto;
 import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 import trinity.play2learn.backend.admin.year.services.YearRegisterService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -37,6 +37,6 @@ public class YearRegisterController {
     @PostMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<YearResponseDto>> register(@Valid @RequestBody YearRequestDto yearDto) {
-        return ResponseFactory.created(yearRegisterService.cu7RegisterYear(yearDto), SuccesfullyMessages.createdSuccessfully("Año"));
+        return ResponseFactory.created(yearRegisterService.cu7RegisterYear(yearDto), SuccessfulMessages.createdSuccessfully("Año"));
     }
 }

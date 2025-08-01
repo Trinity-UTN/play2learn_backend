@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.dtos.login.LoginRequestDto;
@@ -26,7 +26,7 @@ public class UserLoginController {
     public ResponseEntity<BaseResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto loginDto) {
         return ResponseFactory.ok(
             loginService.cu1Login(loginDto),
-            SuccesfullyMessages.loginSuccessfully()
+            SuccessfulMessages.loginSuccessfully()
         );
     }
 }

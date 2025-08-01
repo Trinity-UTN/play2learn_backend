@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearDeleteService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -33,7 +33,7 @@ public class YearDeleteController {
     public ResponseEntity<BaseResponse<Void>> delete(@PathVariable String id) {
         yearDeleteService.cu11deleteYear(id);
         return ResponseFactory.noContent(
-                SuccesfullyMessages.deletedSuccessfully("Año")
+                SuccessfulMessages.deletedSuccessfully("Año")
         );
     }
 }

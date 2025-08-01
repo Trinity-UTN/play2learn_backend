@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherResponseDto;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherRestoreService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -25,6 +25,6 @@ public class TeacherRestoreController {
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<TeacherResponseDto>> restore(@PathVariable Long id) {
 
-        return ResponseFactory.ok(teacherRestoreService.cu35RestoreTeacher(id), SuccesfullyMessages.restoredSuccessfully("Docente"));
+        return ResponseFactory.ok(teacherRestoreService.cu35RestoreTeacher(id), SuccessfulMessages.restoredSuccessfully("Docente"));
     }
 }

@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.clasificacion.dtos.request.ClasificacionActivityRequestDto;
 import trinity.play2learn.backend.activity.clasificacion.dtos.response.ClasificacionActivityResponseDto;
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionGenerateService;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 
@@ -27,7 +27,7 @@ public class ClasificacionActivityGenerateController {
 
         return ResponseFactory.created(
             clasificacionGenerateService.cu43GenerateClasificacionActivity(activityRequestDto), 
-            SuccesfullyMessages.createdSuccessfully("Actividad de clasificación")
+            SuccessfulMessages.createdSuccessfully("Actividad de clasificación")
         );
     }
 }

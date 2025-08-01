@@ -9,7 +9,7 @@ import trinity.play2learn.backend.admin.teacher.dtos.TeacherResponseDto;
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherUpdateDto;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherUpdateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -31,6 +31,6 @@ public class TeacherUpdateController {
     @SessionRequired(roles = {Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<TeacherResponseDto>> update(@PathVariable Long id, @Valid @RequestBody TeacherUpdateDto teacherDto) {
         
-        return ResponseFactory.ok(teacherUpdateService.cu23UpdateTeacher(id, teacherDto), SuccesfullyMessages.updatedSuccessfully("Docente"));
+        return ResponseFactory.ok(teacherUpdateService.cu23UpdateTeacher(id, teacherDto), SuccessfulMessages.updatedSuccessfully("Docente"));
     }
 }

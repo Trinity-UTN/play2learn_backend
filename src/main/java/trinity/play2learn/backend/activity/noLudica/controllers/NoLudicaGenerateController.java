@@ -9,7 +9,7 @@ import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequest
 import trinity.play2learn.backend.activity.noLudica.dtos.response.NoLudicaResponseDto;
 import trinity.play2learn.backend.activity.noLudica.services.interfaces.INoLudicaGenerateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -34,7 +34,7 @@ public class NoLudicaGenerateController {
     ) {
         return ResponseFactory.created(
             noLudicaGenerateService.cu45GenerateNoLudica(requestDto),
-            SuccesfullyMessages.createdSuccessfully("Actividad no ludica")
+            SuccessfulMessages.createdSuccessfully("Actividad no ludica")
         );
     }
     

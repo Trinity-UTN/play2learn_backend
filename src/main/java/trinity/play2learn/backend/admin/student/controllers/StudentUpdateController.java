@@ -9,7 +9,7 @@ import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentUpdateRequestDto;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentUpdateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -32,7 +32,7 @@ public class StudentUpdateController {
     public ResponseEntity<BaseResponse<StudentResponseDto>> update(@PathVariable Long id, @Valid @RequestBody StudentUpdateRequestDto studentDto) {
         return ResponseFactory.created(
             studentUpdateService.cu18updateStudent(studentDto, id), 
-            SuccesfullyMessages.updatedSuccessfully("Estudiante")
+            SuccessfulMessages.updatedSuccessfully("Estudiante")
         );
     }
     

@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectListService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -28,7 +28,7 @@ public class SubjectListController {
     public ResponseEntity<BaseResponse<List<SubjectResponseDto>>> list() {
         return ResponseFactory.ok(
             subjectListService.cu31ListSubjects(), 
-            SuccesfullyMessages.okSuccessfully()
+            SuccessfulMessages.okSuccessfully()
         );
     }
     

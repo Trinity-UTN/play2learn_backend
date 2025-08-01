@@ -12,7 +12,7 @@ import trinity.play2learn.backend.admin.student.dtos.StudentRequestDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.services.StudentRegisterService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -29,7 +29,7 @@ public class StudentRegisterController {
     public ResponseEntity<BaseResponse<StudentResponseDto>> register(@Valid @RequestBody StudentRequestDto studentDto) {
         return ResponseFactory.created(
             studentRegisterService.cu4registerStudent(studentDto), 
-            SuccesfullyMessages.createdSuccessfully("Estudiante")
+            SuccessfulMessages.createdSuccessfully("Estudiante")
         );
     }
 }

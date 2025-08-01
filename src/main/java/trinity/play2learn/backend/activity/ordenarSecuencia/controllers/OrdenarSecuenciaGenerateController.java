@@ -11,7 +11,7 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.response.Ordena
 import trinity.play2learn.backend.activity.ordenarSecuencia.mappers.OrdenarSecuenciaRequestMapper;
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IOrdenarSecuenciaActivityGenerateService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -49,7 +49,7 @@ public class OrdenarSecuenciaGenerateController {
         
         return ResponseFactory.created(
             ordenarSecuenciaGenerateService.cu44GenerateOrdenarSecuencia(dto),
-            SuccesfullyMessages.createdSuccessfully("Actividad de ordenar secuencia")
+            SuccessfulMessages.createdSuccessfully("Actividad de ordenar secuencia")
         );
     }
       

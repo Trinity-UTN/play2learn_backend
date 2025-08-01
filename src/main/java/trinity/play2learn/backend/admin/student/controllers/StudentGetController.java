@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
@@ -29,7 +29,7 @@ public class StudentGetController {
     public ResponseEntity<BaseResponse<StudentResponseDto>> get(@PathVariable Long id) {
         return ResponseFactory.ok (
             studentGetService.cu22GetStudent(id), 
-            SuccesfullyMessages.okSuccessfully()
+            SuccessfulMessages.okSuccessfully()
         );
     }
     

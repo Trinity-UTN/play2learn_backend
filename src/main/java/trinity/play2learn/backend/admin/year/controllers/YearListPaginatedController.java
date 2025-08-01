@@ -12,7 +12,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearListPaginatedService;
 import trinity.play2learn.backend.configs.aspects.SessionRequired;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
@@ -49,6 +49,6 @@ public class YearListPaginatedController {
             @RequestParam(name = "filters", required = false) List<String> filters,
             @RequestParam(name = "filtersValues", required = false) List<String> filtersValues
     ) {
-        return ResponseFactory.paginated(yearListService.cu12PaginatedListYears(page, pageSize, orderBy, orderType, search, filters, filtersValues),  SuccesfullyMessages.okSuccessfully());
+        return ResponseFactory.paginated(yearListService.cu12PaginatedListYears(page, pageSize, orderBy, orderType, search, filters, filtersValues),  SuccessfulMessages.okSuccessfully());
     }
 }

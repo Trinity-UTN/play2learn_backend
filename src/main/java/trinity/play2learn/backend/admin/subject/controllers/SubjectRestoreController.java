@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRestoreService;
-import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
+import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 
@@ -24,7 +24,7 @@ public class SubjectRestoreController {
     public ResponseEntity<BaseResponse<SubjectResponseDto>> restore(@PathVariable Long id) {
         return ResponseFactory.ok(
             subjectRestoreService.cu34RestoreSubject(id), 
-            SuccesfullyMessages.restoredSuccessfully("Materia")
+            SuccessfulMessages.restoredSuccessfully("Materia")
         );
     }
 }
