@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.configs.messages.SuccesfullyMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.dtos.token.AccessTokenDto;
@@ -23,6 +24,9 @@ public class UserRefreshTokenController {
 
     @PostMapping
     public ResponseEntity<BaseResponse<AccessTokenDto>> refreshAccessToken(@Valid @RequestBody RefreshTokenDto refreshTokenDto) {
-        return ResponseFactory.ok(refreshTokenService.refreshAccessToken(refreshTokenDto), "Token refreshed successfully");
+        return ResponseFactory.ok(
+            refreshTokenService.refreshAccessToken(refreshTokenDto),
+            SuccesfullyMessages.refreshTokenSuccessfully()
+        );
     }
 }

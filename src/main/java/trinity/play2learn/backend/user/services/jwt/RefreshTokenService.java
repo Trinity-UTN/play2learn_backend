@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
+import trinity.play2learn.backend.configs.messages.UnauthorizedExceptionMessages;
 import trinity.play2learn.backend.user.dtos.token.AccessTokenDto;
 import trinity.play2learn.backend.user.dtos.token.RefreshTokenDto;
 import trinity.play2learn.backend.user.models.User;
@@ -23,7 +24,9 @@ public class RefreshTokenService implements IRefreshTokenService {
 
         String refreshToken = refreshTokenDto.getRefreshToken();
         if (jwtService.isTokenExpired(refreshToken)) {
-            throw new UnauthorizedException("Refresh token expired.");
+            throw new UnauthorizedException(
+                UnauthorizedExceptionMessages.TOKEN_EXPIRED
+            );
         }
 
         String email;
@@ -31,7 +34,9 @@ public class RefreshTokenService implements IRefreshTokenService {
             email = jwtService.extractUsername(refreshToken);
             
         } catch (JwtException e) { //Si la firma del token es invalida, el metodo extractUsername lanza una excepcion (Que se propaga desde extractAllClaims)
-            throw new UnauthorizedException("Invalid authentication refresh token.");
+            throw new UnauthorizedException(
+                UnauthorizedExceptionMessages.INVALID_REFRESH_TOKEN
+            );
         }
 
         User user = userFindService.findUserByEmail(email);

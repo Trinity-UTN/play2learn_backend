@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
 import trinity.play2learn.backend.user.mapper.UserMapper;
@@ -29,7 +30,9 @@ public class SignUpService implements ISignUpService {
 
         Optional<User> optionalUser = userRepository.findByEmail(signUpDto.getEmail());
         if (optionalUser.isPresent()) {
-            throw new ConflictException("User already exists");
+            throw new ConflictException(
+                ConflictExceptionMessages.resourceAlreadyExists("Usuario")
+            );
         }
 
         String encryptPassword = passwordEncoder.encode(signUpDto.getPassword());

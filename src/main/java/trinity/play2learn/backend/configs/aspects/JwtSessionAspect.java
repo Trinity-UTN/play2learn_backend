@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.exceptions.InternalServerException;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
+import trinity.play2learn.backend.configs.messages.InternalServerExceptionMessages;
+import trinity.play2learn.backend.configs.messages.UnauthorizedExceptionMessages;
 import io.jsonwebtoken.JwtException;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.services.jwt.interfaces.IJwtService;
@@ -35,21 +37,27 @@ public class JwtSessionAspect {
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes(); //Obtiene la solicitud actual
         
         if (attrs == null) {
-            throw new InternalServerException("Not a HTTP request."); //Esta excepcion se lanza si la solicitud obtenida no es HTTP
+            throw new InternalServerException(
+                InternalServerExceptionMessages.NOT_HTTP
+            ); //Esta excepcion se lanza si la solicitud obtenida no es HTTP
         }
 
         HttpServletRequest request = attrs.getRequest();
         String authHeader = request.getHeader("Authorization"); //Obtiene el encabezado de autorizacion donde se ubica el token
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            throw new UnauthorizedException("Missing or invalid authentication access token.");
+            throw new UnauthorizedException(
+                UnauthorizedExceptionMessages.INVALID_ACCESS_TOKEN
+            );
         }
 
         String jwt = authHeader.substring(7);
 
         //Chequeo que el token no haya expirado
         if (jwtService.isTokenExpired(jwt)) {
-            throw new UnauthorizedException("Access token expired.");
+            throw new UnauthorizedException(
+                UnauthorizedExceptionMessages.TOKEN_EXPIRED
+            );
             
         }
 
@@ -61,14 +69,18 @@ public class JwtSessionAspect {
             
         } catch (JwtException e) {
             //Si la firma del token no es valida, lanzo una excepcion.
-            throw new UnauthorizedException("Invalid authentication access token.");
+            throw new UnauthorizedException(
+                UnauthorizedExceptionMessages.INVALID_ACCESS_TOKEN
+            );
         }
 
         List<Role> requiredRoles = Arrays.asList(sessionRequired.roles()); //Convierte el array de roles permitidos en una lista 
 
         if (!requiredRoles.contains(jwtRole)) { //Valida que el role del token sea alguno de los roles permitidos
 
-            throw new UnauthorizedException( "One of this roles is required: " + requiredRoles); 
+            throw new UnauthorizedException( 
+                UnauthorizedExceptionMessages.requiredRoles(requiredRoles)
+            ); 
             //Si el role del token no matchea con ninguno de los permitidos, lanza una excepcion
         }
 

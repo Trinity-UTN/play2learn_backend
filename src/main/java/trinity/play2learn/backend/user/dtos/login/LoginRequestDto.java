@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
 @Builder
@@ -13,10 +14,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LoginRequestDto {
     
-    @Email(message = "Email format is invalid")
-    @NotBlank(message = "Email is required")
+    @Email(message = ValidationMessages.PATTERN_EMAIL)
+    @NotBlank(message = ValidationMessages.NOT_EMPTY_EMAIL)
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = ValidationMessages.NOT_EMPTY_PASSWORD)
     private String password;
 }

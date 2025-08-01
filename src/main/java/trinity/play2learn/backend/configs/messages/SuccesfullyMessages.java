@@ -41,4 +41,12 @@ public class SuccesfullyMessages {
     public static final String SUBJECT_ADD_STUDENTS_SUCCESSFULLY = "Estudiantes agregado con exito";
     public static final String SUBJECT_REMOVE_STUDENTS_SUCCESSFULLY = "Estudiantes removidos con exito";
 
+    public static final String loginSuccessfully() {
+        return "Logueado correctamente";
+    }
+
+    public static final String refreshTokenSuccessfully() {
+        return "Token actualizado correctamente";
+    }
+
 }

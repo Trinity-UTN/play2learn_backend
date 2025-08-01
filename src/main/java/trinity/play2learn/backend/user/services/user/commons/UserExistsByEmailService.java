@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
+import trinity.play2learn.backend.configs.messages.UnauthorizedExceptionMessages;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserExistsByEmailService;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserExistService;
 
@@ -16,7 +17,9 @@ public class UserExistsByEmailService implements IUserExistsByEmailService{
     @Override
     public void validateIfUserIsActive(String email) {
         if (!userExistService.validate(email)) {
-            throw new UnauthorizedException("User not valid or unauthorized.");
+            throw new UnauthorizedException(
+                UnauthorizedExceptionMessages.UNAUTHORIZED
+            );
         };
     }
 }

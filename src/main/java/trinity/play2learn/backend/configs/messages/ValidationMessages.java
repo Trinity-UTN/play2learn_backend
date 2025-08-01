@@ -78,7 +78,11 @@ public class ValidationMessages {
     public static final String MAX_LENGTH_QUESTION = "La pregunta no puede tener mas de 200 caracteres.";
     public static final String LENGTH_OPTIONS = "El numero de opciones debe ser exactamente 3.";
 
-
+    //------------------------------------- USER ------------------------------------------------------
+    public static final String NOT_EMPTY_PASSWORD = "La contraseña no puede estar vacia.";
+    public static final String NOT_EMPTY_ROLE = "El rol no puede estar vacio.";
+    public static final String NOT_EMPTY_TOKEN = "El token no puede estar vacio.";
+    
 
 
 
