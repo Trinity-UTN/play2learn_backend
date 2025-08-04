@@ -8,7 +8,7 @@ import trinity.play2learn.backend.profile.avatar.models.TypeAspect;
 
 @Data
 @Builder
-public class AspectRegisterResponseDto {
+public class AspectResponseDto {
     
     private Long id;
     private String name;

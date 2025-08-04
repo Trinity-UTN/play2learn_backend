@@ -18,7 +18,7 @@ import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.profile.avatar.dtos.request.AspectRegisterRequestDto;
-import trinity.play2learn.backend.profile.avatar.dtos.response.AspectRegisterResponseDto;
+import trinity.play2learn.backend.profile.avatar.dtos.response.AspectResponseDto;
 import trinity.play2learn.backend.profile.avatar.mappers.AspectMapper;
 import trinity.play2learn.backend.profile.avatar.services.interfaces.IAspectRegisterService;
 import trinity.play2learn.backend.user.models.Role;
@@ -33,7 +33,7 @@ public class AspectRegisterController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @SessionRequired (roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<AspectRegisterResponseDto>> register(
+    public ResponseEntity<BaseResponse<AspectResponseDto>> register(
         @RequestParam String name,
         @RequestParam String price,
         @RequestParam String type,
