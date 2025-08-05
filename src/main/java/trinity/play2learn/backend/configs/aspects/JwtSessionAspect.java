@@ -35,7 +35,7 @@ public class JwtSessionAspect {
         Role jwtRole;
 
         ServletRequestAttributes attrs = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes(); //Obtiene la solicitud actual
-        
+
         if (attrs == null) {
             throw new InternalServerException(
                 InternalServerExceptionMessages.NOT_HTTP
@@ -54,14 +54,16 @@ public class JwtSessionAspect {
         String jwt = authHeader.substring(7);
 
         //Chequeo que el token no haya expirado
-        if (jwtService.isTokenExpired(jwt)) {
+        try {
+
+            jwtService.isTokenExpired(jwt);
+            
+        } catch (JwtException e) {
             throw new UnauthorizedException(
                 UnauthorizedExceptionMessages.TOKEN_EXPIRED
             );
-            
         }
 
-        
         try {
             userActiveValidation.validateIfUserIsActive(jwtService.extractUsername(jwt)); //Valida la firma del token y que el usuario este activo en la base de datos
 
