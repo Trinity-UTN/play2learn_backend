@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
-import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
 import trinity.play2learn.backend.user.mapper.UserMapper;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
@@ -38,12 +37,7 @@ public class UserCreateService implements IUserCreateService {
 
         String encryptPassword = passwordEncoder.encode(password);
 
-        SignUpRequestDto signUpDto = new SignUpRequestDto();
-        signUpDto.setEmail(email);
-        signUpDto.setPassword(encryptPassword);
-        signUpDto.setRole(role);
-
-        User userToSave = UserMapper.toModel(signUpDto, encryptPassword);
+        User userToSave = UserMapper.toModel(email, encryptPassword, role);
 
         return userRepository.save(userToSave);
     }

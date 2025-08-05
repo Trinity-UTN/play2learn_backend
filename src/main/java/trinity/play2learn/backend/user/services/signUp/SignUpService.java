@@ -1,44 +1,30 @@
 package trinity.play2learn.backend.user.services.signUp;
 
-
-import java.util.Optional;
-
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import trinity.play2learn.backend.configs.exceptions.ConflictException;
-import trinity.play2learn.backend.configs.messages.ConflictExceptionMessages;
+import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
 import trinity.play2learn.backend.user.mapper.UserMapper;
+import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
-import trinity.play2learn.backend.user.repository.IUserRepository;
 import trinity.play2learn.backend.user.services.signUp.interfaces.ISignUpService;
+import trinity.play2learn.backend.user.services.user.interfaces.IUserCreateService;
 
 @Service
+@AllArgsConstructor
 public class SignUpService implements ISignUpService {
 
-    private final IUserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public SignUpService(IUserRepository userRepository , PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
+    private final IUserCreateService userCreateService;
 
     @Override
-    public SignUpResponseDto signUp(SignUpRequestDto signUpDto) {
+    public SignUpResponseDto signUp(SignUpRequestDto signUpDto , String role) {
+        
+        Role roleToSave = Role.valueOf(role);
+        
+        //Lanza un 409 si el email ya existe en un usuario activo en la base de datos
+        User userSaved = userCreateService.create(signUpDto.getEmail(), signUpDto.getPassword(), roleToSave);
 
-        Optional<User> optionalUser = userRepository.findByEmail(signUpDto.getEmail());
-        if (optionalUser.isPresent()) {
-            throw new ConflictException(
-                ConflictExceptionMessages.resourceAlreadyExists("Usuario")
-            );
-        }
-
-        String encryptPassword = passwordEncoder.encode(signUpDto.getPassword());
-        User userToSave = UserMapper.toModel(signUpDto, encryptPassword);
-
-        return UserMapper.toSignUpDto(userRepository.save(userToSave));
+        return UserMapper.toSignUpDto(userSaved);
     }
     
 }

@@ -13,7 +13,6 @@ import trinity.play2learn.backend.user.models.Role;
 public class SignUpResponseDto {
 
     private Long id;
-    private String token;
-    private Role role;
     private String email;
+    private Role role;
 }

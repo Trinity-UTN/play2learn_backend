@@ -1,18 +1,18 @@
 package trinity.play2learn.backend.user.mapper;
 
 import trinity.play2learn.backend.user.dtos.login.LoginResponseDto;
-import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
 import trinity.play2learn.backend.user.dtos.user.UserResponseDto;
+import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 
 public class UserMapper {
     
-    public static User toModel(SignUpRequestDto signUpDto, String password) {
+    public static User toModel(String email, String password , Role role) {
         return User.builder()
-            .email(signUpDto.getEmail())
+            .email(email)
             .password(password)
-            .role(signUpDto.getRole())
+            .role(role)
             .build();
     }
 

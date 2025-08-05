@@ -5,5 +5,5 @@ import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
 
 public interface ISignUpService {
     
-    SignUpResponseDto signUp(SignUpRequestDto signUpDto );
+    SignUpResponseDto signUp(SignUpRequestDto signUpDto , String role);
 }
