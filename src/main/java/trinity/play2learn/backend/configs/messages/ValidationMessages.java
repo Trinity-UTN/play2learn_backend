@@ -84,8 +84,9 @@ public class ValidationMessages {
     public static final String NOT_EMPTY_TOKEN = "El token no puede estar vacio.";
     
 
-
-
+    //-------------------------------------- PROFILE -------------------------------------------------------
+    public static final String NOT_NULL_PRICE = "El precio no puede estar vacio.";
+    public static final String NOT_NULL_TYPE = "El tipo de aspecto no puede estar vacio.";
 
 }
 
