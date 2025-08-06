@@ -17,6 +17,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.user.models.User;
 
 /**
@@ -55,6 +56,9 @@ public class Student {
 
     @Column(nullable = true)
     private LocalDateTime deletedAt;
+
+    @OneToOne(mappedBy = "student")
+    private Profile profile;
 
     public void delete () {
         this.deletedAt = LocalDateTime.now();

@@ -9,6 +9,8 @@ import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentSimplificatedResponse;
 import trinity.play2learn.backend.admin.student.dtos.StudentUpdateRequestDto;
 import trinity.play2learn.backend.admin.student.models.Student;
+import trinity.play2learn.backend.profile.profile.dtos.response.ProfileResponseDto;
+import trinity.play2learn.backend.profile.profile.mappers.ProfileMapper;
 import trinity.play2learn.backend.user.mapper.UserMapper;
 import trinity.play2learn.backend.user.models.User;
 
@@ -33,8 +35,23 @@ public class StudentMapper {
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
             .active(student.getDeletedAt() == null)
+            .profile((student.getProfile() != null) ? ProfileMapper.toDto(student.getProfile()) : null)
             .build();
     }
+
+    public static StudentResponseDto toDto(Student student, ProfileResponseDto profile) {
+        return StudentResponseDto.builder()
+            .id(student.getId())
+            .name(student.getName())
+            .lastname(student.getLastname())
+            .dni(student.getDni())
+            .user(UserMapper.toUserDto(student.getUser()))
+            .course(CourseMapper.toDto(student.getCourse()))
+            .active(student.getDeletedAt() == null)
+            .profile(profile)
+            .build();
+    }
+
 
     public static Student toUpdatedEntity (Student model, StudentUpdateRequestDto dto, Course course) {
         return Student.builder()
