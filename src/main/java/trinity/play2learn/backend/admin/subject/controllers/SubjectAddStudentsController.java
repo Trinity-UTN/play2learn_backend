@@ -1,14 +1,12 @@
 package trinity.play2learn.backend.admin.subject.controllers;
 
 import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectAddResponseDto;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectAddStudentsService;
@@ -27,7 +25,7 @@ public class SubjectAddStudentsController {
     public ResponseEntity<BaseResponse<SubjectAddResponseDto>> addStudents(@PathVariable Long subjectId, @RequestBody List<Long> studentIds) {
         return ResponseFactory.ok(
             subjectAddStudentsService.cu36AddStudentsToSubject(subjectId, studentIds), 
-            SuccessfulMessages.SUBJECT_ADD_STUDENTS_SUCCESSFULLY
+            SuccessfulMessages.SUBJECT_ASSIGN_TEACHER_SUCCESFULLY
         );
     }
 }
