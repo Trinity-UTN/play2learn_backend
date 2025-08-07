@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.year.dtos.YearResponseDto;
 import trinity.play2learn.backend.admin.year.services.interfaces.IYearListPaginatedService;
-import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.PaginatedData;

@@ -19,7 +19,7 @@ import trinity.play2learn.backend.configs.messages.ValidationMessages;
 public class CategoryClasificacionRequestDto {
     
     @NotBlank (message = ValidationMessages.NOT_EMPTY_NAME)
-    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME_50)
     private String name;
 
     @NotNull (message = ValidationMessages.NOT_NULL_CONCEPTS)

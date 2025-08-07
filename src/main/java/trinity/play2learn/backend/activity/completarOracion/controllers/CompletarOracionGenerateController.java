@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.CompletarOracionActivityRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.dtos.response.CompletarOracionActivityResponseDto;
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionGenerateService;
-import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;

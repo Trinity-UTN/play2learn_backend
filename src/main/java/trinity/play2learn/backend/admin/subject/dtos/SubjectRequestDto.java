@@ -15,7 +15,7 @@ import trinity.play2learn.backend.configs.messages.ValidationMessages;
 public class SubjectRequestDto {
 
     @NotEmpty(message = ValidationMessages.NOT_EMPTY_NAME)
-    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME)
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME_50)
     @Pattern(regexp = "^[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\\s]+$", message = ValidationMessages.PATTERN_NAME)
     private String name;
 

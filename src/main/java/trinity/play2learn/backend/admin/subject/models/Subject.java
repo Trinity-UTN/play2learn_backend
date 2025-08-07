@@ -79,4 +79,8 @@ public class Subject {
     public void removeStudents(List<Student> studentsToRemove) {
         this.students.removeAll(studentsToRemove);
     }
+
+    public boolean hasTeacherByEmail(String email){
+        return this.teacher.getUser().getEmail().equals(email);
+    }
 }

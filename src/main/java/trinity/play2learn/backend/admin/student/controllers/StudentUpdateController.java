@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentUpdateRequestDto;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentUpdateService;
-import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;

@@ -4,7 +4,7 @@ public class ValidationMessages {
     
     //---------------------------------------- ADMIN ----------------------------------------------
     public static final String NOT_EMPTY_NAME = "El nombre no puede estar vacio.";
-    public static final String MAX_LENGTH_NAME = "El nombre no puede tener mas de 50 caracteres.";
+    public static final String MAX_LENGTH_NAME_50 = "El nombre no puede tener mas de 50 caracteres.";
     public static final String PATTERN_NAME = "El nombre debe contener unicamente letras, numeros, espacios y los caracteres áéíóúÁÉÍÓÚñÑ.";
 
     public static final String NOT_EMPTY_LASTNAME = "El apellido no puede estar vacio.";
@@ -25,7 +25,7 @@ public class ValidationMessages {
     public static final String NOT_NULL_YEAR = "El año no puede estar vacio.";
 
     //--------------------------------------- ACTIVITY ------------------------------------------
-    public static final String MAX_LENGTH_DESCRIPTION = "La descripcion no puede tener mas de 1000 caracteres.";
+    public static final String MAX_LENGTH_DESCRIPTION_1000 = "La descripcion no puede tener mas de 1000 caracteres.";
     public static final String NOT_NULL_START_DATE = "La fecha de inicio no puede estar vacia.";
     public static final String NOT_NULL_END_DATE = "La fecha de finalizacion no puede estar vacia.";
     public static final String NOT_NULL_DIFICULTY = "La dificultad no puede estar vacia.";
@@ -78,7 +78,7 @@ public class ValidationMessages {
     public static final String MAX_LENGTH_QUESTION = "La pregunta no puede tener mas de 200 caracteres.";
     public static final String LENGTH_OPTIONS = "El numero de opciones debe ser exactamente 3.";
 
-    //Arbol de decision
+    //------------------------------------- ARBOL DE DECISION ------------------------------------------------------
     public static final String NOT_NULL_DECISION_TREE = "El arbol de decision no puede estar vacio.";
     public static final String OPTIONS_SIZE = "Una decisión debe tener exactamente 2 opciones o ninguna.";
     public static final String OPTIONS_AND_CONSECUENCE_NULL = "La decision debe tener opciones o una consecuencia.";
@@ -95,5 +95,9 @@ public class ValidationMessages {
     public static final String NOT_NULL_PRICE = "El precio no puede estar vacio.";
     public static final String NOT_NULL_TYPE = "El tipo de aspecto no puede estar vacio.";
 
+
+    //------------------------------------- BENEFIT ------------------------------------------------------
+    public static final String NOT_NULL_COST = "El costo no puede estar vacio.";
+    public static final String MIN_COST = "El costo debe ser mayor a 0.";
 }
 

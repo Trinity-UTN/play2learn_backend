@@ -17,7 +17,7 @@ import trinity.play2learn.backend.configs.messages.ValidationMessages;
 @SuperBuilder
 public abstract class ActivityRequestDto {
     
-    @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION)
+    @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION_1000)
     private String description;
 
     @NotNull (message = ValidationMessages.NOT_NULL_START_DATE)
