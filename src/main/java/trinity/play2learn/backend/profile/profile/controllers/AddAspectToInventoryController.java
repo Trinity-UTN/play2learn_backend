@@ -24,7 +24,7 @@ public class AddAspectToInventoryController {
 
     private final IProfileAddAspectToInventoryService profileAddAspectToInventoryService;
 
-    @PostMapping("")
+    @PostMapping
     @SessionRequired(roles = {Role.ROLE_STUDENT, Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<StudentResponseDto>> addAspectToInventory(
         @RequestBody @Valid AddAspectRequestDto request
