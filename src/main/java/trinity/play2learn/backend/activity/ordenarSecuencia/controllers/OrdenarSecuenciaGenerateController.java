@@ -10,7 +10,7 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request.Ordenar
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.response.OrdenarSecuenciaResponseDto;
 import trinity.play2learn.backend.activity.ordenarSecuencia.mappers.OrdenarSecuenciaRequestMapper;
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IOrdenarSecuenciaActivityGenerateService;
-import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;

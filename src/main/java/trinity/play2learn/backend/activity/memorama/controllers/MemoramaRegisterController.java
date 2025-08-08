@@ -17,7 +17,7 @@ import trinity.play2learn.backend.activity.activity.models.Dificulty;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.mappers.MemoramaRequestMapper;
 import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
-import trinity.play2learn.backend.configs.aspects.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;

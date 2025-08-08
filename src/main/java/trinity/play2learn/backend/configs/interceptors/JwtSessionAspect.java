@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.configs.aspects;
+package trinity.play2learn.backend.configs.interceptors;
 
 import java.util.Arrays;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.exceptions.InternalServerException;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
 import trinity.play2learn.backend.configs.messages.InternalServerExceptionMessages;

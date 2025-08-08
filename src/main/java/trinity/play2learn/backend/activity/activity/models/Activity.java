@@ -23,7 +23,7 @@ import trinity.play2learn.backend.configs.messages.ValidationMessages;
 @SuperBuilder //Esta notacion es necesaria para que el builder herede de la clase padre
 public abstract class Activity {
     //El nombre de la actividad sera el tipo de actividad (Ahorcado, preguntados, etc)
-    @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION)
+    @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION_1000)
     @Column(nullable = true)
     private String description;
 
