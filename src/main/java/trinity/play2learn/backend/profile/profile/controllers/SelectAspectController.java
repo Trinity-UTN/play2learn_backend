@@ -1,7 +1,7 @@
 package trinity.play2learn.backend.profile.profile.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,7 +24,7 @@ public class SelectAspectController {
 
     private final IProfileSelectAspectService profileAddAspectToInventoryService;
 
-    @PostMapping
+    @PatchMapping
     @SessionRequired(roles = {Role.ROLE_STUDENT, Role.ROLE_ADMIN})
     public ResponseEntity<BaseResponse<StudentResponseDto>> selectAspect(
         @RequestBody @Valid AddAspectRequestDto request
