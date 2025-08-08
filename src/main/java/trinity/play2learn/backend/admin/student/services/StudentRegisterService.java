@@ -11,7 +11,9 @@ import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentRegisterService;
-
+import trinity.play2learn.backend.profile.profile.mappers.ProfileMapper;
+import trinity.play2learn.backend.profile.profile.models.Profile;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileGenerateService;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserCreateService;
@@ -25,6 +27,8 @@ public class StudentRegisterService implements IStudentRegisterService{
     private final IUserCreateService userCreateService;
 
     private final IStudentRepository studentRepository;
+
+    private final IProfileGenerateService profileGenerateService;
 
     @Override
     public StudentResponseDto cu4registerStudent(StudentRequestDto studentRequestDto) {
@@ -42,7 +46,16 @@ public class StudentRegisterService implements IStudentRegisterService{
         
         Student studentToSave = StudentMapper.toModel(studentRequestDto, course, user);
 
-        return StudentMapper.toDto(studentRepository.save(studentToSave));
+        Profile profile = Profile.builder()
+        .student(studentToSave) // O podés omitirlo si no necesitás la relación inversa
+        .build();
+
+        studentToSave.setProfile(profile);
+
+        // Persistencia en cascada
+        Student studentSaved = studentRepository.save(studentToSave);
+
+        return StudentMapper.toDto(studentSaved, ProfileMapper.toDto(profile));
     }
     
 }

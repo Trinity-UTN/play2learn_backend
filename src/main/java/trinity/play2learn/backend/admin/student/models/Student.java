@@ -2,6 +2,7 @@ package trinity.play2learn.backend.admin.student.models;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.user.models.User;
 
 /**
@@ -55,6 +57,10 @@ public class Student {
 
     @Column(nullable = true)
     private LocalDateTime deletedAt;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    private Profile profile;
 
     public void delete () {
         this.deletedAt = LocalDateTime.now();
