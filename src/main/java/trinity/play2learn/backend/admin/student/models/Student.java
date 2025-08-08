@@ -2,6 +2,7 @@ package trinity.play2learn.backend.admin.student.models;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -57,7 +58,8 @@ public class Student {
     @Column(nullable = true)
     private LocalDateTime deletedAt;
 
-    @OneToOne(mappedBy = "student")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
     public void delete () {

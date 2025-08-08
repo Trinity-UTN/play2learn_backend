@@ -11,7 +11,8 @@ import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentRegisterService;
-import trinity.play2learn.backend.profile.profile.dtos.response.ProfileResponseDto;
+import trinity.play2learn.backend.profile.profile.mappers.ProfileMapper;
+import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileGenerateService;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
@@ -45,11 +46,16 @@ public class StudentRegisterService implements IStudentRegisterService{
         
         Student studentToSave = StudentMapper.toModel(studentRequestDto, course, user);
 
+        Profile profile = Profile.builder()
+        .student(studentToSave) // O podés omitirlo si no necesitás la relación inversa
+        .build();
+
+        studentToSave.setProfile(profile);
+
+        // Persistencia en cascada
         Student studentSaved = studentRepository.save(studentToSave);
 
-        ProfileResponseDto profile = profileGenerateService.cu52generateProfile(studentSaved);
-
-        return StudentMapper.toDto(studentSaved, profile);
+        return StudentMapper.toDto(studentSaved, ProfileMapper.toDto(profile));
     }
     
 }
