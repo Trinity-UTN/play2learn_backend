@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.benefits.mappers;
 
+import java.util.List;
+
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.benefits.dtos.BenefitRequestDto;
@@ -29,5 +31,11 @@ public class BenefitMapper {
             .redeemableAmountPerStudent(benefit.getRedeemableAmountPerStudent())
             .subjectDto(SubjectMapper.toSubjectDto(benefit.getSubject()))
             .build();
+    }
+
+    public static List<BenefitResponseDto> toListDto(List<Benefit> benefits) {
+        return benefits.stream()
+            .map(BenefitMapper::toDto)
+            .toList();
     }
 }
