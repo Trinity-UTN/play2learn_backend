@@ -18,7 +18,7 @@ public class SubjectGetByIdService implements ISubjectGetByIdService {
     public Subject findById(Long id) {
         return subjectRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(( ) -> new NotFoundException(
-                NotFoundExceptionMesagges.resourceNotFound("Materia", String.valueOf(id))
+                NotFoundExceptionMesagges.resourceNotFoundById("Materia", String.valueOf(id))
             ));
     }
 
@@ -26,7 +26,7 @@ public class SubjectGetByIdService implements ISubjectGetByIdService {
     public Subject findDeletedById(Long id) {
         return subjectRepository.findByIdAndDeletedAtIsNotNull(id).orElseThrow(
             () -> new NotFoundException(
-                NotFoundExceptionMesagges.resourceDeletedNotFound("Materia", String.valueOf(id))
+                NotFoundExceptionMesagges.resourceDeletedNotFoundById("Materia", String.valueOf(id))
             )
         );
     }

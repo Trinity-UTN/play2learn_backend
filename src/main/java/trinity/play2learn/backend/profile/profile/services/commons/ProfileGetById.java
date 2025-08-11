@@ -19,7 +19,7 @@ public class ProfileGetById implements IProfileGetByIdService {
     public Profile get(Long id) {
         return profileRepository.findById(id).orElseThrow(() ->
             new NotFoundException(
-                NotFoundExceptionMesagges.resourceNotFound("Perfil", String.valueOf(id))
+                NotFoundExceptionMesagges.resourceNotFoundById("Perfil", String.valueOf(id))
             )
         );
     }

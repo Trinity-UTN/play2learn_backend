@@ -19,7 +19,7 @@ public class StudentGetByIdService implements IStudentGetByIdService {
     public Student findById(Long id) {
         return studentRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new NotFoundException(
-                    NotFoundExceptionMesagges.resourceNotFound("Estudiante", String.valueOf(id))
+                    NotFoundExceptionMesagges.resourceNotFoundById("Estudiante", String.valueOf(id))
                 ));
     }
 
@@ -27,7 +27,7 @@ public class StudentGetByIdService implements IStudentGetByIdService {
     public Student findDeletedById(Long id) {
         return studentRepository.findByIdAndDeletedAtIsNotNull(id)
                 .orElseThrow(() -> new NotFoundException(
-                    NotFoundExceptionMesagges.resourceDeletedNotFound("Estudiante", String.valueOf(id))
+                    NotFoundExceptionMesagges.resourceDeletedNotFoundById("Estudiante", String.valueOf(id))
                 ));
     }
 

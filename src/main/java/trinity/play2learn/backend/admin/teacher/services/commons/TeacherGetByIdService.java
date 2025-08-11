@@ -20,7 +20,7 @@ public class TeacherGetByIdService implements ITeacherGetByIdService {
 
         return teacherRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException(
-                NotFoundExceptionMesagges.resourceNotFound("Docente", String.valueOf(id))
+                NotFoundExceptionMesagges.resourceNotFoundById("Docente", String.valueOf(id))
             ));
     }
 
@@ -29,7 +29,7 @@ public class TeacherGetByIdService implements ITeacherGetByIdService {
 
         return teacherRepository.findByIdAndDeletedAtIsNotNull(id)
             .orElseThrow(() -> new NotFoundException(
-                NotFoundExceptionMesagges.resourceDeletedNotFound("Docente", String.valueOf(id))
+                NotFoundExceptionMesagges.resourceDeletedNotFoundById("Docente", String.valueOf(id))
             ));
     }
 

@@ -26,7 +26,7 @@ public class CourseGetByIdService implements ICourseGetByIdService {
     public Course findById(Long id) {
         return courseRepository.findByIdAndDeletedAtIsNull(id)
                 .orElseThrow(() -> new NotFoundException(
-                    NotFoundExceptionMesagges.resourceNotFound(
+                    NotFoundExceptionMesagges.resourceNotFoundById(
                         "Curso", 
                         String.valueOf(id)
                     )

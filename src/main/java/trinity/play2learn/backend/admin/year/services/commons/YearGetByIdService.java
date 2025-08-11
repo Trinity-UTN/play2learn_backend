@@ -24,7 +24,7 @@ public class YearGetByIdService implements IYearGetByIdService{
     @Override
     public Year findById(Long id) {
         return yearRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(NotFoundExceptionMesagges.resourceNotFound("Año", String.valueOf(id))));
+                .orElseThrow(() -> new NotFoundException(NotFoundExceptionMesagges.resourceNotFoundById("Año", String.valueOf(id))));
     }
     
 }

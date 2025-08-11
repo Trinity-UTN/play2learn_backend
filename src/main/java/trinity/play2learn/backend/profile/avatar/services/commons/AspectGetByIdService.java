@@ -18,7 +18,7 @@ public class AspectGetByIdService implements IAspectGetByIdService{
     @Override
     public Aspect get(Long id) {
         return aspectRepository.findById(id).orElseThrow(() -> new NotFoundException(
-                NotFoundExceptionMesagges.resourceNotFound("Aspecto", String.valueOf(id))
+                NotFoundExceptionMesagges.resourceNotFoundById("Aspecto", String.valueOf(id))
             )
         );
     }
