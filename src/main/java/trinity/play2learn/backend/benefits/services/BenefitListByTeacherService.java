@@ -3,6 +3,7 @@ package trinity.play2learn.backend.benefits.services;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
@@ -10,18 +11,19 @@ import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetB
 import trinity.play2learn.backend.benefits.dtos.BenefitResponseDto;
 import trinity.play2learn.backend.benefits.mappers.BenefitMapper;
 import trinity.play2learn.backend.benefits.repositories.IBenefitRepository;
-import trinity.play2learn.backend.benefits.services.interfaces.IBenefitListService;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitListByTeacherService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
-public class BenefitListService implements IBenefitListService {
+public class BenefitListByTeacherService implements IBenefitListByTeacherService {
     
     private final IBenefitRepository benefitRepository;
     private final ITeacherGetByEmailService teacherGetByEmailService;
 
     @Override
-    public List<BenefitResponseDto> cu55ListBenefits(User user) {
+    @Transactional(readOnly = true)
+    public List<BenefitResponseDto> cu55ListBenefitsByTeacher(User user) {
 
         Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
 

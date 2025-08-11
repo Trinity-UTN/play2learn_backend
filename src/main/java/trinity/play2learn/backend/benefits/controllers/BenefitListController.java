@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.benefits.dtos.BenefitResponseDto;
-import trinity.play2learn.backend.benefits.services.interfaces.IBenefitListService;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitListByTeacherService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
@@ -23,12 +23,12 @@ import trinity.play2learn.backend.user.models.User;
 @RequestMapping("/benefits")
 public class BenefitListController {
     
-    private final IBenefitListService benefitListService;
+    private final IBenefitListByTeacherService benefitListService;
 
-    @GetMapping
+    @GetMapping("/teacher")
     @SessionRequired(roles = {Role.ROLE_TEACHER})
-    public ResponseEntity<BaseResponse<List<BenefitResponseDto>>> list(@SessionUser User user) {
+    public ResponseEntity<BaseResponse<List<BenefitResponseDto>>> listByTeacher(@SessionUser User user) {
         
-        return ResponseFactory.ok(benefitListService.cu55ListBenefits(user), SuccessfulMessages.okSuccessfully());
+        return ResponseFactory.ok(benefitListService.cu55ListBenefitsByTeacher(user), SuccessfulMessages.okSuccessfully());
     }
 }
