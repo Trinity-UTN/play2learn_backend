@@ -13,7 +13,6 @@ import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentRegisterService;
 import trinity.play2learn.backend.profile.profile.mappers.ProfileMapper;
 import trinity.play2learn.backend.profile.profile.models.Profile;
-import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileGenerateService;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserCreateService;
@@ -27,8 +26,6 @@ public class StudentRegisterService implements IStudentRegisterService{
     private final IUserCreateService userCreateService;
 
     private final IStudentRepository studentRepository;
-
-    private final IProfileGenerateService profileGenerateService;
 
     @Override
     public StudentResponseDto cu4registerStudent(StudentRequestDto studentRequestDto) {

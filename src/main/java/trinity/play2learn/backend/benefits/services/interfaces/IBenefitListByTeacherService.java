@@ -5,7 +5,7 @@ import java.util.List;
 import trinity.play2learn.backend.benefits.dtos.BenefitResponseDto;
 import trinity.play2learn.backend.user.models.User;
 
-public interface IBenefitListService {
+public interface IBenefitListByTeacherService {
     
-    List<BenefitResponseDto> cu55ListBenefits(User user);
+    List<BenefitResponseDto> cu55ListBenefitsByTeacher(User user);
 }
