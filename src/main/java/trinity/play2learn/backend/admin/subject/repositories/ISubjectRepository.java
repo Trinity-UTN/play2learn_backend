@@ -24,4 +24,6 @@ public interface ISubjectRepository extends CrudRepository<Subject , Long> {
     boolean existsByTeacher(Teacher teacher);
 
     boolean existsByCourse(Course course);
+
+    List<Subject> findAllByTeacherAndDeletedAtIsNull(Teacher teacher);
 }
