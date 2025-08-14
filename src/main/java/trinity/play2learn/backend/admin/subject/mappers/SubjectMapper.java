@@ -23,6 +23,8 @@ public class SubjectMapper {
             .teacher(teacher)
             .students(students)
             .optional(subjectDto.getOptional())
+            .actualBalance(0.0)
+            .initialBalance(0.0)
             .build();
     }
 
@@ -33,6 +35,8 @@ public class SubjectMapper {
             .course(CourseMapper.toDto(subject.getCourse()))
             .teacher(TeacherMapper.toDto(subject.getTeacher()))
             .optional(subject.getOptional())
+            .actualBalance(subject.getActualBalance())
+            .initialBalance(subject.getInitialBalance())
             .build();
     }
 
@@ -44,7 +48,7 @@ public class SubjectMapper {
             .teacher(teacher)
             .students(students)
             .optional(subjectDto.getOptional())
-            .build();  
+            .build();
     }
 
     public static List<SubjectResponseDto> toDtoList(List<Subject> subjects) {

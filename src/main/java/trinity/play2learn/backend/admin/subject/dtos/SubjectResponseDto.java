@@ -16,4 +16,6 @@ public class SubjectResponseDto {
     private CourseResponseDto course;
     private TeacherResponseDto teacher;
     private Boolean optional;
+    private Double actualBalance;
+    private Double initialBalance;
 }
