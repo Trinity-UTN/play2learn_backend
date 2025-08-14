@@ -3,6 +3,8 @@ package trinity.play2learn.backend.benefits.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,6 +55,18 @@ public class Benefit {
     @ManyToOne
     @NotNull
     private Subject subject;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private BenefitIcon icon;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private BenefitCategory category;
+
+    @Enumerated(EnumType.STRING)
+    @NotNull
+    private BenefitColor color;
 
     private LocalDateTime deletedAt;
 

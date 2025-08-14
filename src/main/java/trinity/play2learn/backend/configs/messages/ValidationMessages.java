@@ -99,5 +99,9 @@ public class ValidationMessages {
     //------------------------------------- BENEFIT ------------------------------------------------------
     public static final String NOT_NULL_COST = "El costo no puede estar vacio.";
     public static final String MIN_COST = "El costo debe ser mayor a 0.";
+    public static final String NOT_NULL_ICON = "El icono no puede estar vacio.";
+    public static final String NOT_NULL_CATEGORY = "La categoria no puede estar vaciq.";
+    public static final String NOT_NULL_COLOR = "El color no puede estar vacio.";
+    
 }
 

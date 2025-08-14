@@ -18,6 +18,9 @@ public class BenefitMapper {
             .totalRedeemableAmount(benefitDto.getTotalRedeemableAmount())
             .redeemableAmountPerStudent(benefitDto.getRedeemableAmountPerStudent())
             .subject(subject)
+            .icon(benefitDto.getIcon())
+            .category(benefitDto.getCategory())
+            .color(benefitDto.getColor())
             .build();
     }
 
@@ -30,6 +33,9 @@ public class BenefitMapper {
             .totalRedeemableAmount(benefit.getTotalRedeemableAmount())
             .redeemableAmountPerStudent(benefit.getRedeemableAmountPerStudent())
             .subjectDto(SubjectMapper.toSubjectDto(benefit.getSubject()))
+            .icon(benefit.getIcon())
+            .category(benefit.getCategory())
+            .color(benefit.getColor())
             .build();
     }
 
