@@ -7,6 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import trinity.play2learn.backend.benefits.models.BenefitCategory;
+import trinity.play2learn.backend.benefits.models.BenefitColor;
+import trinity.play2learn.backend.benefits.models.BenefitIcon;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
@@ -33,4 +36,13 @@ public class BenefitRequestDto {
 
     @NotNull(message = ValidationMessages.NOT_NULL_SUBJECT)
     private Long subjectId;
+
+    @NotNull(message = ValidationMessages.NOT_NULL_ICON)
+    private BenefitIcon icon;
+    
+    @NotNull(message = ValidationMessages.NOT_NULL_CATEGORY)
+    private BenefitCategory category;
+
+    @NotNull(message = ValidationMessages.NOT_NULL_COLOR)
+    private BenefitColor color;
 }
