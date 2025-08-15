@@ -25,18 +25,6 @@ public class SubjectRefillBalanceService implements ISubjectRefillBalanceService
 
     @Override
     public List<SubjectResponseDto> cu58RefillBalance() {
-        /*
-         * Cosas a hacer:
-         * - Buscar todas las materias
-         * - Si tienen asignado un valor inicial distinto de cero
-         * - Asignar el monto restante
-         * - Si tiene un balance inicial de cero
-         * - Calcular el monto que recibira por los alumnos que tiene
-         * - Modificar el balance inicial
-         * - Asignar las monedas
-         * - Generar la transaccion
-         * - Devolver la lista mapeada a dto
-         */
 
         Iterable <Subject> subjects = subjectRepository.findAllByDeletedAtIsNull();
 
