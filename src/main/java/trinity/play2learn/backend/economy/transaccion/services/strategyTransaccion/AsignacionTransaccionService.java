@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectAddBalanceService;
+import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IFindLastReserveService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IModifyReserveService;
@@ -38,7 +39,7 @@ public class AsignacionTransaccionService implements IStrategyTransaccionService
         Double assignAmount = subject.getInitialBalance() - subject.getActualBalance();
 
         if (!assignAmount.equals(amount)) {
-            throw new UnsupportedOperationException("El monto asignado no es el correcto");
+            throw new UnsupportedOperationException(EconomyMessages.INCORRECT_AMOUNT);
         }
 
         Reserve reserve = findLastReserveService.get();

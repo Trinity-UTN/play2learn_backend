@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
@@ -32,13 +33,13 @@ public class GenerateTransaccionService implements IGenerateTransaccionService{
         Wallet wallet, 
         Subject subject) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("El monto debe ser mayor a 0");
+            throw new IllegalArgumentException(EconomyMessages.AMOUNT_MAJOR_TO_0);
         }
 
         IStrategyTransaccionService strategy = strategies.get(type.name());
 
         if (strategy == null) {
-            throw new IllegalArgumentException("Tipo de transacción no soportado: " + type);
+            throw new IllegalArgumentException(EconomyMessages.getTransaccionNoSupported(type.name()));
         }
 
         Transaccion transaccion = strategy.execute(

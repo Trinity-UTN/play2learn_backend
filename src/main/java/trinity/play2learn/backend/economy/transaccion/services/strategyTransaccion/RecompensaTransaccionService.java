@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRemoveBalanceService;
+import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IModifyReserveService;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
@@ -38,7 +39,7 @@ public class RecompensaTransaccionService implements IStrategyTransaccionService
         Subject subject) {
         
         if (subject.getActualBalance() < amount) {
-            throw new IllegalArgumentException("La materia no tiene suficiente dinero para realizar la transaccion");
+            throw new IllegalArgumentException(EconomyMessages.NOT_ENOUGH_WALLET_MONEY_SUBJECT);
         }
 
         Transaccion transaccion = Transaccion.builder()
