@@ -18,7 +18,7 @@ import trinity.play2learn.backend.economy.wallet.models.Wallet;
 @AllArgsConstructor
 public class GenerateTransaccionService implements IGenerateTransaccionService{
 
-    private final Map<TypeTransaccion, IStrategyTransaccionService> strategies;
+    private final Map<String, IStrategyTransaccionService> strategies;
 
 
     @Override
@@ -35,7 +35,7 @@ public class GenerateTransaccionService implements IGenerateTransaccionService{
             throw new IllegalArgumentException("El monto debe ser mayor a 0");
         }
 
-        IStrategyTransaccionService strategy = strategies.get(type);
+        IStrategyTransaccionService strategy = strategies.get(type.name());
 
         if (strategy == null) {
             throw new IllegalArgumentException("Tipo de transacción no soportado: " + type);
