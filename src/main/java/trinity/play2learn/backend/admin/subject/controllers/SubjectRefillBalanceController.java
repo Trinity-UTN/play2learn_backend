@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRefillBalanceService;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class SubjectRefillBalanceController {
     private final ISubjectRefillBalanceService subjectRefillBalanceService;
 
     @PostMapping("/refill-balance")
+    @SessionRequired(roles = {Role.ROLE_DEV})
     public ResponseEntity<BaseResponse<List<SubjectResponseDto>>> refill() {
         return ResponseFactory.ok(
             subjectRefillBalanceService.cu58RefillBalance(), 
