@@ -52,7 +52,6 @@ public class ReserveModifyService implements IReserveModifyService {
 
         reserve.setReserveBalance(reserve.getReserveBalance() - amount);
         reserve.setCirculationBalance(reserve.getCirculationBalance() + amount);
-        reserve.setLastUpdateAt(LocalDateTime.now());
 
         reserveRepository.save(reserve);
     }
