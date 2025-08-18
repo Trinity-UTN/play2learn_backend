@@ -1,5 +1,8 @@
 package trinity.play2learn.backend.benefits.dtos;
 
+import java.time.LocalDateTime;
+
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -33,6 +36,10 @@ public class BenefitRequestDto {
     private Integer totalRedeemableAmount;
     //Cantidad de veces que se puede canjear el beneficio por estudiante
     private Integer redeemableAmountPerStudent;
+
+    @NotNull(message = ValidationMessages.NOT_NULL_END_AT)
+    @Future(message = ValidationMessages.FUTURE_END_AT)
+    private LocalDateTime endAt;
 
     @NotNull(message = ValidationMessages.NOT_NULL_SUBJECT)
     private Long subjectId;

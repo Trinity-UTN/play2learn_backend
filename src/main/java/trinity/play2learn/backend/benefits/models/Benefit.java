@@ -52,6 +52,9 @@ public class Benefit {
     //Si es nulo es porque el beneficio es ilimitado
     private Integer redeemableAmountPerStudent;
 
+    @NotNull
+    private LocalDateTime endAt;
+
     @ManyToOne
     @NotNull
     private Subject subject;
