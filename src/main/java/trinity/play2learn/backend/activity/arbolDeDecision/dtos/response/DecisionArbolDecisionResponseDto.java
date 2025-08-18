@@ -15,6 +15,7 @@ public class DecisionArbolDecisionResponseDto {
     
     private Long id;
     private String name;
+    private String context;
     private List<DecisionArbolDecisionResponseDto> options;
     private ConsecuenceArbolDecisionResponseDto consecuence;
 }

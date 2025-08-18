@@ -37,6 +37,9 @@ public class DecisionArbolDecision {
     @NotNull
     private ArbolDeDecisionActivity activity;
 
+    @Size(max = 500)
+    private String context; //Esto da contexto para tomar la siguiente decision. Sera nulo si esta decision termina en consecuencia.
+
     @OneToMany(mappedBy = "previousDecision", cascade = {CascadeType.PERSIST , CascadeType.MERGE}) //Relacion 0 o 1
     @Column(nullable = true)
     private List<DecisionArbolDecision> options;

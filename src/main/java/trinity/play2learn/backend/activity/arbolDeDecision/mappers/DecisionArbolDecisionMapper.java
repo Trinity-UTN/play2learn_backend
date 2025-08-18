@@ -11,6 +11,7 @@ public class DecisionArbolDecisionMapper {
     public static DecisionArbolDecision toModel(DecisionArbolDecisionRequestDto decisionDto) {
         DecisionArbolDecision decision = DecisionArbolDecision.builder()
             .name(decisionDto.getName())
+            .context(decisionDto.getContext())
             .consecuence(ConsecuenceArbolDecisionMapper.toModel(decisionDto.getConsecuence()))
             .build();
 
@@ -30,6 +31,7 @@ public class DecisionArbolDecisionMapper {
         return DecisionArbolDecisionResponseDto.builder()
             .id(decision.getId())
             .name(decision.getName())
+            .context(decision.getContext())
             .consecuence(decision.getConsecuence() == null ? null : ConsecuenceArbolDecisionMapper.toDto(decision.getConsecuence()))
             .options(DecisionArbolDecisionMapper.toDtoList(decision.getOptions()))
             .build();
