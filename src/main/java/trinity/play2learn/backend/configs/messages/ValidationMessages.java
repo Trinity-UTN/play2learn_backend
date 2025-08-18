@@ -84,6 +84,7 @@ public class ValidationMessages {
     public static final String OPTIONS_AND_CONSECUENCE_NULL = "La decision debe tener opciones o una consecuencia.";
     public static final String NAME_200_MAX_LENGHT = "El nombre no puede tener mas de 200 caracteres.";
     public static final String INTRODUCTION_500_MAX_LENGHT = "La introduccion no puede tener mas de 500 caracteres.";
+    public static final String CONTEXT_500_MAX_LENGHT = "El contexto no puede tener mas de 500 caracteres.";
     
     //------------------------------------- USER ------------------------------------------------------
     public static final String NOT_EMPTY_PASSWORD = "La contraseña no puede estar vacia.";

@@ -26,6 +26,9 @@ public class DecisionArbolDecisionRequestDto {
     @Size(max = 200, message = ValidationMessages.NAME_200_MAX_LENGHT)
     private String name;
 
+    @Size(max = 500, message = ValidationMessages.CONTEXT_500_MAX_LENGHT)
+    private String context;
+
     // Puede ser nula, en caso de no serlo debe tener 2 opciones
     @Valid
     @JsonSetter(nulls = Nulls.AS_EMPTY) //Si options llega nulo, se setea como un array vacio (Evita nullPointerException)
