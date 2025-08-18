@@ -7,6 +7,7 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRemoveBalanceService;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
+import trinity.play2learn.backend.economy.transaccion.mappers.TransaccionMapper;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.repositories.ITransaccionRepository;
@@ -42,14 +43,14 @@ public class RecompensaTransaccionService implements ITransaccionStrategyService
             throw new IllegalArgumentException(EconomyMessages.NOT_ENOUGH_WALLET_MONEY_SUBJECT);
         }
 
-        Transaccion transaccion = Transaccion.builder()
-        .amount(amount)
-        .description(description)
-        .origin(origin)
-        .destination(destination)
-        .wallet(wallet)
-        .subject(subject)
-        .build();
+        Transaccion transaccion = TransaccionMapper.toModel(
+            amount, 
+            description, 
+            origin, 
+            destination, 
+            wallet, 
+            subject
+        );
 
         Transaccion transaccionSaved = transaccionRepository.save(transaccion);
 

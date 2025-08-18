@@ -9,6 +9,7 @@ import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
+import trinity.play2learn.backend.economy.transaccion.mappers.TransaccionMapper;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.repositories.ITransaccionRepository;
@@ -48,14 +49,14 @@ public class AsignacionTransaccionService implements ITransaccionStrategyService
             reserve.setReserveBalance(reserve.getReserveBalance() + (amount - reserve.getReserveBalance()));
         }
 
-        Transaccion transaccion = Transaccion.builder()
-        .amount(amount)
-        .description(description)
-        .origin(origin)
-        .destination(destination)
-        .wallet(null)
-        .subject(subject)
-        .build();
+        Transaccion transaccion = TransaccionMapper.toModel(
+            assignAmount, 
+            description, 
+            origin, 
+            destination, 
+            null, 
+            subject
+        );
 
         Transaccion transaccionSaved = transaccionRepository.save(transaccion);
 
