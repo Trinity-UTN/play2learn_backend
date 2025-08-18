@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRemoveBalanceService;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
-import trinity.play2learn.backend.economy.reserve.services.interfaces.IModifyReserveService;
+import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.repositories.ITransaccionRepository;
 import trinity.play2learn.backend.economy.transaccion.services.interfaces.IStrategyTransaccionService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
-import trinity.play2learn.backend.economy.wallet.services.interfaces.IAddAmountWalletService;
-import trinity.play2learn.backend.economy.wallet.services.interfaces.IRemoveAmountWalletService;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 
 @Service ("RECOMPENSA")
 @AllArgsConstructor
@@ -21,11 +21,11 @@ public class RecompensaTransaccionService implements IStrategyTransaccionService
 
     private final ITransaccionRepository transaccionRepository;
 
-    private final IRemoveAmountWalletService removeAmountWalletService;
+    private final IWalletRemoveAmountService removeAmountWalletService;
 
-    private final IAddAmountWalletService addAmountWalletService;
+    private final IWalletAddAmountService addAmountWalletService;
 
-    private final IModifyReserveService modifyReserveService;
+    private final IReserveModifyService modifyReserveService;
 
     private final ISubjectRemoveBalanceService subjectRemoveBalanceService;
 

@@ -7,11 +7,11 @@ import trinity.play2learn.backend.configs.exceptions.NotFoundException;
 import trinity.play2learn.backend.configs.messages.NotFoundExceptionMesagges;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.repositories.IReserveRepository;
-import trinity.play2learn.backend.economy.reserve.services.interfaces.IFindLastReserveService;
+import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 
 @Service
 @AllArgsConstructor
-public class FindLastReserveService implements IFindLastReserveService{
+public class ReserveFindLastService implements IReserveFindLastService{
     
     private final IReserveRepository reserveRepository;
 

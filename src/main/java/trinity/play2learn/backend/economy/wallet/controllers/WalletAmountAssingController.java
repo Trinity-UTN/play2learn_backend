@@ -23,7 +23,7 @@ import trinity.play2learn.backend.user.models.Role;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wallet/test")
-public class WalletAmountAsingController {
+public class WalletAmountAssingController {
 
     private final IGenerateTransaccionService generateTransaccionService;
 

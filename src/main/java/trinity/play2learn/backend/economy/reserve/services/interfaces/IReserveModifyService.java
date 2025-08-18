@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.economy.reserve.services.interfaces;
 
-public interface IModifyReserveService {
+public interface IReserveModifyService {
     
     public void moveToReserve (Double amount);
 

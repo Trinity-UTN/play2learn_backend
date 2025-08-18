@@ -7,8 +7,8 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectAddBalanceService;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
-import trinity.play2learn.backend.economy.reserve.services.interfaces.IFindLastReserveService;
-import trinity.play2learn.backend.economy.reserve.services.interfaces.IModifyReserveService;
+import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
+import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.repositories.ITransaccionRepository;
@@ -19,13 +19,13 @@ import trinity.play2learn.backend.economy.wallet.models.Wallet;
 @AllArgsConstructor
 public class AsignacionTransaccionService implements IStrategyTransaccionService{
 
-    private final IFindLastReserveService findLastReserveService;
+    private final IReserveFindLastService findLastReserveService;
 
     private final ISubjectAddBalanceService subjectAddBalanceService;
 
     private final ITransaccionRepository transaccionRepository;
 
-    private final IModifyReserveService modifyReserveService;
+    private final IReserveModifyService modifyReserveService;
     
     @Override
     public Transaccion execute(
