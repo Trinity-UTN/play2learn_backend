@@ -9,13 +9,13 @@ import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveMo
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.repositories.ITransaccionRepository;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.IStrategyTransaccionService;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 
 @Service ("COMPRA")
 @AllArgsConstructor
-public class CompraTransaccionService implements IStrategyTransaccionService{
+public class CompraTransaccionService implements ITransaccionStrategyService{
 
     private final ITransaccionRepository transaccionRepository;
 

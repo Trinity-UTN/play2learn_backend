@@ -11,15 +11,15 @@ import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.IGenerateTransaccionService;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.IStrategyTransaccionService;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 
 @Service
 @AllArgsConstructor
-public class GenerateTransaccionService implements IGenerateTransaccionService{
+public class TransaccionGenerateService implements ITransaccionGenerateService{
 
-    private final Map<String, IStrategyTransaccionService> strategies;
+    private final Map<String, ITransaccionStrategyService> strategies;
 
 
     @Override
@@ -36,7 +36,7 @@ public class GenerateTransaccionService implements IGenerateTransaccionService{
             throw new IllegalArgumentException(EconomyMessages.AMOUNT_MAJOR_TO_0);
         }
 
-        IStrategyTransaccionService strategy = strategies.get(type.name());
+        ITransaccionStrategyService strategy = strategies.get(type.name());
 
         if (strategy == null) {
             throw new IllegalArgumentException(EconomyMessages.getTransaccionNoSupported(type.name()));

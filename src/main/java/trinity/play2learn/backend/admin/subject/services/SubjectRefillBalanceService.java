@@ -13,7 +13,7 @@ import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRefi
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.IGenerateTransaccionService;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class SubjectRefillBalanceService implements ISubjectRefillBalanceService
 
     private final ISubjectRepository subjectRepository;
 
-    private final IGenerateTransaccionService generateTransaccionService;
+    private final ITransaccionGenerateService generateTransaccionService;
 
     @Override
     public List<SubjectResponseDto> cu58RefillBalance() {

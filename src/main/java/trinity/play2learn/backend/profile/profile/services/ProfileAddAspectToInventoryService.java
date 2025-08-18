@@ -9,7 +9,7 @@ import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.IGenerateTransaccionService;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 import trinity.play2learn.backend.profile.avatar.models.Aspect;
 import trinity.play2learn.backend.profile.avatar.services.interfaces.IAspectGetByIdService;
 import trinity.play2learn.backend.profile.profile.models.Profile;
@@ -27,7 +27,7 @@ public class ProfileAddAspectToInventoryService implements IProfileAddAspectToIn
 
     private final IProfileRepository profileRepository;
 
-    private final IGenerateTransaccionService generateTransaccionService;
+    private final ITransaccionGenerateService generateTransaccionService;
 
     
     @Override

@@ -5,7 +5,7 @@ import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 
-public interface IStrategyTransaccionService {
+public interface ITransaccionStrategyService {
     
     public Transaccion execute (
         Double amount,

@@ -17,7 +17,7 @@ import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
 import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.IGenerateTransaccionService;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 import trinity.play2learn.backend.user.models.Role;
 
 @RestController
@@ -25,7 +25,7 @@ import trinity.play2learn.backend.user.models.Role;
 @RequestMapping("/wallet/test")
 public class WalletAmountAssingController {
 
-    private final IGenerateTransaccionService generateTransaccionService;
+    private final ITransaccionGenerateService generateTransaccionService;
 
     private final IStudentGetByIdService studentGetByIdService;
 

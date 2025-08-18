@@ -6,7 +6,7 @@ import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
 import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 
-public interface IGenerateTransaccionService {
+public interface ITransaccionGenerateService {
     
     public Transaccion generate (
         TypeTransaccion type,
