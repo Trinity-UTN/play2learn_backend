@@ -5,5 +5,6 @@ public enum TypeTransaccion {
     INVERSION,
     RECOMPENSA,
     ASIGNACION,
-    REEMBOLSO
+    REEMBOLSO,
+    ACTIVIDAD
 }

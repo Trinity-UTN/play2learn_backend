@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.clasificacion.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.clasificacion.dtos.request.ClasificacionActivityRequestDto;
 import trinity.play2learn.backend.activity.clasificacion.dtos.response.ClasificacionActivityResponseDto;
 import trinity.play2learn.backend.activity.clasificacion.models.ClasificacionActivity;
@@ -17,6 +18,9 @@ public class ClasificacionActivityMapper {
             .startDate(activityDto.getStartDate())
             .endDate(activityDto.getEndDate())
             .attempts(activityDto.getAttempts())
+            .actualBalance(activityDto.getInitialBalance())
+            .initialBalance(activityDto.getInitialBalance())
+            .typeReward(TypeReward.EQUITATIVO)
             .build();
 
         activity.setCategories(CategoryClasificacionMapper.toModelList(activityDto.getCategories())); // Relaciono cada categoria con la actividad
@@ -36,6 +40,8 @@ public class ClasificacionActivityMapper {
             .attempts(activity.getAttempts())
             .subject(SubjectMapper.toSubjectDto(activity.getSubject())) 
             .categories(CategoryClasificacionMapper.toDtoList(activity.getCategories()))
+            .actualBalance(activity.getActualBalance())
+            .initialBalance(activity.getInitialBalance())
             .build();
     }
 }

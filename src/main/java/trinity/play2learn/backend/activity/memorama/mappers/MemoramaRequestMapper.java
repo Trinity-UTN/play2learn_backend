@@ -23,7 +23,8 @@ public class MemoramaRequestMapper {
         Long subjectId,
         int attempts,
         List<String> concepts, 
-        List<MultipartFile> images
+        List<MultipartFile> images,
+        Double initialBalance
     ){
         if (concepts.size() != images.size()) {
             throw new BadRequestException("La cantidad de conceptos e imágenes no coincide");
@@ -46,6 +47,8 @@ public class MemoramaRequestMapper {
         dto.setSubjectId(subjectId);
         dto.setAttempts(attempts);
         dto.setCouples(parejas);
+        dto.setInitialBalance(initialBalance);
+        dto.setActualBalance(initialBalance);
 
         //Antes valido el dto que cumpla con las restricciones impuestas
         ValidateMemoramaDto.validateDto(dto);

@@ -30,6 +30,7 @@ public class ValidationMessages {
     public static final String NOT_NULL_END_DATE = "La fecha de finalizacion no puede estar vacia.";
     public static final String NOT_NULL_DIFICULTY = "La dificultad no puede estar vacia.";
     public static final String NOT_NULL_SUBJECT = "La materia no puede estar vacia.";
+    public static final String NOT_NULL_TYPE_REWARD = "El tipo de recompensa no puede estar vacio.";
 
     public static final String NOT_EMPTY_WORD = "La palabra no puede estar vacia.";
     public static final String MAX_LENGTH_WORD = "La palabra no puede tener mas de 50 caracteres.";

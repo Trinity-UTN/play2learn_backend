@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.completarOracion.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.CompletarOracionActivityRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.dtos.response.CompletarOracionActivityResponseDto;
 import trinity.play2learn.backend.activity.completarOracion.models.CompletarOracionActivity;
@@ -17,6 +18,9 @@ public class CompletarOracionActivityMapper {
                 .startDate(activityDto.getStartDate())
                 .endDate(activityDto.getEndDate())
                 .attempts(activityDto.getAttempts())
+                .actualBalance(activityDto.getInitialBalance())
+                .initialBalance(activityDto.getInitialBalance())
+                .typeReward(TypeReward.EQUITATIVO)
                 .build();
 
         activity.setSentences(SentenceCompletarOracionMapper.toModelList(activityDto.getSentences())); // Relaciono cada oracion con la actividad
@@ -36,6 +40,8 @@ public class CompletarOracionActivityMapper {
                 .endDate(activity.getEndDate())
                 .attempts(activity.getAttempts())
                 .sentences(SentenceCompletarOracionMapper.toDtoList(activity.getSentences()))
+                .initialBalance(activity.getInitialBalance())
+                .actualBalance(activity.getActualBalance())
                 .build();
     }
 }

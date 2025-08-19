@@ -18,6 +18,9 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IValidateEvents;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
+import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +34,8 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
     private final IOrdenarSecuenciaRepository ordenarSecuenciaRepository;
 
     private final IEventsGenerateService eventsGenerateService;
+
+    private final ITransaccionGenerateService transaccionGenerateService;
     
     @Override
     @Transactional
@@ -58,6 +63,16 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
         //Persisto en cascada la actividad con sus eventos
         ordenarSecuenciaToSave.setEvents(events);
         OrdenarSecuencia ordenarSecuenciaSaved = ordenarSecuenciaRepository.save(ordenarSecuenciaToSave); 
+
+        transaccionGenerateService.generate (
+            TypeTransaccion.ACTIVIDAD,
+            dto.getInitialBalance(),
+            "Actividad de ordenar secuencia",
+            ActorTransaccion.SISTEMA,
+            ActorTransaccion.SISTEMA,
+            null,
+            subject
+        );
 
         return OrdenarSecuenciaMapper.toDto(ordenarSecuenciaSaved);
     }

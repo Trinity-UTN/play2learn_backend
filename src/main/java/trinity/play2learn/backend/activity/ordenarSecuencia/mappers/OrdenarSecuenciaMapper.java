@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.ordenarSecuencia.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request.OrdenarSecuenciaRequestDto;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.response.OrdenarSecuenciaResponseDto;
 import trinity.play2learn.backend.activity.ordenarSecuencia.models.OrdenarSecuencia;
@@ -17,6 +18,9 @@ public class OrdenarSecuenciaMapper {
             .endDate(dto.getEndDate())
             .attempts(dto.getAttempts())
             .subject(subject)
+            .actualBalance(dto.getInitialBalance())
+            .initialBalance(dto.getInitialBalance())
+            .typeReward(TypeReward.EQUITATIVO)
             .build();
     }
 
@@ -31,6 +35,8 @@ public class OrdenarSecuenciaMapper {
             .attempts(ordenarSecuencia.getAttempts())
             .subject(SubjectMapper.toSubjectDto(ordenarSecuencia.getSubject()))
             .events(EventMapper.toDtoList(ordenarSecuencia.getEvents()))
+            .actualBalance(ordenarSecuencia.getActualBalance())
+            .initialBalance(ordenarSecuencia.getInitialBalance())
             .build();
     }
     

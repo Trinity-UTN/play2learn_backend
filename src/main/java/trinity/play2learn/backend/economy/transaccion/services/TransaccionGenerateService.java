@@ -31,7 +31,8 @@ public class TransaccionGenerateService implements ITransaccionGenerateService{
         ActorTransaccion origin, 
         ActorTransaccion destination, 
         Wallet wallet, 
-        Subject subject) {
+        Subject subject
+        ) {
         if (amount <= 0) {
             throw new IllegalArgumentException(EconomyMessages.AMOUNT_MAJOR_TO_0);
         }

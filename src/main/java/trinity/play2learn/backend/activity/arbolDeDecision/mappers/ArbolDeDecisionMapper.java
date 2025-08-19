@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.arbolDeDecision.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.request.ArbolDeDecisionActivityRequestDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.response.ArbolDeDecisionActivityResponseDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.models.ArbolDeDecisionActivity;
@@ -18,6 +19,9 @@ public class ArbolDeDecisionMapper {
             .endDate(activityDto.getEndDate())
             .attempts(activityDto.getAttempts())
             .introduction(activityDto.getIntroduction())
+            .actualBalance(activityDto.getInitialBalance())
+            .initialBalance(activityDto.getInitialBalance())
+            .typeReward(TypeReward.EQUITATIVO)
             .build();
         
         activity.setDecisionTree(DecisionArbolDecisionMapper.toModelList(activityDto.getDecisionTree())) ; // Relaciono cada decision con la actividad
@@ -37,6 +41,8 @@ public class ArbolDeDecisionMapper {
             .endDate(activity.getEndDate())
             .attempts(activity.getAttempts())
             .introduction(activity.getIntroduction())
+            .actualBalance(activity.getActualBalance())
+            .initialBalance(activity.getInitialBalance())
             .decisionTree(DecisionArbolDecisionMapper.toDtoList(activity.getDecisionTree()))
             .build();}
 

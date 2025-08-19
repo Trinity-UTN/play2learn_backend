@@ -2,6 +2,7 @@ package trinity.play2learn.backend.economy.transaccion.services.strategyTransacc
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectAddBalanceService;
@@ -29,13 +30,15 @@ public class AsignacionTransaccionService implements ITransaccionStrategyService
     private final IReserveModifyService modifyReserveService;
     
     @Override
+    @Transactional
     public Transaccion execute(
         Double amount, 
         String description, 
         ActorTransaccion origin, 
         ActorTransaccion destination,
         Wallet wallet, 
-        Subject subject) {
+        Subject subject
+        ) {
 
         Double assignAmount = subject.getInitialBalance() - subject.getActualBalance();
 
@@ -55,7 +58,8 @@ public class AsignacionTransaccionService implements ITransaccionStrategyService
             origin, 
             destination, 
             null, 
-            subject
+            subject,
+            reserve
         );
 
         Transaccion transaccionSaved = transaccionRepository.save(transaccion);

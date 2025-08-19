@@ -13,14 +13,21 @@ import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreg
 import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosValidateCorrectOptionService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
+import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 
 @Service
 @AllArgsConstructor
 public class PreguntadosGenerateService implements IPreguntadosGenerateService{
     
     private final IPreguntadosRepository preguntadosRepository;
+
     private final ISubjectGetByIdService getSubjectByIdService;
+
     private final IPreguntadosValidateCorrectOptionService preguntadosValidateCorrectOptionService;
+
+    private final ITransaccionGenerateService transaccionGenerateService;
 
     @Transactional
     @Override
@@ -33,6 +40,16 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
         //Valido que una de las opciones sea correcta en cada pregunta
 
         Preguntados preguntados = PreguntadosMapper.toModel(preguntadosRequestDto, subject);
+
+        transaccionGenerateService.generate (
+            TypeTransaccion.ACTIVIDAD,
+            preguntadosRequestDto.getInitialBalance(),
+            "Actividad de preguntados",
+            ActorTransaccion.SISTEMA,
+            ActorTransaccion.SISTEMA,
+            null,
+            subject
+        );
         
         return PreguntadosMapper.toDto(preguntadosRepository.save(preguntados));
     }

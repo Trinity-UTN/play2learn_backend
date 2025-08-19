@@ -2,9 +2,11 @@ package trinity.play2learn.backend.economy.transaccion.services.strategyTransacc
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
+import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
 import trinity.play2learn.backend.economy.transaccion.mappers.TransaccionMapper;
 import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
@@ -24,14 +26,18 @@ public class CompraTransaccionService implements ITransaccionStrategyService{
 
     private final IReserveModifyService modifyReserveService;
 
+    private final IReserveFindLastService findLastReserveService;
+
     @Override
+    @Transactional
     public Transaccion execute(
         Double amount, 
         String description, 
         ActorTransaccion origin, 
         ActorTransaccion destination,
         Wallet wallet, 
-        Subject subject) {
+        Subject subject
+        ) {
         
         if (wallet.getBalance() < amount) {
             throw new IllegalArgumentException(EconomyMessages.NOT_ENOUGH_WALLET_MONEY_STUDENT);
@@ -43,7 +49,8 @@ public class CompraTransaccionService implements ITransaccionStrategyService{
             origin, 
             destination, 
             wallet, 
-            null
+            null,
+            findLastReserveService.get()
         );
 
         Transaccion transaccionSaved = transaccionRepository.save(transaccion);
