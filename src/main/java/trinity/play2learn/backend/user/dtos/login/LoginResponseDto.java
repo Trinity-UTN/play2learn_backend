@@ -15,8 +15,10 @@ public class LoginResponseDto {
     //El frontend unicamente necesita del token. El email y role sirven para testear desde el postman. 
     private Long id;
     private String email;
-    private Role role;
-
+    
     private String accessToken;
     private String refreshToken;
+    
+    private Role role;
+    private Object roleData; //StudentResponseDto, TeacherResponseDto o null si es ADMIN o DEV
 }
