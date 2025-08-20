@@ -12,6 +12,7 @@ import trinity.play2learn.backend.profile.avatar.models.TypeAspect;
 @Builder
 public class UnselectAspectRequestDto {
 
+    @NotNull
     private TypeAspect typeAspect;
 
     @NotNull
