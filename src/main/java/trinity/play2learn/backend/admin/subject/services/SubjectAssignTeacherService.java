@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectAssignTeacherRequestDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
@@ -23,11 +24,11 @@ public class SubjectAssignTeacherService implements ISubjectAssignTeacherService
 
     @Override
     @Transactional
-    public SubjectResponseDto cu49AssignTeacher(Long subjectId, Long teacherId) {
+    public SubjectResponseDto cu49AssignTeacher(SubjectAssignTeacherRequestDto requestDto) {
         
-        Subject subject = getSubjectByIdService.findById(subjectId);
+        Subject subject = getSubjectByIdService.findById(requestDto.getSubjectId());
 
-        Teacher teacher = getTeacherByIdService.findById(teacherId);
+        Teacher teacher = getTeacherByIdService.findById(requestDto.getTeacherId());
 
         subject.setTeacher(teacher);
         
