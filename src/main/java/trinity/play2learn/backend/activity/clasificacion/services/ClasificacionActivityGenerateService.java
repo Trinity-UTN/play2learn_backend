@@ -13,15 +13,23 @@ import trinity.play2learn.backend.activity.clasificacion.services.interfaces.ICl
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionValidateConceptsNamesService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
+import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 
 @Service
 @AllArgsConstructor
 public class ClasificacionActivityGenerateService implements IClasificacionGenerateService {
     
     private final IClasificacionActivityRepository clasificacionRepository;
+
     private final ISubjectGetByIdService subjectGetService;
+
     private final IClasificacionValidateCategoriesNamesService validateCategoriesNamesService;
+
     private final IClasificacionValidateConceptsNamesService validateConceptsNamesService;
+
+    private final ITransaccionGenerateService transaccionGenerateService;
 
     @Override
     @Transactional
@@ -35,6 +43,16 @@ public class ClasificacionActivityGenerateService implements IClasificacionGener
 
         //Lanza un 400 si los conceptos de todas las categorias tienen nombres repetidos
         validateConceptsNamesService.validateDuplicateConceptsNames(activityRequestDto);
+
+        transaccionGenerateService.generate (
+            TypeTransaccion.ACTIVIDAD,
+            activityRequestDto.getInitialBalance(),
+            "Actividad de clasificación",
+            ActorTransaccion.SISTEMA,
+            ActorTransaccion.SISTEMA,
+            null,
+            subject
+        );
 
         //Guarda la actividad en la base de datos y la retorno como response dto
         return ClasificacionActivityMapper.toDto(clasificacionRepository.save(ClasificacionActivityMapper.toModel(activityRequestDto, subject)));

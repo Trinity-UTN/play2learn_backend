@@ -14,15 +14,23 @@ import trinity.play2learn.backend.activity.completarOracion.services.interfaces.
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordsOrderService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
+import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 
 @Service
 @AllArgsConstructor
 public class CompletarOracionGenerateService implements ICompletarOracionGenerateService {
     
     private final ICompletarOracionRepository completarOracionRepository;
+
     private final ISubjectGetByIdService getSubjectByIdService;
+
     private final ICompletarOracionValidateWordsOrderService completarOracionValidateWordsOrderService;
+    
     private final ICompletarOracionValidateWordMissingService completarOracionValidateWordMissingService;
+
+    private final ITransaccionGenerateService   transaccionGenerateService;
 
     @Transactional
     @Override
@@ -45,6 +53,16 @@ public class CompletarOracionGenerateService implements ICompletarOracionGenerat
         CompletarOracionActivity activity = CompletarOracionActivityMapper.toModel(completarOracionActivityRequestDto, subject);
         
         activity.buildCompleteSentences(); //Cada oracion arma su oracion completa en base al listado de palabras
+
+        transaccionGenerateService.generate (
+            TypeTransaccion.ACTIVIDAD,
+            completarOracionActivityRequestDto.getInitialBalance(),
+            "Actividad de ahorcado",
+            ActorTransaccion.SISTEMA,
+            ActorTransaccion.SISTEMA,
+            null,
+            subject
+        );
 
         return CompletarOracionActivityMapper.toDto(completarOracionRepository.save(activity)); 
 

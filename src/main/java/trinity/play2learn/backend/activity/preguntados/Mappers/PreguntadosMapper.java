@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.preguntados.Mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.preguntados.dtos.request.PreguntadosRequestDto;
 import trinity.play2learn.backend.activity.preguntados.dtos.response.PreguntadosResponseDto;
 import trinity.play2learn.backend.activity.preguntados.models.Preguntados;
@@ -18,6 +19,9 @@ public class PreguntadosMapper {
             .endDate(preguntadosDto.getEndDate())
             .attempts(preguntadosDto.getAttempts())
             .maxTimePerQuestion(preguntadosDto.getMaxTimePerQuestionInSeconds())
+            .actualBalance(preguntadosDto.getInitialBalance())
+            .initialBalance(preguntadosDto.getInitialBalance())
+            .typeReward(TypeReward.EQUITATIVO)
             .build();
         
         preguntados.setQuestions(QuestionMapper.toModelList(preguntadosDto.getQuestions()));
@@ -37,6 +41,8 @@ public class PreguntadosMapper {
             .attempts(preguntados.getAttempts())
             .maxTimePerQuestionInSeconds(preguntados.getMaxTimePerQuestion())
             .questions(QuestionMapper.toDtoList(preguntados.getQuestions()))
+            .actualBalance(preguntados.getActualBalance())
+            .initialBalance(preguntados.getInitialBalance())
             .build();
     }
 }

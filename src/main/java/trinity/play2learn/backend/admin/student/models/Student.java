@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.admin.student.models;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -16,8 +17,10 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.user.models.User;
 
@@ -29,6 +32,7 @@ import trinity.play2learn.backend.user.models.User;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Table(name = "students")
 public class Student {
     @Id
@@ -62,6 +66,10 @@ public class Student {
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private Profile profile;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "wallet_id", referencedColumnName = "id")
+    private Wallet wallet;
+
     public void delete () {
         this.deletedAt = LocalDateTime.now();
         user.delete();
@@ -71,4 +79,9 @@ public class Student {
         this.deletedAt = null;
         user.restore();
     }
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // suficiente en entidades JPA
+    }
+
 }

@@ -9,6 +9,8 @@ import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.dtos.StudentSimplificatedResponse;
 import trinity.play2learn.backend.admin.student.dtos.StudentUpdateRequestDto;
 import trinity.play2learn.backend.admin.student.models.Student;
+import trinity.play2learn.backend.economy.wallet.dtos.response.WalletResponseDto;
+import trinity.play2learn.backend.economy.wallet.mappers.WalletMapper;
 import trinity.play2learn.backend.profile.profile.dtos.response.ProfileResponseDto;
 import trinity.play2learn.backend.profile.profile.mappers.ProfileMapper;
 import trinity.play2learn.backend.user.mapper.UserMapper;
@@ -36,10 +38,11 @@ public class StudentMapper {
             .course(CourseMapper.toDto(student.getCourse()))
             .active(student.getDeletedAt() == null)
             .profile((student.getProfile() != null) ? ProfileMapper.toDto(student.getProfile()) : null)
+            .wallet ((student.getWallet() != null) ? WalletMapper.toDto(student.getWallet()) : null)
             .build();
     }
 
-    public static StudentResponseDto toDto(Student student, ProfileResponseDto profile) {
+    public static StudentResponseDto toDto(Student student, ProfileResponseDto profile, WalletResponseDto wallet) {
         return StudentResponseDto.builder()
             .id(student.getId())
             .name(student.getName())
@@ -49,6 +52,7 @@ public class StudentMapper {
             .course(CourseMapper.toDto(student.getCourse()))
             .active(student.getDeletedAt() == null)
             .profile(profile)
+            .wallet(wallet)
             .build();
     }
 

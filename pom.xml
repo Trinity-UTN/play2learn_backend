@@ -131,6 +131,11 @@
 			<artifactId>jackson-datatype-jsr310</artifactId>
 			<version>2.15.2</version> <!-- ajustá según tu versión de Jackson -->
 		</dependency>
+		<dependency>
+			<groupId>net.datafaker</groupId>
+			<artifactId>datafaker</artifactId>
+			<version>2.3.0</version> <!-- poné la última disponible -->
+		</dependency>
 	</dependencies>
 
 	<build>

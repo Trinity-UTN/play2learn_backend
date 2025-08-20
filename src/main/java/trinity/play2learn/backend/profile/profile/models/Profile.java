@@ -2,6 +2,7 @@ package trinity.play2learn.backend.profile.profile.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -56,5 +57,10 @@ public class Profile {
     )
     @Builder.Default
     private List<Aspect> ownedAspects = new ArrayList<>();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id); // suficiente en entidades JPA
+    }
 
 }

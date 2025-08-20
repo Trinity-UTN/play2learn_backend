@@ -48,6 +48,12 @@ public abstract class Activity {
     @JoinColumn(name = "subject_id")
     private Subject subject;
 
+    private Double actualBalance = 0.0; 
+
+    private Double initialBalance = 0.0;
+
+    private TypeReward typeReward = TypeReward.EQUITATIVO; 
+
     public void delete(){
         this.deletedAt = LocalDateTime.now();
     }

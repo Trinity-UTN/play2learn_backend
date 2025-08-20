@@ -11,6 +11,8 @@ import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentRegisterService;
+import trinity.play2learn.backend.economy.wallet.mappers.WalletMapper;
+import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.profile.profile.mappers.ProfileMapper;
 import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.user.models.Role;
@@ -47,12 +49,19 @@ public class StudentRegisterService implements IStudentRegisterService{
         .student(studentToSave) // O podés omitirlo si no necesitás la relación inversa
         .build();
 
+        Wallet wallet = Wallet.builder()
+        .student(studentToSave)
+        .balance(0.0)
+        .invertedBalance(0.0)
+        .build();
+
         studentToSave.setProfile(profile);
+        studentToSave.setWallet(wallet);
 
         // Persistencia en cascada
         Student studentSaved = studentRepository.save(studentToSave);
 
-        return StudentMapper.toDto(studentSaved, ProfileMapper.toDto(profile));
+        return StudentMapper.toDto(studentSaved, ProfileMapper.toDto(profile), WalletMapper.toDto(wallet));
     }
     
 }

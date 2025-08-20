@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.noLudica.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequestDto;
 import trinity.play2learn.backend.activity.noLudica.dtos.response.NoLudicaResponseDto;
 import trinity.play2learn.backend.activity.noLudica.models.NoLudica;
@@ -19,6 +20,9 @@ public class NoLudicaMapper {
                 .subject(subject)
                 .excercise(dto.getExcercise())
                 .tipoEntrega(dto.getTipoEntrega())
+                .actualBalance(dto.getInitialBalance())
+                .initialBalance(dto.getInitialBalance())
+                .typeReward(TypeReward.EQUITATIVO)
                 .build();
     }
 
@@ -35,6 +39,8 @@ public class NoLudicaMapper {
                 .subject(SubjectMapper.toSubjectDto(noLudica.getSubject()))
                 .excercise(noLudica.getExcercise())
                 .tipoEntrega(noLudica.getTipoEntrega().name())
+                .actualBalance(noLudica.getActualBalance())
+                .initialBalance(noLudica.getInitialBalance())
                 .build();
     }
     

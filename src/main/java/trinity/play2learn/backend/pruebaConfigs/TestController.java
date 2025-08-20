@@ -1,109 +1,71 @@
 package trinity.play2learn.backend.pruebaConfigs;
 
+
+import java.util.Locale;
+import java.util.Random;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.configs.annotations.SessionRequired;
-import trinity.play2learn.backend.configs.exceptions.BadRequestException;
-import trinity.play2learn.backend.configs.exceptions.ConflictException;
-import trinity.play2learn.backend.configs.exceptions.ForbiddenException;
-import trinity.play2learn.backend.configs.exceptions.NotFoundException;
-import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
-import trinity.play2learn.backend.configs.imgBB.dtos.ImgBBUploadResultDTO;
-import trinity.play2learn.backend.configs.imgBB.services.ImageUploadService;
+import net.datafaker.Faker;
+import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
+import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectRequestDto;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRegisterService;
 import trinity.play2learn.backend.configs.response.BaseResponse;
-import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
-import trinity.play2learn.backend.user.models.Role;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/test")
 @AllArgsConstructor
 public class TestController {
 
-    // 👉 OK
-    @GetMapping("/ok")
-    @SessionRequired(roles = {Role.ROLE_ADMIN})
-    public ResponseEntity<BaseResponse<String>> testOk() {
-        return ResponseFactory.ok("Todo correcto", "Respuesta OK");
-    }
+    private final ICourseRepository courseRepository;
 
-    // ✅ CREATED
+    private final IStudentRepository studentRepository;
+
+    private final ISubjectRegisterService subjectRegisterService;
+
+
     @PostMapping("/created")
     public ResponseEntity<BaseResponse<String>> testCreated() {
-        return ResponseFactory.created("Recurso creado", "Respuesta CREATED");
-    }
 
-    // 🙌 ACCEPTED
-    @PostMapping("/accepted")
-    public ResponseEntity<BaseResponse<String>> testAccepted() {
-        return ResponseFactory.accepted("Procesando tarea", "Respuesta ACCEPTED");
-    }
+        Faker faker = new Faker(Locale.of("es", "AR"));
 
-    // 😶 NO CONTENT
-    @DeleteMapping("/no-content")
-    public ResponseEntity<BaseResponse<Void>> testNoContent() {
-        return ResponseFactory.noContent("Recurso eliminado con éxito");
-    }
+        Random random = new Random();
 
-    // 📄 PAGINATED
-    @GetMapping("/paginated")
-    public ResponseEntity<BaseResponse<PaginatedData<String>>> testPaginated() {
-        PaginatedData<String> paginated = PaginatedData.<String>builder()
-        .results(List.of("Uno", "Dos", "Tres"))
-        .count(3)
-        .pageSize(3)
-        .currentPage(1)
-        .totalPages(1)
-        .build();
+        Iterable<Course> courses = courseRepository.findAll();
 
-        return ResponseFactory.paginated(paginated, "Resultados paginados");
-    }
+        for (Course course : courses) {
 
-    // 🚨 BAD REQUEST
-    @GetMapping("/bad-request")
-    public void throwBadRequest() {
-        throw new BadRequestException("Esto es un error 400");
-    }
+            SubjectRequestDto subjectDto = SubjectRequestDto.builder()
+                .name("Matematica")
+                .courseId(course.getId())
+                .teacherId(random.nextLong(1,11))
+                .optional(false)
+                .build();
+            subjectRegisterService.cu28RegisterSubject(subjectDto);
+            SubjectRequestDto subjectDto2 = SubjectRequestDto.builder()
+                .name("Lengua")
+                .courseId(course.getId())
+                .teacherId(random.nextLong(1,11))
+                .optional(false)
+                .build();
+            subjectRegisterService.cu28RegisterSubject(subjectDto2);
 
-    // 🚫 UNAUTHORIZED
-    @GetMapping("/unauthorized")
-    public void throwUnauthorized() {
-        throw new UnauthorizedException("No tenés permisos");
-    }
+            SubjectRequestDto subjectDto3 = SubjectRequestDto.builder()
+                .name("Geografia")
+                .courseId(course.getId())
+                .teacherId(random.nextLong(1,11))
+                .optional(false)
+                .build();
+            subjectRegisterService.cu28RegisterSubject(subjectDto3);
 
-    // ❌ FORBIDDEN
-    @GetMapping("/forbidden")
-    public void throwForbidden() {
-        throw new ForbiddenException("Acceso prohibido");
-    }
-
-    // 🕳️ NOT FOUND
-    @GetMapping("/not-found")
-    public void throwNotFound() {
-        throw new NotFoundException("No se encontró el recurso");
-    }
-
-    // ⚔️ CONFLICT
-    @GetMapping("/conflict")
-    public void throwConflict() {
-        throw new ConflictException("Conflicto detectado");
-    }
-
-    private final ImageUploadService imageUploadService;
-
-    @PostMapping("/upload")
-    public ResponseEntity<ImgBBUploadResultDTO> testUpload(@RequestParam("file") MultipartFile file) {
-        try {
-            ImgBBUploadResultDTO result = imageUploadService.uploadImage(file);
-            return ResponseEntity.ok(result);
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().build();
         }
+
+           
+        return ResponseFactory.created("Recurso creado", "Respuesta CREATED");
     }
 
 }

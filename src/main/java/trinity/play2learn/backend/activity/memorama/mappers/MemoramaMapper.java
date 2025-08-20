@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.memorama.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaRequestDto;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.models.Memorama;
@@ -17,6 +18,9 @@ public class MemoramaMapper {
             .endDate(dto.getEndDate())
             .attempts(dto.getAttempts())
             .subject(subject)
+            .actualBalance(dto.getInitialBalance())
+            .initialBalance(dto.getInitialBalance())
+            .typeReward(TypeReward.EQUITATIVO)
             .build();
     }
 
@@ -32,6 +36,8 @@ public class MemoramaMapper {
             .attempts(memorama.getAttempts())
             .subject(SubjectMapper.toSubjectDto(memorama.getSubject()))
             .couples(CouplesMemoramaMapper.toDtoList(memorama.getCouples())) 
+            .initialBalance(memorama.getInitialBalance())
+            .actualBalance(memorama.getActualBalance())
             .build();
     }
 }

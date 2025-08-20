@@ -41,6 +41,7 @@ public class MemoramaRegisterController {
         @RequestParam int maxTime,
         @RequestParam Long subjectId,
         @RequestParam int attempts,
+        @RequestParam Double initialBalance,
         @RequestParam List<String> concepts,
         @RequestParam List<MultipartFile> images
     ) throws BadRequestException, IOException {
@@ -54,7 +55,8 @@ public class MemoramaRegisterController {
             subjectId,
             attempts,
             concepts,
-            images
+            images,
+            initialBalance
         )),
             SuccessfulMessages.createdSuccessfully("Actividad de Memorama")
         );

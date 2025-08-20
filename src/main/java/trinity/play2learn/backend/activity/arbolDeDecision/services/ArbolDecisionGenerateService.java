@@ -11,6 +11,9 @@ import trinity.play2learn.backend.activity.arbolDeDecision.repositories.IArbolDe
 import trinity.play2learn.backend.activity.arbolDeDecision.services.interfaces.IArbolDecisionGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
+import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 
 @Service
 @AllArgsConstructor
@@ -19,12 +22,24 @@ public class ArbolDecisionGenerateService implements IArbolDecisionGenerateServi
     private final IArbolDeDecisionRepository arbolDeDecisionRepository;
     private final ISubjectGetByIdService subjectGetService;
 
+    private final  ITransaccionGenerateService transaccionGenerateService;
+
     @Override
     @Transactional
     public ArbolDeDecisionActivityResponseDto cu46GenerateArbolDeDecisionActivity(ArbolDeDecisionActivityRequestDto activityDto) {
         
         Subject subject = subjectGetService.findById(activityDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
 
+        transaccionGenerateService.generate (
+            TypeTransaccion.ACTIVIDAD,
+            activityDto.getInitialBalance(),
+            "Actividad de árbol de decisión",
+            ActorTransaccion.SISTEMA,
+            ActorTransaccion.SISTEMA,
+            null,
+            subject
+        );
+            
         return ArbolDeDecisionMapper.toDto(arbolDeDecisionRepository.save(ArbolDeDecisionMapper.toModel(activityDto, subject)));
     }
 

@@ -32,7 +32,7 @@ public class AspectRegisterController {
     private final IAspectRegisterService aspectRegisterService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @SessionRequired (roles = {Role.ROLE_ADMIN})
+    @SessionRequired (roles = {Role.ROLE_DEV})
     public ResponseEntity<BaseResponse<AspectResponseDto>> register(
         @RequestParam String name,
         @RequestParam String price,

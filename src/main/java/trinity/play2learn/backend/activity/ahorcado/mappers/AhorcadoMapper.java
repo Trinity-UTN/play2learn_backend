@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.ahorcado.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.TypeReward;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoRequestDto;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoResponseDto;
 import trinity.play2learn.backend.activity.ahorcado.models.Ahorcado;
@@ -19,6 +20,9 @@ public class AhorcadoMapper {
             .attempts(ahorcadoDto.getAttempts())
             .word(ahorcadoDto.getWord())
             .errorsPermited(ahorcadoDto.getErrorsPermited())
+            .actualBalance(ahorcadoDto.getInitialBalance())
+            .initialBalance(ahorcadoDto.getInitialBalance())
+            .typeReward(TypeReward.EQUITATIVO)
             .build();
     }
 
@@ -35,6 +39,9 @@ public class AhorcadoMapper {
             .attempts(ahorcado.getAttempts())
             .word(ahorcado.getWord())
             .errorsPermited(ahorcado.getErrorsPermited().getValue()) //Devuelvo el valor entero de los errores.
+            .actualBalance(ahorcado.getActualBalance())
+            .initialBalance(ahorcado.getInitialBalance())
+            .typeReward(ahorcado.getTypeReward())
             .build();
     }
 }

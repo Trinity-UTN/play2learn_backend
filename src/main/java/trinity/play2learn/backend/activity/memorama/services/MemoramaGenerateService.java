@@ -18,6 +18,9 @@ import trinity.play2learn.backend.activity.memorama.services.interfaces.ICouples
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
+import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
+import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +31,8 @@ public class MemoramaGenerateService implements IMemoramaGenerateService{
     private final IMemoramaRepository memoramaRepository;
 
     private final ICouplesMemoramaGenerateService CouplesMemoramaGenerateService;
+
+    private final ITransaccionGenerateService transaccionGenerateService;
 
     @Override
     @Transactional
@@ -51,6 +56,16 @@ public class MemoramaGenerateService implements IMemoramaGenerateService{
         List<CouplesMemorama> Coupless = CouplesMemoramaGenerateService.registerList(memoramaRequestDto.getCouples(), memorama);
 
         memorama.setCouples(Coupless);
+
+        transaccionGenerateService.generate (
+            TypeTransaccion.ACTIVIDAD,
+            memoramaRequestDto.getInitialBalance(),
+            "Actividad de memorama",
+            ActorTransaccion.SISTEMA,
+            ActorTransaccion.SISTEMA,
+            null,
+            subject
+        );
 
         return MemoramaMapper.toDto (memoramaRepository.save(memorama));
     }

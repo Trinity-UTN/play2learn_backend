@@ -68,6 +68,11 @@ public class Subject {
     @Column(nullable = true)
     private LocalDateTime deletedAt;
 
+    private Double actualBalance;
+
+    private Double initialBalance;
+
+
     public void delete () {
         this.deletedAt = LocalDateTime.now();
     }

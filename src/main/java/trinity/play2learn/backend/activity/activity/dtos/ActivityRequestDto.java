@@ -35,4 +35,6 @@ public abstract class ActivityRequestDto {
     private Long subjectId;
 
     private int attempts;
+
+    private Double initialBalance;
 }

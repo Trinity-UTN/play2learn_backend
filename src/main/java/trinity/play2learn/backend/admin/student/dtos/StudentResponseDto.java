@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.admin.course.dtos.CourseResponseDto;
+import trinity.play2learn.backend.economy.wallet.dtos.response.WalletResponseDto;
 import trinity.play2learn.backend.profile.profile.dtos.response.ProfileResponseDto;
 import trinity.play2learn.backend.user.dtos.user.UserResponseDto;
 
@@ -29,5 +30,7 @@ public class StudentResponseDto {
     private boolean active;
 
     private ProfileResponseDto profile;
+
+    private WalletResponseDto wallet;
 
 }
