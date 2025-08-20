@@ -37,7 +37,4 @@ public abstract class ActivityRequestDto {
     private int attempts;
 
     private Double initialBalance;
-
-    private Double actualBalance;
-    
 }

@@ -48,7 +48,6 @@ public class MemoramaRequestMapper {
         dto.setAttempts(attempts);
         dto.setCouples(parejas);
         dto.setInitialBalance(initialBalance);
-        dto.setActualBalance(initialBalance);
 
         //Antes valido el dto que cumpla con las restricciones impuestas
         ValidateMemoramaDto.validateDto(dto);
