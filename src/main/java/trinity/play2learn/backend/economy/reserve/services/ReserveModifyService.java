@@ -20,12 +20,10 @@ public class ReserveModifyService implements IReserveModifyService {
     private final IReserveFindLastService findLastReserveService;
 
     @Override
-    public void moveToReserve(Double amount) {
+    public Reserve moveToReserve(Double amount, Reserve reserve) {
         if (amount <= 0) {
             throw new IllegalArgumentException("El monto debe ser mayor a 0");
         }
-
-        Reserve reserve = findLastReserveService.get();
 
         if (amount > reserve.getCirculationBalance()){
             throw new IllegalArgumentException("No hay suficiente dinero en la circulacion");
@@ -35,16 +33,14 @@ public class ReserveModifyService implements IReserveModifyService {
         reserve.setReserveBalance(reserve.getReserveBalance() + amount);
         reserve.setLastUpdateAt(LocalDateTime.now());
 
-        reserveRepository.save(reserve);
+        return reserveRepository.save(reserve);
     }
 
     @Override
-    public void moveToCirculation(Double amount) {
+    public Reserve moveToCirculation(Double amount, Reserve reserve) {
         if (amount <= 0) {
             throw new IllegalArgumentException(EconomyMessages.AMOUNT_MAJOR_TO_0);
         }
-        
-        Reserve reserve = findLastReserveService.get();
 
         if (amount > reserve.getReserveBalance()){
             throw new IllegalArgumentException(EconomyMessages.NOT_ENOUGH_RESERVE_MONEY);
@@ -53,7 +49,7 @@ public class ReserveModifyService implements IReserveModifyService {
         reserve.setReserveBalance(reserve.getReserveBalance() - amount);
         reserve.setCirculationBalance(reserve.getCirculationBalance() + amount);
 
-        reserveRepository.save(reserve);
+        return reserveRepository.save(reserve);
     }
 
     

@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
+import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
 import trinity.play2learn.backend.economy.transaccion.mappers.TransaccionMapper;
@@ -43,6 +44,8 @@ public class CompraTransaccionService implements ITransaccionStrategyService{
             throw new IllegalArgumentException(EconomyMessages.NOT_ENOUGH_WALLET_MONEY_STUDENT);
         }
 
+        Reserve reserve = findLastReserveService.get();
+
         Transaccion transaccion = TransaccionMapper.toModel(
             amount, 
             description, 
@@ -50,14 +53,14 @@ public class CompraTransaccionService implements ITransaccionStrategyService{
             destination, 
             wallet, 
             null,
-            findLastReserveService.get()
+            reserve
         );
 
         Transaccion transaccionSaved = transaccionRepository.save(transaccion);
 
         Wallet walletUpdated = removeAmountWalletService.execute(wallet, amount);
 
-        modifyReserveService.moveToReserve(amount);
+        modifyReserveService.moveToReserve(amount, reserve);
 
         return transaccionSaved;
     }

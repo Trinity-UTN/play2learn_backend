@@ -1,9 +1,11 @@
 package trinity.play2learn.backend.economy.reserve.services.interfaces;
 
+import trinity.play2learn.backend.economy.reserve.models.Reserve;
+
 public interface IReserveModifyService {
     
-    public void moveToReserve (Double amount);
+    public Reserve moveToReserve (Double amount, Reserve reserve);
 
-    public void moveToCirculation (Double amount);
+    public Reserve moveToCirculation (Double amount, Reserve reserve);
     
 }

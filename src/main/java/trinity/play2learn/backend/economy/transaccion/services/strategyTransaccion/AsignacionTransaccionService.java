@@ -52,6 +52,8 @@ public class AsignacionTransaccionService implements ITransaccionStrategyService
             reserve.setReserveBalance(reserve.getReserveBalance() + (amount - reserve.getReserveBalance()));
         }
 
+
+
         Transaccion transaccion = TransaccionMapper.toModel(
             assignAmount, 
             description, 
@@ -66,7 +68,7 @@ public class AsignacionTransaccionService implements ITransaccionStrategyService
 
         Subject subejctUpdated = subjectAddBalanceService.execute(subject, amount);
 
-        modifyReserveService.moveToCirculation(amount);
+        Reserve reserveUpdated = modifyReserveService.moveToCirculation(amount, reserve);
 
         return transaccionSaved;
     }
