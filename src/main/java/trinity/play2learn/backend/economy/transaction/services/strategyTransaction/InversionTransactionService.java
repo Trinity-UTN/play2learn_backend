@@ -1,26 +1,26 @@
-package trinity.play2learn.backend.economy.transaccion.services.strategyTransaccion;
+package trinity.play2learn.backend.economy.transaction.services.strategyTransaction;
 
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionStrategyService;
+import trinity.play2learn.backend.economy.transaction.models.Transaction;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 
 @Service ("INVERSION")
 @AllArgsConstructor
-public class InversionTransaccionService implements ITransaccionStrategyService{
+public class InversionTransactionService implements ITransactionStrategyService{
     
     @Override
     @Transactional
-    public Transaccion execute(
+    public Transaction execute(
         Double amount, 
         String description, 
-        ActorTransaccion origin, 
-        ActorTransaccion destination,
+        TransactionActor origin, 
+        TransactionActor destination,
         Wallet wallet, 
         Subject subject
         ) {

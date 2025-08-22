@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.economy.transaccion.services.strategyTransaccion;
+package trinity.play2learn.backend.economy.transaction.services.strategyTransaction;
 
 import org.springframework.stereotype.Service;
 
@@ -10,32 +10,32 @@ import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
-import trinity.play2learn.backend.economy.transaccion.mappers.TransaccionMapper;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
-import trinity.play2learn.backend.economy.transaccion.repositories.ITransaccionRepository;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionStrategyService;
+import trinity.play2learn.backend.economy.transaction.mappers.TransactionMapper;
+import trinity.play2learn.backend.economy.transaction.models.Transaction;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.repositories.ITransactionRepository;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 
 @Service ("ASIGNACION")
 @AllArgsConstructor
-public class AsignacionTransaccionService implements ITransaccionStrategyService{
+public class AsignacionTransactionService implements ITransactionStrategyService{
 
     private final IReserveFindLastService findLastReserveService;
 
     private final ISubjectAddBalanceService subjectAddBalanceService;
 
-    private final ITransaccionRepository transaccionRepository;
+    private final ITransactionRepository transaccionRepository;
 
     private final IReserveModifyService modifyReserveService;
     
     @Override
     @Transactional
-    public Transaccion execute(
+    public Transaction execute(
         Double amount, 
         String description, 
-        ActorTransaccion origin, 
-        ActorTransaccion destination,
+        TransactionActor origin, 
+        TransactionActor destination,
         Wallet wallet, 
         Subject subject
         ) {
@@ -54,7 +54,7 @@ public class AsignacionTransaccionService implements ITransaccionStrategyService
 
 
 
-        Transaccion transaccion = TransaccionMapper.toModel(
+        Transaction transaccion = TransactionMapper.toModel(
             assignAmount, 
             description, 
             origin, 
@@ -64,7 +64,7 @@ public class AsignacionTransaccionService implements ITransaccionStrategyService
             reserve
         );
 
-        Transaccion transaccionSaved = transaccionRepository.save(transaccion);
+        Transaction transaccionSaved = transaccionRepository.save(transaccion);
 
         Subject subejctUpdated = subjectAddBalanceService.execute(subject, amount);
 

@@ -6,10 +6,10 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
-import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
+import trinity.play2learn.backend.economy.transaction.models.Transaction;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.profile.avatar.models.Aspect;
 import trinity.play2learn.backend.profile.avatar.services.interfaces.IAspectGetByIdService;
 import trinity.play2learn.backend.profile.profile.models.Profile;
@@ -27,7 +27,7 @@ public class ProfileAddAspectToInventoryService implements IProfileAddAspectToIn
 
     private final IProfileRepository profileRepository;
 
-    private final ITransaccionGenerateService generateTransaccionService;
+    private final ITransactionGenerateService generateTransactionService;
 
     
     @Override
@@ -42,12 +42,12 @@ public class ProfileAddAspectToInventoryService implements IProfileAddAspectToIn
         
         //Falta la logica de los puntos porque aun no esta implementado
 
-        Transaccion transaccion = generateTransaccionService.generate(
-            TypeTransaccion.COMPRA, 
+        generateTransactionService.generate(
+            TypeTransaction.COMPRA, 
             Double.valueOf(aspect.getPrice().doubleValue()), 
             "Compra de Aspecto", 
-            ActorTransaccion.ESTUDIANTE, 
-            ActorTransaccion.SISTEMA, 
+            TransactionActor.ESTUDIANTE, 
+            TransactionActor.SISTEMA, 
             profile.getStudent().getWallet(), 
             null
         );

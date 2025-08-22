@@ -12,9 +12,9 @@ import trinity.play2learn.backend.activity.noLudica.repositories.INoLudicaReposi
 import trinity.play2learn.backend.activity.noLudica.services.interfaces.INoLudicaGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class NoLudicaGenerateService implements INoLudicaGenerateService{
 
     private final INoLudicaRepository noLudicaRepository;
 
-    private final ITransaccionGenerateService transaccionGenerateService;
+    private final ITransactionGenerateService transactionGenerateService;
 
     @Transactional
     @Override
@@ -32,12 +32,12 @@ public class NoLudicaGenerateService implements INoLudicaGenerateService{
         
         Subject subject = findSubjectByIdService.findById(dto.getSubjectId());
 
-        transaccionGenerateService.generate (
-            TypeTransaccion.ACTIVIDAD,
+        transactionGenerateService.generate (
+            TypeTransaction.ACTIVIDAD,
             dto.getInitialBalance(),
             "Actividad No Ludica",
-            ActorTransaccion.SISTEMA,
-            ActorTransaccion.SISTEMA,
+            TransactionActor.SISTEMA,
+            TransactionActor.SISTEMA,
             null,
             subject
         );

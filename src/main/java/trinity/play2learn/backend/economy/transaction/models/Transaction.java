@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.economy.transaccion.models;
+package trinity.play2learn.backend.economy.transaction.models;
 
 import java.time.LocalDateTime;
 
@@ -24,8 +24,8 @@ import trinity.play2learn.backend.economy.wallet.models.Wallet;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "transaccion")
-public class Transaccion {
+@Table(name = "transaction")
+public class Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,9 +35,9 @@ public class Transaccion {
 
     private String description;
 
-    private ActorTransaccion origin;
+    private TransactionActor origin;
 
-    private ActorTransaccion destination;
+    private TransactionActor destination;
 
     @ManyToOne
     @JoinColumn(name = "wallet_id")

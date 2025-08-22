@@ -18,9 +18,9 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IValidateEvents;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 
 @Service
 @AllArgsConstructor
@@ -35,7 +35,7 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
 
     private final IEventsGenerateService eventsGenerateService;
 
-    private final ITransaccionGenerateService transaccionGenerateService;
+    private final ITransactionGenerateService transactionGenerateService;
     
     @Override
     @Transactional
@@ -64,12 +64,12 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
         ordenarSecuenciaToSave.setEvents(events);
         OrdenarSecuencia ordenarSecuenciaSaved = ordenarSecuenciaRepository.save(ordenarSecuenciaToSave); 
 
-        transaccionGenerateService.generate (
-            TypeTransaccion.ACTIVIDAD,
+        transactionGenerateService.generate (
+            TypeTransaction.ACTIVIDAD,
             dto.getInitialBalance(),
             "Actividad de ordenar secuencia",
-            ActorTransaccion.SISTEMA,
-            ActorTransaccion.SISTEMA,
+            TransactionActor.SISTEMA,
+            TransactionActor.SISTEMA,
             null,
             subject
         );
