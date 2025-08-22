@@ -18,7 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
+import trinity.play2learn.backend.economy.transaction.models.Transaction;
 
 @Entity
 @Data
@@ -45,7 +45,7 @@ public class Reserve {
     private LocalDateTime lastUpdateAt;
 
     @OneToMany(mappedBy = "reserve", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Transaccion> transaccions = new ArrayList<>();
+    private List<Transaction> transactions = new ArrayList<>();
 
     @PrePersist //Antes de persistir la actividad se guarda su fecha de creacion
     private void setCreatedAt(){

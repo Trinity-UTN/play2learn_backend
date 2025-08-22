@@ -14,10 +14,10 @@ import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetB
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
-import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
+import trinity.play2learn.backend.economy.transaction.models.Transaction;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.user.models.Role;
 
 @RestController
@@ -25,7 +25,7 @@ import trinity.play2learn.backend.user.models.Role;
 @RequestMapping("/wallet/test")
 public class WalletAmountAssingController {
 
-    private final ITransaccionGenerateService generateTransaccionService;
+    private final ITransactionGenerateService generateTransactionService;
 
     private final IStudentGetByIdService studentGetByIdService;
 
@@ -41,12 +41,12 @@ public class WalletAmountAssingController {
 
         Subject subject = subjectGetByIdService.findById(3L);
 
-        Transaccion transaccion = generateTransaccionService.generate(
-            TypeTransaccion.RECOMPENSA, 
+        generateTransactionService.generate(
+            TypeTransaction.RECOMPENSA, 
             1000.0, 
             "Recompensa a estudiante", 
-            ActorTransaccion.SISTEMA, 
-            ActorTransaccion.ESTUDIANTE, 
+            TransactionActor.SISTEMA, 
+            TransactionActor.ESTUDIANTE, 
             student.getWallet(), 
             subject
         );

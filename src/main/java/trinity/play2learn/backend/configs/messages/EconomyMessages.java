@@ -12,10 +12,10 @@ public class EconomyMessages {
     public static final String NOT_ENOUGH_WALLET_MONEY_STUDENT = "El estudiante no tiene suficiente dinero para realizar la transaccion";
 
     //-------------------------- TRANSACCION MESSAGES --------------------------
-    public static final String TRANSACCION_NO_SOPORTED = "Tipo de transaccion no soportada: ";
+    public static final String TRANSACTION_NOT_SUPPORTED = "Tipo de transaccion no soportada: ";
 
-    public static String getTransaccionNoSupported(String type) {
-        return TRANSACCION_NO_SOPORTED + type;
+    public static String getTransactionNotSupported(String type) {
+        return TRANSACTION_NOT_SUPPORTED + type;
     }
 
     public static final String INCORRECT_AMOUNT = "El monto es incorrecto.";

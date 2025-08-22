@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.economy.transaccion.services.strategyTransaccion;
+package trinity.play2learn.backend.economy.transaction.services.strategyTransaction;
 
 import org.springframework.stereotype.Service;
 
@@ -9,19 +9,19 @@ import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
-import trinity.play2learn.backend.economy.transaccion.mappers.TransaccionMapper;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
-import trinity.play2learn.backend.economy.transaccion.repositories.ITransaccionRepository;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionStrategyService;
+import trinity.play2learn.backend.economy.transaction.mappers.TransactionMapper;
+import trinity.play2learn.backend.economy.transaction.models.Transaction;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.repositories.ITransactionRepository;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 
 @Service ("COMPRA")
 @AllArgsConstructor
-public class CompraTransaccionService implements ITransaccionStrategyService{
+public class CompraTransactionService implements ITransactionStrategyService{
 
-    private final ITransaccionRepository transaccionRepository;
+    private final ITransactionRepository transaccionRepository;
 
     private final IWalletRemoveAmountService removeAmountWalletService;
 
@@ -31,11 +31,11 @@ public class CompraTransaccionService implements ITransaccionStrategyService{
 
     @Override
     @Transactional
-    public Transaccion execute(
+    public Transaction execute(
         Double amount, 
         String description, 
-        ActorTransaccion origin, 
-        ActorTransaccion destination,
+        TransactionActor origin, 
+        TransactionActor destination,
         Wallet wallet, 
         Subject subject
         ) {
@@ -46,7 +46,7 @@ public class CompraTransaccionService implements ITransaccionStrategyService{
 
         Reserve reserve = findLastReserveService.get();
 
-        Transaccion transaccion = TransaccionMapper.toModel(
+        Transaction transaccion = TransactionMapper.toModel(
             amount, 
             description, 
             origin, 
@@ -56,7 +56,7 @@ public class CompraTransaccionService implements ITransaccionStrategyService{
             reserve
         );
 
-        Transaccion transaccionSaved = transaccionRepository.save(transaccion);
+        Transaction transaccionSaved = transaccionRepository.save(transaccion);
 
         Wallet walletUpdated = removeAmountWalletService.execute(wallet, amount);
 

@@ -10,10 +10,10 @@ import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRefillBalanceService;
-import trinity.play2learn.backend.economy.transaccion.models.ActorTransaccion;
-import trinity.play2learn.backend.economy.transaccion.models.Transaccion;
-import trinity.play2learn.backend.economy.transaccion.models.TypeTransaccion;
-import trinity.play2learn.backend.economy.transaccion.services.interfaces.ITransaccionGenerateService;
+import trinity.play2learn.backend.economy.transaction.models.Transaction;
+import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
+import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 
 @Service
 @AllArgsConstructor
@@ -21,7 +21,7 @@ public class SubjectRefillBalanceService implements ISubjectRefillBalanceService
 
     private final ISubjectRepository subjectRepository;
 
-    private final ITransaccionGenerateService generateTransaccionService;
+    private final ITransactionGenerateService generateTransactionService;
 
     @Override
     public List<SubjectResponseDto> cu58RefillBalance() {
@@ -33,12 +33,12 @@ public class SubjectRefillBalanceService implements ISubjectRefillBalanceService
                 subject.setInitialBalance(calculateInitialBalance(subject));  
             }
 
-            Transaccion transaccion = generateTransaccionService.generate(
-                TypeTransaccion.ASIGNACION,
+            generateTransactionService.generate(
+                TypeTransaction.ASIGNACION,
                 subject.getInitialBalance() - subject.getActualBalance(), 
                 "Asignación de monedas mensual.", 
-                ActorTransaccion.SISTEMA, 
-                ActorTransaccion.SISTEMA, 
+                TransactionActor.SISTEMA, 
+                TransactionActor.SISTEMA, 
                 null, 
                 subject
             );
