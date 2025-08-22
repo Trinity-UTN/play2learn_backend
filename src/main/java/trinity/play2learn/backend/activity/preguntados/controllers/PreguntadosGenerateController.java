@@ -11,9 +11,11 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.preguntados.dtos.request.PreguntadosRequestDto;
 import trinity.play2learn.backend.activity.preguntados.dtos.response.PreguntadosResponseDto;
 import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosGenerateService;
+import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
+import trinity.play2learn.backend.user.models.Role;
 
 @RestController
 @AllArgsConstructor
@@ -23,6 +25,7 @@ public class PreguntadosGenerateController {
     private final IPreguntadosGenerateService preguntadosGenerateService;
 
     @PostMapping
+    @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER})
     public ResponseEntity<BaseResponse<PreguntadosResponseDto>> generatePreguntados(@Valid @RequestBody PreguntadosRequestDto preguntadosRequestDto) {
 
         return ResponseFactory.created(
