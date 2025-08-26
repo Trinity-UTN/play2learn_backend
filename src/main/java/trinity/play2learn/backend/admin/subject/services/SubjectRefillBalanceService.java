@@ -10,7 +10,6 @@ import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRefillBalanceService;
-import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;

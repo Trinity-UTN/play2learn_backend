@@ -43,7 +43,7 @@ public class WalletAmountAssingController {
 
         generateTransactionService.generate(
             TypeTransaction.RECOMPENSA, 
-            1000.0, 
+            25000.0, 
             "Recompensa a estudiante", 
             TransactionActor.SISTEMA, 
             TransactionActor.ESTUDIANTE, 
