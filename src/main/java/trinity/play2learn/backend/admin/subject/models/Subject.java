@@ -88,4 +88,8 @@ public class Subject {
     public boolean hasTeacherByEmail(String email){
         return this.teacher.getUser().getEmail().equals(email);
     }
+
+    public void addStudent(Student student){
+        this.students.add(student);
+    }
 }
