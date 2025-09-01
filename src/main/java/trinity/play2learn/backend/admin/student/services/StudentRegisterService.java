@@ -11,6 +11,7 @@ import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentRegisterService;
+import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectAddStudentByCourseService;
 import trinity.play2learn.backend.economy.wallet.mappers.WalletMapper;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.profile.profile.mappers.ProfileMapper;
@@ -28,6 +29,8 @@ public class StudentRegisterService implements IStudentRegisterService{
     private final IUserCreateService userCreateService;
 
     private final IStudentRepository studentRepository;
+
+    private final ISubjectAddStudentByCourseService subjectAddStudentByCourseService;
 
     @Override
     public StudentResponseDto cu4registerStudent(StudentRequestDto studentRequestDto) {
@@ -58,8 +61,12 @@ public class StudentRegisterService implements IStudentRegisterService{
         studentToSave.setProfile(profile);
         studentToSave.setWallet(wallet);
 
+        
         // Persistencia en cascada
         Student studentSaved = studentRepository.save(studentToSave);
+        
+        //Asigna al estudiante a todas las materias del curso que no sean opcionales
+        subjectAddStudentByCourseService.addStudentByCourse(course, studentSaved);
 
         return StudentMapper.toDto(studentSaved, ProfileMapper.toDto(profile), WalletMapper.toDto(wallet));
     }
