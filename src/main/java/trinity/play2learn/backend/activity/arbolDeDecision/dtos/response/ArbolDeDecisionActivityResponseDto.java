@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import trinity.play2learn.backend.activity.activity.dtos.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
