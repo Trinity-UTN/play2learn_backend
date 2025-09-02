@@ -19,6 +19,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.profile.profile.models.Profile;
@@ -64,10 +65,12 @@ public class Student {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Profile profile;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "wallet_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Wallet wallet;
 
     public void delete () {

@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.activity.activity.dtos.ActivityRequestDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityRequestDto;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data

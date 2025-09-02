@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.dtos;
+package trinity.play2learn.backend.activity.activity.dtos.activityCreated;
 
 import java.time.LocalDateTime;
 

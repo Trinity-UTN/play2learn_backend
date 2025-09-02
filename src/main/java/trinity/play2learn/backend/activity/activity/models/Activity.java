@@ -3,9 +3,14 @@ package trinity.play2learn.backend.activity.activity.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -17,11 +22,17 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
-@MappedSuperclass
+@Inheritance(strategy =  InheritanceType.JOINED)
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder //Esta notacion es necesaria para que el builder herede de la clase padre
 public abstract class Activity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     //El nombre de la actividad sera el tipo de actividad (Ahorcado, preguntados, etc)
     @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION_1000)
     @Column(nullable = true)

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 @Entity
@@ -27,6 +28,7 @@ public class Wallet {
 
     @OneToOne
     @JoinColumn(name = "student_id", referencedColumnName = "id")
+    @ToString.Exclude
     private Student student;
 
     private Double balance;

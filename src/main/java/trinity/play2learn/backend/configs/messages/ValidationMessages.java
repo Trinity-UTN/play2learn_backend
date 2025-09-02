@@ -79,6 +79,9 @@ public class ValidationMessages {
     public static final String MAX_LENGTH_QUESTION = "La pregunta no puede tener mas de 200 caracteres.";
     public static final String LENGTH_OPTIONS = "El numero de opciones debe ser exactamente 3.";
 
+    public static final String NOT_NULL_ACTIVITY_ID = "El id de la actividad no puede estar vacio.";
+    public static final String NOT_NULL_STATE = "El estado no puede estar vacio.";
+
     //------------------------------------- ARBOL DE DECISION ------------------------------------------------------
     public static final String NOT_NULL_DECISION_TREE = "El arbol de decision no puede estar vacio.";
     public static final String OPTIONS_SIZE = "Una decisión debe tener exactamente 2 opciones o ninguna.";

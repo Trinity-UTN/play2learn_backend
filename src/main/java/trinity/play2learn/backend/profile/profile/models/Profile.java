@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.profile.avatar.models.Aspect;
 
@@ -27,6 +28,7 @@ import trinity.play2learn.backend.profile.avatar.models.Aspect;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profile")
+@ToString(exclude = "student")
 public class Profile {
 
     @Id
