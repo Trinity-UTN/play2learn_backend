@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.activity.completarOracion.mappers;
 
-import trinity.play2learn.backend.activity.activity.models.TypeReward;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.CompletarOracionActivityRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.dtos.response.CompletarOracionActivityResponseDto;
 import trinity.play2learn.backend.activity.completarOracion.models.CompletarOracionActivity;
@@ -11,6 +11,7 @@ public class CompletarOracionActivityMapper {
 
     public static CompletarOracionActivity toModel(CompletarOracionActivityRequestDto activityDto , Subject subject) {
         CompletarOracionActivity activity = CompletarOracionActivity.builder()
+                .name("Completar oracion")
                 .description(activityDto.getDescription())
                 .dificulty(activityDto.getDificulty())
                 .maxTime(activityDto.getMaxTime())
@@ -31,7 +32,7 @@ public class CompletarOracionActivityMapper {
     public static CompletarOracionActivityResponseDto toDto(CompletarOracionActivity activity) {
         return CompletarOracionActivityResponseDto.builder()
                 .id(activity.getId())
-                .name(activity.getClass().getSimpleName())
+                .name("Completar oracion")
                 .description(activity.getDescription())
                 .dificulty(activity.getDificulty())
                 .maxTime(activity.getMaxTime())

@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.activity.arbolDeDecision.mappers;
 
-import trinity.play2learn.backend.activity.activity.models.TypeReward;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.request.ArbolDeDecisionActivityRequestDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.response.ArbolDeDecisionActivityResponseDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.models.ArbolDeDecisionActivity;
@@ -11,6 +11,7 @@ public class ArbolDeDecisionMapper {
     
     public static ArbolDeDecisionActivity toModel(ArbolDeDecisionActivityRequestDto activityDto , Subject subject) {
         ArbolDeDecisionActivity activity = ArbolDeDecisionActivity.builder()
+            .name("Arbol de decision")
             .description(activityDto.getDescription())
             .dificulty(activityDto.getDificulty())
             .maxTime(activityDto.getMaxTime())

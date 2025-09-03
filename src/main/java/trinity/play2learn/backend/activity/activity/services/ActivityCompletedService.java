@@ -4,11 +4,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedRequestDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
-import trinity.play2learn.backend.activity.activity.models.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;

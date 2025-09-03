@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.activity.noLudica.mappers;
 
-import trinity.play2learn.backend.activity.activity.models.TypeReward;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequestDto;
 import trinity.play2learn.backend.activity.noLudica.dtos.response.NoLudicaResponseDto;
 import trinity.play2learn.backend.activity.noLudica.models.NoLudica;
@@ -11,6 +11,7 @@ public class NoLudicaMapper {
 
     public static NoLudica toModel (NoLudicaRequestDto dto, Subject subject) {
         return NoLudica.builder()
+                .name("No Ludica")
                 .description(dto.getDescription())
                 .dificulty(dto.getDificulty())
                 .maxTime(dto.getMaxTime())
@@ -30,7 +31,7 @@ public class NoLudicaMapper {
         return NoLudicaResponseDto.builder()
                 .id(noLudica.getId())
                 .description(noLudica.getDescription())
-                .name(noLudica.getClass().getSimpleName())
+                .name("No Ludica")
                 .dificulty(noLudica.getDificulty())
                 .maxTime(noLudica.getMaxTime())
                 .startDate(noLudica.getStartDate())

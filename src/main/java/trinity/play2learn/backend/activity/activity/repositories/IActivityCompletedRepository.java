@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
-import trinity.play2learn.backend.activity.activity.models.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.admin.student.models.Student;
 

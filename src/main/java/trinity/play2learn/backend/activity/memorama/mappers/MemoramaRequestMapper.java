@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import trinity.play2learn.backend.activity.activity.models.Dificulty;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaRequestDto;
+import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
 import trinity.play2learn.backend.activity.memorama.dtos.CouplesMemoramaRequestDto;
 import trinity.play2learn.backend.activity.memorama.dtos.ValidateMemoramaDto;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;

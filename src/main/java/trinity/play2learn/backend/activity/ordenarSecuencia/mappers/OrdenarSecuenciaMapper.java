@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.activity.ordenarSecuencia.mappers;
 
-import trinity.play2learn.backend.activity.activity.models.TypeReward;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request.OrdenarSecuenciaRequestDto;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.response.OrdenarSecuenciaResponseDto;
 import trinity.play2learn.backend.activity.ordenarSecuencia.models.OrdenarSecuencia;
@@ -11,6 +11,7 @@ public class OrdenarSecuenciaMapper {
 
     public static OrdenarSecuencia toModel (OrdenarSecuenciaRequestDto dto, Subject subject) {
         return OrdenarSecuencia.builder()
+            .name("Ordenar Secuencia")
             .description(dto.getDescription())
             .dificulty(dto.getDificulty())
             .maxTime(dto.getMaxTime())
@@ -27,6 +28,7 @@ public class OrdenarSecuenciaMapper {
     public static OrdenarSecuenciaResponseDto toDto (OrdenarSecuencia ordenarSecuencia) {
         return OrdenarSecuenciaResponseDto.builder()
             .id(ordenarSecuencia.getId())
+            .name("Ordenar Secuencia")
             .description(ordenarSecuencia.getDescription())
             .dificulty(ordenarSecuencia.getDificulty())
             .maxTime(ordenarSecuencia.getMaxTime())
