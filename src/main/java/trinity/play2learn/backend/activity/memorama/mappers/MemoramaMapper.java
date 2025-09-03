@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.activity.memorama.mappers;
 
-import trinity.play2learn.backend.activity.activity.models.TypeReward;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaRequestDto;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.models.Memorama;
@@ -11,6 +11,7 @@ public class MemoramaMapper {
     
     public static Memorama toModel (MemoramaRequestDto dto, Subject subject) {
         return Memorama.builder()
+            .name("Memorama")
             .description(dto.getDescription())
             .dificulty(dto.getDificulty())
             .maxTime(dto.getMaxTime())
@@ -28,7 +29,7 @@ public class MemoramaMapper {
         return MemoramaResponseDto.builder()
             .id(memorama.getId())
             .description(memorama.getDescription())
-            .name(memorama.getClass().getSimpleName())
+            .name("Memorama")
             .dificulty(memorama.getDificulty())
             .maxTime(memorama.getMaxTime())
             .startDate(memorama.getStartDate())
