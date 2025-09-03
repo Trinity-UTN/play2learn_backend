@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import trinity.play2learn.backend.activity.activity.models.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import jakarta.validation.constraints.NotNull;
 
 @Entity

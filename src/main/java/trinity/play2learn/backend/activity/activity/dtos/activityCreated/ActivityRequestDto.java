@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import trinity.play2learn.backend.activity.activity.models.Dificulty;
+import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data

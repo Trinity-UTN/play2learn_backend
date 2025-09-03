@@ -3,7 +3,7 @@ package trinity.play2learn.backend.activity.activity.services.commons;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.activity.activity.models.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.NotFoundException;

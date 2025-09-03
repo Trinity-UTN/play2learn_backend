@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.activity.activity.models.Dificulty;
+import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.mappers.MemoramaRequestMapper;
 import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
