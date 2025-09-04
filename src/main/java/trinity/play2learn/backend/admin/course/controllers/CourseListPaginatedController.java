@@ -25,7 +25,6 @@ public class CourseListPaginatedController {
 
     private final ICourseListPaginatedService courseListPaginatedService;
 
-
     @GetMapping ("/paginated")
     @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER, Role.ROLE_STUDENT})
     public ResponseEntity<BaseResponse<PaginatedData<CourseResponseDto>>> listPaginated(

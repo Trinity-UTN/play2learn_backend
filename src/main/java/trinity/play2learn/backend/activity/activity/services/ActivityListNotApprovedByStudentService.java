@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetNotApprovedByStudentService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityListNotApprovedByStudentService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateNotApprovedDtosService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
 import trinity.play2learn.backend.admin.student.models.Student;
@@ -16,7 +16,7 @@ import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
-public class ActivityGetNotApprovedByStudentService implements IActivityGetNotApprovedByStudentService {
+public class ActivityListNotApprovedByStudentService implements IActivityListNotApprovedByStudentService {
     
     private final IStudentGetByEmailService studentGetByEmailService;
     private final IActivityGetByStudentService activityGetByStudentService;

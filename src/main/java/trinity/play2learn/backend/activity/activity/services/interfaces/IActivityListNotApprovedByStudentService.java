@@ -5,7 +5,7 @@ import java.util.List;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.user.models.User;
 
-public interface IActivityGetNotApprovedByStudentService {
+public interface IActivityListNotApprovedByStudentService {
     
     List<ActivityStudentNotApprovedResponseDto> cu62ListNotApprovedActivitiesByStudent(User user);
 }
