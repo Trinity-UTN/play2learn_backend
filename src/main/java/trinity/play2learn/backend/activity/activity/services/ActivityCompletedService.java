@@ -8,11 +8,15 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedRequestDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -22,6 +26,8 @@ public class ActivityCompletedService implements IActivityCompletedService {
     private final IActivityGetByIdService activityFindByIdService;
     private final Map<String, IActivityCompletedStrategyService> activityCompletedStrategyServiceMap;
     private final IStudentGetByEmailService studentGetByEmailService;
+    private final IActivityValidatePublishedStatusService activityValidatePublishedStatusService;
+    private final IActivityGetCompletedStateService activityGetCompletedStateService;
 
     @Override
     @Transactional
@@ -31,6 +37,13 @@ public class ActivityCompletedService implements IActivityCompletedService {
         
         Student student = studentGetByEmailService.getByEmail(user.getEmail());
 
+        activityValidatePublishedStatusService.validatePublishedStatus(activity);
+
+        ActivityCompletedState activityCompletedState = activityGetCompletedStateService.getActivityCompletedState(activity, student);
+        if (activityCompletedState == ActivityCompletedState.APPROVED) {
+            throw new ConflictException("La actividad ya ha sido aprobada.");
+        }
+        
         IActivityCompletedStrategyService strategyService = activityCompletedStrategyServiceMap.get(activityCompletedRequestDto.getState().name());
 
         return strategyService.execute(activity, student);
