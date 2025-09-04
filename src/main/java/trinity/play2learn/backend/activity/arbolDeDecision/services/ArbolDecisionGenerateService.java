@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.request.ArbolDeDecisionActivityRequestDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.response.ArbolDeDecisionActivityResponseDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.mappers.ArbolDeDecisionMapper;
+import trinity.play2learn.backend.activity.arbolDeDecision.models.ArbolDeDecisionActivity;
 import trinity.play2learn.backend.activity.arbolDeDecision.repositories.IArbolDeDecisionRepository;
 import trinity.play2learn.backend.activity.arbolDeDecision.services.interfaces.IArbolDecisionGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
@@ -30,6 +31,8 @@ public class ArbolDecisionGenerateService implements IArbolDecisionGenerateServi
         
         Subject subject = subjectGetService.findById(activityDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
 
+        ArbolDeDecisionActivity activity = arbolDeDecisionRepository.save(ArbolDeDecisionMapper.toModel(activityDto, subject));
+
         transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
             activityDto.getInitialBalance(),
@@ -37,10 +40,11 @@ public class ArbolDecisionGenerateService implements IArbolDecisionGenerateServi
             TransactionActor.SISTEMA,
             TransactionActor.SISTEMA,
             null,
-            subject
+            subject,
+            activity
         );
             
-        return ArbolDeDecisionMapper.toDto(arbolDeDecisionRepository.save(ArbolDeDecisionMapper.toModel(activityDto, subject)));
+        return ArbolDeDecisionMapper.toDto(activity);
     }
 
     

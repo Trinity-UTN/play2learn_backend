@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectAddBalanceService;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
@@ -37,7 +38,8 @@ public class AsignacionTransactionService implements ITransactionStrategyService
         TransactionActor origin, 
         TransactionActor destination,
         Wallet wallet, 
-        Subject subject
+        Subject subject,
+        Activity activity
         ) {
 
         Double assignAmount = subject.getInitialBalance() - subject.getActualBalance();
@@ -61,6 +63,7 @@ public class AsignacionTransactionService implements ITransactionStrategyService
             destination, 
             null, 
             subject,
+            null,
             reserve
         );
 

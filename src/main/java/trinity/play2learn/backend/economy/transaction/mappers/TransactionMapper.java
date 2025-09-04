@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.economy.transaction.mappers;
 
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
@@ -16,6 +17,7 @@ public class TransactionMapper {
         TransactionActor destination,
         Wallet wallet,
         Subject subject,
+        Activity activity,
         Reserve reserve
     ){
         return Transaction.builder()
@@ -25,6 +27,7 @@ public class TransactionMapper {
         .destination(destination)
         .wallet(wallet)
         .subject(subject)
+        .activity(activity)
         .reserve(reserve)
         .build();
     }

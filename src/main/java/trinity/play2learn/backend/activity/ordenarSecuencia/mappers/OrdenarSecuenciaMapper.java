@@ -19,9 +19,9 @@ public class OrdenarSecuenciaMapper {
             .endDate(dto.getEndDate())
             .attempts(dto.getAttempts())
             .subject(subject)
-            .actualBalance(dto.getInitialBalance())
+            .actualBalance(0.0)
             .initialBalance(dto.getInitialBalance())
-            .typeReward(TypeReward.EQUITATIVO)
+            .typeReward((dto.getTypeReward() != null) ? dto.getTypeReward() : TypeReward.EQUITATIVO)
             .build();
     }
 

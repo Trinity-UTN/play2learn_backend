@@ -21,9 +21,9 @@ public class NoLudicaMapper {
                 .subject(subject)
                 .excercise(dto.getExcercise())
                 .tipoEntrega(dto.getTipoEntrega())
-                .actualBalance(dto.getInitialBalance())
+                .actualBalance(0.0)
                 .initialBalance(dto.getInitialBalance())
-                .typeReward(TypeReward.EQUITATIVO)
+                .typeReward((dto.getTypeReward() != null) ? dto.getTypeReward() : TypeReward.EQUITATIVO)
                 .build();
     }
 

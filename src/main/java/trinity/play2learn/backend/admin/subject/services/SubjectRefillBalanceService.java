@@ -39,7 +39,8 @@ public class SubjectRefillBalanceService implements ISubjectRefillBalanceService
                 TransactionActor.SISTEMA, 
                 TransactionActor.SISTEMA, 
                 null, 
-                subject
+                subject,
+                null
             );
         }
 

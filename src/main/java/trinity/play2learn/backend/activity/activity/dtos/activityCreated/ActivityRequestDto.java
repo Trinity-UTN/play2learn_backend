@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 @Data
@@ -37,4 +38,6 @@ public abstract class ActivityRequestDto {
     private int attempts;
 
     private Double initialBalance;
+
+    private TypeReward typeReward;
 }

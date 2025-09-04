@@ -57,6 +57,8 @@ public class MemoramaGenerateService implements IMemoramaGenerateService{
 
         memorama.setCouples(Coupless);
 
+        Memorama memoramaSaved = memoramaRepository.save(memorama);
+
         transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
             memoramaRequestDto.getInitialBalance(),
@@ -64,10 +66,11 @@ public class MemoramaGenerateService implements IMemoramaGenerateService{
             TransactionActor.SISTEMA,
             TransactionActor.SISTEMA,
             null,
-            subject
+            subject,
+            memoramaSaved
         );
 
-        return MemoramaMapper.toDto (memoramaRepository.save(memorama));
+        return MemoramaMapper.toDto(memoramaSaved);
     }
 
 }

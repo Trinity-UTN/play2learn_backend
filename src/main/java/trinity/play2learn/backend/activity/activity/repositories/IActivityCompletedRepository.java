@@ -6,10 +6,14 @@ import org.springframework.data.repository.CrudRepository;
 
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 public interface IActivityCompletedRepository extends CrudRepository<ActivityCompleted, Long> {
     
     //Trae la ultima actividad completada de un estudiante por actividad
     Optional<ActivityCompleted> findTopByActivityAndStudentOrderByCompletedAtDesc(Activity activity, Student student); 
+
+    int countByActivityAndState (Activity activity, ActivityCompletedState state);
+    
 }

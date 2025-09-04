@@ -54,6 +54,8 @@ public class CompletarOracionGenerateService implements ICompletarOracionGenerat
         
         activity.buildCompleteSentences(); //Cada oracion arma su oracion completa en base al listado de palabras
 
+        CompletarOracionActivity savedActivity = completarOracionRepository.save(activity);
+
         transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
             completarOracionActivityRequestDto.getInitialBalance(),
@@ -61,10 +63,11 @@ public class CompletarOracionGenerateService implements ICompletarOracionGenerat
             TransactionActor.SISTEMA,
             TransactionActor.SISTEMA,
             null,
-            subject
+            subject,
+            savedActivity
         );
 
-        return CompletarOracionActivityMapper.toDto(completarOracionRepository.save(activity)); 
+        return CompletarOracionActivityMapper.toDto(savedActivity); 
 
     }
 

@@ -4,8 +4,10 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityRemoveBalanceService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRemoveBalanceService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
@@ -30,7 +32,7 @@ public class RecompensaTransactionService implements ITransactionStrategyService
 
     private final IReserveModifyService modifyReserveService;
 
-    private final ISubjectRemoveBalanceService subjectRemoveBalanceService;
+    private final IActivityRemoveBalanceService activityRemoveBalanceService;
 
     private final IReserveFindLastService findLastReserveService;
 
@@ -42,11 +44,12 @@ public class RecompensaTransactionService implements ITransactionStrategyService
         TransactionActor origin, 
         TransactionActor destination,
         Wallet wallet, 
-        Subject subject
+        Subject subject,
+        Activity activity
         ) {
         
-        if (subject.getActualBalance() < amount) {
-            throw new IllegalArgumentException(EconomyMessages.NOT_ENOUGH_WALLET_MONEY_SUBJECT);
+        if (activity.getActualBalance() < amount) {
+            throw new ConflictException(EconomyMessages.NOT_ENOUGH_WALLET_MONEY_SUBJECT);
         }
 
         Transaction transaccion = TransactionMapper.toModel(
@@ -56,10 +59,13 @@ public class RecompensaTransactionService implements ITransactionStrategyService
             destination, 
             wallet, 
             subject,
+            activity,
             findLastReserveService.get()
         );
 
         Transaction transaccionSaved = transaccionRepository.save(transaccion);
+
+        activityRemoveBalanceService.execute(activity, amount);
 
         Wallet walletUpdated = addAmountWalletService.execute(wallet, amount);
 

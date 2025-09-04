@@ -34,19 +34,20 @@ public class AhorcadoGenerateService implements IAhorcadoGenerateService {
 
         Subject subject = getSubjectByIdService.findById(ahorcadoDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
 
-        Ahorcado ahorcadoActivity = AhorcadoMapper.toModel(ahorcadoDto, subject);
+        Ahorcado ahorcadoSaved = ahorcadoRepository.save(AhorcadoMapper.toModel(ahorcadoDto, subject));
 
         Transaction transaction = transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
-            ahorcadoActivity.getInitialBalance(),
+            ahorcadoSaved.getInitialBalance(),
             "Actividad de ahorcado",
             TransactionActor.SISTEMA,
             TransactionActor.SISTEMA,
             null,
-            subject
+            subject,
+            ahorcadoSaved
         );
 
-        return AhorcadoMapper.toDto(ahorcadoRepository.save(ahorcadoActivity));
+        return AhorcadoMapper.toDto(ahorcadoSaved);
     }
     
     

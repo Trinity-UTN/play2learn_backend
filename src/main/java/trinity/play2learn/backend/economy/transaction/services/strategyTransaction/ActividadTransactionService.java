@@ -5,8 +5,11 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityAddBalanceService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRemoveBalanceService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.transaction.mappers.TransactionMapper;
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
@@ -25,6 +28,8 @@ public class ActividadTransactionService implements ITransactionStrategyService 
 
     private final IReserveFindLastService reserveFindLastService;
 
+    private final IActivityAddBalanceService activityAddBalanceService;
+
     @Override
     @Transactional
     public Transaction execute(
@@ -33,17 +38,18 @@ public class ActividadTransactionService implements ITransactionStrategyService 
         TransactionActor origin, 
         TransactionActor destination,
         Wallet wallet, 
-        Subject subject
+        Subject subject,
+        Activity activity
         ) {
 
         if (amount > (0.3 * subject.getInitialBalance())){
-            throw new IllegalArgumentException(
+            throw new ConflictException(
                 "El monto de la actividad no puede ser mayor al 30% del balance inicial de la materia"
             );
         }
 
         if (amount > subject.getActualBalance()){
-            throw new IllegalArgumentException(
+            throw new ConflictException(
                 "La materia no cuenta con el balance suficiente para realizar la actividad"
             );
         }
@@ -55,10 +61,13 @@ public class ActividadTransactionService implements ITransactionStrategyService 
             destination, 
             wallet, 
             subject,
+            activity,
             reserveFindLastService.get()
         );
 
         subjectRemoveBalanceService.execute(subject, amount);
+
+        activityAddBalanceService.execute(activity, amount);
 
         return transaccionRepository.save(transaccion);
     }

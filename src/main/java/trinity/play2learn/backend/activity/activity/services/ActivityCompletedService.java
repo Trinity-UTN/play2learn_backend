@@ -25,11 +25,14 @@ import trinity.play2learn.backend.user.models.User;
 public class ActivityCompletedService implements IActivityCompletedService {
     
     private final IActivityGetByIdService activityFindByIdService;
+
     private final Map<String, IActivityCompletedStrategyService> activityCompletedStrategyServiceMap;
+    
     private final IStudentGetByEmailService studentGetByEmailService;
     private final IActivityValidatePublishedStatusService activityValidatePublishedStatusService;
     private final IActivityGetCompletedStateService activityGetCompletedStateService;
     private final IActivityGetRemainingAttemptsService activityGetRemainingAttemptsService;
+
 
     @Override
     @Transactional

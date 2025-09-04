@@ -20,9 +20,9 @@ public class PreguntadosMapper {
             .endDate(preguntadosDto.getEndDate())
             .attempts(preguntadosDto.getAttempts())
             .maxTimePerQuestion(preguntadosDto.getMaxTimePerQuestionInSeconds())
-            .actualBalance(preguntadosDto.getInitialBalance())
+            .actualBalance(0.0)
             .initialBalance(preguntadosDto.getInitialBalance())
-            .typeReward(TypeReward.EQUITATIVO)
+            .typeReward((preguntadosDto.getTypeReward() != null) ? preguntadosDto.getTypeReward() : TypeReward.EQUITATIVO)
             .build();
         
         preguntados.setQuestions(QuestionMapper.toModelList(preguntadosDto.getQuestions()));
