@@ -11,7 +11,6 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetRemainingAttemptsService;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 @Service("DISAPPROVED")
@@ -19,14 +18,13 @@ import trinity.play2learn.backend.admin.student.models.Student;
 public class ActivityDisapprovedStrategyService implements IActivityCompletedStrategyService{
     
     private final IActivityCompletedRepository activityCompletedRepository;
-    private final IActivityGetRemainingAttemptsService getRemainingAttemptsService;
 
     @Override
     @Transactional
-    public ActivityCompletedResponseDto execute(Activity activity, Student student) {
+    public ActivityCompletedResponseDto execute(Activity activity, Student student, Integer remainingAttempts) {
         
-        //Obtiene los intentos restantes del estudiante en la actividad y le resta 1, ya que la desaprobo
-        Integer remainingAttempts = getRemainingAttemptsService.getStudentRemainingAttempts(activity, student) - 1;
+        //Le resta 1 a los intentos restantes del estudiante, ya que la desaprobo
+        remainingAttempts-=1;
         
         ActivityCompleted activityCompleted = ActivityCompletedMapper.toModel(activity, student, null, remainingAttempts, ActivityCompletedState.DISAPPROVED);
         

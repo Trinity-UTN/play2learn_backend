@@ -6,5 +6,5 @@ import trinity.play2learn.backend.admin.student.models.Student;
 
 public interface IActivityCompletedStrategyService {
     
-    ActivityCompletedResponseDto execute(Activity activity, Student student);
+    ActivityCompletedResponseDto execute(Activity activity, Student student, Integer remainingAttempts);
 }

@@ -13,6 +13,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetRemainingAttemptsService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
@@ -28,6 +29,7 @@ public class ActivityCompletedService implements IActivityCompletedService {
     private final IStudentGetByEmailService studentGetByEmailService;
     private final IActivityValidatePublishedStatusService activityValidatePublishedStatusService;
     private final IActivityGetCompletedStateService activityGetCompletedStateService;
+    private final IActivityGetRemainingAttemptsService activityGetRemainingAttemptsService;
 
     @Override
     @Transactional
@@ -37,16 +39,25 @@ public class ActivityCompletedService implements IActivityCompletedService {
         
         Student student = studentGetByEmailService.getByEmail(user.getEmail());
 
+        //Valida que la actividad este publicada(fecha actual dentro de la fecha de inicio y fin de la actividad)
         activityValidatePublishedStatusService.validatePublishedStatus(activity);
 
+        //Valida que la actividad no haya sido aprobada
         ActivityCompletedState activityCompletedState = activityGetCompletedStateService.getActivityCompletedState(activity, student);
         if (activityCompletedState == ActivityCompletedState.APPROVED) {
             throw new ConflictException("La actividad ya ha sido aprobada.");
         }
         
+        //Valida que el estudiante tenga intentos restantes
+        Integer remainingAttempts = activityGetRemainingAttemptsService.getStudentRemainingAttempts(activity, student);
+        if (remainingAttempts == 0) {
+            throw new ConflictException("No quedan intentos para realizar la actividad.");
+            
+        }
+
         IActivityCompletedStrategyService strategyService = activityCompletedStrategyServiceMap.get(activityCompletedRequestDto.getState().name());
 
-        return strategyService.execute(activity, student);
+        return strategyService.execute(activity, student, remainingAttempts);
     }
     
     
