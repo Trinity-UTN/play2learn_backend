@@ -8,7 +8,7 @@ import org.apache.commons.math3.distribution.PoissonDistribution;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.activity.activity.models.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCalculateRewardStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCountByActivityAndState;

@@ -23,8 +23,6 @@ import trinity.play2learn.backend.economy.transaction.services.interfaces.ITrans
 public class ActivityApprovedStrategyService implements IActivityCompletedStrategyService {
     
     private final IActivityCompletedRepository activityCompletedRepository;
-
-    private final IActivityGetRemainingAttemptsService getRemainingAttemptsService;
     
     private final Map<String, IActivityCalculateRewardStrategyService> activityCalculateRewardStrategyServiceMap;
 
@@ -32,9 +30,7 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
 
 
     @Override
-    public ActivityCompletedResponseDto execute(Activity activity, Student student) {
-
-        Integer remainingAttempts = getRemainingAttemptsService.getStudentRemainingAttempts(activity, student);
+    public ActivityCompletedResponseDto execute(Activity activity, Student student, Integer remainingAttempts) {
 
         IActivityCalculateRewardStrategyService rewardStrategyService = activityCalculateRewardStrategyServiceMap.get(activity.getTypeReward().name());
 

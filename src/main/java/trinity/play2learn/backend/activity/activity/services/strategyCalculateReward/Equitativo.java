@@ -3,7 +3,7 @@ package trinity.play2learn.backend.activity.activity.services.strategyCalculateR
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.activity.activity.models.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCalculateRewardStrategyService;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 
