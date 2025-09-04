@@ -18,9 +18,9 @@ public class ClasificacionActivityMapper {
             .startDate(activityDto.getStartDate())
             .endDate(activityDto.getEndDate())
             .attempts(activityDto.getAttempts())
-            .actualBalance(activityDto.getInitialBalance())
+            .actualBalance(0.0)
             .initialBalance(activityDto.getInitialBalance())
-            .typeReward(TypeReward.EQUITATIVO)
+            .typeReward((activityDto.getTypeReward() != null) ? activityDto.getTypeReward() : TypeReward.EQUITATIVO)
             .build();
 
         activity.setCategories(CategoryClasificacionMapper.toModelList(activityDto.getCategories())); // Relaciono cada categoria con la actividad

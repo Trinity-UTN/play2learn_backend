@@ -48,6 +48,7 @@ public class ProfileAddAspectToInventoryService implements IProfileAddAspectToIn
             TransactionActor.ESTUDIANTE, 
             TransactionActor.SISTEMA, 
             profile.getStudent().getWallet(), 
+            null,
             null
         );
 

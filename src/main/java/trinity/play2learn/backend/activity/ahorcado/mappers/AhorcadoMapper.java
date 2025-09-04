@@ -20,9 +20,9 @@ public class AhorcadoMapper {
             .attempts(ahorcadoDto.getAttempts())
             .word(ahorcadoDto.getWord())
             .errorsPermited(ahorcadoDto.getErrorsPermited())
-            .actualBalance(ahorcadoDto.getInitialBalance())
+            .actualBalance(0.0)
             .initialBalance(ahorcadoDto.getInitialBalance())
-            .typeReward(TypeReward.EQUITATIVO)
+            .typeReward((ahorcadoDto.getTypeReward() != null) ? ahorcadoDto.getTypeReward() : TypeReward.EQUITATIVO)
             .build();
     }
 

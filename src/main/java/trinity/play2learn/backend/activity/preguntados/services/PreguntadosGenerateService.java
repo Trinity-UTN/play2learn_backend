@@ -39,7 +39,7 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
         preguntadosRequestDto.getQuestions().forEach(q -> preguntadosValidateCorrectOptionService.validateOneCorrectOption(q)); 
         //Valido que una de las opciones sea correcta en cada pregunta
 
-        Preguntados preguntados = PreguntadosMapper.toModel(preguntadosRequestDto, subject);
+        Preguntados preguntados = preguntadosRepository.save(PreguntadosMapper.toModel(preguntadosRequestDto, subject));
 
         transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
@@ -48,10 +48,11 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
             TransactionActor.SISTEMA,
             TransactionActor.SISTEMA,
             null,
-            subject
+            subject,
+            preguntados
         );
         
-        return PreguntadosMapper.toDto(preguntadosRepository.save(preguntados));
+        return PreguntadosMapper.toDto(preguntados);
     }
 
     

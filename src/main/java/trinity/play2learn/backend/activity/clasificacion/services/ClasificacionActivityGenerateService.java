@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.clasificacion.dtos.request.ClasificacionActivityRequestDto;
 import trinity.play2learn.backend.activity.clasificacion.dtos.response.ClasificacionActivityResponseDto;
 import trinity.play2learn.backend.activity.clasificacion.mappers.ClasificacionActivityMapper;
+import trinity.play2learn.backend.activity.clasificacion.models.ClasificacionActivity;
 import trinity.play2learn.backend.activity.clasificacion.repositories.IClasificacionActivityRepository;
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionGenerateService;
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionValidateCategoriesNamesService;
@@ -44,6 +45,8 @@ public class ClasificacionActivityGenerateService implements IClasificacionGener
         //Lanza un 400 si los conceptos de todas las categorias tienen nombres repetidos
         validateConceptsNamesService.validateDuplicateConceptsNames(activityRequestDto);
 
+        ClasificacionActivity activity = clasificacionRepository.save(ClasificacionActivityMapper.toModel(activityRequestDto, subject));
+
         transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
             activityRequestDto.getInitialBalance(),
@@ -51,11 +54,12 @@ public class ClasificacionActivityGenerateService implements IClasificacionGener
             TransactionActor.SISTEMA,
             TransactionActor.SISTEMA,
             null,
-            subject
+            subject,
+            activity
         );
 
         //Guarda la actividad en la base de datos y la retorno como response dto
-        return ClasificacionActivityMapper.toDto(clasificacionRepository.save(ClasificacionActivityMapper.toModel(activityRequestDto, subject)));
+        return ClasificacionActivityMapper.toDto(activity);
     }
     
     

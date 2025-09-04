@@ -19,9 +19,9 @@ public class ArbolDeDecisionMapper {
             .endDate(activityDto.getEndDate())
             .attempts(activityDto.getAttempts())
             .introduction(activityDto.getIntroduction())
-            .actualBalance(activityDto.getInitialBalance())
+            .actualBalance(0.0)
             .initialBalance(activityDto.getInitialBalance())
-            .typeReward(TypeReward.EQUITATIVO)
+            .typeReward((activityDto.getTypeReward() != null) ? activityDto.getTypeReward() : TypeReward.EQUITATIVO)
             .build();
         
         activity.setDecisionTree(DecisionArbolDecisionMapper.toModelList(activityDto.getDecisionTree())) ; // Relaciono cada decision con la actividad

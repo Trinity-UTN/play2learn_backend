@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.activity.activity.models.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
@@ -32,7 +33,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
         TransactionActor origin, 
         TransactionActor destination, 
         Wallet wallet, 
-        Subject subject
+        Subject subject,
+        Activity activity
         ) {
         if (amount <= 0) {
             throw new ConflictException(EconomyMessages.AMOUNT_MAJOR_TO_0);
@@ -50,7 +52,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
             origin, 
             destination,
             wallet, 
-            subject
+            subject,
+            activity
         );
 
         return transaccion;

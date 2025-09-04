@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequestDto;
 import trinity.play2learn.backend.activity.noLudica.dtos.response.NoLudicaResponseDto;
 import trinity.play2learn.backend.activity.noLudica.mappers.NoLudicaMapper;
+import trinity.play2learn.backend.activity.noLudica.models.NoLudica;
 import trinity.play2learn.backend.activity.noLudica.repositories.INoLudicaRepository;
 import trinity.play2learn.backend.activity.noLudica.services.interfaces.INoLudicaGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
@@ -32,6 +33,8 @@ public class NoLudicaGenerateService implements INoLudicaGenerateService{
         
         Subject subject = findSubjectByIdService.findById(dto.getSubjectId());
 
+        NoLudica noLudica = noLudicaRepository.save(NoLudicaMapper.toModel(dto, subject));
+
         transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
             dto.getInitialBalance(),
@@ -39,10 +42,11 @@ public class NoLudicaGenerateService implements INoLudicaGenerateService{
             TransactionActor.SISTEMA,
             TransactionActor.SISTEMA,
             null,
-            subject
+            subject,
+            noLudica
         );
 
-        return NoLudicaMapper.toDto(noLudicaRepository.save(NoLudicaMapper.toModel(dto, subject)));
+        return NoLudicaMapper.toDto(noLudica);
     }
     
 }

@@ -14,7 +14,6 @@ import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetB
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
-import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -48,7 +47,8 @@ public class WalletAmountAssingController {
             TransactionActor.SISTEMA, 
             TransactionActor.ESTUDIANTE, 
             student.getWallet(), 
-            subject
+            subject,
+            null
         );
 
         return ResponseFactory.noContent(

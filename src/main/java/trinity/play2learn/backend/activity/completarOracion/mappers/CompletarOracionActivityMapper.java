@@ -18,9 +18,9 @@ public class CompletarOracionActivityMapper {
                 .startDate(activityDto.getStartDate())
                 .endDate(activityDto.getEndDate())
                 .attempts(activityDto.getAttempts())
-                .actualBalance(activityDto.getInitialBalance())
+                .actualBalance(0.0)
                 .initialBalance(activityDto.getInitialBalance())
-                .typeReward(TypeReward.EQUITATIVO)
+                .typeReward((activityDto.getTypeReward() != null) ? activityDto.getTypeReward() : TypeReward.EQUITATIVO)
                 .build();
 
         activity.setSentences(SentenceCompletarOracionMapper.toModelList(activityDto.getSentences())); // Relaciono cada oracion con la actividad
