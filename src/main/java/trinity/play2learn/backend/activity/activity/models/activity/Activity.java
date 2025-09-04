@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.models;
+package trinity.play2learn.backend.activity.activity.models.activity;
 
 import java.time.LocalDateTime;
 
@@ -32,6 +32,10 @@ public abstract class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotNull
+    @Size(max = 50, message = ValidationMessages.MAX_LENGTH_NAME_50)
+    private String name;
 
     //El nombre de la actividad sera el tipo de actividad (Ahorcado, preguntados, etc)
     @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION_1000)

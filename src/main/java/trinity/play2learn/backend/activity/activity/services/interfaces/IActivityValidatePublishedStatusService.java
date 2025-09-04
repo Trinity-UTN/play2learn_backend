@@ -2,7 +2,7 @@ package trinity.play2learn.backend.activity.activity.services.interfaces;
 
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 
-public interface IActivityGetByIdService {
+public interface IActivityValidatePublishedStatusService {
     
-    Activity findActivityById(Long activityId);
+    void validatePublishedStatus(Activity activity);
 }

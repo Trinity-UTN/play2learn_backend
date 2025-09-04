@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.activity.ahorcado.mappers;
 
-import trinity.play2learn.backend.activity.activity.models.TypeReward;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoRequestDto;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoResponseDto;
 import trinity.play2learn.backend.activity.ahorcado.models.Ahorcado;
@@ -11,6 +11,7 @@ public class AhorcadoMapper {
     
     public static Ahorcado toModel(AhorcadoRequestDto ahorcadoDto , Subject subject) {
         return Ahorcado.builder()
+            .name("Ahorcado")
             .description(ahorcadoDto.getDescription())
             .dificulty(ahorcadoDto.getDificulty())
             .maxTime(ahorcadoDto.getMaxTime())
@@ -29,7 +30,7 @@ public class AhorcadoMapper {
     public static AhorcadoResponseDto toDto(Ahorcado ahorcado) {
         return AhorcadoResponseDto.builder()
             .id(ahorcado.getId())
-            .name(ahorcado.getClass().getSimpleName())
+            .name("Ahorcado")
             .description(ahorcado.getDescription())
             .dificulty(ahorcado.getDificulty())
             .maxTime(ahorcado.getMaxTime())

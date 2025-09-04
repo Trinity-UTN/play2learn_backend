@@ -1,6 +1,6 @@
 package trinity.play2learn.backend.activity.preguntados.Mappers;
 
-import trinity.play2learn.backend.activity.activity.models.TypeReward;
+import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.preguntados.dtos.request.PreguntadosRequestDto;
 import trinity.play2learn.backend.activity.preguntados.dtos.response.PreguntadosResponseDto;
 import trinity.play2learn.backend.activity.preguntados.models.Preguntados;
@@ -11,6 +11,7 @@ public class PreguntadosMapper {
     
     public static Preguntados toModel(PreguntadosRequestDto preguntadosDto, Subject subject) {
         Preguntados preguntados = Preguntados.builder()
+            .name("Preguntados")
             .description(preguntadosDto.getDescription())
             .dificulty(preguntadosDto.getDificulty())
             .maxTime(preguntadosDto.getMaxTime())
@@ -31,7 +32,7 @@ public class PreguntadosMapper {
     public static PreguntadosResponseDto toDto(Preguntados preguntados) {
         return PreguntadosResponseDto.builder()
             .id(preguntados.getId())
-            .name(preguntados.getClass().getSimpleName())
+            .name("Preguntados")
             .description(preguntados.getDescription())
             .dificulty(preguntados.getDificulty())
             .maxTime(preguntados.getMaxTime())
