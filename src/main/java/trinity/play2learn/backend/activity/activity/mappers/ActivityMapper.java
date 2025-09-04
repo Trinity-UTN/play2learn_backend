@@ -1,12 +1,15 @@
 package trinity.play2learn.backend.activity.activity.mappers;
 
+import java.time.LocalDateTime;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
 
 public class ActivityMapper {
     
-    public static ActivityStudentNotApprovedResponseDto toStudentDto(
+    public static ActivityStudentNotApprovedResponseDto toNotApprovedDto(
             Activity activity , Integer remainingAttempts, Boolean pending,
             ActivityStatus status, Double minReward, Double maxReward
         ) {
@@ -28,4 +31,19 @@ public class ActivityMapper {
             .pending(pending)
             .build();
     }
+
+    public static ActivityStudentApprovedResponseDto toApprovedDto( Activity activity , Integer remainingAttempts, Double reward, LocalDateTime completedAt ) {
+
+            return ActivityStudentApprovedResponseDto.builder()
+                .id(activity.getId())
+                .name(activity.getName())
+                .description(activity.getDescription())
+                .difficulty(activity.getDificulty())
+                .subjectName(activity.getSubject().getName())
+                .attempts(activity.getAttempts())
+                .remainingAttempts(remainingAttempts)
+                .completedAt(completedAt)
+                .reward(reward)
+                .build();
+        }
 }

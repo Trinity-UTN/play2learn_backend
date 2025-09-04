@@ -51,7 +51,7 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
                 pending = true;
             }
             
-            activitiesDto.add(ActivityMapper.toStudentDto(activity, remainingAttempts, pending, activityStatus, minReward, maxReward));
+            activitiesDto.add(ActivityMapper.toNotApprovedDto(activity, remainingAttempts, pending, activityStatus, minReward, maxReward));
 
         }
 
