@@ -32,13 +32,9 @@ public class Poisson implements IActivityCalculateRewardStrategyService {
         
         List<Double> distribution = calculateDistribution(cantidadAlumnos, totalAmount, lambda);
 
-        System.out.println("cantidadAlumnos: " + cantidadAlumnos);
-        System.out.println("cantidadRealizaciones: " + cantidadRealizaciones);
-        System.out.println("distribution: " + distribution);
-
         // cantidadRealizaciones empieza en 1, entonces index = cantidadRealizaciones - 1
         int index = Math.min(cantidadRealizaciones, cantidadAlumnos - 1);
-        
+
         return distribution.get(index);
     }
 

@@ -47,9 +47,6 @@ public class RecompensaTransactionService implements ITransactionStrategyService
         Subject subject,
         Activity activity
         ) {
-
-        System.out.println("amount: " + amount);
-        System.out.println("actualBalance: " + activity.getActualBalance());
         
         if (activity.getActualBalance() < amount) {
             throw new ConflictException(EconomyMessages.NOT_ENOUGH_WALLET_MONEY_SUBJECT);
