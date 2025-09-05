@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.admin.student.models;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -72,6 +73,12 @@ public class Student {
     @JoinColumn(name = "wallet_id", referencedColumnName = "id")
     @ToString.Exclude
     private Wallet wallet;
+
+    @Column(nullable = true)
+    private LocalDate birthdate;
+
+    @Column(nullable = true)
+    private String emailTutor;
 
     public void delete () {
         this.deletedAt = LocalDateTime.now();

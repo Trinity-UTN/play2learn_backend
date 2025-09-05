@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.admin.student.dtos;
 
+import java.time.LocalDate;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,10 @@ public class StudentResponseDto {
     private String lastname;
 
     private String dni;
+
+    private LocalDate birthdate;
+
+    private String emailTutor;
     
     private UserResponseDto user;
 
@@ -32,5 +38,6 @@ public class StudentResponseDto {
     private ProfileResponseDto profile;
 
     private WalletResponseDto wallet;
+
 
 }

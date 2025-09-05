@@ -1,5 +1,8 @@
 package trinity.play2learn.backend.admin.student.dtos;
 
+import java.time.LocalDate;
+
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -30,5 +33,12 @@ public class StudentUpdateRequestDto {
     private String dni;
 
     @NotNull(message = ValidationMessages.NOT_NULL_COURSE)
-    private Long course_id;   
+    private Long course_id;  
+    
+    @Size(max = 100, message = ValidationMessages.MAX_LENGTH_EMAIL)
+    @Email(message = ValidationMessages.PATTERN_EMAIL)
+    private String emailTutor;
+
+    private LocalDate birthDate;
+
 }

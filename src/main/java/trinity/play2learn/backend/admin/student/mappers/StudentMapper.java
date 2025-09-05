@@ -25,6 +25,8 @@ public class StudentMapper {
             .dni(studentDto.getDni())
             .user(user)
             .course(course)
+            .birthdate(studentDto.getBirthDate())
+            .emailTutor(studentDto.getEmailTutor())
             .build();
     }
 
@@ -34,6 +36,8 @@ public class StudentMapper {
             .name(student.getName())
             .lastname(student.getLastname())
             .dni(student.getDni())
+            .birthdate(student.getBirthdate())
+            .emailTutor(student.getEmailTutor())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
             .active(student.getDeletedAt() == null)
@@ -48,6 +52,8 @@ public class StudentMapper {
             .name(student.getName())
             .lastname(student.getLastname())
             .dni(student.getDni())
+            .birthdate(student.getBirthdate())
+            .emailTutor(student.getEmailTutor())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
             .active(student.getDeletedAt() == null)
@@ -63,6 +69,8 @@ public class StudentMapper {
             .name(dto.getName())
             .lastname(dto.getLastname())
             .dni(dto.getDni())
+            .birthdate(dto.getBirthDate())
+            .emailTutor(dto.getEmailTutor())
             .course(course)
             .user(model.getUser())
             .deletedAt(model.getDeletedAt())
