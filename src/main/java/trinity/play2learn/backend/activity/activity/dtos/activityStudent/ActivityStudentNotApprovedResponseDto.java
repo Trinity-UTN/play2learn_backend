@@ -20,7 +20,7 @@ public class ActivityStudentNotApprovedResponseDto {
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Dificulty dificulty;
+    private Dificulty difficulty;
     private int maxTime;
     private String subjectName;
     private int attempts;

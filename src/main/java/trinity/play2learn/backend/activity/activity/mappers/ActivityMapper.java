@@ -6,6 +6,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 
 public class ActivityMapper {
     
@@ -20,7 +21,7 @@ public class ActivityMapper {
             .description(activity.getDescription())
             .startDate(activity.getStartDate())
             .endDate(activity.getEndDate())
-            .dificulty(activity.getDificulty())
+            .difficulty(activity.getDificulty())
             .maxTime(activity.getMaxTime())
             .subjectName(activity.getSubject().getName())
             .attempts(activity.getAttempts())
@@ -44,6 +45,7 @@ public class ActivityMapper {
                 .remainingAttempts(remainingAttempts)
                 .completedAt(completedAt)
                 .reward(reward)
+                .state(ActivityCompletedState.APPROVED)
                 .build();
         }
 }
