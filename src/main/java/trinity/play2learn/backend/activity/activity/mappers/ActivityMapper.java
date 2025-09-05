@@ -20,7 +20,7 @@ public class ActivityMapper {
             .description(activity.getDescription())
             .startDate(activity.getStartDate())
             .endDate(activity.getEndDate())
-            .dificulty(activity.getDificulty())
+            .difficulty(activity.getDificulty())
             .maxTime(activity.getMaxTime())
             .subjectName(activity.getSubject().getName())
             .attempts(activity.getAttempts())
