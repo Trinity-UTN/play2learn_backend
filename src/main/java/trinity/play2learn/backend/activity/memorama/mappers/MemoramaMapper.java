@@ -1,5 +1,10 @@
 package trinity.play2learn.backend.activity.memorama.mappers;
 
+import org.springframework.stereotype.Component;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaRequestDto;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
@@ -7,7 +12,8 @@ import trinity.play2learn.backend.activity.memorama.models.Memorama;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public class MemoramaMapper {
+@Component("memoramaMapper")
+public class MemoramaMapper implements IActivityMapper {
     
     public static Memorama toModel (MemoramaRequestDto dto, Subject subject) {
         return Memorama.builder()
@@ -40,5 +46,16 @@ public class MemoramaMapper {
             .initialBalance(memorama.getInitialBalance())
             .actualBalance(memorama.getActualBalance())
             .build();
+    }
+
+    @Override
+    public ActivityResponseDto toActivityDto(Activity activity) {
+
+        if (!(activity instanceof Memorama)) {
+            throw new IllegalArgumentException("Expected Memorama, got: " + activity.getClass());
+        }
+        
+        Memorama memorama = (Memorama) activity;
+        return toDto(memorama);
     }
 }

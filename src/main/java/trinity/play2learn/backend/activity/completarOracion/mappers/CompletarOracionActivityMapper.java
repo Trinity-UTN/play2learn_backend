@@ -1,5 +1,10 @@
 package trinity.play2learn.backend.activity.completarOracion.mappers;
 
+import org.springframework.stereotype.Component;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.CompletarOracionActivityRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.dtos.response.CompletarOracionActivityResponseDto;
@@ -7,7 +12,8 @@ import trinity.play2learn.backend.activity.completarOracion.models.CompletarOrac
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public class CompletarOracionActivityMapper {
+@Component("completarOracionActivityMapper")
+public class CompletarOracionActivityMapper implements IActivityMapper{
 
     public static CompletarOracionActivity toModel(CompletarOracionActivityRequestDto activityDto , Subject subject) {
         CompletarOracionActivity activity = CompletarOracionActivity.builder()
@@ -44,5 +50,16 @@ public class CompletarOracionActivityMapper {
                 .initialBalance(activity.getInitialBalance())
                 .actualBalance(activity.getActualBalance())
                 .build();
+    }
+
+    @Override
+    public ActivityResponseDto toActivityDto(Activity activity) {
+        
+        if (!(activity instanceof CompletarOracionActivity)) {
+            throw new IllegalArgumentException("Expected CompletarOracionActivity, got: " + activity.getClass());
+        }
+
+        CompletarOracionActivity completarOracionActivity = (CompletarOracionActivity) activity;
+        return toDto(completarOracionActivity);
     }
 }

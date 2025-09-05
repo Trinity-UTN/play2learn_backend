@@ -1,5 +1,10 @@
 package trinity.play2learn.backend.activity.clasificacion.mappers;
 
+import org.springframework.stereotype.Component;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.clasificacion.dtos.request.ClasificacionActivityRequestDto;
 import trinity.play2learn.backend.activity.clasificacion.dtos.response.ClasificacionActivityResponseDto;
@@ -7,7 +12,8 @@ import trinity.play2learn.backend.activity.clasificacion.models.ClasificacionAct
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public class ClasificacionActivityMapper {
+@Component("clasificacionActivityMapper")
+public class ClasificacionActivityMapper implements IActivityMapper{
     
     public static ClasificacionActivity toModel(ClasificacionActivityRequestDto activityDto, Subject subject) {
         ClasificacionActivity activity = ClasificacionActivity.builder()
@@ -44,5 +50,16 @@ public class ClasificacionActivityMapper {
             .actualBalance(activity.getActualBalance())
             .initialBalance(activity.getInitialBalance())
             .build();
+    }
+
+    @Override
+    public ActivityResponseDto toActivityDto(Activity activity) {
+
+        if (!(activity instanceof ClasificacionActivity)) {
+            throw new IllegalArgumentException("Expected ClasificacionActivity, got: " + activity.getClass());
+        }
+
+        ClasificacionActivity clasificacionActivity = (ClasificacionActivity) activity;
+        return toDto(clasificacionActivity);
     }
 }

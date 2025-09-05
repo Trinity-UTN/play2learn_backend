@@ -1,5 +1,10 @@
 package trinity.play2learn.backend.activity.ordenarSecuencia.mappers;
 
+import org.springframework.stereotype.Component;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request.OrdenarSecuenciaRequestDto;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.response.OrdenarSecuenciaResponseDto;
@@ -7,7 +12,8 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.models.OrdenarSecuen
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public class OrdenarSecuenciaMapper {
+@Component("ordenarSecuenciaMapper")
+public class OrdenarSecuenciaMapper implements IActivityMapper{
 
     public static OrdenarSecuencia toModel (OrdenarSecuenciaRequestDto dto, Subject subject) {
         return OrdenarSecuencia.builder()
@@ -40,6 +46,15 @@ public class OrdenarSecuenciaMapper {
             .actualBalance(ordenarSecuencia.getActualBalance())
             .initialBalance(ordenarSecuencia.getInitialBalance())
             .build();
+    }
+
+    @Override
+    public ActivityResponseDto toActivityDto(Activity activity) {
+        if (!(activity instanceof OrdenarSecuencia)) {
+            throw new IllegalArgumentException("Expected OrdenarSecuencia, got: " + activity.getClass());
+        }
+        OrdenarSecuencia ordenarSecuencia = (OrdenarSecuencia) activity;
+        return toDto(ordenarSecuencia);
     }
     
 }

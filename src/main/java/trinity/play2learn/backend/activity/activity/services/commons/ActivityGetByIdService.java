@@ -17,7 +17,7 @@ public class ActivityGetByIdService implements IActivityGetByIdService{
     @Override
     public Activity findActivityById(Long activityId) {
         
-        
+
         return activityRepository.findById(activityId).orElseThrow(
             () -> new NotFoundException("Activity with id " + activityId + " not found")
         );
