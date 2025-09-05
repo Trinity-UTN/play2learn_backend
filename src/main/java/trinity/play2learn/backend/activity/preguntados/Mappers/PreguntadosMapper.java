@@ -1,5 +1,10 @@
 package trinity.play2learn.backend.activity.preguntados.Mappers;
 
+import org.springframework.stereotype.Component;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.preguntados.dtos.request.PreguntadosRequestDto;
 import trinity.play2learn.backend.activity.preguntados.dtos.response.PreguntadosResponseDto;
@@ -7,7 +12,8 @@ import trinity.play2learn.backend.activity.preguntados.models.Preguntados;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public class PreguntadosMapper {
+@Component("preguntadosMapper")
+public class PreguntadosMapper implements IActivityMapper{
     
     public static Preguntados toModel(PreguntadosRequestDto preguntadosDto, Subject subject) {
         Preguntados preguntados = Preguntados.builder()
@@ -45,5 +51,14 @@ public class PreguntadosMapper {
             .actualBalance(preguntados.getActualBalance())
             .initialBalance(preguntados.getInitialBalance())
             .build();
+    }
+
+    @Override
+    public ActivityResponseDto toActivityDto(Activity activity) {
+        if (!(activity instanceof Preguntados)) {
+            throw new IllegalArgumentException("Expected Preguntados, got: " + activity.getClass());
+        }
+        Preguntados preguntados = (Preguntados) activity;
+        return toDto(preguntados);
     }
 }

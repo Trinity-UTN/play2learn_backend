@@ -1,5 +1,10 @@
 package trinity.play2learn.backend.activity.noLudica.mappers;
 
+import org.springframework.stereotype.Component;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequestDto;
 import trinity.play2learn.backend.activity.noLudica.dtos.response.NoLudicaResponseDto;
@@ -7,7 +12,8 @@ import trinity.play2learn.backend.activity.noLudica.models.NoLudica;
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public class NoLudicaMapper {
+@Component("noLudicaMapper")
+public class NoLudicaMapper implements IActivityMapper{
 
     public static NoLudica toModel (NoLudicaRequestDto dto, Subject subject) {
         return NoLudica.builder()
@@ -43,6 +49,15 @@ public class NoLudicaMapper {
                 .actualBalance(noLudica.getActualBalance())
                 .initialBalance(noLudica.getInitialBalance())
                 .build();
+    }
+
+    @Override
+    public ActivityResponseDto toActivityDto(Activity activity) {
+        if (!(activity instanceof NoLudica)) {
+            throw new IllegalArgumentException("Expected NoLudica, got: " + activity.getClass());
+        }
+        NoLudica noLudica = (NoLudica) activity;
+        return toDto(noLudica);
     }
     
 }

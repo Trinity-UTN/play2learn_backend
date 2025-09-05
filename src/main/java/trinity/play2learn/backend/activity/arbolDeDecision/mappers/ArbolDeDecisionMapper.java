@@ -1,5 +1,10 @@
 package trinity.play2learn.backend.activity.arbolDeDecision.mappers;
 
+import org.springframework.stereotype.Component;
+
+import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
+import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.request.ArbolDeDecisionActivityRequestDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.response.ArbolDeDecisionActivityResponseDto;
@@ -7,7 +12,8 @@ import trinity.play2learn.backend.activity.arbolDeDecision.models.ArbolDeDecisio
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
-public class ArbolDeDecisionMapper {
+@Component("arbolDeDecisionActivityMapper")
+public class ArbolDeDecisionMapper implements IActivityMapper {
     
     public static ArbolDeDecisionActivity toModel(ArbolDeDecisionActivityRequestDto activityDto , Subject subject) {
         ArbolDeDecisionActivity activity = ArbolDeDecisionActivity.builder()
@@ -45,10 +51,21 @@ public class ArbolDeDecisionMapper {
             .actualBalance(activity.getActualBalance())
             .initialBalance(activity.getInitialBalance())
             .decisionTree(DecisionArbolDecisionMapper.toDtoList(activity.getDecisionTree()))
-            .build();}
+            .build();
+    }
 
+    @Override
+    public ActivityResponseDto toActivityDto(Activity activity) {
 
+        //Si la instancia recibida no es de tipo Ahorcado, lanza una exception
+        if (!(activity instanceof ArbolDeDecisionActivity)) {
+            throw new IllegalArgumentException("Expected ArbolDeDecisionActivity, got: " + activity.getClass());
+        }
 
+        //Casteo la actividad recibida a ArbolDeDecision
+        ArbolDeDecisionActivity arbolDeDecisionActivity = (ArbolDeDecisionActivity) activity;
+        return toDto(arbolDeDecisionActivity);
 
+    }
 
 }
