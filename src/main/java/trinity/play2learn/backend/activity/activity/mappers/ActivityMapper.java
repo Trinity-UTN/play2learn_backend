@@ -6,6 +6,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 
 public class ActivityMapper {
     
@@ -44,6 +45,7 @@ public class ActivityMapper {
                 .remainingAttempts(remainingAttempts)
                 .completedAt(completedAt)
                 .reward(reward)
+                .state(ActivityCompletedState.APPROVED)
                 .build();
         }
 }
