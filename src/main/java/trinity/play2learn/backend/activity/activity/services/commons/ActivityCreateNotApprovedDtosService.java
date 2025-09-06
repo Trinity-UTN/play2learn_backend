@@ -49,7 +49,7 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
             Integer remainingAttempts = activityGetRemainingAttemptsService.getStudentRemainingAttempts(activity, student);
 
             ActivityStatus activityStatus = activityGetStatusService.getStatus(activity);
-            System.out.println(activity.getTypeReward().name());
+
             IActivityCalculateRewardStrategyService rewardStrategyService = activityCalculateRewardStrategyServiceMap.get(activity.getTypeReward().name());
             
             Double minReward = 0.0; 
