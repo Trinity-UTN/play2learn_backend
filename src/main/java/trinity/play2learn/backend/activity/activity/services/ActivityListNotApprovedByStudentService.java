@@ -9,6 +9,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityListNotApprovedByStudentService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateNotApprovedDtosService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterNotApprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
@@ -21,6 +22,7 @@ public class ActivityListNotApprovedByStudentService implements IActivityListNot
     private final IStudentGetByEmailService studentGetByEmailService;
     private final IActivityGetByStudentService activityGetByStudentService;
     private final IActivityCreateNotApprovedDtosService activityCreateNotApprovedDtosService;
+    private final IActivityFilterNotApprovedService activityFilterNotApprovedService;
 
     //Devuelve las activdades que aun no han sido aprobadas por el estudiante
     @Override
@@ -32,8 +34,11 @@ public class ActivityListNotApprovedByStudentService implements IActivityListNot
         //Obtengo todas las actividades del estudiante segun las materias a las que esta asignado
         List<Activity> activities = activityGetByStudentService.getByStudent(student);
 
-        //Filtra las actividades que aun no han sido aprobadas y crea los dtos
-        return activityCreateNotApprovedDtosService.createNotApprovedDtos(activities, student);
+        //Filtro las actividades que aun no han sido aprobadas por el estudiante
+        List<Activity> notApprovedActivities = activityFilterNotApprovedService.filterByNotApproved(activities, student);
+
+        //Crea los dtos
+        return activityCreateNotApprovedDtosService.createNotApprovedDtos(notApprovedActivities, student);
     }
         
 }

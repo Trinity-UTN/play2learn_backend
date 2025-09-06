@@ -31,7 +31,6 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
 
     private final Map<String, IActivityCalculateRewardStrategyService> activityCalculateRewardStrategyServiceMap;
 
-
     @Override
     public List<ActivityStudentNotApprovedResponseDto> createNotApprovedDtos(List<Activity> activities, Student student) {
 
@@ -39,13 +38,6 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
 
         for (Activity activity : activities) {
 
-            ActivityCompletedState activityCompletedState = activityGetCompletedStateService.getActivityCompletedState(activity, student);
-            
-            if (activityCompletedState == ActivityCompletedState.APPROVED) {
-                
-                continue; //Salta a la siguiente iteracion
-            }
-            
             Integer remainingAttempts = activityGetRemainingAttemptsService.getStudentRemainingAttempts(activity, student);
 
             ActivityStatus activityStatus = activityGetStatusService.getStatus(activity);
@@ -58,7 +50,7 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
             
             Boolean pending = false;
 
-            if (activityCompletedState == ActivityCompletedState.PENDING) {
+            if (activityGetCompletedStateService.getActivityCompletedState(activity, student) == ActivityCompletedState.PENDING) {
                 pending = true;
             }
             
