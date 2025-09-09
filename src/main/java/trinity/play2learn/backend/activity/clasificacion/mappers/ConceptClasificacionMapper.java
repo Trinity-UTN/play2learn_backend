@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.clasificacion.mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.activity.clasificacion.dtos.request.ConceptClasificacionRequestDto;
 import trinity.play2learn.backend.activity.clasificacion.dtos.response.ConceptClasificacionResponseDto;
@@ -18,7 +19,7 @@ public class ConceptClasificacionMapper {
         return conceptDtos
             .stream()
             .map(ConceptClasificacionMapper::toModel)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     public static ConceptClasificacionResponseDto toDto(ConceptClasificacion concept) {
@@ -32,6 +33,6 @@ public class ConceptClasificacionMapper {
         return concepts
             .stream()
             .map(ConceptClasificacionMapper::toDto)
-            .toList();
+            .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.clasificacion.mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.activity.clasificacion.dtos.request.CategoryClasificacionRequestDto;
 import trinity.play2learn.backend.activity.clasificacion.dtos.response.CategoryClasificacionResponseDto;
@@ -22,7 +23,7 @@ public class CategoryClasificacionMapper {
         return categoryDtos
             .stream()
             .map(CategoryClasificacionMapper::toModel)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     public static CategoryClasificacionResponseDto toDto(CategoryClasificacion category) {
@@ -37,6 +38,6 @@ public class CategoryClasificacionMapper {
         return categories
             .stream()
             .map(CategoryClasificacionMapper::toDto)
-            .toList();
+            .collect(Collectors.toList());
     }
 }

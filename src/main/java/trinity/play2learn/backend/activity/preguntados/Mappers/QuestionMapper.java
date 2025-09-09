@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.preguntados.Mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.activity.preguntados.dtos.request.QuestionRequestDto;
 import trinity.play2learn.backend.activity.preguntados.dtos.response.QuestionResponseDto;
@@ -21,7 +22,7 @@ public class QuestionMapper {
         return questionDtos
             .stream()
             .map(QuestionMapper::toModel)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     public static QuestionResponseDto toDto(Question question) {
@@ -36,6 +37,6 @@ public class QuestionMapper {
         return questions
             .stream()
             .map(QuestionMapper::toDto)
-            .toList();
+            .collect(Collectors.toList());
     }
 }

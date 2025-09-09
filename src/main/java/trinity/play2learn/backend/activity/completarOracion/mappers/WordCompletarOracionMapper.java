@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.completarOracion.mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.activity.completarOracion.dtos.request.WordCompletarOracionRequestDto;
 import trinity.play2learn.backend.activity.completarOracion.dtos.response.WordCompletarOracionResponseDto;
@@ -20,7 +21,7 @@ public class WordCompletarOracionMapper {
         return wordDtos
             .stream()
             .map(WordCompletarOracionMapper::toModel)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     public static WordCompletarOracionResponseDto toDto(WordCompletarOracion word) {
@@ -36,6 +37,6 @@ public class WordCompletarOracionMapper {
         return words
             .stream()
             .map(WordCompletarOracionMapper::toDto)
-            .toList();
+            .collect(Collectors.toList());
     }
 }

@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.arbolDeDecision.mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.request.DecisionArbolDecisionRequestDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.response.DecisionArbolDecisionResponseDto;
@@ -24,7 +25,7 @@ public class DecisionArbolDecisionMapper {
         return decisionDtos
             .stream()
             .map(DecisionArbolDecisionMapper::toModel)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     public static DecisionArbolDecisionResponseDto toDto(DecisionArbolDecision decision) {
@@ -41,7 +42,7 @@ public class DecisionArbolDecisionMapper {
         return decisions
             .stream()
             .map(DecisionArbolDecisionMapper::toDto)
-            .toList();
+            .collect(Collectors.toList());
     }
 
 

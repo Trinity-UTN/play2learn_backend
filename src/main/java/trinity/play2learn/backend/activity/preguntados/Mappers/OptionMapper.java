@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.preguntados.Mappers;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.activity.preguntados.dtos.request.OptionRequestDto;
 import trinity.play2learn.backend.activity.preguntados.dtos.response.OptionResponseDto;
@@ -19,7 +20,7 @@ public class OptionMapper {
         return optionDtos
             .stream()
             .map(OptionMapper::toModel)
-            .toList();
+            .collect(Collectors.toList());
     }
 
     public static OptionResponseDto toDto(Option option) {
@@ -34,6 +35,6 @@ public class OptionMapper {
         return options
             .stream()
             .map(OptionMapper::toDto)
-            .toList();
+            .collect(Collectors.toList());
     }
 }
