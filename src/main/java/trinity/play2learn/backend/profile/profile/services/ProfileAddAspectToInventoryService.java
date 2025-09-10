@@ -40,7 +40,6 @@ public class ProfileAddAspectToInventoryService implements IProfileAddAspectToIn
         }
         
         //Falta la logica de los puntos porque aun no esta implementado
-
         generateTransactionService.generate(
             TypeTransaction.COMPRA, 
             Double.valueOf(aspect.getPrice().doubleValue()), 

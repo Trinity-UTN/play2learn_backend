@@ -31,4 +31,7 @@ public interface ISubjectRepository extends CrudRepository<Subject , Long> {
     List<Subject> findAllByCourseAndOptionalIsFalseAndDeletedAtIsNull(Course course);
 
     List<Subject> findAllByStudentsContainingAndDeletedAtIsNull(Student student);
+
+    List<Subject> findByTeacher(Teacher teacher);
+    
 }

@@ -58,5 +58,6 @@ public interface ICourseRepository extends CrudRepository<Course, Long>, JpaSpec
 
     boolean existsByNameAndYearAndIdNot(String name, Year year , Long id);
 
-    
+    int countByDeletedAtIsNull();
+
 }

@@ -1,0 +1,15 @@
+package trinity.play2learn.backend.statistics.home.mappers;
+
+import trinity.play2learn.backend.statistics.home.dtos.response.StatisticsActivityDataDto;
+
+public class StatisticsActivityDataMapper {
+
+    public static final StatisticsActivityDataDto toDto (String name, int totalRealizations, int createAgo) {
+        return StatisticsActivityDataDto.builder()
+            .name(name)
+            .totalRealizations(totalRealizations)
+            .createAgo(createAgo)
+            .build();
+    }
+    
+}

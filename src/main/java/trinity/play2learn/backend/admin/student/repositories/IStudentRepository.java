@@ -23,5 +23,7 @@ public interface IStudentRepository extends CrudRepository<Student, Long>, JpaSp
     boolean existsByCourseId(Long courseId);
 
     Optional<Student> findByUserEmailAndDeletedAtIsNull(String email);
+
+    int countByDeletedAtIsNull();
 }
 
