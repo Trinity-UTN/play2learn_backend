@@ -45,6 +45,7 @@ public class OrdenarSecuenciaMapper implements IActivityMapper{
             .events(EventMapper.toDtoList(ordenarSecuencia.getEvents()))
             .actualBalance(ordenarSecuencia.getActualBalance())
             .initialBalance(ordenarSecuencia.getInitialBalance())
+            .typeReward(ordenarSecuencia.getTypeReward())
             .build();
     }
 

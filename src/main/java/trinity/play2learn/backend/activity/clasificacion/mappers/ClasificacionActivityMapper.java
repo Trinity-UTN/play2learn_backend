@@ -49,6 +49,7 @@ public class ClasificacionActivityMapper implements IActivityMapper{
             .categories(CategoryClasificacionMapper.toDtoList(activity.getCategories()))
             .actualBalance(activity.getActualBalance())
             .initialBalance(activity.getInitialBalance())
+            .typeReward(activity.getTypeReward())
             .build();
     }
 

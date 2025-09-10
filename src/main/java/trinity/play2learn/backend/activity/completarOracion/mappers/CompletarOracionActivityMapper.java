@@ -49,6 +49,7 @@ public class CompletarOracionActivityMapper implements IActivityMapper{
                 .sentences(SentenceCompletarOracionMapper.toDtoList(activity.getSentences()))
                 .initialBalance(activity.getInitialBalance())
                 .actualBalance(activity.getActualBalance())
+                .typeReward(activity.getTypeReward())
                 .build();
     }
 

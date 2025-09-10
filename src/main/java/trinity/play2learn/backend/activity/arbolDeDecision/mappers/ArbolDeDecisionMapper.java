@@ -50,6 +50,7 @@ public class ArbolDeDecisionMapper implements IActivityMapper {
             .introduction(activity.getIntroduction())
             .actualBalance(activity.getActualBalance())
             .initialBalance(activity.getInitialBalance())
+            .typeReward(activity.getTypeReward())
             .decisionTree(DecisionArbolDecisionMapper.toDtoList(activity.getDecisionTree()))
             .build();
     }

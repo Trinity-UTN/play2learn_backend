@@ -50,6 +50,7 @@ public class PreguntadosMapper implements IActivityMapper{
             .questions(QuestionMapper.toDtoList(preguntados.getQuestions()))
             .actualBalance(preguntados.getActualBalance())
             .initialBalance(preguntados.getInitialBalance())
+            .typeReward(preguntados.getTypeReward())
             .build();
     }
 

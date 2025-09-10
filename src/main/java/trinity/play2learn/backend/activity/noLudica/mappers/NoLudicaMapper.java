@@ -48,6 +48,7 @@ public class NoLudicaMapper implements IActivityMapper{
                 .tipoEntrega(noLudica.getTipoEntrega().name())
                 .actualBalance(noLudica.getActualBalance())
                 .initialBalance(noLudica.getInitialBalance())
+                .typeReward(noLudica.getTypeReward())
                 .build();
     }
 

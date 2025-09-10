@@ -45,6 +45,7 @@ public class MemoramaMapper implements IActivityMapper {
             .couples(CouplesMemoramaMapper.toDtoList(memorama.getCouples())) 
             .initialBalance(memorama.getInitialBalance())
             .actualBalance(memorama.getActualBalance())
+            .typeReward(memorama.getTypeReward())
             .build();
     }
 
