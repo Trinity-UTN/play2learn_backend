@@ -42,7 +42,7 @@ public class PreguntadosMapper implements IActivityMapper{
             .description(preguntados.getDescription())
             .dificulty(preguntados.getDificulty())
             .maxTime(preguntados.getMaxTime())
-            .subject(SubjectMapper.toSubjectDto(preguntados.getSubject()))
+            .subject(SubjectMapper.toSimplifiedDto(preguntados.getSubject()))
             .startDate(preguntados.getStartDate())
             .endDate(preguntados.getEndDate())
             .attempts(preguntados.getAttempts())

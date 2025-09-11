@@ -41,7 +41,7 @@ public class MemoramaMapper implements IActivityMapper {
             .startDate(memorama.getStartDate())
             .endDate(memorama.getEndDate())
             .attempts(memorama.getAttempts())
-            .subject(SubjectMapper.toSubjectDto(memorama.getSubject()))
+            .subject(SubjectMapper.toSimplifiedDto(memorama.getSubject()))
             .couples(CouplesMemoramaMapper.toDtoList(memorama.getCouples())) 
             .initialBalance(memorama.getInitialBalance())
             .actualBalance(memorama.getActualBalance())

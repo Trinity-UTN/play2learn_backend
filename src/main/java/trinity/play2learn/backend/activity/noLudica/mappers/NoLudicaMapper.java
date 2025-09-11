@@ -43,7 +43,7 @@ public class NoLudicaMapper implements IActivityMapper{
                 .startDate(noLudica.getStartDate())
                 .endDate(noLudica.getEndDate())
                 .attempts(noLudica.getAttempts())
-                .subject(SubjectMapper.toSubjectDto(noLudica.getSubject()))
+                .subject(SubjectMapper.toSimplifiedDto(noLudica.getSubject()))
                 .excercise(noLudica.getExcercise())
                 .tipoEntrega(noLudica.getTipoEntrega().name())
                 .actualBalance(noLudica.getActualBalance())

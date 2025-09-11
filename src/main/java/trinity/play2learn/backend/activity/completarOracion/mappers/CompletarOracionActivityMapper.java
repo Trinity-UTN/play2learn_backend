@@ -42,7 +42,7 @@ public class CompletarOracionActivityMapper implements IActivityMapper{
                 .description(activity.getDescription())
                 .dificulty(activity.getDificulty())
                 .maxTime(activity.getMaxTime())
-                .subject(SubjectMapper.toSubjectDto(activity.getSubject()))
+                .subject(SubjectMapper.toSimplifiedDto(activity.getSubject()))
                 .startDate(activity.getStartDate())
                 .endDate(activity.getEndDate())
                 .attempts(activity.getAttempts())

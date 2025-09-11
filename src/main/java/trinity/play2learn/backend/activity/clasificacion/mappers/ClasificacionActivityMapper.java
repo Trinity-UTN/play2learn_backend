@@ -45,7 +45,7 @@ public class ClasificacionActivityMapper implements IActivityMapper{
             .startDate(activity.getStartDate())
             .endDate(activity.getEndDate())
             .attempts(activity.getAttempts())
-            .subject(SubjectMapper.toSubjectDto(activity.getSubject())) 
+            .subject(SubjectMapper.toSimplifiedDto(activity.getSubject())) 
             .categories(CategoryClasificacionMapper.toDtoList(activity.getCategories()))
             .actualBalance(activity.getActualBalance())
             .initialBalance(activity.getInitialBalance())
