@@ -26,7 +26,7 @@ public class ActivityDisapprovedStrategyService implements IActivityCompletedStr
         //Le resta 1 a los intentos restantes del estudiante, ya que la desaprobo
         remainingAttempts-=1;
         
-        ActivityCompleted activityCompleted = ActivityCompletedMapper.toModel(activity, student, null, remainingAttempts, ActivityCompletedState.DISAPPROVED);
+        ActivityCompleted activityCompleted = ActivityCompletedMapper.toModel(activity, student, 0.0, remainingAttempts, ActivityCompletedState.DISAPPROVED);
         
         return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
     }
