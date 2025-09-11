@@ -41,7 +41,7 @@ public class OrdenarSecuenciaMapper implements IActivityMapper{
             .startDate(ordenarSecuencia.getStartDate())
             .endDate(ordenarSecuencia.getEndDate())
             .attempts(ordenarSecuencia.getAttempts())
-            .subject(SubjectMapper.toSubjectDto(ordenarSecuencia.getSubject()))
+            .subject(SubjectMapper.toSimplifiedDto(ordenarSecuencia.getSubject()))
             .events(EventMapper.toDtoList(ordenarSecuencia.getEvents()))
             .actualBalance(ordenarSecuencia.getActualBalance())
             .initialBalance(ordenarSecuencia.getInitialBalance())

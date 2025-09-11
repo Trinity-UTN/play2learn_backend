@@ -34,7 +34,7 @@ public class BenefitMapper {
             .totalRedeemableAmount(benefit.getTotalRedeemableAmount())
             .redeemableAmountPerStudent(benefit.getRedeemableAmountPerStudent())
             .endAt(benefit.getEndAt())
-            .subjectDto(SubjectMapper.toSubjectDto(benefit.getSubject()))
+            .subjectDto(SubjectMapper.toSimplifiedDto(benefit.getSubject()))
             .icon(benefit.getIcon())
             .category(benefit.getCategory())
             .color(benefit.getColor())

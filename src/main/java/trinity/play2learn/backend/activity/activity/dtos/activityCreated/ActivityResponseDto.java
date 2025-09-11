@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
-import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectSimplifiedResponseDto;
 
 @Data
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public abstract class ActivityResponseDto {
     private LocalDateTime endDate;
     private Dificulty dificulty;
     private int maxTime;
-    private SubjectResponseDto subject;
+    private SubjectSimplifiedResponseDto subject;
     private int attempts;
     private Double actualBalance;
     private Double initialBalance;

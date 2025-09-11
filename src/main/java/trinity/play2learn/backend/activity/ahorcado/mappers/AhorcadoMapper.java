@@ -40,7 +40,7 @@ public class AhorcadoMapper implements IActivityMapper{
             .description(ahorcado.getDescription())
             .dificulty(ahorcado.getDificulty())
             .maxTime(ahorcado.getMaxTime())
-            .subject(SubjectMapper.toSubjectDto(ahorcado.getSubject()))
+            .subject(SubjectMapper.toSimplifiedDto(ahorcado.getSubject()))
             .startDate(ahorcado.getStartDate())
             .endDate(ahorcado.getEndDate())
             .attempts(ahorcado.getAttempts())

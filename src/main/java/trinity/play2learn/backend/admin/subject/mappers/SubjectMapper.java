@@ -9,6 +9,7 @@ import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectAddResponseDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectRequestDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectResponseDto;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectSimplifiedResponseDto;
 import trinity.play2learn.backend.admin.subject.dtos.SubjectUpdateRequestDto;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.teacher.mapper.TeacherMapper;
@@ -64,6 +65,18 @@ public class SubjectMapper {
             .subjectName(subject.getName())
             .courseName(subject.getCourse().getYear().getName() + " " + subject.getCourse().getName())
             .students(StudentMapper.toSimplificatedDtos(subject.getStudents()))
+            .build();
+    }
+
+    public static SubjectSimplifiedResponseDto toSimplifiedDto(Subject subject) {
+        return SubjectSimplifiedResponseDto.builder()
+            .id(subject.getId())
+            .name(subject.getName())
+            .course(CourseMapper.toDto(subject.getCourse()))
+            .teacher(TeacherMapper.toDto(subject.getTeacher()))
+            .optional(subject.getOptional())
+            .actualBalance(subject.getActualBalance())
+            .initialBalance(subject.getInitialBalance())
             .build();
     }
 }
