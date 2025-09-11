@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityApprovedListPaginatedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNotApprovedListPaginatedService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.annotations.SessionUser;
@@ -26,10 +28,11 @@ import trinity.play2learn.backend.user.models.User;
 public class ActivityListPaginatedByStudentController {
 
     private final IActivityNotApprovedListPaginatedService activityNotApprovedListPaginatedService;
-
+    private final IActivityApprovedListPaginatedService activityApprovedListPaginatedService;
+    
     @SessionRequired(roles = { Role.ROLE_STUDENT })
     @GetMapping("/not-approved")
-    public ResponseEntity<BaseResponse<PaginatedData<ActivityStudentNotApprovedResponseDto>>> getActivitiesPaginatedByStudent(
+    public ResponseEntity<BaseResponse<PaginatedData<ActivityStudentNotApprovedResponseDto>>> getNotApprovedActivitiesPaginatedByStudent(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
             @RequestParam(name = "order_by", defaultValue = "id") String orderBy,
@@ -41,6 +44,24 @@ public class ActivityListPaginatedByStudentController {
 
         return ResponseFactory.paginated(
                 activityNotApprovedListPaginatedService.cu66listNotApprovedActivitiesPaginated(page, pageSize, orderBy,
+                        orderType, search, filters, filtersValues, user),
+                SuccessfulMessages.okSuccessfully());
+    }
+
+    @SessionRequired(roles = { Role.ROLE_STUDENT })
+    @GetMapping("/approved")
+    public ResponseEntity<BaseResponse<PaginatedData<ActivityStudentApprovedResponseDto>>> getApprovedActivitiesPaginatedByStudent(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(name = "page_size", defaultValue = "10") int pageSize,
+            @RequestParam(name = "order_by", defaultValue = "id") String orderBy,
+            @RequestParam(name = "order_type", defaultValue = "asc") String orderType,
+            @RequestParam(required = false) String search,
+            @RequestParam(name = "filters", required = false) List<String> filters,
+            @RequestParam(name = "filtersValues", required = false) List<String> filtersValues,
+            @SessionUser User user) {
+
+        return ResponseFactory.paginated(
+                activityApprovedListPaginatedService.cu69ListApprovedActivitiesPaginated(page, pageSize, orderBy,
                         orderType, search, filters, filtersValues, user),
                 SuccessfulMessages.okSuccessfully());
     }
