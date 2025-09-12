@@ -53,7 +53,7 @@ public abstract class Activity {
     @Column(nullable = true)
     private LocalDateTime deletedAt;
 
-    private Dificulty dificulty;
+    private Difficulty difficulty;
     private int maxTime; //Tiempo maximo de realizacion de la actividad
 
     @Column(nullable = true)

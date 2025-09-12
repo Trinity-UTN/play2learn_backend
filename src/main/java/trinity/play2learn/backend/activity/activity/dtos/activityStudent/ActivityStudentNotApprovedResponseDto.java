@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
+import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
 
 @Data
@@ -20,7 +20,7 @@ public class ActivityStudentNotApprovedResponseDto {
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Dificulty difficulty;
+    private Difficulty difficulty;
     private int maxTime;
     private String subjectName;
     private int attempts;

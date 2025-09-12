@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
+import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
@@ -27,8 +27,8 @@ public abstract class ActivityRequestDto {
     @NotNull (message = ValidationMessages.NOT_NULL_END_DATE)
     private LocalDateTime endDate;
 
-    @NotNull (message = ValidationMessages.NOT_NULL_DIFICULTY)
-    private Dificulty dificulty;
+    @NotNull (message = ValidationMessages.NOT_NULL_DIFFICULTY)
+    private Difficulty difficulty;
 
     private int maxTime; //En minutos
 
