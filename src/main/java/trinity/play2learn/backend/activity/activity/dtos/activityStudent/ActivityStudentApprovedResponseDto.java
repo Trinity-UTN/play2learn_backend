@@ -17,6 +17,7 @@ public class ActivityStudentApprovedResponseDto {
     private String name; 
     private String description;
     private Difficulty difficulty;
+    private Long subjectId;
     private String subjectName;
     private int attempts;
     private Integer remainingAttempts; //Intentos restantes del estudiante en la actividad

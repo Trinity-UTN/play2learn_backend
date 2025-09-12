@@ -22,6 +22,7 @@ public class ActivityStudentNotApprovedResponseDto {
     private LocalDateTime endDate;
     private Difficulty difficulty;
     private int maxTime;
+    private Long subjectId;
     private String subjectName;
     private int attempts;
     private int remainingAttempts; //Intentos restantes del estudiante en la actividad
