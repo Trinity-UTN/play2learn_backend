@@ -20,7 +20,7 @@ public class ActivityGetStatusService implements IActivityGetStatusService {
             return ActivityStatus.CREATED;
             
         } else if (activity.getEndDate().isBefore(LocalDateTime.now())) {
-            return ActivityStatus.FINISHED;
+            return ActivityStatus.EXPIRED;
         } else {
             return ActivityStatus.PUBLISHED;
         }
