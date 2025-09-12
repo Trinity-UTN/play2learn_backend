@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.activity.activity.models.activity.Dificulty;
+import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.mappers.MemoramaRequestMapper;
 import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
@@ -37,7 +37,7 @@ public class MemoramaRegisterController {
         @RequestParam String description,
         @RequestParam LocalDateTime startDate,
         @RequestParam LocalDateTime endDate,
-        @RequestParam Dificulty dificulty,
+        @RequestParam Difficulty difficulty,
         @RequestParam int maxTime,
         @RequestParam Long subjectId,
         @RequestParam int attempts,
@@ -50,7 +50,7 @@ public class MemoramaRegisterController {
             description,
             startDate,
             endDate,
-            dificulty,
+            difficulty,
             maxTime,
             subjectId,
             attempts,

@@ -19,9 +19,10 @@ public class SubjectExistsByService implements  ISubjectExistsByTeacherService{
     public void validate(Teacher teacher) { //Valida si un profesor esta asociado a alguna materia
         if (subjectRepository.existsByTeacher(teacher)) {
             throw new ConflictException(
-                ConflictExceptionMessages.resourceAlreadyExists(
-                    "Materia",
-                    String.valueOf(teacher.getId())
+                ConflictExceptionMessages.resourceDeletionNotAllowedDueToAssociations(
+                    "profesor",
+                    String.valueOf(teacher.getId()),
+                    "materia"
                 )
             );
         };

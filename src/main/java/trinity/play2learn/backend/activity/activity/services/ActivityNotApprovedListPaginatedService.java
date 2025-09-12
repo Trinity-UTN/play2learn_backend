@@ -71,14 +71,7 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
             for (int i = 0; i < filters.size(); i++) {
                 String field = filters.get(i);
                 String value = filterValues.get(i);
-
-                //Si el filtro es de materia, lo agrego a la spec, sino filtra normalmente
-                if ("subjectId".equals(field)) {
-                    spec = spec.and(ActivitySpecs.hasSubjectId(Long.valueOf(value)));
-                } else {
-
-                    spec = spec.and(ActivitySpecs.genericFilter(field, value));
-                }
+                spec = spec.and(ActivitySpecs.genericFilter(field, value));
             }
         }
 

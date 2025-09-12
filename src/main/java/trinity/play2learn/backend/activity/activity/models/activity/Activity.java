@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -53,7 +55,9 @@ public abstract class Activity {
     @Column(nullable = true)
     private LocalDateTime deletedAt;
 
-    private Dificulty dificulty;
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
+    
     private int maxTime; //Tiempo maximo de realizacion de la actividad
 
     @Column(nullable = true)

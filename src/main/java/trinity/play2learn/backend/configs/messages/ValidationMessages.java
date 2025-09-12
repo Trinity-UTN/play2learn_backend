@@ -28,7 +28,7 @@ public class ValidationMessages {
     public static final String MAX_LENGTH_DESCRIPTION_1000 = "La descripcion no puede tener mas de 1000 caracteres.";
     public static final String NOT_NULL_START_DATE = "La fecha de inicio no puede estar vacia.";
     public static final String NOT_NULL_END_DATE = "La fecha de finalizacion no puede estar vacia.";
-    public static final String NOT_NULL_DIFICULTY = "La dificultad no puede estar vacia.";
+    public static final String NOT_NULL_DIFFICULTY = "La dificultad no puede estar vacia.";
     public static final String NOT_NULL_SUBJECT = "La materia no puede estar vacia.";
     public static final String NOT_NULL_TYPE_REWARD = "El tipo de recompensa no puede estar vacio.";
 
