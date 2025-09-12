@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.jpa.domain.Specification;
 
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 
 public class ActivitySpecs {
 
@@ -31,6 +32,9 @@ public class ActivitySpecs {
                 
             case "status":
                 return statusFilter(value);
+
+            case "difficulty":
+                return difficultyFilter(value);
         }
 
         return (root, query, cb) -> {
@@ -76,4 +80,14 @@ public class ActivitySpecs {
         };
     }
 
+    public static Specification<Activity> difficultyFilter(String value){
+        try {
+
+            Difficulty difficulty = Difficulty.valueOf(value.toUpperCase());
+            return (root, query, cb) -> cb.equal(root.get("difficulty"), difficulty);
+
+        } catch (Exception e) {
+            return (root, query, cb) -> cb.conjunction();
+        }
+    }
 }

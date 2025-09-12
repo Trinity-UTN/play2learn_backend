@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.activity.models.activity;
 
 public enum Difficulty {
-    FACIL, MEDIO, DIFICIL;
+    FACIL, 
+    MEDIO, 
+    DIFICIL
 }
