@@ -4,11 +4,11 @@ import trinity.play2learn.backend.statistics.home.dtos.response.StatisticsActivi
 
 public class StatisticsActivityDataMapper {
 
-    public static final StatisticsActivityDataDto toDto (String name, int totalRealizations, int createAgo) {
+    public static final StatisticsActivityDataDto toDto (String name, int totalRealizations, int createdDaysAgo) {
         return StatisticsActivityDataDto.builder()
             .name(name)
             .totalRealizations(totalRealizations)
-            .createAgo(createAgo)
+            .createdDaysAgo(createdDaysAgo)
             .build();
     }
     

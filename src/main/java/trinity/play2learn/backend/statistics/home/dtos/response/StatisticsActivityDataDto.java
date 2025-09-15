@@ -13,6 +13,6 @@ public class StatisticsActivityDataDto {
     
     public int totalRealizations;
 
-    public int createAgo;
+    public int createdDaysAgo;
     
 }

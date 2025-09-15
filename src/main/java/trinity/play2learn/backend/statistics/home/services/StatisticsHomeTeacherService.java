@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
@@ -47,6 +48,7 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
     private final IActivityCalculateTotalRealizationsService activityCalculateTotalRealizationsService;
 
     @Override
+    @Transactional(readOnly = true)
     public StatisticsHomeTeacherResponseDto cu68GetStatisticsHomeTeacher(User user) {
         /**
          * Datos a mostrar en el home:
@@ -121,7 +123,12 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
 
         int totalStudentsBySubject = subject.getStudents().size();
         
-        return StatisticsSubjectDataMapper.toDto(subject.getId(), subject.getName(), totalStudentsBySubject, totalActivitiesBySubject);
+        return StatisticsSubjectDataMapper.toDto(
+            subject.getId(), 
+            (subject.getName()+" "+ subject.getCourse().getName() + " " + subject.getCourse().getYear().getName()), 
+            totalStudentsBySubject, 
+            totalActivitiesBySubject
+        );
     }
 
     public List<StatisticsActivityDataDto> calculate (List<Activity> activities) {
@@ -130,11 +137,11 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
 
         for (Activity activity : activities) {
             int totalRealizations = activityCalculateTotalRealizationsService.execute(activity);
-            int createAgo = (int) ChronoUnit.DAYS.between(
+            int createdDaysAgo = (int) ChronoUnit.DAYS.between(
                 activity.getCreatedAt().toLocalDate(), // pasa a LocalDate
                 LocalDate.now()
             );
-            activitiesData.add(StatisticsActivityDataMapper.toDto(activity.getName(), totalRealizations, createAgo));
+            activitiesData.add(StatisticsActivityDataMapper.toDto(activity.getName(), totalRealizations, createdDaysAgo));
         }
         
         return activitiesData;
