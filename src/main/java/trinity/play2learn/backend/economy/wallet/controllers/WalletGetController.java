@@ -26,7 +26,7 @@ public class WalletGetController {
 
     @GetMapping
     @SessionRequired(roles = {Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<WalletCompleteResponseDto>> getLastMovements(
+    public ResponseEntity<BaseResponse<WalletCompleteResponseDto>> getWallet(
         @SessionUser User user){ 
         
         return ResponseFactory.ok(

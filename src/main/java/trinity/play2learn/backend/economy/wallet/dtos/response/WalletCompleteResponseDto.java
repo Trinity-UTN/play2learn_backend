@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import trinity.play2learn.backend.economy.transaction.dtos.TransactionResponseDto;
 
 @Data
 @Builder
@@ -17,6 +18,6 @@ public class WalletCompleteResponseDto {
 
     private Double invertedBalance;
 
-    private List<MovementResponseDto> movements;
+    private List<TransactionResponseDto> transactions;
 
 }

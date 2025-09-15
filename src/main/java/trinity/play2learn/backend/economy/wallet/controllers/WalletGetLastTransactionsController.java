@@ -12,8 +12,8 @@ import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
-import trinity.play2learn.backend.economy.wallet.dtos.response.MovementResponseDto;
-import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletGetLastMovementsService;
+import trinity.play2learn.backend.economy.transaction.dtos.TransactionResponseDto;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletGetLastTransactionsService;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,17 +22,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/wallet")
-public class WalletGetLastMovementsController {
+public class WalletGetLastTransactionsController {
 
-    private final IWalletGetLastMovementsService walletGetLastMovementsService;
+    private final IWalletGetLastTransactionsService walletGetLastTransactionsService;
 
-    @GetMapping("/last-movements")
+    @GetMapping("/last-transactions")
     @SessionRequired(roles = {Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<List<MovementResponseDto>>> getLastMovements(
+    public ResponseEntity<BaseResponse<List<TransactionResponseDto>>> getLastTransactions(
         @SessionUser User user){ 
         
         return ResponseFactory.ok(
-            walletGetLastMovementsService.cu65GetLastMovements(user), 
+            walletGetLastTransactionsService.cu65GetLastTransactions(user), 
             SuccessfulMessages.okSuccessfully()
         );
     }
