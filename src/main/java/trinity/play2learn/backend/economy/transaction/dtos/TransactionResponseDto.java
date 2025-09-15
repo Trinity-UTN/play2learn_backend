@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.economy.wallet.dtos.response;
+package trinity.play2learn.backend.economy.transaction.dtos;
 
 import java.time.LocalDateTime;
 
@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class MovementResponseDto {
+public class TransactionResponseDto {
 
     public Double amount;
 
