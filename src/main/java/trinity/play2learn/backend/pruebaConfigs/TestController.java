@@ -1,6 +1,8 @@
 package trinity.play2learn.backend.pruebaConfigs;
 
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -60,7 +62,7 @@ public class TestController {
 
     @PostMapping("/created")
     public ResponseEntity<BaseResponse<String>> testCreated() {
-
+        
         Faker faker = new Faker(Locale.of("es", "AR"));
 
         Random random = new Random();
@@ -137,6 +139,7 @@ public class TestController {
         teachers.forEach(list::add);
 
         int x = 0;
+
         for (Course course : courses) {
             for (int i = 0; i < random.nextInt(10, 50); i++) {
                 String name = faker.name().firstName();
@@ -145,6 +148,13 @@ public class TestController {
                 usedEmails.add(email);
                 String dni = generateUniqueDni(usedDnis, faker);
                 usedDnis.add(dni);
+                String emailTutor = faker.internet().emailAddress();
+                LocalDate birthdate = faker.date()
+                .birthday(13, 18)
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+
                 studentRegisterService.cu4registerStudent(
                     StudentRequestDto.builder()
                         .name(name)
@@ -152,8 +162,11 @@ public class TestController {
                         .email(email)
                         .dni(dni)
                         .course_id(course.getId())
+                        .emailTutor(emailTutor)
+                        .birthDate(birthdate)
                         .build()
                 );
+
             }
             x++;
 
@@ -179,7 +192,8 @@ public class TestController {
                 .optional(false)
                 .build();
             subjectRegisterService.cu28RegisterSubject(subjectDto3);
-        }
+        } 
+
  
         return ResponseFactory.created("Recurso creado", "Respuesta CREATED");
     }

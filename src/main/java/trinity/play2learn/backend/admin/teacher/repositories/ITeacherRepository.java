@@ -19,4 +19,6 @@ public interface ITeacherRepository extends CrudRepository<Teacher,Long> {
 
     Optional<Teacher> findByUserEmailAndDeletedAtIsNull(String email);
 
+    int countByDeletedAtIsNull();
+
 }
