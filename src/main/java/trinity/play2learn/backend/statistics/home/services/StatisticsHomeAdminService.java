@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.statistics.home.services;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
@@ -29,6 +30,7 @@ public class StatisticsHomeAdminService implements IStatisticsHomeAdminService{
     private final IReserveFindLastService reserveFindLastService;
 
     @Override
+    @Transactional(readOnly = true)
     public StatisticsHomeAdminResponseDto cu67GetStatisticsHomeAdmin() {
 
         Reserve reserve = reserveFindLastService.get();
