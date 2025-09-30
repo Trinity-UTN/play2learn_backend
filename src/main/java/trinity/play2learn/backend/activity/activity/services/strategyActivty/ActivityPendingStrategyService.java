@@ -23,7 +23,7 @@ public class ActivityPendingStrategyService implements IActivityCompletedStrateg
     @Transactional
     public ActivityCompletedResponseDto execute(Activity activity, Student student , Integer remainingAttempts) {
         
-        ActivityCompleted activityCompleted = ActivityCompletedMapper.toModel(activity, student, null, remainingAttempts, ActivityCompletedState.PENDING);
+        ActivityCompleted activityCompleted = ActivityCompletedMapper.toModel(activity, student, 0.0, remainingAttempts, ActivityCompletedState.PENDING);
         
         return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
     }
