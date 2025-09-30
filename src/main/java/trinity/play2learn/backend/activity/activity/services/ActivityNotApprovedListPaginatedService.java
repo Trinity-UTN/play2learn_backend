@@ -12,6 +12,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateNotApprovedDtosService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterByDisapprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterNotApprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNotApprovedListPaginatedService;
@@ -32,6 +33,7 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
     private final IStudentGetByEmailService studentGetByEmailService;
     private final IActivityGetByStudentService activityGetByStudentService;
     private final IActivityFilterNotApprovedService activityFilterNotApprovedService;
+    private final IActivityFilterByDisapprovedService activityFilterByDisapprovedService;
 
     @Override
     @Transactional(readOnly = true)
@@ -55,10 +57,6 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
         List<Activity> notApprovedActivities = activityFilterNotApprovedService.filterByNotApproved(activities,
                 student);
 
-        // Creo una lista con los ids de las actividades no aprobadas del estudiante
-        List<Long> activityIds = notApprovedActivities.stream()
-                .map(Activity::getId)
-                .toList();
 
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
         Specification<Activity> spec = Specification.where(ActivitySpecs.notDeleted());
@@ -71,9 +69,22 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
             for (int i = 0; i < filters.size(); i++) {
                 String field = filters.get(i);
                 String value = filterValues.get(i);
-                spec = spec.and(ActivitySpecs.genericFilter(field, value));
+
+                if (field.equals("disapproved")) {
+
+                    notApprovedActivities = activityFilterByDisapprovedService.filterByDisapproved(notApprovedActivities, student, Boolean.parseBoolean(value));
+
+                }else{
+                    spec = spec.and(ActivitySpecs.genericFilter(field, value));
+                }
+
             }
         }
+
+        // Creo una lista con los ids de las actividades no aprobadas del estudiante
+        List<Long> activityIds = notApprovedActivities.stream()
+                .map(Activity::getId)
+                .toList();
 
         // Restricción por estudiante: solo actividades dentro de la lista obtenida
         if (!activityIds.isEmpty()) {
@@ -90,5 +101,4 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
 
         return PaginationHelper.fromPage(pageResult, dtos);
     }
-
 }
