@@ -28,7 +28,7 @@ public interface ICourseRepository extends CrudRepository<Course, Long>, JpaSpec
      * @param year Año de la clase.
      * @return boolean.
      */
-    boolean existsByNameAndYear(String name, Year year);
+    boolean existsByNameIgnoreCaseAndYear(String name, Year year);
     /**
      * Busca si existe un curso por su nombre.
      *
@@ -56,7 +56,7 @@ public interface ICourseRepository extends CrudRepository<Course, Long>, JpaSpec
 
     Optional<Course> findByIdAndDeletedAtIsNull(Long id);
 
-    boolean existsByNameAndYearAndIdNot(String name, Year year , Long id);
+    boolean existsByNameIgnoreCaseAndYearAndIdNot(String name, Year year , Long id);
 
     int countByDeletedAtIsNull();
 

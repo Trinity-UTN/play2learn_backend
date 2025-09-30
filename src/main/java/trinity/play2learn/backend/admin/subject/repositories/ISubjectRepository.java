@@ -16,9 +16,9 @@ public interface ISubjectRepository extends CrudRepository<Subject , Long> {
     
     Optional<Subject> findByIdAndDeletedAtIsNotNull(Long id);
     
-    Boolean existsByNameAndCourse(String name, Course course);
+    Boolean existsByNameIgnoreCaseAndCourse(String name, Course course);
 
-    Boolean existsByNameAndCourseAndIdNot(String name, Course course , Long id);
+    Boolean existsByNameIgnoreCaseAndCourseAndIdNot(String name, Course course , Long id);
 
     List<Subject> findAllByDeletedAtIsNull();
 

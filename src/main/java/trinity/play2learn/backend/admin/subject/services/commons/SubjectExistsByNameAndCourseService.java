@@ -17,7 +17,7 @@ public class SubjectExistsByNameAndCourseService implements ISubjectExistsByName
     @Override
     public void existByNameAndCourse(String name , Course course) {
 
-        if (subjectRepository.existsByNameAndCourse(name, course)) {
+        if (subjectRepository.existsByNameIgnoreCaseAndCourse(name, course)) {
             throw new ConflictException(
                 ConflictExceptionMessages.resourceAlreadyExistsByName(
                     "Materia",
@@ -31,7 +31,7 @@ public class SubjectExistsByNameAndCourseService implements ISubjectExistsByName
     @Override
     public void existByNameAndCourseAndIdNot(String name, Course course, Long id) {
 
-        if (subjectRepository.existsByNameAndCourseAndIdNot(name, course, id)) {
+        if (subjectRepository.existsByNameIgnoreCaseAndCourseAndIdNot(name, course, id)) {
             throw new ConflictException(
                 ConflictExceptionMessages.resourceAlreadyExistsByName(
                     "Materia",

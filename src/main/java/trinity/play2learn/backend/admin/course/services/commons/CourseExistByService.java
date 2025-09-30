@@ -27,7 +27,7 @@ public class CourseExistByService implements ICourseExistByService {
      */
     @Override
     public boolean validate(String name, Year year) {
-        return courseRepository.existsByNameAndYear(name, year);
+        return courseRepository.existsByNameIgnoreCaseAndYear(name, year);
     }
     /**
      * Valida si ya existe un curso con el mismo id.
@@ -53,7 +53,7 @@ public class CourseExistByService implements ICourseExistByService {
     //Valida si ya existe un curso con ese nombre en ese año, exceptuando el curso pasado por ID
     @Override
     public void validateExceptId(Long id, String name, Year year) {
-        if (courseRepository.existsByNameAndYearAndIdNot(name, year, id)) {
+        if (courseRepository.existsByNameIgnoreCaseAndYearAndIdNot(name, year, id)) {
             
             throw new ConflictException(
                 ConflictExceptionMessages.resourceAlreadyExists(
