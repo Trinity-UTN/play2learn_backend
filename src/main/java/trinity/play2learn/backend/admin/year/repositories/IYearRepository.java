@@ -24,12 +24,11 @@ public interface IYearRepository extends CrudRepository<Year, Long> {
      * @param name Nombre del año.
      * @return boolean.
      */
-    boolean existsByName(String name);
-
+    boolean existsByNameIgnoreCase(String name);
 
     Iterable<Year> findAllByDeletedAtIsNull();
 
-    boolean existsByNameAndIdNot(String name, Long id);
+    boolean existsByNameIgnoreCaseAndIdNot(String name, Long id);
 
     int countByDeletedAtIsNull();
     

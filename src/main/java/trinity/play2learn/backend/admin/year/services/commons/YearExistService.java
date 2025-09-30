@@ -25,7 +25,7 @@ public class YearExistService implements IYearExistService {
      */
     @Override
     public boolean validate(String name) {
-        return yearRepository.existsByName(name);
+        return yearRepository.existsByNameIgnoreCase(name);
     }
     /**
      * Valida si ya existe un año con el mismo id.
@@ -40,7 +40,7 @@ public class YearExistService implements IYearExistService {
 
     @Override
     public void validateExceptId(String name, Long id) {
-        if (yearRepository.existsByNameAndIdNot(name, id)) {
+        if (yearRepository.existsByNameIgnoreCaseAndIdNot(name, id)) {
             throw new ConflictException(
                 ConflictExceptionMessages.resourceAlreadyExistsByName("Año", name)
             );   
