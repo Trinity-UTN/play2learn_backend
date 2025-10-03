@@ -54,8 +54,6 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
 
         activityCompleted.setReward(reward);
 
-        activityCompleted.setRemainingAttempts(activityCompleted.getRemainingAttempts() - 1);
-
         activityCompleted.setCompletedAt(LocalDateTime.now());
 
         return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
