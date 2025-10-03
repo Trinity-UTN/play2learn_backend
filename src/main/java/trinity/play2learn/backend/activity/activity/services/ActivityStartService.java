@@ -73,15 +73,15 @@ public class ActivityStartService implements IActivityStartService{
         // En caso de que no queden intentos, no dejo iniciar una nueva
         Optional<ActivityCompleted> lastStartedOpt = activityCompletedGetLastStartedService.get(activity, student);
         if (lastStartedOpt.isPresent()) {
-            ActivityCompletedResponseDto attempDisapproved = activityCompletedService.cu61ActivityCompleted(
+            ActivityCompletedResponseDto attemptDisapproved = activityCompletedService.cu61ActivityCompleted(
                 ActivityCompletedRequestMapper.toDto(
                     activity.getId(),
                     ActivityCompletedState.DISAPPROVED
                 ),
                 user
             );
-            remainingAttempts = attempDisapproved.getRemainingAttempts();
-            if (attempDisapproved.getRemainingAttempts() == 0) {
+            remainingAttempts = attemptDisapproved.getRemainingAttempts();
+            if (attemptDisapproved.getRemainingAttempts() == 0) {
                 throw new ConflictException("No quedan intentos para realizar la actividad.");
             }
         }
