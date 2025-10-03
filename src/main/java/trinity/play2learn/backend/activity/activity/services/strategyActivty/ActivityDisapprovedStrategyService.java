@@ -6,12 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
 import trinity.play2learn.backend.activity.activity.mappers.ActivityCompletedMapper;
-import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
-import trinity.play2learn.backend.admin.student.models.Student;
+import java.time.LocalDateTime;
 
 @Service("DISAPPROVED")
 @AllArgsConstructor
@@ -21,13 +20,16 @@ public class ActivityDisapprovedStrategyService implements IActivityCompletedStr
 
     @Override
     @Transactional
-    public ActivityCompletedResponseDto execute(Activity activity, Student student, Integer remainingAttempts) {
+    public ActivityCompletedResponseDto execute(ActivityCompleted activityCompleted) {
         
-        //Le resta 1 a los intentos restantes del estudiante, ya que la desaprobo
-        remainingAttempts-=1;
-        
-        ActivityCompleted activityCompleted = ActivityCompletedMapper.toModel(activity, student, 0.0, remainingAttempts, ActivityCompletedState.DISAPPROVED);
-        
+        activityCompleted.setRemainingAttempts(activityCompleted.getRemainingAttempts()-1);
+
+        activityCompleted.setState(ActivityCompletedState.DISAPPROVED);
+
+        activityCompleted.setReward(0.0);
+
+        activityCompleted.setCompletedAt(LocalDateTime.now());
+
         return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
     }
 
