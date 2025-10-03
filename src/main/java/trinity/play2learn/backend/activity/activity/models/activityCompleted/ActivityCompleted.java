@@ -40,11 +40,12 @@ public class ActivityCompleted {
     @NotNull
     private Student student;
 
-    @NotNull
     private LocalDateTime completedAt;
 
+    private LocalDateTime startedAt;
+
     @PrePersist //Antes de persistir la actividad se guarda su fecha de creacion
-    private void setCompletedAt(){
-        this.completedAt = LocalDateTime.now();
+    private void setStartedAt(){
+        this.startedAt = LocalDateTime.now();
     }
 }

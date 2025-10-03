@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.activity.services.strategyActivty;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -7,13 +8,11 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
 import trinity.play2learn.backend.activity.activity.mappers.ActivityCompletedMapper;
-import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCalculateRewardStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
-import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -30,11 +29,15 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
 
 
     @Override
-    public ActivityCompletedResponseDto execute(Activity activity, Student student, Integer remainingAttempts) {
+    public ActivityCompletedResponseDto execute(ActivityCompleted activityCompleted) {
 
-        IActivityCalculateRewardStrategyService rewardStrategyService = activityCalculateRewardStrategyServiceMap.get(activity.getTypeReward().name());
+        IActivityCalculateRewardStrategyService rewardStrategyService = activityCalculateRewardStrategyServiceMap.get(
+            activityCompleted.getActivity().getTypeReward().name()
+        );
 
-        Double reward = rewardStrategyService.execute(activity);
+        Double reward = rewardStrategyService.execute(
+            activityCompleted.getActivity()
+        );
 
         transactionGenerateService.generate(
             TypeTransaction.RECOMPENSA,
@@ -42,12 +45,18 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
             "Recompensa por actividad completada",
             TransactionActor.SISTEMA, 
             TransactionActor.ESTUDIANTE,
-            student.getWallet(),
+            activityCompleted.getStudent().getWallet(),
             null,
-            activity
+            activityCompleted.getActivity()
         );
         
-        ActivityCompleted activityCompleted = ActivityCompletedMapper.toModel(activity, student, reward, remainingAttempts, ActivityCompletedState.APPROVED);
+        activityCompleted.setState(ActivityCompletedState.APPROVED);
+
+        activityCompleted.setReward(reward);
+
+        activityCompleted.setRemainingAttempts(activityCompleted.getRemainingAttempts() - 1);
+
+        activityCompleted.setCompletedAt(LocalDateTime.now());
 
         return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
         

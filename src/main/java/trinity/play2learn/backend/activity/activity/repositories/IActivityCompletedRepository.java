@@ -14,6 +14,8 @@ public interface IActivityCompletedRepository extends CrudRepository<ActivityCom
     //Trae la ultima actividad completada de un estudiante por actividad
     Optional<ActivityCompleted> findTopByActivityAndStudentOrderByCompletedAtDesc(Activity activity, Student student); 
 
+    Optional<ActivityCompleted> findTopByActivityAndStudentAndStateOrderByStartedAtDesc(Activity activity, Student student, ActivityCompletedState state);
+
     int countByActivityAndState (Activity activity, ActivityCompletedState state);
 
     int countByActivity (Activity activity);
