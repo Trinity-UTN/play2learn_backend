@@ -4,11 +4,12 @@ import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.Activ
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.NoLudicaAttempt;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 public class ActivityCompletedMapper {
     
-    public static ActivityCompleted toModel(Activity activity, Student student, Double reward, Integer remainingAttempts, ActivityCompletedState state) {
+    public static ActivityCompleted toModel(Activity activity, Student student, Double reward, Integer remainingAttempts, ActivityCompletedState state, NoLudicaAttempt noLudicaAttempt) {
 
         return ActivityCompleted.builder()
             .activity(activity)
@@ -16,6 +17,7 @@ public class ActivityCompletedMapper {
             .reward(reward)
             .remainingAttempts(remainingAttempts)
             .state(state)
+            .noLudicaAttempt(noLudicaAttempt)
             .build();
     }
 
@@ -28,4 +30,5 @@ public class ActivityCompletedMapper {
             .remainingAttempts(activityCompleted.getRemainingAttempts())
             .build();
     }
+
 }
