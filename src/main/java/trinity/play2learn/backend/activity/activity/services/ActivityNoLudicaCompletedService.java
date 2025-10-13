@@ -50,6 +50,8 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
     public ActivityCompletedResponseDto cu72ActivityNoLudicaCompleted(Long activityId, String plainText,
             MultipartFile file, User user) {
 
+        if(plainText == null) plainText = "";//Si no se pasa el texto lo deja vacio
+         
         //Realiza validaciones de atributos
         noLudicaValidationsService.validateNoLudicaCompleted(plainText, file);
 

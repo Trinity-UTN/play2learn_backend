@@ -47,8 +47,8 @@ public class ActivityCompletedController {
     @SessionRequired(roles = { Role.ROLE_STUDENT })
     public ResponseEntity<BaseResponse<ActivityCompletedResponseDto>> noLudicaActivityCompleted(
             @RequestParam Long activityId,
-            @RequestParam String plainText,
-            @RequestParam MultipartFile file,
+            @RequestParam(required = false) String plainText,
+            @RequestParam(required = false) MultipartFile file,
             @SessionUser User user) {
 
         return ResponseFactory.created(
