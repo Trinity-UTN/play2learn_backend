@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.activity.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -19,5 +20,7 @@ public interface IActivityCompletedRepository extends CrudRepository<ActivityCom
     int countByActivityAndState (Activity activity, ActivityCompletedState state);
 
     int countByActivity (Activity activity);
-    
+
+    List<ActivityCompleted> findTop5ByStudentAndStateNotOrderByCompletedAtDesc(Student student, ActivityCompletedState state);
+
 }
