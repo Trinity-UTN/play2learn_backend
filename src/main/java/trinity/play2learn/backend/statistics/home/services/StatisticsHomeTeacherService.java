@@ -125,7 +125,7 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
         
         return StatisticsSubjectDataMapper.toDto(
             subject.getId(), 
-            (subject.getName()+" "+ subject.getCourse().getName() + " " + subject.getCourse().getYear().getName()), 
+            (subject.getName()+" de "+ subject.getCourse().getYear().getName() + " " + subject.getCourse().getName()), 
             totalStudentsBySubject, 
             totalActivitiesBySubject
         );
