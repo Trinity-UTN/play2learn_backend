@@ -17,12 +17,17 @@ import trinity.play2learn.backend.benefits.models.BenefitPurchaseState;
 public class BenefitPurchaseResponseDto {
     
     private Long id;
-    private StudentSimplificatedResponse student;
+
     private BenefitPurchaseState state;
+
     private LocalDateTime purchasedAt;
-    private BenefitResponseDto benefitDto;
+
     //Si es null significa que el limite es ilimitado
     private Integer purchasesLeft;
     //Si es null significa que el limite es ilimitado
     private Integer purchasesLeftByStudent;
+
+    private BenefitResponseDto benefitDto;
+    
+    private StudentSimplificatedResponse student;
 }

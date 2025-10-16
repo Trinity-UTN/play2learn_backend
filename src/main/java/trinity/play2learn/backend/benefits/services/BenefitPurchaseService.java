@@ -54,6 +54,10 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
         //En caso de que el beneficio no tenga un límite de compras por estudiante, devuelve nulo
         Integer purchasesLeftByStudent = benefitGetPurchasesPerStudentService.getPurchasesLeftByStudent(benefit, student);
 
+        if (benefit.getPurchaseLimitPerStudent() != null && benefit.getPurchaseLimitPerStudent() != 0) {
+            purchasesLeftByStudent-= 1;    
+        }
+        
         if (benefit.isExpired()) {
             throw new ConflictException("No se puede comprar este beneficio ya que ha expirado.");
         }
@@ -76,6 +80,6 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
         //Decrementa el número de compras restantes si el beneficio tiene un límite
         benefit.decrementPurchasesLeft();
 
-        return BenefitPurchaseMapper.toDto(benefitPurchaseRepository.save(BenefitPurchaseMapper.toModel(benefit, student)), purchasesLeftByStudent-=1);
+        return BenefitPurchaseMapper.toDto(benefitPurchaseRepository.save(BenefitPurchaseMapper.toModel(benefit, student)), purchasesLeftByStudent);
     }
 }
