@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.benefits.dtos.BenefitRequestDto;
-import trinity.play2learn.backend.benefits.dtos.BenefitResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefit.BenefitRequestDto;
+import trinity.play2learn.backend.benefits.dtos.benefit.BenefitResponseDto;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGenerateService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.annotations.SessionUser;

@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.benefits.dtos;
+package trinity.play2learn.backend.benefits.dtos.benefit;
 
 import java.time.LocalDateTime;
 
@@ -33,9 +33,9 @@ public class BenefitRequestDto {
     private Long cost;
 
     //Cantidad total de veces que se pueden canjear el beneficio
-    private Integer totalRedeemableAmount;
+    private Integer purchaseLimit;
     //Cantidad de veces que se puede canjear el beneficio por estudiante
-    private Integer redeemableAmountPerStudent;
+    private Integer purchaseLimitPerStudent;
 
     @NotNull(message = ValidationMessages.NOT_NULL_END_AT)
     @Future(message = ValidationMessages.FUTURE_END_AT)

@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.benefits.dtos;
+package trinity.play2learn.backend.benefits.dtos.benefit;
 
 import java.time.LocalDateTime;
 
@@ -19,8 +19,8 @@ public class BenefitResponseDto {
     private String name;
     private String description;
     private Long cost;
-    private Integer totalRedeemableAmount;
-    private Integer redeemableAmountPerStudent;
+    private Integer purchaseLimit;
+    private Integer purchaseLimitPerStudent;
     private LocalDateTime endAt;
     private SubjectSimplifiedResponseDto subjectDto;
     private BenefitIcon icon;
