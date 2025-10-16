@@ -109,6 +109,7 @@ public class ValidationMessages {
     public static final String NOT_NULL_COLOR = "El color no puede estar vacio.";
     public static final String NOT_NULL_END_AT = "La fecha de finalizacion no puede estar vacia.";
     public static final String FUTURE_END_AT = "La fecha de finalizacion debe ser mayor a la fecha actual.";
+    public static final String NOT_NULL_BENEFIT_ID = "El id del beneficio no puede estar vacio.";
 
 }
 
