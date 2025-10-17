@@ -16,5 +16,6 @@ public class AspectResponseDto {
     private BigDecimal price;
     private TypeAspect type;
     private boolean available;
+    private boolean bought;
 
 }

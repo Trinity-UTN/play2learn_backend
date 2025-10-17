@@ -53,4 +53,16 @@ public class AspectMapper {
             .map(AspectMapper::toDto)
             .toList();
     }
+
+    public static AspectResponseDto toMarketDto (Aspect aspect, boolean bought) {
+        return AspectResponseDto.builder()
+            .id(aspect.getId())
+            .name(aspect.getName())
+            .image(aspect.getImage())
+            .price(aspect.getPrice())
+            .type(aspect.getType())
+            .available(aspect.isAvailable())
+            .bought(bought)
+            .build();
+    }
 }
