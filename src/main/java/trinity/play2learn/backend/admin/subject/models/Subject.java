@@ -92,4 +92,8 @@ public class Subject {
     public void addStudent(Student student){
         this.students.add(student);
     }
+
+    public String obtainSubjectName(){
+        return this.getName() + " de " + this.getCourse().getYear().getName() + " " + this.getCourse().getName();
+    }
 }

@@ -9,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -44,13 +45,15 @@ public class Benefit {
     @Min(value = 1)
     private Long cost;
 
-    //Cantidad total de veces que quedan por canjear el beneficio
+    //Cantidad total de veces que se puede comprar el beneficio
     //Si es nulo es porque el beneficio es ilimitado
-    private Integer totalRedeemableAmount;
+    private Integer purchaseLimit;
+
+    private Integer purchasesLeft;
 
     //Cantidad de veces que se puede canjear el beneficio por estudiante
     //Si es nulo es porque el beneficio es ilimitado
-    private Integer redeemableAmountPerStudent;
+    private Integer purchaseLimitPerStudent;
 
     @NotNull
     private LocalDateTime endAt;
@@ -79,5 +82,22 @@ public class Benefit {
 
     public void restore(){
         this.deletedAt = null;
+    }
+
+    public boolean isExpired(){
+        return this.endAt.isBefore(LocalDateTime.now());
+    }
+
+    @PrePersist
+    public void initializePurchasesLeft() {
+        this.purchasesLeft = this.purchaseLimit;
+    }
+
+    public void decrementPurchasesLeft(){
+        if (purchaseLimit == null || purchaseLimit == 0) {
+            return;
+        }
+        
+        this.purchasesLeft -= 1;
     }
 }

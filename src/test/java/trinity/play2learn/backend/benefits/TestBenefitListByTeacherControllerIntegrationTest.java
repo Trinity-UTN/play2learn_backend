@@ -131,7 +131,7 @@ class TestBenefitListByTeacherControllerIntegrationTest {
         benefit1.setName("15 minutos mas de recreo");
         benefit1.setSubject(subject);
         benefit1.setCost(100L);
-        benefit1.setRedeemableAmountPerStudent(1);
+        benefit1.setPurchaseLimitPerStudent(1);
         benefit1.setCategory(BenefitCategory.EXTRAS);
         benefit1.setIcon(BenefitIcon.SKIP);
         benefit1.setColor(BenefitColor.RED);
@@ -143,7 +143,7 @@ class TestBenefitListByTeacherControllerIntegrationTest {
         benefit2.setName("Un punto mas en un parcial");
         benefit2.setSubject(subject);
         benefit2.setCost(100L);
-        benefit2.setRedeemableAmountPerStudent(1);
+        benefit2.setPurchaseLimitPerStudent(1);
         benefit2.setCategory(BenefitCategory.EXTRAS);
         benefit2.setIcon(BenefitIcon.SKIP);
         benefit2.setColor(BenefitColor.RED);

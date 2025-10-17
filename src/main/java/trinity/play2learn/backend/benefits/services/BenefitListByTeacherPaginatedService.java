@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
-import trinity.play2learn.backend.benefits.dtos.BenefitResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefit.BenefitResponseDto;
 import trinity.play2learn.backend.benefits.mappers.BenefitMapper;
 import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.benefits.repositories.IBenefitPaginatedRepository;

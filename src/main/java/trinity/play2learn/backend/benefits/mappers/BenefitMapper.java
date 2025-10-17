@@ -4,8 +4,8 @@ import java.util.List;
 
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.benefits.dtos.BenefitRequestDto;
-import trinity.play2learn.backend.benefits.dtos.BenefitResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefit.BenefitRequestDto;
+import trinity.play2learn.backend.benefits.dtos.benefit.BenefitResponseDto;
 import trinity.play2learn.backend.benefits.models.Benefit;
 
 public class BenefitMapper {
@@ -15,8 +15,8 @@ public class BenefitMapper {
             .name(benefitDto.getName())
             .description(benefitDto.getDescription())
             .cost(benefitDto.getCost())
-            .totalRedeemableAmount(benefitDto.getTotalRedeemableAmount())
-            .redeemableAmountPerStudent(benefitDto.getRedeemableAmountPerStudent())
+            .purchaseLimit(benefitDto.getPurchaseLimit())
+            .purchaseLimitPerStudent(benefitDto.getPurchaseLimitPerStudent())
             .endAt(benefitDto.getEndAt())
             .subject(subject)
             .icon(benefitDto.getIcon())
@@ -31,8 +31,8 @@ public class BenefitMapper {
             .name(benefit.getName())
             .description(benefit.getDescription())
             .cost(benefit.getCost())
-            .totalRedeemableAmount(benefit.getTotalRedeemableAmount())
-            .redeemableAmountPerStudent(benefit.getRedeemableAmountPerStudent())
+            .purchaseLimit(benefit.getPurchaseLimit())
+            .purchaseLimitPerStudent(benefit.getPurchaseLimitPerStudent())
             .endAt(benefit.getEndAt())
             .subjectDto(SubjectMapper.toSimplifiedDto(benefit.getSubject()))
             .icon(benefit.getIcon())

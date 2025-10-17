@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.benefits.dtos.benefit.BenefitRequestDto;
-import trinity.play2learn.backend.benefits.dtos.benefit.BenefitResponseDto;
-import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGenerateService;
+import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseRequestDto;
+import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseResponseDto;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitPurchaseService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
@@ -21,14 +21,14 @@ import trinity.play2learn.backend.user.models.User;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/benefits")
-public class BenefitGenerateController {
+@RequestMapping("/benefits/purchase")
+public class BenefitPurchaseController {
     
-    private final IBenefitGenerateService benefitGenerateService;
+    private final IBenefitPurchaseService benefitPurchaseService;
 
     @PostMapping
-    @SessionRequired(roles = {Role.ROLE_TEACHER})
-    public ResponseEntity<BaseResponse<BenefitResponseDto>> generate(@SessionUser User user, @Valid @RequestBody BenefitRequestDto benefitRequestDto) {
-        return ResponseFactory.created(benefitGenerateService.cu51GenerateBenefit(benefitRequestDto, user), SuccessfulMessages.createdSuccessfully("Beneficio")); 
+    @SessionRequired(roles = {Role.ROLE_STUDENT})
+    public ResponseEntity<BaseResponse<BenefitPurchaseResponseDto>> purchase(@SessionUser User user, @Valid @RequestBody BenefitPurchaseRequestDto benefitRequestDto) {
+        return ResponseFactory.created(benefitPurchaseService.cu75PurchaseBenefit(benefitRequestDto, user), SuccessfulMessages.createdSuccessfully("Compra de beneficio")); 
     }
 }
