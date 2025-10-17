@@ -48,6 +48,7 @@ public class WalletAmountAssingController {
             TransactionActor.ESTUDIANTE, 
             student.getWallet(), 
             subject,
+            null,
             null
         );
 

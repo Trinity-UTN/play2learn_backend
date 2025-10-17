@@ -74,7 +74,8 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
             TransactionActor.SISTEMA, 
             student.getWallet(), 
             null, 
-            null
+            null,
+            benefit
         );
 
         //Decrementa el número de compras restantes si el beneficio tiene un límite

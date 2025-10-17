@@ -55,7 +55,8 @@ public class ClasificacionActivityGenerateService implements IClasificacionGener
             TransactionActor.SISTEMA,
             null,
             subject,
-            activity
+            activity,
+            null
         );
 
         //Guarda la actividad en la base de datos y la retorno como response dto

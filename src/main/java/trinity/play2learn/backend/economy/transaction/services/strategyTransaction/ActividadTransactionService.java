@@ -9,6 +9,7 @@ import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityAddBalanceService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRemoveBalanceService;
+import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.transaction.mappers.TransactionMapper;
@@ -39,7 +40,8 @@ public class ActividadTransactionService implements ITransactionStrategyService 
         TransactionActor destination,
         Wallet wallet, 
         Subject subject,
-        Activity activity
+        Activity activity,
+        Benefit benefit
         ) {
 
         if (amount > (0.3 * subject.getInitialBalance())){
@@ -62,6 +64,7 @@ public class ActividadTransactionService implements ITransactionStrategyService 
             wallet, 
             subject,
             activity,
+            benefit,
             reserveFindLastService.get()
         );
 

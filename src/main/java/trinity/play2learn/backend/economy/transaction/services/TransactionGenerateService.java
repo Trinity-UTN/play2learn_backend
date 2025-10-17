@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
@@ -34,7 +35,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
         TransactionActor destination, 
         Wallet wallet, 
         Subject subject,
-        Activity activity
+        Activity activity,
+        Benefit benefit
         ) {
         if (amount <= 0) {
             throw new ConflictException(EconomyMessages.AMOUNT_MAJOR_TO_0);
@@ -53,7 +55,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
             destination,
             wallet, 
             subject,
-            activity
+            activity,
+            benefit
         );
 
         return transaccion;

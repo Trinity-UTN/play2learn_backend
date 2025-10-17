@@ -13,7 +13,6 @@ import trinity.play2learn.backend.activity.ahorcado.models.Ahorcado;
 import trinity.play2learn.backend.activity.ahorcado.services.interfaces.IAhorcadoGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
-import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -36,7 +35,7 @@ public class AhorcadoGenerateService implements IAhorcadoGenerateService {
 
         Ahorcado ahorcadoSaved = ahorcadoRepository.save(AhorcadoMapper.toModel(ahorcadoDto, subject));
 
-        Transaction transaction = transactionGenerateService.generate (
+        transactionGenerateService.generate (
             TypeTransaction.ACTIVIDAD,
             ahorcadoSaved.getInitialBalance(),
             "Actividad de ahorcado",
@@ -44,7 +43,8 @@ public class AhorcadoGenerateService implements IAhorcadoGenerateService {
             TransactionActor.SISTEMA,
             null,
             subject,
-            ahorcadoSaved
+            ahorcadoSaved,
+            null
         );
 
         return AhorcadoMapper.toDto(ahorcadoSaved);

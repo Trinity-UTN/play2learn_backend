@@ -7,10 +7,10 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityRemoveBalanceService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
-import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
 import trinity.play2learn.backend.economy.transaction.mappers.TransactionMapper;
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
@@ -18,7 +18,6 @@ import trinity.play2learn.backend.economy.transaction.repositories.ITransactionR
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
-import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 
 @Service ("RECOMPENSA")
 @AllArgsConstructor
@@ -26,11 +25,7 @@ public class RecompensaTransactionService implements ITransactionStrategyService
 
     private final ITransactionRepository transaccionRepository;
 
-    private final IWalletRemoveAmountService removeAmountWalletService;
-
     private final IWalletAddAmountService addAmountWalletService;
-
-    private final IReserveModifyService modifyReserveService;
 
     private final IActivityRemoveBalanceService activityRemoveBalanceService;
 
@@ -45,7 +40,8 @@ public class RecompensaTransactionService implements ITransactionStrategyService
         TransactionActor destination,
         Wallet wallet, 
         Subject subject,
-        Activity activity
+        Activity activity,
+        Benefit benefit
         ) {
         
         if (activity.getActualBalance() < amount) {
@@ -60,6 +56,7 @@ public class RecompensaTransactionService implements ITransactionStrategyService
             wallet, 
             subject,
             activity,
+            benefit,
             findLastReserveService.get()
         );
 
@@ -67,7 +64,7 @@ public class RecompensaTransactionService implements ITransactionStrategyService
 
         activityRemoveBalanceService.execute(activity, amount);
 
-        Wallet walletUpdated = addAmountWalletService.execute(wallet, amount);
+        addAmountWalletService.execute(wallet, amount);
 
         return transaccionSaved;
     }

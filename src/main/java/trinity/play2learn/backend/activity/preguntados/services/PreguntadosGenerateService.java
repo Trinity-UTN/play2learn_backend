@@ -49,7 +49,8 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
             TransactionActor.SISTEMA,
             null,
             subject,
-            preguntados
+            preguntados,
+            null
         );
         
         return PreguntadosMapper.toDto(preguntados);
