@@ -17,6 +17,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 
@@ -51,6 +52,10 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "activity_id")
     private Activity activity;
+
+    @ManyToOne
+    @JoinColumn(name = "benefit_id")
+    private Benefit benefit;
 
     private LocalDateTime createdAt;
 

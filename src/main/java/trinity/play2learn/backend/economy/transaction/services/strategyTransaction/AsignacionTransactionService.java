@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectAddBalanceService;
+import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
@@ -39,7 +40,8 @@ public class AsignacionTransactionService implements ITransactionStrategyService
         TransactionActor destination,
         Wallet wallet, 
         Subject subject,
-        Activity activity
+        Activity activity,
+        Benefit benefit
         ) {
 
         Double assignAmount = subject.getInitialBalance() - subject.getActualBalance();
@@ -64,14 +66,15 @@ public class AsignacionTransactionService implements ITransactionStrategyService
             null, 
             subject,
             null,
+            null,
             reserve
         );
 
         Transaction transaccionSaved = transaccionRepository.save(transaccion);
 
-        Subject subejctUpdated = subjectAddBalanceService.execute(subject, amount);
+        subjectAddBalanceService.execute(subject, amount);
 
-        Reserve reserveUpdated = modifyReserveService.moveToCirculation(amount, reserve);
+        modifyReserveService.moveToCirculation(amount, reserve);
 
         return transaccionSaved;
     }

@@ -47,7 +47,8 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
             TransactionActor.ESTUDIANTE,
             activityCompleted.getStudent().getWallet(),
             null,
-            activityCompleted.getActivity()
+            activityCompleted.getActivity(),
+            null
         );
         
         activityCompleted.setState(ActivityCompletedState.APPROVED);

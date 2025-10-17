@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.repositories.IReserveRepository;
-import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
 
 @Service
@@ -16,8 +15,6 @@ import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveMo
 public class ReserveModifyService implements IReserveModifyService {
 
     private final IReserveRepository reserveRepository;
-
-    private final IReserveFindLastService findLastReserveService;
 
     @Override
     public Reserve moveToReserve(Double amount, Reserve reserve) {

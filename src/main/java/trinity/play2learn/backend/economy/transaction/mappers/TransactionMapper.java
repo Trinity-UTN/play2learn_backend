@@ -4,6 +4,7 @@ import java.util.List;
 
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
+import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.transaction.dtos.TransactionResponseDto;
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
@@ -21,6 +22,7 @@ public class TransactionMapper {
         Wallet wallet,
         Subject subject,
         Activity activity,
+        Benefit benefit,
         Reserve reserve
     ){
         return Transaction.builder()
@@ -32,6 +34,7 @@ public class TransactionMapper {
         .subject(subject)
         .activity(activity)
         .reserve(reserve)
+        .benefit(benefit)
         .build();
     }
 

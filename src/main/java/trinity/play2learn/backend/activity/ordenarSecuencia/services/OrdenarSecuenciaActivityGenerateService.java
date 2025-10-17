@@ -72,7 +72,8 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
             TransactionActor.SISTEMA,
             null,
             subject,
-            ordenarSecuenciaSaved
+            ordenarSecuenciaSaved,
+            null
         );
 
         return OrdenarSecuenciaMapper.toDto(ordenarSecuenciaSaved);

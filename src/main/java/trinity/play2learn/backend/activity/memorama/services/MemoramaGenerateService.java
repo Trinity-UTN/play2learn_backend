@@ -67,7 +67,8 @@ public class MemoramaGenerateService implements IMemoramaGenerateService{
             TransactionActor.SISTEMA,
             null,
             subject,
-            memoramaSaved
+            memoramaSaved,
+            null
         );
 
         return MemoramaMapper.toDto(memoramaSaved);

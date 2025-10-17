@@ -1,7 +1,6 @@
 package trinity.play2learn.backend.profile.profile.services;
 
 import org.springframework.stereotype.Service;
-import trinity.play2learn.backend.activity.preguntados.controllers.PreguntadosGenerateController;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.dtos.StudentResponseDto;
 import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
@@ -16,8 +15,6 @@ import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileSe
 @Service
 @AllArgsConstructor
 public class ProfileSelectAspectService implements IProfileSelectAspectService {
-
-    private final PreguntadosGenerateController preguntadosGenerateController;
 
     private final IProfileGetByIdService profileGetByIdService;
 

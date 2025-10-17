@@ -43,7 +43,8 @@ public class NoLudicaGenerateService implements INoLudicaGenerateService{
             TransactionActor.SISTEMA,
             null,
             subject,
-            noLudica
+            noLudica,
+            null
         );
 
         return NoLudicaMapper.toDto(noLudica);

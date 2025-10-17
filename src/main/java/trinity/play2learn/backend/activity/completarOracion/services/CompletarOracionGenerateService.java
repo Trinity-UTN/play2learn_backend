@@ -64,7 +64,8 @@ public class CompletarOracionGenerateService implements ICompletarOracionGenerat
             TransactionActor.SISTEMA,
             null,
             subject,
-            savedActivity
+            savedActivity,
+            null
         );
 
         return CompletarOracionActivityMapper.toDto(savedActivity); 

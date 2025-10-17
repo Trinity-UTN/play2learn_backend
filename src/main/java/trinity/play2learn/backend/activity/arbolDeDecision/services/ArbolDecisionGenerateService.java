@@ -41,7 +41,8 @@ public class ArbolDecisionGenerateService implements IArbolDecisionGenerateServi
             TransactionActor.SISTEMA,
             null,
             subject,
-            activity
+            activity,
+            null
         );
             
         return ArbolDeDecisionMapper.toDto(activity);
