@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.benefits.specs;
 
 import org.springframework.data.jpa.domain.Specification;
+
 import trinity.play2learn.backend.benefits.models.Benefit;
 
 public class BenefitSpecs {
@@ -16,14 +17,32 @@ public class BenefitSpecs {
     }
 
     // Filtro dinámico: cualquier campo = valor exacto
-    public static Specification<Benefit> genericFilter(String campo, String valor) {
+    public static Specification<Benefit> genericFilter(String field, String value) {
+
+        if (field.equals("subjectId")) {
+            try {
+                return hasSubjectId(Long.valueOf(value));
+            } catch (Exception e) { // Evita un 500 si el valor no es un numero
+                return (root, query, cb) -> cb.conjunction();
+            }
+        }
+
         return (root, query, cb) -> {
             try {
                 // Este get es dinámico, pero puede fallar si el campo no existe
-                return cb.equal(root.get(campo), valor);
+                return cb.equal(root.get(field), value);
             } catch (IllegalArgumentException e) {
                 return cb.conjunction(); // no aplica ningún filtro
             }
+        };
+    }
+
+    public static Specification<Benefit> hasSubjectId(Long subjectId) {
+        return (root, query, cb) -> {
+            if (subjectId == null) {
+                return cb.conjunction();
+            }
+            return cb.equal(root.get("subject").get("id"), subjectId);
         };
     }
 
