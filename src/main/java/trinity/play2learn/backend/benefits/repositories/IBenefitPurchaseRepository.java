@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.benefits.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
 
@@ -13,4 +14,7 @@ public interface IBenefitPurchaseRepository extends CrudRepository<BenefitPurcha
     List<BenefitPurchase> findByBenefit(Benefit benefit);
 
     List<BenefitPurchase> findByBenefitAndStudent(Benefit benefit, Student student);
+
+    Optional<BenefitPurchase> findTopByBenefitAndStudentOrderByPurchasedAtDesc(Benefit benefit, Student student);
+
 }
