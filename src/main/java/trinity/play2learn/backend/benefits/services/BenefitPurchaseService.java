@@ -44,6 +44,10 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
 
         Benefit benefit = benefitGetByIdService.getById(benefitRequestDto.getBenefitId());
 
+        if (benefit.isExpired()) {
+            throw new ConflictException("No se puede comprar este beneficio ya que ha expirado.");
+        }
+        
         //Valida si el estudiante esta inscrito en la materia del beneficio
         subjectHasStudentService.subjectHasStudent(benefit.getSubject(), student);
 
@@ -59,10 +63,6 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
 
         if (benefit.getPurchaseLimitPerStudent() != null && benefit.getPurchaseLimitPerStudent() != 0) {
             purchasesLeftByStudent-= 1;    
-        }
-        
-        if (benefit.isExpired()) {
-            throw new ConflictException("No se puede comprar este beneficio ya que ha expirado.");
         }
 
         //Valida si el estudiante ya ha comprado el beneficio y no lo ha usado aun.
