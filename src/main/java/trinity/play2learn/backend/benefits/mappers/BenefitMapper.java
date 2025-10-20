@@ -1,12 +1,13 @@
 package trinity.play2learn.backend.benefits.mappers;
 
 import java.util.List;
-
 import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.benefits.dtos.benefit.BenefitRequestDto;
 import trinity.play2learn.backend.benefits.dtos.benefit.BenefitResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefit.BenefitStudentResponseDto;
 import trinity.play2learn.backend.benefits.models.Benefit;
+import trinity.play2learn.backend.benefits.models.BenefitStudentState;
 
 public class BenefitMapper {
     
@@ -45,5 +46,25 @@ public class BenefitMapper {
         return benefits.stream()
             .map(BenefitMapper::toDto)
             .toList();
+    }
+
+    public static BenefitStudentResponseDto toStudentDto(
+        Benefit benefit, BenefitStudentState state, Integer purchasesLeftByStudent) {
+     
+        return BenefitStudentResponseDto.builder()
+            .id(benefit.getId())
+            .name(benefit.getName())
+            .description(benefit.getDescription())
+            .cost(benefit.getCost())
+            .state(state)
+            .purchasesLeft(benefit.getPurchasesLeft())
+            .purchasesLeftByStudent(purchasesLeftByStudent)
+            .endAt(benefit.getEndAt())
+            .subjectId(benefit.getSubject().getId())
+            .subjectName(benefit.getSubject().getName())
+            .icon(benefit.getIcon())
+            .category(benefit.getCategory())
+            .color(benefit.getColor())
+            .build();
     }
 }

@@ -56,4 +56,12 @@ public class BenefitPurchase {
         return this.state == BenefitPurchaseState.USED;
     }
 
+    public boolean isUseRequested() {
+        return this.state == BenefitPurchaseState.USE_REQUESTED;
+    }
+
+    public boolean isPurchased() {
+        return this.state == BenefitPurchaseState.PURCHASED;
+    }
+
 }

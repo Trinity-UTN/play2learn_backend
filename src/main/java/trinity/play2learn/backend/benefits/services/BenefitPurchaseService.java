@@ -16,7 +16,7 @@ import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetByIdSe
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitPurchaseService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidatePurchaseLimitService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidateIfPurchasedByStudentService;
-import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetPurchasesPerStudentService;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetPurchasesLeftByStudentService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
@@ -31,7 +31,7 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
     private final ISubjectHasStudentService subjectHasStudentService;
     private final IBenefitGetByIdService benefitGetByIdService;
     private final IBenefitValidatePurchaseLimitService benefitValidatePurchaseLimitService;
-    private final IBenefitGetPurchasesPerStudentService benefitGetPurchasesPerStudentService;
+    private final IBenefitGetPurchasesLeftByStudentService benefitGetPurchasesPerStudentService;
     private final IBenefitValidateIfPurchasedByStudentService benefitValidateIfPurchasedByStudentService;
     private final ITransactionGenerateService transactionGenerateService;
     private final IBenefitPurchaseRepository benefitPurchaseRepository;
@@ -53,6 +53,9 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
         //Valida límite de compras por estudiante y devuelve el número de compras restantes
         //En caso de que el beneficio no tenga un límite de compras por estudiante, devuelve nulo
         Integer purchasesLeftByStudent = benefitGetPurchasesPerStudentService.getPurchasesLeftByStudent(benefit, student);
+        if (purchasesLeftByStudent == 0) {
+            throw new ConflictException("El estudiante ya ha alcanzado el límite de compras permitidas de este beneficio.");
+        }
 
         if (benefit.getPurchaseLimitPerStudent() != null && benefit.getPurchaseLimitPerStudent() != 0) {
             purchasesLeftByStudent-= 1;    

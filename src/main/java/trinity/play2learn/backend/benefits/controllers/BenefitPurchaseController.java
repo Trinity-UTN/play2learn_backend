@@ -21,7 +21,7 @@ import trinity.play2learn.backend.user.models.User;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/benefits/purchase")
+@RequestMapping("/benefits/student/purchase")
 public class BenefitPurchaseController {
     
     private final IBenefitPurchaseService benefitPurchaseService;
