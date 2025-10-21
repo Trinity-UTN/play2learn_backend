@@ -18,6 +18,8 @@ public class WalletCompleteResponseDto {
 
     private Double invertedBalance;
 
+    private Double totalBalance;
+
     private List<TransactionResponseDto> transactions;
 
 }
