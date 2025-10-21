@@ -34,14 +34,19 @@ public class Stock {
 
     private String abbreviation;
 
+    @NotNull
     private BigInteger totalAmount;
 
+    @NotNull
     private BigInteger availableAmount;
 
+    @NotNull
     private BigInteger soldAmount;
 
+    @NotNull
     private Double currentPrice;
 
+    @NotNull
     private Double initialPrice;
     
     @Enumerated(EnumType.STRING)
