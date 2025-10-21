@@ -17,7 +17,7 @@ import trinity.play2learn.backend.investment.stock.dtos.response.StockResponseDt
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockRegisterService;
 import trinity.play2learn.backend.user.models.Role;
 
-@RequestMapping("/investment/stock")
+@RequestMapping("/investment/stocks")
 @RestController
 @AllArgsConstructor
 public class StockRegisterController {
