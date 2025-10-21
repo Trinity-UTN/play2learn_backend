@@ -27,7 +27,7 @@ public class BenefitListByTeacherService implements IBenefitListByTeacherService
 
         Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
 
-        return BenefitMapper.toListDto(benefitRepository.findAllBySubjectTeacher(teacher));
+        return BenefitMapper.toListDto(benefitRepository.findAllBySubjectTeacherAndDeletedAtIsNull(teacher));
 
     }
     

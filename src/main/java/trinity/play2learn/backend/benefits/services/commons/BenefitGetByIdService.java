@@ -17,7 +17,7 @@ public class BenefitGetByIdService implements IBenefitGetByIdService{
     @Override
     public Benefit getById(Long id) {
         
-        return benefitRepository.findById(id)
+        return benefitRepository.findByIdAndDeletedAtIsNull(id)
             .orElseThrow(() -> new NotFoundException("No existe un beneficio con el id proporcionado"));
     }
 

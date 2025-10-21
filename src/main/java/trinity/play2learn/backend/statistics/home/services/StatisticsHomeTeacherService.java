@@ -72,7 +72,7 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
 
         List<Activity> activities = activityRepository.findAllBySubjectInAndDeletedAtIsNull(subjects);
 
-        List<Benefit> benefits = benefitRepository.findAllBySubjectTeacher(teacher);
+        List<Benefit> benefits = benefitRepository.findAllBySubjectTeacherAndDeletedAtIsNull(teacher);
 
         //Cantidad de Estudiantes total
         int totalStudents = statisticsTotalStudentsByTeacherService.execute(subjects);
