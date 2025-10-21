@@ -10,7 +10,7 @@ import trinity.play2learn.backend.investment.stock.services.interfaces.IStockHis
 
 @Service
 @AllArgsConstructor
-public class StockCalculateTrendService implements IStockHistoryCalculateTrendService {
+public class StockHistoryCalculateTrendService implements IStockHistoryCalculateTrendService {
     
     private final IStockHistoryRepository stockHistoryRepository;
     
