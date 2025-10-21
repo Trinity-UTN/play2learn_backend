@@ -21,7 +21,7 @@ public class StockCalculateVariationService implements IStockCalculateVariationS
     private final IStockHistoryCalculateTrendService stockHistoryCalculateTrendService;
     
     @Override
-    public Double cu84calculateVariation (Stock stock) {
+    public Double execute (Stock stock) {
         // Calcula la variacion del stock segun su riesgo, tendencia y ventas recientes
 
         // Obtiene el ultimo StockHistory registrado

@@ -34,7 +34,7 @@ public class StockUpdateService implements IStockUpdateService {
         for (Stock stock : stockFindAllService.execute()){
             
             // Obtiene la variacion del stock
-            Double variation = stockCalculateVariationService.cu84calculateVariation(stock);
+            Double variation = stockCalculateVariationService.execute(stock);
 
             // Actualiza el precio siempre dentro de los limites
             // Limite superior: 2.5 veces el precio inicial

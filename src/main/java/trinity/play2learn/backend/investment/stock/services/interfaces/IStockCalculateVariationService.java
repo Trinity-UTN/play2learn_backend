@@ -4,6 +4,6 @@ import trinity.play2learn.backend.investment.stock.models.Stock;
 
 public interface IStockCalculateVariationService {
     
-    public Double cu84calculateVariation (Stock stock);
+    public Double execute (Stock stock);
     
 }
