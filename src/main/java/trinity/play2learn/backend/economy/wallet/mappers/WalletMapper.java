@@ -14,6 +14,7 @@ public class WalletMapper {
             .id(wallet.getId())
             .balance(wallet.getBalance())
             .invertedBalance(wallet.getInvertedBalance())
+            .totalBalance(wallet.getBalance()+wallet.getInvertedBalance())
             .build();
     }
 
@@ -22,6 +23,7 @@ public class WalletMapper {
             .id(wallet.getId())
             .balance(wallet.getBalance())
             .invertedBalance(wallet.getInvertedBalance())
+            .totalBalance(wallet.getBalance()+wallet.getInvertedBalance())
             .transactions(transactions)
             .build();
     }

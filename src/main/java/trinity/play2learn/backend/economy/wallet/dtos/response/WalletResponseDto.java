@@ -14,5 +14,7 @@ public class WalletResponseDto {
     private Double balance;
     
     private Double invertedBalance;
+
+    private Double totalBalance;
     
 }
