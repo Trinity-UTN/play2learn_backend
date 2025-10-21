@@ -4,16 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.benefits.models.BenefitStudentState;
+import trinity.play2learn.backend.benefits.models.BenefitPurchaseState;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class BenefitUseRequestedResponseDto {
+public class BenefitPurchaseSimpleResponseDto {
     
     private Long id;
-    private BenefitStudentState state; //UseRequested
+    private BenefitPurchaseState state; //UseRequested
     private Long benefitId;
     private String benefitName;
     private Long subjectId;

@@ -1,6 +1,5 @@
 package trinity.play2learn.backend.benefits.services.benefitStateFilterStrategy;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class BenefitExpiredFilterService implements IBenefitFilterStrategyServic
 
         return benefits
             .stream()
-            .filter(benefit -> benefit.getEndAt().isBefore(LocalDateTime.now()))
+            .filter(benefit -> benefit.isExpired())
             .toList();
     }
 }

@@ -1,9 +1,6 @@
 package trinity.play2learn.backend.benefits.services.commons;
 
-import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
-
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.benefits.models.Benefit;
@@ -32,7 +29,7 @@ public class BenefitGetStudentStateService implements IBenefitGetStudentStateSer
             benefitStudentState = BenefitStudentState.USE_REQUESTED;
         }
 
-        if (benefit.getEndAt().isBefore(LocalDateTime.now())) {
+        if (benefit.isExpired()) {
             benefitStudentState = BenefitStudentState.EXPIRED;
         }
 

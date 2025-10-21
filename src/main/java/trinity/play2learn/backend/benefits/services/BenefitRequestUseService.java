@@ -8,7 +8,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectHasStudentService;
-import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitUseRequestedResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseSimpleResponseDto;
 import trinity.play2learn.backend.benefits.mappers.BenefitPurchaseMapper;
 import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.benefits.models.BenefitPurchase;
@@ -32,7 +32,7 @@ public class BenefitRequestUseService implements IBenefitRequestUseService {
 
     @Override
     @Transactional
-    public BenefitUseRequestedResponseDto cu81RequestBenefitUse(User user,
+    public BenefitPurchaseSimpleResponseDto cu81RequestBenefitUse(User user,
             Long benefitId) {
         
         Student student = studentGetByEmailService.getByEmail(user.getEmail());
@@ -62,6 +62,6 @@ public class BenefitRequestUseService implements IBenefitRequestUseService {
 
         lastBenefitPurchase.setState(BenefitPurchaseState.USE_REQUESTED);
 
-        return BenefitPurchaseMapper.toUseRequestedDto(benefitPurchaseRepository.save(lastBenefitPurchase));
+        return BenefitPurchaseMapper.toSimpleDto(benefitPurchaseRepository.save(lastBenefitPurchase), BenefitPurchaseState.USE_REQUESTED);
     } 
 }

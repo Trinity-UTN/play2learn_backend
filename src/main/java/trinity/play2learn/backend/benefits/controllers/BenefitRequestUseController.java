@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitUseRequestedResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseSimpleResponseDto;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitRequestUseService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.annotations.SessionUser;
@@ -26,7 +26,7 @@ public class BenefitRequestUseController {
 
     @PatchMapping("/request-use/{id}")
     @SessionRequired(roles = {Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<BenefitUseRequestedResponseDto>> requestUse(@SessionUser User user, @PathVariable Long id) {
+    public ResponseEntity<BaseResponse<BenefitPurchaseSimpleResponseDto>> requestUse(@SessionUser User user, @PathVariable Long id) {
     
         return ResponseFactory.ok(benefitRequestUseService.cu81RequestBenefitUse(user, id), SuccessfulMessages.updatedSuccessfully("Compra del beneficio"));
     }
