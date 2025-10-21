@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.benefits.mappers;
 
+import java.util.List;
+
 import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseResponseDto;
@@ -40,6 +42,16 @@ public class BenefitPurchaseMapper {
             .subjectId(benefitPurchase.getBenefit().getSubject().getId())
             .subjectName(benefitPurchase.getBenefit().getSubject().getName())
             .state(BenefitStudentState.USE_REQUESTED)
+            .studentId(benefitPurchase.getStudent().getId())
+            .studentName(benefitPurchase.getStudent().getCompleteName())
             .build();
+    }
+
+    public static List<BenefitUseRequestedResponseDto> toUseRequestedDtoList(List<BenefitPurchase> benefitPurchases) {
+        
+        return benefitPurchases
+            .stream()
+            .map(BenefitPurchaseMapper::toUseRequestedDto)
+            .toList();
     }
 }

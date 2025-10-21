@@ -94,4 +94,8 @@ public class Student {
         return Objects.hash(id); // suficiente en entidades JPA
     }
 
+    public String getCompleteName() {
+        return name + " " + lastname;
+    }
+
 }

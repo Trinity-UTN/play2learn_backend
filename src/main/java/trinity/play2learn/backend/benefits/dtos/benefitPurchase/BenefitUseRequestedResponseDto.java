@@ -18,4 +18,6 @@ public class BenefitUseRequestedResponseDto {
     private String benefitName;
     private Long subjectId;
     private String subjectName;
+    private Long studentId;
+    private String studentName;
 }

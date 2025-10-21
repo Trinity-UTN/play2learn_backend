@@ -11,7 +11,7 @@ import trinity.play2learn.backend.benefits.models.Benefit;
 
 public interface IBenefitRepository extends CrudRepository<Benefit, Long>{
     
-    List<Benefit> findAllBySubjectTeacher(Teacher teacher);
+    List<Benefit> findAllBySubjectTeacherAndDeletedAtIsNull(Teacher teacher);
 
     List<Benefit> findBySubjectIn(List<Subject> subjects);
 
