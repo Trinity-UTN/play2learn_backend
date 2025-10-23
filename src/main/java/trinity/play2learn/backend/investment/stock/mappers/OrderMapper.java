@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.stock.dtos.response.StockBuyResponseDto;
+import trinity.play2learn.backend.investment.stock.dtos.response.StockSellResponseDto;
 import trinity.play2learn.backend.investment.stock.models.Order;
 import trinity.play2learn.backend.investment.stock.models.OrderState;
 import trinity.play2learn.backend.investment.stock.models.OrderType;
@@ -37,6 +38,14 @@ public class OrderMapper {
             .quantity(order.getQuantity().intValue())
             .total(order.getPricePerUnit() * order.getQuantity().doubleValue())
             .createdAt(order.getCreatedAt().toString())
+            .build();
+    }
+
+    public static StockSellResponseDto toSellDto (Order order) {
+        return StockSellResponseDto.builder()
+            .pricePerUnit(order.getPricePerUnit())
+            .quantity(order.getQuantity())
+            .total(order.getPricePerUnit() * order.getQuantity().doubleValue())
             .build();
     }
 

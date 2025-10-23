@@ -14,27 +14,27 @@ import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.investment.stock.dtos.request.StockBuyRequestDto;
-import trinity.play2learn.backend.investment.stock.dtos.response.StockBuyResponseDto;
-import trinity.play2learn.backend.investment.stock.services.interfaces.IStockBuyService;
+import trinity.play2learn.backend.investment.stock.dtos.response.StockSellResponseDto;
+import trinity.play2learn.backend.investment.stock.services.interfaces.IStockSellService;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 
 @RequestMapping("/investment/stocks")
 @RestController
 @AllArgsConstructor
-public class StockBuyController {
+public class StockSellController {
 
-    private final IStockBuyService stockBuyService;
+    private final IStockSellService stockSellService;
 
-    @PostMapping ("/buy")
+    @PostMapping ("/sell")
     @SessionRequired(roles = {Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<StockBuyResponseDto>> buy(
+    public ResponseEntity<BaseResponse<StockSellResponseDto>> sell(
         @Valid @RequestBody StockBuyRequestDto stockDto,
         @SessionUser User user
     ) {
         return ResponseFactory.created(
-            stockBuyService.cu84buystocks(stockDto, user),
-            SuccessfulMessages.createdSuccessfully("Orden de compra de accion")
+            stockSellService.cu90sellStock(stockDto, user),
+            SuccessfulMessages.createdSuccessfully("Orden de venta de accion")
         );
     }
     
