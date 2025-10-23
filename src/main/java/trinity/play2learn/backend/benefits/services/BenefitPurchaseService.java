@@ -57,11 +57,11 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
         //Valida límite de compras por estudiante y devuelve el número de compras restantes
         //En caso de que el beneficio no tenga un límite de compras por estudiante, devuelve nulo
         Integer purchasesLeftByStudent = benefitGetPurchasesPerStudentService.getPurchasesLeftByStudent(benefit, student);
-        if (purchasesLeftByStudent == 0) {
+        if (purchasesLeftByStudent != null && purchasesLeftByStudent == 0) {
             throw new ConflictException("El estudiante ya ha alcanzado el límite de compras permitidas de este beneficio.");
         }
 
-        if (benefit.getPurchaseLimitPerStudent() != null && benefit.getPurchaseLimitPerStudent() != 0) {
+        if (purchasesLeftByStudent != null) {
             purchasesLeftByStudent-= 1;    
         }
 
