@@ -5,6 +5,7 @@ import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.benefits.dtos.benefit.BenefitRequestDto;
 import trinity.play2learn.backend.benefits.dtos.benefit.BenefitResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefit.BenefitStudentCountResponseDto;
 import trinity.play2learn.backend.benefits.dtos.benefit.BenefitStudentResponseDto;
 import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.benefits.models.BenefitStudentState;
@@ -65,6 +66,17 @@ public class BenefitMapper {
             .icon(benefit.getIcon())
             .category(benefit.getCategory())
             .color(benefit.getColor())
+            .build();
+    }
+
+    public static BenefitStudentCountResponseDto tCountResponseDto(Integer available, Integer purchased, Integer use_requested, Integer used, Integer expired) {
+
+        return BenefitStudentCountResponseDto.builder()
+            .available(available)
+            .purchased(purchased)
+            .use_requested(use_requested)
+            .used(used)
+            .expired(expired)
             .build();
     }
 }
