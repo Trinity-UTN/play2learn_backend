@@ -49,6 +49,7 @@ public class WalletAmountAssingController {
             student.getWallet(), 
             subject,
             null,
+            null,
             null
         );
 

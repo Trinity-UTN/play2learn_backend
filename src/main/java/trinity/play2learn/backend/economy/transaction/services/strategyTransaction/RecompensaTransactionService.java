@@ -18,6 +18,7 @@ import trinity.play2learn.backend.economy.transaction.repositories.ITransactionR
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
+import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("RECOMPENSA")
 @AllArgsConstructor
@@ -41,7 +42,8 @@ public class RecompensaTransactionService implements ITransactionStrategyService
         Wallet wallet, 
         Subject subject,
         Activity activity,
-        Benefit benefit
+        Benefit benefit,
+        Order order
         ) {
         
         if (activity.getActualBalance() < amount) {
@@ -57,6 +59,7 @@ public class RecompensaTransactionService implements ITransactionStrategyService
             subject,
             activity,
             benefit,
+            order,
             findLastReserveService.get()
         );
 

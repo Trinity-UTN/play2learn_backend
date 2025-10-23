@@ -11,6 +11,7 @@ import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("REEMBOLSO")
 @AllArgsConstructor
@@ -26,7 +27,8 @@ public class ReembolsoTransactionService implements ITransactionStrategyService 
         Wallet wallet, 
         Subject subject,
         Activity activity,
-        Benefit benefit
+        Benefit benefit,
+        Order order
         ) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'execute'");
