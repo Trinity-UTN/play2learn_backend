@@ -8,6 +8,7 @@ import trinity.play2learn.backend.investment.stock.dtos.response.StockBuyRespons
 import trinity.play2learn.backend.investment.stock.dtos.response.StockSellResponseDto;
 import trinity.play2learn.backend.investment.stock.models.Order;
 import trinity.play2learn.backend.investment.stock.models.OrderState;
+import trinity.play2learn.backend.investment.stock.models.OrderStop;
 import trinity.play2learn.backend.investment.stock.models.OrderType;
 import trinity.play2learn.backend.investment.stock.models.Stock;
 
@@ -28,6 +29,27 @@ public class OrderMapper {
             .quantity(quantity)
             .pricePerUnit(stock.getCurrentPrice())
             .createdAt(LocalDateTime.now())
+            .build();
+    }
+
+    public static Order toStopEntity (
+        OrderType orderType,
+        OrderState orderState,
+        Stock stock,
+        Wallet wallet,
+        BigInteger quantity,
+        Double stopPrice,
+        OrderStop orderStop
+    ){
+        return Order.builder()
+            .orderType(orderType)
+            .orderState(orderState)
+            .stock(stock)
+            .wallet(wallet)
+            .quantity(quantity)
+            .pricePerUnit(stopPrice)
+            .createdAt(LocalDateTime.now())
+            .orderStop(orderStop)
             .build();
     }
 

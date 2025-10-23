@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.stock.models.Order;
+import trinity.play2learn.backend.investment.stock.models.OrderState;
 import trinity.play2learn.backend.investment.stock.models.OrderType;
 import trinity.play2learn.backend.investment.stock.models.Stock;
 import trinity.play2learn.backend.investment.stock.repositories.IOrderRepository;
@@ -21,7 +22,7 @@ public class StockCalculateByWalletService implements IStockCalculateByWalletSer
     @Override
     public BigInteger execute(Stock stock, Wallet wallet) {
         BigInteger total = BigInteger.ZERO;
-        for (Order order : orderRepository.findByWalletAndStock(wallet, stock)) {
+        for (Order order : orderRepository.findByWalletAndStockAndOrderState(wallet, stock, OrderState.EJECUTADA)) {
             total = total.add((order.getOrderType() == OrderType.COMPRA) ? order.getQuantity() : order.getQuantity().negate());
         }
         return total;

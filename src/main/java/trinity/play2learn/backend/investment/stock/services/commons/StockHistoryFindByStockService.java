@@ -18,7 +18,7 @@ public class StockHistoryFindByStockService implements IStockHistoryFindByStockS
 
     @Override
     public List<StockHistory> execute(Stock stock) {
-        return stockHistoryRepository.findTop100ByStockOrderByCreatedAtAsc(stock);
+        return stockHistoryRepository.findByStockOrderByCreatedAtAsc(stock);
     }
     
 }

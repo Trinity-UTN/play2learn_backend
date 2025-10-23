@@ -14,7 +14,7 @@ public interface IStockHistoryRepository extends CrudRepository<StockHistory, Lo
     
     Optional<StockHistory> findTopByStockOrderByCreatedAtDesc(Stock stock);
 
-    List<StockHistory> findTop100ByStockOrderByCreatedAtAsc(Stock stock);
+    List<StockHistory> findByStockOrderByCreatedAtAsc(Stock stock);
 
     List<StockHistory> findTop10ByStockOrderByCreatedAtAsc(Stock stock);
 
