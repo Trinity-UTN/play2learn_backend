@@ -12,7 +12,7 @@ import trinity.play2learn.backend.investment.stock.services.interfaces.IStockUpd
 
 @Service
 @AllArgsConstructor
-public class StockUpdateSepcificService implements IStockUpdateSpecificService {
+public class StockUpdateSpecificService implements IStockUpdateSpecificService {
 
     private final IStockRepository stockRepository;
 
