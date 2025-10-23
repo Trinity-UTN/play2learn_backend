@@ -17,6 +17,7 @@ import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service
 @AllArgsConstructor
@@ -36,7 +37,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
         Wallet wallet, 
         Subject subject,
         Activity activity,
-        Benefit benefit
+        Benefit benefit,
+        Order order
         ) {
         if (amount <= 0) {
             throw new ConflictException(EconomyMessages.AMOUNT_MAJOR_TO_0);
@@ -56,7 +58,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
             wallet, 
             subject,
             activity,
-            benefit
+            benefit,
+            order
         );
 
         return transaccion;

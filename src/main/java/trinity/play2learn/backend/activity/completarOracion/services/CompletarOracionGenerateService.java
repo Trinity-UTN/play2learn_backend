@@ -65,6 +65,7 @@ public class CompletarOracionGenerateService implements ICompletarOracionGenerat
             null,
             subject,
             savedActivity,
+            null,
             null
         );
 

@@ -10,6 +10,7 @@ import trinity.play2learn.backend.economy.transaction.dtos.TransactionResponseDt
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.investment.stock.models.Order;
 
 public class TransactionMapper {
     
@@ -23,6 +24,7 @@ public class TransactionMapper {
         Subject subject,
         Activity activity,
         Benefit benefit,
+        Order order,
         Reserve reserve
     ){
         return Transaction.builder()
@@ -35,6 +37,7 @@ public class TransactionMapper {
         .activity(activity)
         .reserve(reserve)
         .benefit(benefit)
+        .order(order)
         .build();
     }
 

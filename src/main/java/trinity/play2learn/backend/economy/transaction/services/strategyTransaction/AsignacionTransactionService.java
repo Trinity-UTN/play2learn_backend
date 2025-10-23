@@ -18,6 +18,7 @@ import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.repositories.ITransactionRepository;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("ASIGNACION")
 @AllArgsConstructor
@@ -41,7 +42,8 @@ public class AsignacionTransactionService implements ITransactionStrategyService
         Wallet wallet, 
         Subject subject,
         Activity activity,
-        Benefit benefit
+        Benefit benefit,
+        Order order
         ) {
 
         Double assignAmount = subject.getInitialBalance() - subject.getActualBalance();
@@ -67,6 +69,7 @@ public class AsignacionTransactionService implements ITransactionStrategyService
             subject,
             null,
             null,
+            order,
             reserve
         );
 
