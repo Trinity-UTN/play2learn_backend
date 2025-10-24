@@ -18,6 +18,7 @@ import trinity.play2learn.backend.economy.transaction.repositories.ITransactionR
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
+import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("COMPRA")
@@ -43,7 +44,8 @@ public class CompraTransactionService implements ITransactionStrategyService{
         Subject subject,
         Activity activity,
         Benefit benefit,
-        Order order
+        Order order,
+        FixedTermDeposit fixedTermDeposit
         ) {
         
         if (wallet.getBalance() < amount) {
@@ -62,6 +64,7 @@ public class CompraTransactionService implements ITransactionStrategyService{
             null,
             benefit,
             order,
+            fixedTermDeposit,
             reserve
         );
 

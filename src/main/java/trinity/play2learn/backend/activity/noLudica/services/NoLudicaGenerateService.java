@@ -45,6 +45,7 @@ public class NoLudicaGenerateService implements INoLudicaGenerateService{
             subject,
             noLudica,
             null,
+            null,
             null
         );
 

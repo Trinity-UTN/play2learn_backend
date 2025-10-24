@@ -91,7 +91,8 @@ public class OrderStopExecuteService implements IOrderStopExecuteService {
                 null, 
                 null,
                 null,
-                order
+                order,
+                null
             );
 
             stockMoveService.toAvailable(stock, order.getQuantity());

@@ -6,6 +6,7 @@ import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 public interface ITransactionStrategyService {
@@ -19,7 +20,8 @@ public interface ITransactionStrategyService {
         Subject subject,
         Activity activity,
         Benefit benefit,
-        Order order
+        Order order,
+        FixedTermDeposit fixedTermDeposit
     );
 
 }

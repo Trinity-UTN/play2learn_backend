@@ -10,6 +10,7 @@ import trinity.play2learn.backend.economy.transaction.dtos.TransactionResponseDt
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 public class TransactionMapper {
@@ -25,6 +26,7 @@ public class TransactionMapper {
         Activity activity,
         Benefit benefit,
         Order order,
+        FixedTermDeposit fixedTermDeposit,
         Reserve reserve
     ){
         return Transaction.builder()
@@ -38,6 +40,7 @@ public class TransactionMapper {
         .reserve(reserve)
         .benefit(benefit)
         .order(order)
+        .fixedTermDeposit(fixedTermDeposit)
         .build();
     }
 

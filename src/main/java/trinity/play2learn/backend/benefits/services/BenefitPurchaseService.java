@@ -79,6 +79,7 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
             null, 
             null,
             benefit,
+            null,
             null
         );
 
