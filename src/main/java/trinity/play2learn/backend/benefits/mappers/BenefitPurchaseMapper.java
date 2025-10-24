@@ -65,6 +65,7 @@ public class BenefitPurchaseMapper {
             .subjectId(benefitPurchase.getBenefit().getSubject().getId())
             .subjectName(benefitPurchase.getBenefit().getSubject().getName())
             .usedAt(benefitPurchase.getUsedAt())
+            .category(benefitPurchase.getBenefit().getCategory())
             .build();
     }
 

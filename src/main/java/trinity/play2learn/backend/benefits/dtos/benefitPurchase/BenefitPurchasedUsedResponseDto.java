@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.benefits.models.BenefitCategory;
 import trinity.play2learn.backend.benefits.models.BenefitPurchaseState;
 
 @Data
@@ -22,4 +23,5 @@ public class BenefitPurchasedUsedResponseDto {
     private Long subjectId;
     private String subjectName;
     private LocalDateTime usedAt;
+    private BenefitCategory category;
 }
