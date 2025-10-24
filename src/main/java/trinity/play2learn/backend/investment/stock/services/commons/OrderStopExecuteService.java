@@ -68,6 +68,10 @@ public class OrderStopExecuteService implements IOrderStopExecuteService {
             }
 
             if (stockCalculateByWalletService.execute(stock, order.getWallet()).compareTo(order.getQuantity()) < 0){
+                order.setOrderState(OrderState.CANCELADA);
+
+                orderRepository.save(order);
+                
                 continue;
             }
             
