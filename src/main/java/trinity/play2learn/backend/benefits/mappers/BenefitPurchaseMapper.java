@@ -6,6 +6,7 @@ import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseResponseDto;
 import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseSimpleResponseDto;
+import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchasedUsedResponseDto;
 import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.benefits.models.BenefitPurchase;
 import trinity.play2learn.backend.benefits.models.BenefitPurchaseState;
@@ -51,6 +52,26 @@ public class BenefitPurchaseMapper {
         return benefitPurchases
             .stream()
             .map(benefitPurchase -> toSimpleDto(benefitPurchase, state))
+            .toList();
+    }
+
+    public static BenefitPurchasedUsedResponseDto toUsedDto(BenefitPurchase benefitPurchase) {
+        return BenefitPurchasedUsedResponseDto.builder()
+            .id(benefitPurchase.getId())
+            .state(benefitPurchase.getState())
+            .benefitId(benefitPurchase.getBenefit().getId())
+            .benefitName(benefitPurchase.getBenefit().getName())
+            .benefitDescription(benefitPurchase.getBenefit().getDescription())
+            .subjectId(benefitPurchase.getBenefit().getSubject().getId())
+            .subjectName(benefitPurchase.getBenefit().getSubject().getName())
+            .usedAt(benefitPurchase.getUsedAt())
+            .build();
+    }
+
+    public static List<BenefitPurchasedUsedResponseDto> toUsedDtoList(List<BenefitPurchase> benefitPurchases) {
+        return benefitPurchases
+            .stream()
+            .map(benefitPurchase -> toUsedDto(benefitPurchase))
             .toList();
     }
 }

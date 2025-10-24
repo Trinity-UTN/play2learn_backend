@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.benefits.services;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,6 +51,7 @@ public class BenefitAcceptUseService implements IBenefitAcceptUseService {
         }
 
         benefitPurchase.setState(BenefitPurchaseState.USED);
+        benefitPurchase.setUsedAt(LocalDateTime.now());
 
         return BenefitPurchaseMapper.toSimpleDto(benefitPurchaseRepository.save(benefitPurchase), BenefitPurchaseState.USED);
     }

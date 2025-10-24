@@ -47,6 +47,8 @@ public class BenefitPurchase {
     @NotNull
     private LocalDateTime purchasedAt;
 
+    private LocalDateTime usedAt;
+    
     private LocalDateTime deletedAt;
     
     @PrePersist
