@@ -32,6 +32,8 @@ public class Order {
 
     private OrderState orderState;
 
+    private OrderStop orderStop;
+
     @ManyToOne
     @JoinColumn(name = "stock_id")
     private Stock stock;

@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.economy.transaction.services.strategyTransaction;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
@@ -20,14 +21,11 @@ import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddA
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 import trinity.play2learn.backend.investment.stock.models.Order;
 import trinity.play2learn.backend.investment.stock.models.OrderType;
-import trinity.play2learn.backend.investment.stock.services.interfaces.IStockCalculateByWalletService;
 
 @Service ("STOCK")
 @AllArgsConstructor
 public class StockTransactionService implements ITransactionStrategyService {
     
-    private final IStockCalculateByWalletService stockCalculateByWalletService;
-
     private final ITransactionRepository transaccionRepository;
 
     private final IWalletRemoveAmountService removeAmountWalletService;
@@ -39,6 +37,7 @@ public class StockTransactionService implements ITransactionStrategyService {
     private final IWalletAddAmountService addAmountWalletService;
 
     @Override
+    @Transactional
     public Transaction execute(
         Double amount, 
         String description, 
@@ -90,12 +89,6 @@ public class StockTransactionService implements ITransactionStrategyService {
             modifyReserveService.moveToReserve(amount, reserve);
 
         }else {
-
-            if (stockCalculateByWalletService.execute(order.getStock(), wallet).compareTo(order.getQuantity()) < 0){
-                throw new BadRequestException(
-                    "El wallet no cuenta con las acciones suficientes para realizar la venta"
-                );
-            }
 
             Transaction transaccion = TransactionMapper.toModel(
                 amount, 
