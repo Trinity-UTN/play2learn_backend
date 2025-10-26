@@ -28,19 +28,13 @@ public class FixedTermDepositAutomaticEndsService implements IFixedTermDepositAu
     private final ITransactionGenerateService transactionGenerateService;
 
     @Override
-    @Scheduled(cron = "0 0 1 * * *")
+    @Scheduled(cron = "0 30 1 * * *")
     @Transactional
     public void cu95fixedTermDepositAutomaticEnds() {
-        /*
-         * Buscar todos los plazos fijos en progreso
-         * Validar si ya vencieron o vencen hoy
-         * Si vencen o ya vencieron, marcarlos como finalizados
-         * Hacer la transaccion
-         */
         List<FixedTermDeposit> fixedTerms = fixedTermDepositFindAllByStateService.execute(FixedTermState.IN_PROGRESS);
 
         for (FixedTermDeposit fixedTermDeposit : fixedTerms) {
-            if (fixedTermDeposit.getEndDate().isBefore(LocalDate.now())) {
+            if (fixedTermDeposit.getEndDate().isAfter(LocalDate.now())) {
                 continue;
             }
 
