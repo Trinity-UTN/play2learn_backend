@@ -34,24 +34,24 @@ public class BenefitPurchaseMapper {
     }
 
     public static BenefitPurchaseSimpleResponseDto toSimpleDto(
-        BenefitPurchase benefitPurchase, BenefitPurchaseState state) {
+        BenefitPurchase benefitPurchase) {
         return BenefitPurchaseSimpleResponseDto.builder()
             .id(benefitPurchase.getId())
             .benefitId(benefitPurchase.getBenefit().getId())
             .benefitName(benefitPurchase.getBenefit().getName())
             .subjectId(benefitPurchase.getBenefit().getSubject().getId())
             .subjectName(benefitPurchase.getBenefit().getSubject().getName())
-            .state(state)
+            .state(benefitPurchase.getState())
             .studentId(benefitPurchase.getStudent().getId())
             .studentName(benefitPurchase.getStudent().getCompleteName())
             .build();
     }
 
-    public static List<BenefitPurchaseSimpleResponseDto> toSimpleDtoList(List<BenefitPurchase> benefitPurchases, BenefitPurchaseState state) {
+    public static List<BenefitPurchaseSimpleResponseDto> toSimpleDtoList(List<BenefitPurchase> benefitPurchases) {
         
         return benefitPurchases
             .stream()
-            .map(benefitPurchase -> toSimpleDto(benefitPurchase, state))
+            .map(benefitPurchase -> toSimpleDto(benefitPurchase))
             .toList();
     }
 
