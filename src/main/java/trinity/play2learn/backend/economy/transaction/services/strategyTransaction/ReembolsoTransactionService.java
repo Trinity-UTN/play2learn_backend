@@ -7,17 +7,31 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.benefits.models.Benefit;
+import trinity.play2learn.backend.economy.reserve.models.Reserve;
+import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
+import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveModifyService;
+import trinity.play2learn.backend.economy.transaction.mappers.TransactionMapper;
 import trinity.play2learn.backend.economy.transaction.models.Transaction;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
+import trinity.play2learn.backend.economy.transaction.repositories.ITransactionRepository;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
+
 import trinity.play2learn.backend.investment.stock.models.Order;
 
-@Service ("REEMBOLSO")
+@Service("REEMBOLSO")
 @AllArgsConstructor
 public class ReembolsoTransactionService implements ITransactionStrategyService {
 
+    private final IReserveFindLastService findLastReserveService;
+    private final ITransactionRepository transaccionRepository;
+    private final IWalletAddAmountService addAmountWalletService;
+    private final IReserveModifyService modifyReserveService;
+    
     @Override
     @Transactional
     public Transaction execute(
@@ -32,8 +46,28 @@ public class ReembolsoTransactionService implements ITransactionStrategyService 
         Order order,
         FixedTermDeposit fixedTermDeposit
         ) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'execute'");
+
+        Reserve reserve = findLastReserveService.get();
+
+        Transaction transaccion = TransactionMapper.toModel(
+                amount,
+                description,
+                origin,
+                destination,
+                wallet,
+                null,
+                null,
+                benefit,
+                null,
+                reserve);
+
+        Transaction transaccionSaved = transaccionRepository.save(transaccion);
+
+        addAmountWalletService.execute(wallet, amount);
+
+        modifyReserveService.moveToCirculation(amount, reserve);
+
+        return transaccionSaved;
     }
-    
+
 }
