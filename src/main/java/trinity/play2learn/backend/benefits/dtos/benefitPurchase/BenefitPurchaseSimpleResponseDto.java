@@ -13,7 +13,7 @@ import trinity.play2learn.backend.benefits.models.BenefitPurchaseState;
 public class BenefitPurchaseSimpleResponseDto {
     
     private Long id;
-    private BenefitPurchaseState state; //UseRequested
+    private BenefitPurchaseState state;
     private Long benefitId;
     private String benefitName;
     private Long subjectId;
