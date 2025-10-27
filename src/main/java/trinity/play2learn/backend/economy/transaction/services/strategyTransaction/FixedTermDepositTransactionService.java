@@ -20,12 +20,12 @@ import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermState;
 import trinity.play2learn.backend.investment.stock.models.Order;
-import trinity.play2learn.backend.investment.stock.models.OrderType;
 
-@Service ("STOCK")
+@Service ("PLAZO_FIJO")
 @AllArgsConstructor
-public class StockTransactionService implements ITransactionStrategyService {
+public class FixedTermDepositTransactionService implements ITransactionStrategyService {
     
     private final ITransactionRepository transaccionRepository;
 
@@ -53,9 +53,9 @@ public class StockTransactionService implements ITransactionStrategyService {
     ) {
         /*
          * Cosas a hacer
-         * 1. Verificar que la orden sea de compra o venta
-         * 2. Si es de compra, verificar que el wallet tenga saldo suficiente
-         * 3. Si es de venta, verificar que el wallet tenga las acciones suficientes
+         * 1. Verificar que el estado del plazo fijo este en progreso
+         * 2. Si esta en progreso, verificar que el wallet tenga saldo suficiente
+         * 3. Si esta finalizado, realiza la transaccion inversa.s
          * 4. Realizar la transacción correspondiente
          * 5. Actualizar el wallet
          */
@@ -63,11 +63,11 @@ public class StockTransactionService implements ITransactionStrategyService {
 
         Transaction transaccionSaved = null;
 
-        if (order.getOrderType() == OrderType.COMPRA){
+        if (fixedTermDeposit.getFixedTermState() == FixedTermState.IN_PROGRESS){
             
             if (amount > wallet.getBalance()){
                 throw new BadRequestException(
-                    "El wallet no cuenta con el balance suficiente para realizar la compra de acciones"
+                    "El wallet no cuenta con el balance suficiente para realizar el plazo fijo"
                 );
             }
 
@@ -102,7 +102,7 @@ public class StockTransactionService implements ITransactionStrategyService {
                 null,
                 null,
                 null,
-                order,
+                null,
                 fixedTermDeposit,
                 reserve
             );

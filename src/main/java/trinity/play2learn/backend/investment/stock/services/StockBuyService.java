@@ -78,7 +78,8 @@ public class StockBuyService implements IStockBuyService {
             null, 
             null,
             null,
-            order
+            order,
+            null
         );
 
         stockMoveService.toSold(stock, order.getQuantity());

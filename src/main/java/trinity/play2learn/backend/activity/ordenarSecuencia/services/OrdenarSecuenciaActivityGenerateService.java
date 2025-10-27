@@ -74,6 +74,7 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
             subject,
             ordenarSecuenciaSaved,
             null,
+            null,
             null
         );
 

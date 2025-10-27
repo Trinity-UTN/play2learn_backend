@@ -45,6 +45,7 @@ public class AhorcadoGenerateService implements IAhorcadoGenerateService {
             subject,
             ahorcadoSaved,
             null,
+            null,
             null
         );
 
