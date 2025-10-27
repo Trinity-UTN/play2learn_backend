@@ -53,6 +53,6 @@ public class BenefitAcceptUseService implements IBenefitAcceptUseService {
         benefitPurchase.setState(BenefitPurchaseState.USED);
         benefitPurchase.setUsedAt(LocalDateTime.now());
 
-        return BenefitPurchaseMapper.toSimpleDto(benefitPurchaseRepository.save(benefitPurchase), BenefitPurchaseState.USED);
+        return BenefitPurchaseMapper.toSimpleDto(benefitPurchaseRepository.save(benefitPurchase));
     }
 }

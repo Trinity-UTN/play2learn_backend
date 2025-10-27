@@ -48,7 +48,7 @@ public class BenefitListUseRequestedService implements IBenefitListUseRequestedS
             //Trae todas las solicitudes de uso de un beneficio
             List<BenefitPurchase> useRequest= benefitPurchaseRepository.findAllByBenefitAndState(benefit, BenefitPurchaseState.USE_REQUESTED);
             
-            benefitDtos.addAll(BenefitPurchaseMapper.toSimpleDtoList(useRequest, BenefitPurchaseState.USE_REQUESTED));
+            benefitDtos.addAll(BenefitPurchaseMapper.toSimpleDtoList(useRequest));
         }
 
         return benefitDtos;

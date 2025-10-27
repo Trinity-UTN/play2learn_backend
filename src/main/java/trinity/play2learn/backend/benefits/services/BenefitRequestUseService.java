@@ -62,6 +62,6 @@ public class BenefitRequestUseService implements IBenefitRequestUseService {
 
         lastBenefitPurchase.setState(BenefitPurchaseState.USE_REQUESTED);
 
-        return BenefitPurchaseMapper.toSimpleDto(benefitPurchaseRepository.save(lastBenefitPurchase), BenefitPurchaseState.USE_REQUESTED);
+        return BenefitPurchaseMapper.toSimpleDto(benefitPurchaseRepository.save(lastBenefitPurchase));
     } 
 }

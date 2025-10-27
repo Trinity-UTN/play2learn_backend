@@ -25,4 +25,6 @@ public interface IBenefitPurchaseRepository extends CrudRepository<BenefitPurcha
     int countByStudentAndState(Student student, BenefitPurchaseState state);
 
     List<BenefitPurchase> findAllByStudentAndStateAndDeletedAtIsNull(Student student, BenefitPurchaseState state);
+
+    List<BenefitPurchase> findAllByBenefit(Benefit benefit);
 }
