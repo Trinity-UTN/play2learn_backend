@@ -32,7 +32,7 @@ public class StockUpdateSpecificService implements IStockUpdateSpecificService {
         // Actualiza el precio siempre dentro de los limites
         // Limite superior: 2.5 veces el precio inicial
         // Limite inferior: 0
-        Double newPrice = Math.min(Math.max(stock.getCurrentPrice() * (1 + variation / 100), 0.0), stock.getInitialPrice().doubleValue()*2.5);
+        Double newPrice = Math.min(Math.max(stock.getCurrentPrice() * (1 + variation / 100), 10.0), stock.getInitialPrice().doubleValue()*2.5);
 
         stock.setCurrentPrice(newPrice);
 

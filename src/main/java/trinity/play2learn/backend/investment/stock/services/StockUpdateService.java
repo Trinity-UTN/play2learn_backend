@@ -22,7 +22,7 @@ public class StockUpdateService implements IStockUpdateService {
     @Override
     @Transactional
     @Scheduled(cron = "0 0 1 * * *") // Se ejecuta todos los días a la 1:00 AM
-    //@Scheduled(cron = "*/30 * * * * *") //Para pruebas, se ejecuta cada 10 segundos
+    //@Scheduled(cron = "*/20 * * * * *") //Para pruebas, se ejecuta cada 10 segundos
     public void cu78updateStock() {
         // Recorre todos los stocks y actualiza su precio
         for (Stock stock : stockFindAllService.execute()){
