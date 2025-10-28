@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.investment.fixedTermDeposit.mappers;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.fixedTermDeposit.dtos.request.FixedTermDepositRegisterRequestDto;
@@ -37,7 +38,12 @@ public class FixedTermDepositMapper {
             .fixedTermDays(fixedTermDeposit.getFixedTermDays())
             .startDate(fixedTermDeposit.getStartDate())
             .endDate(fixedTermDeposit.getEndDate())
+            .fixedTermState(fixedTermDeposit.getFixedTermState())
             .build();
     };
+
+    public static List<FixedTermDepositResponseDto> toDtoList (List<FixedTermDeposit> fixedTermDeposits) {
+        return fixedTermDeposits.stream().map(FixedTermDepositMapper::toDto).toList();
+    }
     
 }
