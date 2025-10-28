@@ -7,7 +7,7 @@ import trinity.play2learn.backend.user.models.User;
 
 public interface IBenefitListByStudentPaginatedService {
     
-    PaginatedData<BenefitStudentResponseDto> listBenefitsByStudentPaginated(
+    PaginatedData<BenefitStudentResponseDto> cu80ListBenefitsByStudentPaginated(
         User user,
         int page, 
         int size, 

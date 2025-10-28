@@ -39,7 +39,7 @@ public class BenefitListByStudentPaginatedController {
             @RequestParam(name = "filtersValues", required = false) List<String> filtersValues
     ) {
         return ResponseFactory.paginated(
-            benefitListByStudentPaginatedService.listBenefitsByStudentPaginated(user, page, pageSize, orderBy, orderType, search, filters, filtersValues), 
+            benefitListByStudentPaginatedService.cu80ListBenefitsByStudentPaginated(user, page, pageSize, orderBy, orderType, search, filters, filtersValues), 
             SuccessfulMessages.okSuccessfully()
         );
     }

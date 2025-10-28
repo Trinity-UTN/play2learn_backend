@@ -37,7 +37,7 @@ public class BenefitListByStudentPaginatedService implements IBenefitListByStude
 
     @Override
     @Transactional(readOnly = true)
-    public PaginatedData<BenefitStudentResponseDto> listBenefitsByStudentPaginated(User user, int page, int size, String orderBy,
+    public PaginatedData<BenefitStudentResponseDto> cu80ListBenefitsByStudentPaginated(User user, int page, int size, String orderBy,
             String orderType, String search, List<String> filters, List<String> filterValues) {
 
         Student student = studentGetByEmailService.getByEmail(user.getEmail());
