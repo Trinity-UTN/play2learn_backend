@@ -48,17 +48,11 @@ public class BenefitRequestUseService implements IBenefitRequestUseService {
         
         Optional<BenefitPurchase> optionalLastBenefitPurchase = benefitGetLastPurchaseService.getLastPurchase(benefit, student);
     
-        if (optionalLastBenefitPurchase.isEmpty()) {
+        if (optionalLastBenefitPurchase.isEmpty() || !optionalLastBenefitPurchase.get().isPurchased()) {
             throw new ConflictException("El estudiante debe comprar el beneficio para solicitar su uso.");
         }
 
         BenefitPurchase lastBenefitPurchase = optionalLastBenefitPurchase.get();
-
-        //Valida que la ultima compra del estudiante del beneficio este en estado Purchased
-        if (!lastBenefitPurchase.isPurchased()) {
-
-            throw new ConflictException("El estudiante debe comprar el beneficio para solicitar su uso.");
-        }
 
         lastBenefitPurchase.setState(BenefitPurchaseState.USE_REQUESTED);
 
