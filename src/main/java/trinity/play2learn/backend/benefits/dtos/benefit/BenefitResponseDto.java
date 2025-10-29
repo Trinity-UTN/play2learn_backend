@@ -9,6 +9,7 @@ import trinity.play2learn.backend.admin.subject.dtos.SubjectSimplifiedResponseDt
 import trinity.play2learn.backend.benefits.models.BenefitCategory;
 import trinity.play2learn.backend.benefits.models.BenefitColor;
 import trinity.play2learn.backend.benefits.models.BenefitIcon;
+import trinity.play2learn.backend.benefits.models.BenefitState;
 
 @Data
 @Builder
@@ -22,6 +23,7 @@ public class BenefitResponseDto {
     private Integer purchaseLimit;
     private Integer purchaseLimitPerStudent;
     private LocalDateTime endAt;
+    private BenefitState state;
     private SubjectSimplifiedResponseDto subjectDto;
     private BenefitIcon icon;
     private BenefitCategory category;
