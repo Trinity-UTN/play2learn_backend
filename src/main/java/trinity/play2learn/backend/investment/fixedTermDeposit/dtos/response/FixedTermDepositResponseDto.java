@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Data;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDays;
+import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermState;
 
 @Data
 @Builder
@@ -21,5 +22,7 @@ public class FixedTermDepositResponseDto {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    private FixedTermState fixedTermState; 
 
 }
