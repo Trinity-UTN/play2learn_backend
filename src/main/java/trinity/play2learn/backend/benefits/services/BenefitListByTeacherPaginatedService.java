@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.benefits.services;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -64,6 +65,8 @@ public class BenefitListByTeacherPaginatedService implements IBenefitListByTeach
 
         List<BenefitResponseDto> dtos = BenefitMapper.toListDto(pageResult.getContent());
         
+        dtos = dtos.stream().sorted(Comparator.comparing(BenefitResponseDto::getState)).toList(); //Ordena los PUBLISHED primero
+
         return PaginationHelper.fromPage(pageResult , dtos);
     }
 }
