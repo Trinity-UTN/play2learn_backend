@@ -36,6 +36,7 @@ public class BenefitMapper {
             .purchaseLimit(benefit.getPurchaseLimit())
             .purchaseLimitPerStudent(benefit.getPurchaseLimitPerStudent())
             .endAt(benefit.getEndAt())
+            .state(benefit.getState())
             .subjectDto(SubjectMapper.toSimplifiedDto(benefit.getSubject()))
             .icon(benefit.getIcon())
             .category(benefit.getCategory())

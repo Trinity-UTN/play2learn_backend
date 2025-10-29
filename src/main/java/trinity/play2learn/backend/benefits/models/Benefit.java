@@ -100,4 +100,11 @@ public class Benefit {
         
         this.purchasesLeft -= 1;
     }
+
+    public BenefitState getState(){
+        if (isExpired()) {
+            return BenefitState.EXPIRED;
+        }
+        return BenefitState.PUBLISHED;
+    }
 }
