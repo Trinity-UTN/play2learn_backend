@@ -2,6 +2,8 @@ package trinity.play2learn.backend.investment.stock.mappers;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.stock.dtos.response.StockBuyResponseDto;
@@ -69,6 +71,10 @@ public class OrderMapper {
             .quantity(order.getQuantity())
             .total(order.getPricePerUnit() * order.getQuantity().doubleValue())
             .build();
+    }
+
+    public static List<StockSellResponseDto> toSellDtoList (List<Order> orders) {
+        return orders.stream().map(OrderMapper::toSellDto).collect(Collectors.toList());
     }
 
     

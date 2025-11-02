@@ -30,7 +30,7 @@ public class StockRegisterService implements IStockRegisterService {
 
         stockHistoryRepository.save(StockHistoryMapper.toModel (stock, 0.0));
 
-        return StockMapper.toDto (stock);
+        return StockMapper.toDto (stock, null, null);
     }
 
     

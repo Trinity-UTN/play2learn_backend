@@ -5,6 +5,7 @@ import java.util.List;
 
 import trinity.play2learn.backend.investment.stock.dtos.request.StockRegisterRequestDto;
 import trinity.play2learn.backend.investment.stock.dtos.response.StockResponseDto;
+import trinity.play2learn.backend.investment.stock.dtos.response.StockSellResponseDto;
 import trinity.play2learn.backend.investment.stock.models.Stock;
 
 public class StockMapper {
@@ -22,7 +23,7 @@ public class StockMapper {
             .build();
     }
 
-    public static StockResponseDto toDto (Stock stock) {
+    public static StockResponseDto toDto (Stock stock, BigInteger quantityBought, List<StockSellResponseDto> pendingOrders) {
         return StockResponseDto.builder()
             .id(stock.getId())
             .name(stock.getName())
@@ -33,11 +34,15 @@ public class StockMapper {
             .currentPrice(stock.getCurrentPrice())
             .initialPrice(stock.getInitialPrice())
             .riskLevel(stock.getRiskLevel())
+            .quantityBought((quantityBought == null) ? BigInteger.ZERO : quantityBought)
+            .pendingOrders((pendingOrders.isEmpty()) ? null : pendingOrders)
             .build();
     }
 
     public static List<StockResponseDto> toDtoList (List<Stock> stocks) {
-        return stocks.stream().map(StockMapper::toDto).toList();
+        return stocks.stream()
+            .map(stock -> toDto(stock, null, null))
+            .toList();
     }
     
 }
