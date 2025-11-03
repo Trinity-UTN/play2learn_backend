@@ -35,7 +35,7 @@ public class StockMapper {
             .initialPrice(stock.getInitialPrice())
             .riskLevel(stock.getRiskLevel())
             .quantityBought((quantityBought == null) ? BigInteger.ZERO : quantityBought)
-            .pendingOrders((pendingOrders.isEmpty()) ? null : pendingOrders)
+            .pendingOrders((pendingOrders == null) ? null : pendingOrders)
             .build();
     }
 
