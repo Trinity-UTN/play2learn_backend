@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.investment.stock.dtos.response;
 
 import java.math.BigInteger;
+import java.util.List;
 
 import lombok.Builder;
 import lombok.Data;
@@ -27,5 +28,9 @@ public class StockResponseDto {
     private Double initialPrice;
 
     private RiskLevel riskLevel;
+
+    private BigInteger quantityBought; 
+
+    private List<StockSellResponseDto> pendingOrders;
 
 }

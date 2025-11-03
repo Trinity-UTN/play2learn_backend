@@ -32,6 +32,10 @@ public class SubjectRefillBalanceService implements ISubjectRefillBalanceService
                 subject.setInitialBalance(calculateInitialBalance(subject));  
             }
 
+            if (subject.getInitialBalance() - subject.getActualBalance() <= 0.0) {
+                continue;
+            }
+
             generateTransactionService.generate(
                 TypeTransaction.ASIGNACION,
                 subject.getInitialBalance() - subject.getActualBalance(), 
