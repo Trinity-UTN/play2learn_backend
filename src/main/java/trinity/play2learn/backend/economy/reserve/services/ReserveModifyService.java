@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.messages.EconomyMessages;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.repositories.IReserveRepository;
@@ -19,11 +20,11 @@ public class ReserveModifyService implements IReserveModifyService {
     @Override
     public Reserve moveToReserve(Double amount, Reserve reserve) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("El monto debe ser mayor a 0");
+            throw new BadRequestException("El monto debe ser mayor a 0");
         }
 
         if (amount > reserve.getCirculationBalance()){
-            throw new IllegalArgumentException("No hay suficiente dinero en la circulacion");
+            throw new BadRequestException("No hay suficiente dinero en la circulacion");
         }
 
         reserve.setCirculationBalance(reserve.getCirculationBalance() - amount);
@@ -36,14 +37,18 @@ public class ReserveModifyService implements IReserveModifyService {
     @Override
     public Reserve moveToCirculation(Double amount, Reserve reserve) {
         if (amount <= 0) {
-            throw new IllegalArgumentException(EconomyMessages.AMOUNT_MAJOR_TO_0);
+            throw new BadRequestException(EconomyMessages.AMOUNT_MAJOR_TO_0);
         }
 
         if (amount > reserve.getReserveBalance()){
-            throw new IllegalArgumentException(EconomyMessages.NOT_ENOUGH_RESERVE_MONEY);
+
+            Double diferenciaFaltante = amount - reserve.getReserveBalance();
+
+            reserve.setReserveBalance(reserve.getReserveBalance()+diferenciaFaltante);
         }
 
         reserve.setReserveBalance(reserve.getReserveBalance() - amount);
+        
         reserve.setCirculationBalance(reserve.getCirculationBalance() + amount);
 
         return reserveRepository.save(reserve);
