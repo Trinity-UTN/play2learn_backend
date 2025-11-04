@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.investment.savingAccount.mappers;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.savingAccount.dtos.request.SavingAccountRegisterRequestDto;
@@ -29,6 +30,10 @@ public class SavingAccountMapper {
             .startDate(savingAccount.getStartDate())
             .lastUpdate(savingAccount.getLastUpdate())
             .build();
+    }
+
+    public static List<SavingAccountResponseDto> toDtoList (List<SavingAccount> savingAccounts) {
+        return savingAccounts.stream().map(SavingAccountMapper::toDto).toList();
     }
     
 }

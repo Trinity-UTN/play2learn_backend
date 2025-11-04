@@ -19,7 +19,7 @@ import trinity.play2learn.backend.investment.savingAccount.services.interfaces.I
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 
-@RequestMapping("/investment/saving-account")
+@RequestMapping("/investment/saving-accounts")
 @RestController
 @AllArgsConstructor
 public class SavingAccountWithdrawalController {
