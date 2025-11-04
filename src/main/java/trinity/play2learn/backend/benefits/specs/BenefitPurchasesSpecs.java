@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.benefits.specs;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import jakarta.persistence.criteria.Expression;
@@ -13,6 +15,11 @@ public class BenefitPurchasesSpecs {
         return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
     }
 
+    public static Specification<BenefitPurchase> notExpired() {
+        return (root, query, cb) -> cb.greaterThan(root.get("benefit").get("endAt"),LocalDateTime.now());
+    }
+
+    
     // Busca si la cadena esta contenida en el nombre del estudiante que compro el beneficio
     public static Specification<BenefitPurchase> studentFullNameContains(String search) {
     return (root, query, cb) -> {
