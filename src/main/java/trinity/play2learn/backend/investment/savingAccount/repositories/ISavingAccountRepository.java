@@ -8,9 +8,9 @@ import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 
 public interface ISavingAccountRepository extends CrudRepository<SavingAccount, Long>, JpaSpecificationExecutor<SavingAccount> {
     
-    boolean existsByNameAndWallet(String name, Wallet wallet);
+    boolean existsByNameAndWalletAndDeletedAtIsNull(String name, Wallet wallet);
 
-    SavingAccount findByIdAndWallet(Long id, Wallet wallet);
+    SavingAccount findByIdAndWalletAndDeletedAtIsNull(Long id, Wallet wallet);
 
     
 }

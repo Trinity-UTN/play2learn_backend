@@ -17,7 +17,7 @@ public class SavingAccountExistsByNameAndWalletService implements ISavingAccount
     
     @Override
     public boolean execute(String name, Wallet wallet) {
-        return savingAccountRepository.existsByNameAndWallet(name, wallet);
+        return savingAccountRepository.existsByNameAndWalletAndDeletedAtIsNull(name, wallet);
     }
 
 }

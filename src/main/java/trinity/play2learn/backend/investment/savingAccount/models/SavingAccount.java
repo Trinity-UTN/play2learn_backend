@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.investment.savingAccount.models;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -40,4 +41,7 @@ public class SavingAccount {
     @ManyToOne
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
+
+    private LocalDateTime deletedAt;
+    
 }

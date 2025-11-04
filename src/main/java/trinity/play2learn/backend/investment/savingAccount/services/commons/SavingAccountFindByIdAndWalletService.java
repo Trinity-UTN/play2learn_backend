@@ -16,7 +16,7 @@ public class SavingAccountFindByIdAndWalletService implements ISavingAccountFind
 
     @Override
     public SavingAccount execute(Long id, Wallet wallet) {
-        return savingAccountRepository.findByIdAndWallet(id, wallet);
+        return savingAccountRepository.findByIdAndWalletAndDeletedAtIsNull(id, wallet);
     }
     
 }
