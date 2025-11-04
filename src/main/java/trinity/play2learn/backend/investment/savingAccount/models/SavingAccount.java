@@ -32,6 +32,8 @@ public class SavingAccount {
 
     private Double currentAmount;
 
+    private Double accumulatedInterest;
+
     private String name;
 
     private LocalDate startDate;

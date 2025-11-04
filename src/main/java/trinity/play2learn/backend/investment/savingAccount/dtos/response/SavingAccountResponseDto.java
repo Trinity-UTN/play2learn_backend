@@ -15,6 +15,8 @@ public class SavingAccountResponseDto {
 
     private Double currentAmount;
 
+    private Double accumulatedInterest;
+
     private LocalDate startDate;
 
     private LocalDate lastUpdate;

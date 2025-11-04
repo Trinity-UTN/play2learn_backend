@@ -28,7 +28,11 @@ public class SavingAccountUpdateService implements ISavingAccountUpdateService {
             if (savingAccount.getLastUpdate().isBefore(LocalDate.now())) {
 
                 // Incremento del 0.1% diario
-                savingAccount.setCurrentAmount(savingAccount.getCurrentAmount()*1.001);
+                Double interest = savingAccount.getCurrentAmount() * 0.001;
+
+                savingAccount.setAccumulatedInterest(savingAccount.getAccumulatedInterest() + interest);
+
+                savingAccount.setCurrentAmount(savingAccount.getCurrentAmount() + interest);
 
                 savingAccount.setLastUpdate(LocalDate.now());
 

@@ -16,6 +16,7 @@ public class SavingAccountMapper {
             .startDate(LocalDate.now())
             .initialAmount(savingAccountDto.getInitialAmount())
             .currentAmount(savingAccountDto.getInitialAmount())
+            .accumulatedInterest(0.0)
             .lastUpdate(LocalDate.now())
             .wallet(wallet)
             .build();
@@ -27,6 +28,7 @@ public class SavingAccountMapper {
             .id(savingAccount.getId())
             .initialAmount(savingAccount.getInitialAmount())
             .currentAmount(savingAccount.getCurrentAmount())
+            .accumulatedInterest((savingAccount.getAccumulatedInterest() == null) ? 0.0 : (double)savingAccount.getAccumulatedInterest())
             .startDate(savingAccount.getStartDate())
             .lastUpdate(savingAccount.getLastUpdate())
             .build();
