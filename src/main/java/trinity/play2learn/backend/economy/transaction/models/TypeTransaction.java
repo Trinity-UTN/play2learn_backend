@@ -8,5 +8,7 @@ public enum TypeTransaction {
     REEMBOLSO,
     ACTIVIDAD,
     STOCK,
-    PLAZO_FIJO
+    PLAZO_FIJO,
+    INGRESO_CAJA_AHORRO,
+    RETIRO_CAJA_AHORRO
 }

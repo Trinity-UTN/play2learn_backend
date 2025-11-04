@@ -20,6 +20,7 @@ import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 import trinity.play2learn.backend.investment.stock.models.OrderType;
 
@@ -49,7 +50,8 @@ public class StockTransactionService implements ITransactionStrategyService {
         Activity activity, 
         Benefit benefit, 
         Order order,
-        FixedTermDeposit fixedTermDeposit
+        FixedTermDeposit fixedTermDeposit,
+        SavingAccount savingAccount
     ) {
         /*
          * Cosas a hacer
@@ -82,6 +84,7 @@ public class StockTransactionService implements ITransactionStrategyService {
                 null,
                 order,
                 fixedTermDeposit,
+                null,
                 reserve
             );
 
@@ -104,6 +107,7 @@ public class StockTransactionService implements ITransactionStrategyService {
                 null,
                 order,
                 fixedTermDeposit,
+                null,
                 reserve
             );
 

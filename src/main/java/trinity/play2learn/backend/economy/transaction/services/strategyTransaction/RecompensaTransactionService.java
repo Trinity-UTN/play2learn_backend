@@ -19,6 +19,7 @@ import trinity.play2learn.backend.economy.transaction.services.interfaces.ITrans
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("RECOMPENSA")
@@ -45,7 +46,8 @@ public class RecompensaTransactionService implements ITransactionStrategyService
         Activity activity,
         Benefit benefit,
         Order order,
-        FixedTermDeposit fixedTermDeposit
+        FixedTermDeposit fixedTermDeposit,
+        SavingAccount savingAccount
         ) {
         
         if (activity.getActualBalance() < amount) {
@@ -63,6 +65,7 @@ public class RecompensaTransactionService implements ITransactionStrategyService
             benefit,
             order,
             fixedTermDeposit,
+            savingAccount,
             findLastReserveService.get()
         );
 

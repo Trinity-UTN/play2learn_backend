@@ -18,6 +18,7 @@ import trinity.play2learn.backend.economy.transaction.services.interfaces.ITrans
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service
@@ -40,7 +41,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
         Activity activity,
         Benefit benefit,
         Order order,
-        FixedTermDeposit fixedTermDeposit
+        FixedTermDeposit fixedTermDeposit,
+        SavingAccount savingAccount
         ) {
         if (amount <= 0) {
             throw new ConflictException(EconomyMessages.AMOUNT_MAJOR_TO_0);
@@ -62,7 +64,8 @@ public class TransactionGenerateService implements ITransactionGenerateService{
             activity,
             benefit,
             order,
-            fixedTermDeposit
+            fixedTermDeposit,
+            savingAccount
         );
 
         return transaccion;

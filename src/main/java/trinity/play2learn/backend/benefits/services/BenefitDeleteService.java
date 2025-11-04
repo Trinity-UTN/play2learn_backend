@@ -62,6 +62,7 @@ public class BenefitDeleteService implements IBenefitDeleteService {
                         null, 
                         benefit, 
                         null,
+                        null,
                         null
                     );
                 }

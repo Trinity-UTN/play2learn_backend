@@ -14,6 +14,7 @@ public interface IStockRepository extends CrudRepository<Stock, Long>, JpaSpecif
     Optional<Stock> findById(Long id);
 
 
+    @SuppressWarnings("null")
     List<Stock> findAll();
     
 }

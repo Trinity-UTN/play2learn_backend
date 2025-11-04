@@ -73,7 +73,8 @@ public class FixedTermDepositRegisterService implements IFixedTermDepositRegiste
             null,
             null,
             null,
-            fixedTermDeposit
+            fixedTermDeposit,
+            null
         );
 
         return FixedTermDepositMapper.toDto(fixedTermDeposit);

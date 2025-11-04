@@ -50,6 +50,7 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
             activityCompleted.getActivity(),
             null,
             null,
+            null,
             null
         );
         

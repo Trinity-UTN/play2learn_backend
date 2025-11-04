@@ -21,6 +21,7 @@ import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Entity
@@ -68,6 +69,10 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(name = "fixed_term_deposit_id")
     private FixedTermDeposit fixedTermDeposit;
+
+    @ManyToOne
+    @JoinColumn(name = "saving_account_id")
+    private SavingAccount savingAccount;
 
     @ManyToOne
     @JoinColumn(name = "reserve_id")

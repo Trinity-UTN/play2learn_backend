@@ -21,6 +21,7 @@ import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddA
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletRemoveAmountService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermState;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("PLAZO_FIJO")
@@ -49,7 +50,8 @@ public class FixedTermDepositTransactionService implements ITransactionStrategyS
         Activity activity, 
         Benefit benefit, 
         Order order,
-        FixedTermDeposit fixedTermDeposit
+        FixedTermDeposit fixedTermDeposit,
+        SavingAccount savingAccount
     ) {
         /*
          * Cosas a hacer
@@ -82,6 +84,7 @@ public class FixedTermDepositTransactionService implements ITransactionStrategyS
                 null,
                 order,
                 fixedTermDeposit,
+                savingAccount,
                 reserve
             );
 
@@ -104,6 +107,7 @@ public class FixedTermDepositTransactionService implements ITransactionStrategyS
                 null,
                 null,
                 fixedTermDeposit,
+                savingAccount,
                 reserve
             );
 

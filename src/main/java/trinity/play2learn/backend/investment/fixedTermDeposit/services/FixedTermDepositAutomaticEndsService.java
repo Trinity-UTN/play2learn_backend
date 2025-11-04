@@ -55,7 +55,8 @@ public class FixedTermDepositAutomaticEndsService implements IFixedTermDepositAu
                 null,
                 null,
                 null,
-                fixedTermDeposit
+                fixedTermDeposit,
+                null
             );
 
         }
