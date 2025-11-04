@@ -1,6 +1,5 @@
 # Usa una imagen oficial de Java como base
-FROM openjdk:21-slim AS build
-
+FROM eclipse-temurin:21-jdk-jammy AS build
 # Instala Maven
 RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
