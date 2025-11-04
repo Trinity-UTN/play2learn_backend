@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletUpdateInvestedBalanceService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermState;
 import trinity.play2learn.backend.investment.fixedTermDeposit.repositories.IFixedTermDepositRepository;
@@ -26,6 +27,8 @@ public class FixedTermDepositAutomaticEndsService implements IFixedTermDepositAu
     private final IFixedTermDepositRepository fixedTermDepositRepository;
 
     private final ITransactionGenerateService transactionGenerateService;
+
+    private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
 
     @Override
     @Scheduled(cron = "0 30 1 * * *")
@@ -58,6 +61,8 @@ public class FixedTermDepositAutomaticEndsService implements IFixedTermDepositAu
                 fixedTermDeposit,
                 null
             );
+
+            walletUpdateInvestedBalanceService.execute(fixedTermDeposit.getWallet());
 
         }
 

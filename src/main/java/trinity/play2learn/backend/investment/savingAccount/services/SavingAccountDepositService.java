@@ -11,6 +11,7 @@ import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletUpdateInvestedBalanceService;
 import trinity.play2learn.backend.investment.savingAccount.dtos.request.SavingAccountDepositRequestDto;
 import trinity.play2learn.backend.investment.savingAccount.dtos.response.SavingAccountResponseDto;
 import trinity.play2learn.backend.investment.savingAccount.mappers.SavingAccountMapper;
@@ -31,6 +32,8 @@ public class SavingAccountDepositService implements ISavingAccountDepositService
     private final ISavingAccountRepository savingAccountRepository;
 
     private final ITransactionGenerateService transactionGenerateService;
+
+    private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
     
     @Override
     @Transactional
@@ -68,6 +71,8 @@ public class SavingAccountDepositService implements ISavingAccountDepositService
             null,
             savingAccount
         );
+
+        walletUpdateInvestedBalanceService.execute(wallet);
 
         return SavingAccountMapper.toDto(savingAccount);
     }
