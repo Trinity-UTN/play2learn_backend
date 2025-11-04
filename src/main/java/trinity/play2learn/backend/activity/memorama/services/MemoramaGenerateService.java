@@ -70,6 +70,7 @@ public class MemoramaGenerateService implements IMemoramaGenerateService{
             memoramaSaved,
             null,
             null,
+            null,
             null
         );
 

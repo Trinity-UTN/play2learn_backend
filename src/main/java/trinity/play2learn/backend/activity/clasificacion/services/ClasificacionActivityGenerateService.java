@@ -58,6 +58,7 @@ public class ClasificacionActivityGenerateService implements IClasificacionGener
             activity,
             null,
             null,
+            null,
             null
         );
 

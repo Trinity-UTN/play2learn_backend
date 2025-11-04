@@ -8,4 +8,5 @@ import trinity.play2learn.backend.economy.wallet.models.Wallet;
 public interface ITransactionGetLastTransaccionsService {
     
     public List<Transaction> execute (Wallet wallet);
+    
 }

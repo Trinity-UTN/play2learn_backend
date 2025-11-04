@@ -19,6 +19,7 @@ import trinity.play2learn.backend.economy.transaction.repositories.ITransactionR
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("ASIGNACION")
@@ -45,7 +46,8 @@ public class AsignacionTransactionService implements ITransactionStrategyService
         Activity activity,
         Benefit benefit,
         Order order,
-        FixedTermDeposit fixedTermDeposit
+        FixedTermDeposit fixedTermDeposit,
+        SavingAccount savingAccount
         ) {
 
         Double assignAmount = subject.getInitialBalance() - subject.getActualBalance();
@@ -73,6 +75,7 @@ public class AsignacionTransactionService implements ITransactionStrategyService
             null,
             order,
             fixedTermDeposit,
+            savingAccount,
             reserve
         );
 

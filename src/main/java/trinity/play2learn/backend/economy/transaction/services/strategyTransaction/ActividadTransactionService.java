@@ -19,6 +19,7 @@ import trinity.play2learn.backend.economy.transaction.repositories.ITransactionR
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionStrategyService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service ("ACTIVIDAD")
@@ -45,7 +46,8 @@ public class ActividadTransactionService implements ITransactionStrategyService 
         Activity activity,
         Benefit benefit,
         Order order,
-        FixedTermDeposit fixedTermDeposit
+        FixedTermDeposit fixedTermDeposit,
+        SavingAccount savingAccount
         ) {
 
         if (amount > (0.3 * subject.getInitialBalance())){
@@ -71,6 +73,7 @@ public class ActividadTransactionService implements ITransactionStrategyService 
             benefit,
             order,
             fixedTermDeposit,
+            savingAccount,
             reserveFindLastService.get()
         );
 

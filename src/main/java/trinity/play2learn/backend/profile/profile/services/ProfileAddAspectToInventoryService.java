@@ -51,6 +51,7 @@ public class ProfileAddAspectToInventoryService implements IProfileAddAspectToIn
             null,
             null,
             null,
+            null,
             null
         );
 

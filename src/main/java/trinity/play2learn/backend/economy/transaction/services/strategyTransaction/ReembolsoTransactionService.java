@@ -16,6 +16,7 @@ import trinity.play2learn.backend.economy.transaction.services.interfaces.ITrans
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
+import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.stock.models.Order;
 
 @Service("REEMBOLSO")
@@ -28,24 +29,36 @@ public class ReembolsoTransactionService implements ITransactionStrategyService 
     private final IReserveModifyService modifyReserveService;
 
     @Override
-    public Transaction execute(Double amount, String description, TransactionActor origin, TransactionActor destination,
-            Wallet wallet, Subject subject, Activity activity, Benefit benefit, Order order,
-            FixedTermDeposit fixedTermDeposit) {
+    public Transaction execute(
+        Double amount, 
+        String description, 
+        TransactionActor origin, 
+        TransactionActor destination,
+        Wallet wallet, 
+        Subject subject, 
+        Activity activity, 
+        Benefit benefit, 
+        Order order,
+        FixedTermDeposit fixedTermDeposit,
+        SavingAccount savingAccount
+        ) {
 
         Reserve reserve = findLastReserveService.get();
 
         Transaction transaccion = TransactionMapper.toModel(
-                amount,
-                description,
-                origin,
-                destination,
-                wallet,
-                null,
-                null,
-                benefit,
-                null,
-                null,
-                reserve);
+            amount,
+            description,
+            origin,
+            destination,
+            wallet,
+            null,
+            null,
+            benefit,
+            null,
+            null,
+            null,
+            reserve
+        );
 
         Transaction transaccionSaved = transaccionRepository.save(transaccion);
 

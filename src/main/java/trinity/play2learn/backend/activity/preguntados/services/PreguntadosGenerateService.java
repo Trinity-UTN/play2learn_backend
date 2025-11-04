@@ -52,6 +52,7 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
             preguntados,
             null,
             null,
+            null,
             null
         );
         
