@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletUpdateInvestedBalanceService;
 import trinity.play2learn.backend.investment.stock.models.Order;
 import trinity.play2learn.backend.investment.stock.models.OrderState;
 import trinity.play2learn.backend.investment.stock.models.OrderStop;
@@ -32,6 +33,8 @@ public class OrderStopExecuteService implements IOrderStopExecuteService {
     private final ITransactionGenerateService transactionGenerateService;
 
     private final IStockMoveService stockMoveService;
+
+    private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
     
     @Override
     public void execute(Stock stock) {
@@ -97,6 +100,8 @@ public class OrderStopExecuteService implements IOrderStopExecuteService {
             );
 
             stockMoveService.toAvailable(stock, order.getQuantity());
+
+            walletUpdateInvestedBalanceService.execute(order.getWallet());
 
         }
 

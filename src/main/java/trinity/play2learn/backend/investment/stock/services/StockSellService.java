@@ -10,6 +10,7 @@ import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletUpdateInvestedBalanceService;
 import trinity.play2learn.backend.investment.stock.dtos.request.StockBuyRequestDto;
 import trinity.play2learn.backend.investment.stock.dtos.response.StockSellResponseDto;
 import trinity.play2learn.backend.investment.stock.mappers.OrderMapper;
@@ -42,6 +43,8 @@ public class StockSellService implements IStockSellService {
     private final IStockMoveService stockMoveService;
 
     private final IStockUpdateSpecificService stockUpdateSpecificService;
+
+    private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
     
     
     @Override
@@ -86,6 +89,8 @@ public class StockSellService implements IStockSellService {
         stockMoveService.toAvailable(stock, order.getQuantity());
 
         stockUpdateSpecificService.execute(stock);
+
+        walletUpdateInvestedBalanceService.execute(wallet);
 
         return OrderMapper.toSellDto(order);
     }

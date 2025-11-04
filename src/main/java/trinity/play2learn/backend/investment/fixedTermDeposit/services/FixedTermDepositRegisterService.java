@@ -11,6 +11,7 @@ import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletUpdateInvestedBalanceService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.dtos.request.FixedTermDepositRegisterRequestDto;
 import trinity.play2learn.backend.investment.fixedTermDeposit.dtos.response.FixedTermDepositResponseDto;
 import trinity.play2learn.backend.investment.fixedTermDeposit.mappers.FixedTermDepositMapper;
@@ -32,6 +33,8 @@ public class FixedTermDepositRegisterService implements IFixedTermDepositRegiste
     private final IFixedTermDepositRepository fixedTermDepositRepository;
 
     private final ITransactionGenerateService transactionGenerateService;
+
+    private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
 
     @Override
     @Transactional
@@ -76,6 +79,8 @@ public class FixedTermDepositRegisterService implements IFixedTermDepositRegiste
             fixedTermDeposit,
             null
         );
+
+        walletUpdateInvestedBalanceService.execute(wallet);
 
         return FixedTermDepositMapper.toDto(fixedTermDeposit);
         

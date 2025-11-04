@@ -17,5 +17,6 @@ public interface ISavingAccountRepository extends CrudRepository<SavingAccount, 
 
     List<SavingAccount> findAllByDeletedAtIsNull();
 
-    
+    List<SavingAccount> findAllByWalletAndDeletedAtIsNull(Wallet wallet);
+
 }

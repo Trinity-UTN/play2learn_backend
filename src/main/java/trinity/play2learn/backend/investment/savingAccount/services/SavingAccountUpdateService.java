@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletUpdateInvestedBalanceService;
 import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.savingAccount.repositories.ISavingAccountRepository;
 import trinity.play2learn.backend.investment.savingAccount.services.interfaces.ISavingAccountUpdateService;
@@ -17,6 +18,8 @@ import trinity.play2learn.backend.investment.savingAccount.services.interfaces.I
 public class SavingAccountUpdateService implements ISavingAccountUpdateService {
     
     private final ISavingAccountRepository savingAccountRepository;
+
+    private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
     
     @Override
     @Scheduled(cron = "0 35 1 * * *")
@@ -37,6 +40,8 @@ public class SavingAccountUpdateService implements ISavingAccountUpdateService {
                 savingAccount.setLastUpdate(LocalDate.now());
 
                 savingAccountRepository.save(savingAccount);
+
+                walletUpdateInvestedBalanceService.execute(savingAccount.getWallet());
             }
         }
     }
