@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -14,7 +15,7 @@ import trinity.play2learn.backend.investment.savingAccount.dtos.response.SavingA
 import trinity.play2learn.backend.investment.savingAccount.mappers.SavingAccountMapper;
 import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.savingAccount.repositories.ISavingAccountRepository;
-import trinity.play2learn.backend.investment.savingAccount.services.interfaces.ISavingAccountFindByIdAndWalletService;
+import trinity.play2learn.backend.investment.savingAccount.services.interfaces.ISavingAccountFindByIdService;
 import trinity.play2learn.backend.investment.savingAccount.services.interfaces.ISavingAccountWithdrawalService;
 import trinity.play2learn.backend.user.models.User;
 
@@ -24,7 +25,7 @@ public class SavingAccountWithdrawalService implements ISavingAccountWithdrawalS
 
     private final IStudentGetByEmailService studentGetByEmailService;
 
-    private final ISavingAccountFindByIdAndWalletService savingAccountFindByIdAndWalletService;
+    private final ISavingAccountFindByIdService savingAccountFindByIdService;
 
     private final ISavingAccountRepository savingAccountRepository;
 
@@ -35,7 +36,11 @@ public class SavingAccountWithdrawalService implements ISavingAccountWithdrawalS
         
         Wallet wallet = studentGetByEmailService.getByEmail(user.getEmail()).getWallet();
 
-        SavingAccount savingAccount = savingAccountFindByIdAndWalletService.execute(dto.getId(), wallet);
+        SavingAccount savingAccount = savingAccountFindByIdService.execute(dto.getId());
+
+        if (!savingAccount.getWallet().equals(wallet)){
+            throw new ConflictException("La cuenta de ahorro no pertenece al estudiante");
+        }
 
         if (savingAccount.getCurrentAmount().compareTo(dto.getAmount()) < 0) {
             throw new BadRequestException("No hay saldo suficiente en la caja de ahorro");
