@@ -39,6 +39,9 @@ public class BenefitPurchaseMapper {
             .id(benefitPurchase.getId())
             .benefitId(benefitPurchase.getBenefit().getId())
             .benefitName(benefitPurchase.getBenefit().getName())
+            .benefitCategory(benefitPurchase.getBenefit().getCategory())
+            .benefitColor(benefitPurchase.getBenefit().getColor())
+            .benefitIcon(benefitPurchase.getBenefit().getIcon())
             .subjectId(benefitPurchase.getBenefit().getSubject().getId())
             .subjectName(benefitPurchase.getBenefit().getSubject().getName())
             .state(benefitPurchase.getState())
@@ -62,10 +65,12 @@ public class BenefitPurchaseMapper {
             .benefitId(benefitPurchase.getBenefit().getId())
             .benefitName(benefitPurchase.getBenefit().getName())
             .benefitDescription(benefitPurchase.getBenefit().getDescription())
+            .category(benefitPurchase.getBenefit().getCategory())
+            .color(benefitPurchase.getBenefit().getColor())
+            .icon(benefitPurchase.getBenefit().getIcon())
             .subjectId(benefitPurchase.getBenefit().getSubject().getId())
             .subjectName(benefitPurchase.getBenefit().getSubject().getName())
             .usedAt(benefitPurchase.getUsedAt())
-            .category(benefitPurchase.getBenefit().getCategory())
             .build();
     }
 
