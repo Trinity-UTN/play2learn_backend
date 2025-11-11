@@ -1,0 +1,265 @@
+{
+  "feature_title": "Plan de pruebas unitarias para módulo Admin Course",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Auditar servicios, controladores y DTOs de Admin Course",
+      "description": "Levantar inventario de responsabilidades, reglas de validación, dependencias externas y huecos de cobertura para los servicios, controladores y DTOs de `admin/course`, excluyendo models, repositories, mappers y specs.",
+      "command": "/analyze",
+      "params": {
+        "targets": [
+          "src/main/java/trinity/play2learn/backend/admin/course/services",
+          "src/main/java/trinity/play2learn/backend/admin/course/controllers",
+          "src/main/java/trinity/play2learn/backend/admin/course/dtos"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Inventario con lista de clases y casos de uso por cada controller/service.",
+        "Registro de validaciones, excepciones y reglas de negocio relevantes.",
+        "Mapa de dependencias con servicios auxiliares y utilidades involucradas."
+      ]
+    },
+    {
+      "id": "T02",
+      "title": "Diseñar estrategia de pruebas unitarias para Admin Course",
+      "description": "Documentar alcance, prioridades de riesgo, tipos de dobles y fixtures comunes para services, controllers y DTOs, asegurando exclusión de models, repositories, mappers y specs.",
+      "command": "/design",
+      "params": {
+        "artifact": "docs/testing/course-unit-test-strategy.md"
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Estrategia describe cobertura objetivo para services/controllers/DTOs.",
+        "Incluye matriz de escenarios priorizados y dependencias simuladas.",
+        "Define métricas de calidad (líneas, ramas y criterios de aceptación por suite)."
+      ]
+    },
+    {
+      "id": "T03",
+      "title": "Generar pruebas para CourseRegisterService y CourseUpdateService",
+      "description": "Implementar suites unitarias que cubran flujos felices, duplicados y validaciones de Year en los servicios de registro y actualización.",
+      "command": "/generate",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseRegisterServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseUpdateServiceTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Se cubren escenarios: creación/actualización exitosa, nombre duplicado, Year inexistente.",
+        "Mocks verifican interacciones con `CourseRepository`, `YearGetByIdService` y `CourseExistByService`.",
+        "Asserts validan DTO/entidad resultante y mensajes de excepción."
+      ]
+    },
+    {
+      "id": "T04",
+      "title": "Refinar pruebas de registro y actualización",
+      "description": "Optimizar suites de CourseRegisterService y CourseUpdateService eliminando duplicación, mejorando nomenclatura y documentación de escenarios.",
+      "command": "/refine",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseRegisterServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseUpdateServiceTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Se usan helpers compartidos y builders para DTOs y entidades simuladas.",
+        "Cada prueba incluye `@DisplayName` descriptivo y patrón Given-When-Then.",
+        "No hay warnings de Mockito ni duplicidad de datos de prueba."
+      ]
+    },
+    {
+      "id": "T05",
+      "title": "Generar pruebas para CourseDeleteService y servicios comunes",
+      "description": "Crear suites para `CourseDeleteService`, `CourseGetByIdService`, `CourseExistByService` y `CourseExistByYearService`, validando estados lógicos y excepciones.",
+      "command": "/generate",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseDeleteServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/commons/CourseCommonServicesTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Cobertura de escenarios: curso inexistente, ya eliminado, asociado a Year y borrado exitoso.",
+        "Uso de `assertThrows` o AssertJ para excepciones específicas.",
+        "Verificación de interacciones con repositorio y servicios auxiliares."
+      ]
+    },
+    {
+      "id": "T06",
+      "title": "Refinar pruebas de eliminación y servicios comunes",
+      "description": "Revisar suites generadas para mejorar organización, reutilización de fixtures y claridad en los supuestos.",
+      "command": "/refine",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseDeleteServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/commons/CourseCommonServicesTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Casos agrupados con `@Nested` o helpers explicando precondiciones.",
+        "Fixtures comunes centralizadas y reutilizadas en las suites.",
+        "Cobertura mantenida sin código duplicado."
+      ]
+    },
+    {
+      "id": "T07",
+      "title": "Generar pruebas para CourseGetService y listados",
+      "description": "Desarrollar pruebas unitarias para `CourseGetService`, `CourseListService` y `CourseListPaginatedService`, cubriendo filtros, paginación y mapeo a DTOs.",
+      "command": "/generate",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseGetServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseListServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseListPaginatedServiceTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "`CourseListService` ignora cursos con `deletedAt` no nulo.",
+        "`CourseListPaginatedService` ejerce combinaciones de `search`, `order` y `filters` verificando delegación a helpers/paginadores.",
+        "`CourseGetService` valida delegación a `CourseGetByIdService` y correcta construcción del DTO."
+      ]
+    },
+    {
+      "id": "T08",
+      "title": "Refinar pruebas de obtención y listados",
+      "description": "Pulir suites de get/list para mejorar expresividad, uso de builders y asserts sobre colecciones.",
+      "command": "/refine",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseGetServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseListServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/services/CourseListPaginatedServiceTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Helpers generan listas paginadas y DTOs consistentes.",
+        "Asserts usan AssertJ (`containsExactly`, `extracting`, `satisfies`).",
+        "Escenarios edge (filtros vacíos, búsqueda nula) documentados en comentarios."
+      ]
+    },
+    {
+      "id": "T09",
+      "title": "Generar pruebas para controllers de escritura",
+      "description": "Crear pruebas con `@WebMvcTest` o `MockMvc` para `CourseRegisterController`, `CourseUpdateController` y `CourseDeleteController`, validando respuestas y delegación.",
+      "command": "/generate",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/controllers/CourseWriteControllersTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Cobertura de respuestas 201/200/204 y errores 400/409.",
+        "Payloads JSON validados con `jsonPath` y mensajes de error comprobados.",
+        "Mocks verifican invocaciones a servicios con argumentos adecuados."
+      ]
+    },
+    {
+      "id": "T10",
+      "title": "Generar pruebas para controllers de lectura",
+      "description": "Implementar pruebas para `CourseGetController`, `CourseListController` y `CourseListPaginatedController`, asegurando serialización de respuestas y parámetros.",
+      "command": "/generate",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/controllers/CourseReadControllersTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Respuestas 200 contienen estructura esperada y datos mockeados.",
+        "Se validan parámetros `page`, `size`, `search`, `order`, `filters` y códigos de error.",
+        "Interacciones con servicios verificados con Mockito/AssertJ."
+      ]
+    },
+    {
+      "id": "T11",
+      "title": "Generar pruebas de validación para DTOs de Course",
+      "description": "Agregar pruebas de bean validation para `CourseRequestDto` y `CourseUpdateDto`, cubriendo mensajes personalizados y escenarios válidos/invalidos.",
+      "command": "/generate",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/dtos/CourseDtoValidationTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Se validan anotaciones `@NotEmpty`, `@Size`, `@Pattern`, `@NotNull` y mensajes configurados.",
+        "Escenarios válidos generan `ConstraintViolation` vacío.",
+        "Documentación de casos límite (string en blanco, longitudes mínimas/máximas, formato)."
+      ]
+    },
+    {
+      "id": "T12",
+      "title": "Refinar pruebas de controllers y DTOs",
+      "description": "Optimizar suites generadas para controllers y DTOs, centralizando configuración de MockMvc/helpers y mejorando la intención de los casos.",
+      "command": "/refine",
+      "params": {
+        "targets": [
+          "src/test/java/trinity/play2learn/backend/admin/course/controllers/CourseWriteControllersTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/controllers/CourseReadControllersTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/course/dtos/CourseDtoValidationTest.java"
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Configuración de MockMvc y Jackson centralizada en setup reutilizable.",
+        "Helpers para construir request/response JSON consistentes y reutilizados.",
+        "Cada prueba cuenta con `@DisplayName` y comentarios breves de intención."
+      ]
+    },
+    {
+      "id": "T13",
+      "title": "Ejecutar escaneo de seguridad del módulo Admin Course",
+      "description": "Correr un escaneo de dependencias y análisis estático enfocado en servicios/controladores del módulo para detectar vulnerabilidades aplicables.",
+      "command": "/secure",
+      "params": {
+        "command": "./mvnw.cmd org.owasp:dependency-check-maven:check -DfailOnError=false -DdataDirectory=./.owasp-cache"
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "Ejecución del comando finaliza sin errores fatales.",
+        "Reporte identifica vulnerabilidades clasificadas y se documenta su revisión.",
+        "Se anotan acciones de mitigación o confirmación de falsos positivos en la estrategia de pruebas."
+      ]
+    },
+    {
+      "id": "T14",
+      "title": "Preparar suites para ejecución con JaCoCo",
+      "description": "Asegurar que todas las suites recién creadas se ejecuten correctamente con JaCoCo preparando agente y reporte.",
+      "command": "/test",
+      "params": {
+        "command": "./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report"
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "El comando se ejecuta exitosamente generando `target/site/jacoco/index.html`.",
+        "Cobertura de services/controllers ≥ 85% líneas y ≥ 75% ramas.",
+        "Se documentan hallazgos clave en `docs/testing/test_admin_course.md` (borrador)."
+      ]
+    },
+    {
+      "id": "T15",
+      "title": "Consolidar reporte automatizado de pruebas para Admin Course",
+      "description": "Ejecutar script de reporte para generar documentación consolidada de las pruebas del módulo.",
+      "command": "/report",
+      "params": {
+        "command": "python scripts/testing_report.py --module \"admin/course\" --output \"docs/testing/test_admin_course.md\""
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "El archivo `docs/testing/test_admin_course.md` se actualiza con métricas y hallazgos.",
+        "El reporte incluye resumen de cobertura y estado de suites de services/controllers/DTOs.",
+        "Se adjunta enlace al reporte de JaCoCo y notas sobre vulnerabilidades pendientes."
+      ]
+    }
+  ]
+}
+
