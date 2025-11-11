@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+Cuando se solicite abrir una documentación de markdown en el browser, debes ejecutar en la terminal el comando 
+npm run render-md {ruta}
+donde ruta es la ruta al archivo markdown 
+
+Por ejemplo:
+npm run render-md docs/diagrams/architecture.md
