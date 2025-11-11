@@ -6,12 +6,17 @@ import org.springframework.data.jpa.domain.Specification;
 
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
+import trinity.play2learn.backend.admin.teacher.models.Teacher;
 
 public class ActivitySpecs {
 
     // Filtro base: trae solo los que NO fueron eliminados lógicamente
     public static Specification<Activity> notDeleted() {
         return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+    }
+
+    public static Specification<Activity> filterByTeacher(Teacher teacher) {
+        return (root, query, cb) -> cb.equal(root.get("subject").get("teacher"), teacher);
     }
 
     // Filtro por búsqueda textual (ej: nombre LIKE %search%)
@@ -35,6 +40,18 @@ public class ActivitySpecs {
 
             case "difficulty":
                 return difficultyFilter(value);
+            case "courseId":
+                try {
+                    return hasCourseId(Long.valueOf(value));
+                } catch (Exception e) { //Evita un 500 si el valor no es un numero
+                    return (root, query, cb) -> cb.conjunction();
+                }
+            case "yearId":
+                try {
+                    return hasYearId(Long.valueOf(value));
+                } catch (Exception e) { //Evita un 500 si el valor no es un numero
+                    return (root, query, cb) -> cb.conjunction();
+                }
         }
 
         return (root, query, cb) -> {
@@ -55,6 +72,24 @@ public class ActivitySpecs {
                 return cb.conjunction();
             }
             return cb.equal(root.get("subject").get("id"), subjectId);
+        };
+    }
+
+    public static Specification<Activity> hasCourseId(Long courseId) {
+        return (root, query, cb) -> {
+            if (courseId == null) {
+                return cb.conjunction();
+            }
+            return cb.equal(root.get("subject").get("course").get("id"), courseId);
+        };
+    }
+
+    public static Specification<Activity> hasYearId(Long courseId) {
+        return (root, query, cb) -> {
+            if (courseId == null) {
+                return cb.conjunction();
+            }
+            return cb.equal(root.get("subject").get("course").get("year").get("id"), courseId);
         };
     }
 
@@ -90,4 +125,5 @@ public class ActivitySpecs {
             return (root, query, cb) -> cb.conjunction();
         }
     }
+
 }

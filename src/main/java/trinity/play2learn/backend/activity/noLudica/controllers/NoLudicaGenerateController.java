@@ -2,7 +2,6 @@ package trinity.play2learn.backend.activity.noLudica.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequestDto;
@@ -13,11 +12,9 @@ import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-
 
 @RestController
 @AllArgsConstructor

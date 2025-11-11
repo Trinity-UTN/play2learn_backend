@@ -1,10 +1,10 @@
 package trinity.play2learn.backend.activity.activity.mappers;
 
 import java.time.LocalDateTime;
-
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentCountResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityTeacher.ActivityTeacherSimpleDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
@@ -59,6 +59,21 @@ public class ActivityMapper {
                                 .approved(approved)
                                 .disapproved(disapproved)
                                 .expired(expired)
+                                .build();
+        }
+
+        public static ActivityTeacherSimpleDto toSimpleDto(Activity activity, ActivityStatus status, LocalDateTime date) {
+                return ActivityTeacherSimpleDto.builder()
+                                .id(activity.getId())
+                                .name(activity.getName())
+                                .description(activity.getDescription())
+                                .subjectId(activity.getSubject().getId())
+                                .subjectName(activity.getSubject().getName())
+                                .courseId(activity.getSubject().getCourse().getId())
+                                .course(activity.getSubject().getCourse().getFullName())
+                                .yearId(activity.getSubject().getCourse().getYear().getId())
+                                .status(status)
+                                .date(date)
                                 .build();
         }
 }
