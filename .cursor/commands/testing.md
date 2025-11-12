@@ -21,10 +21,9 @@ Automatiza el flujo de pruebas unitarias para un módulo determinado del backend
 6. Comparte al usuario la ruta del archivo generado (`docs/testing/test_<MODULO_SANITIZADO>.md`) junto con un breve resumen de cobertura.
 
 # Template para testear
-Quiero un plan de testing para el módulo "<admin/course>". Enfócate únicamente en services, controllers y DTOs; excluye models, repositories, mappers y specs. El plan debe:
+Quiero un plan de testing para el módulo "<admin/subject>". Enfócate únicamente en services, controllers y DTOs; excluye models, repositories, mappers y specs. El plan debe:
 - Detallar tareas secuenciales y numeradas.
 - Incluir refinamientos tras cada entrega de código relevante.
-- Incorporar al menos una tarea de escaneo/seguridad aplicable al contexto del módulo.
 - Preparar las suites necesarias para ejecutar `./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report`.
 - Terminar con una tarea que deje listo el comando `python scripts/testing_report.py --module "<MODULO>" --output "docs/testing/test_<MODULO_SANITIZADO>.md"`.
 
