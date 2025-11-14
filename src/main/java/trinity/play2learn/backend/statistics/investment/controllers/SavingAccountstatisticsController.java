@@ -11,27 +11,26 @@ import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
-import trinity.play2learn.backend.statistics.investment.dtos.response.FixedTermDepositStatisticsResponseDto;
-import trinity.play2learn.backend.statistics.investment.services.interfaces.IFixedTermDepositStatisticsService;
+import trinity.play2learn.backend.statistics.investment.dtos.response.SavingAccountStatisticsResponseDto;
+import trinity.play2learn.backend.statistics.investment.services.interfaces.ISavingAccountStatisticsService;
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.user.models.User;
 
-@RequestMapping("/statistics/investment/fixed-term-deposit")
+@RequestMapping("/statistics/investment/saving-account")
 @RestController
 @AllArgsConstructor
-public class FixedTermDepositStatisticsController {
+public class SavingAccountstatisticsController {
 
-    private final IFixedTermDepositStatisticsService fixedTermDepositStatisticsService;
+    private final ISavingAccountStatisticsService savingAccountStatisticsService;
 
-    @GetMapping 
+    @GetMapping
     @SessionRequired(roles = {Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<FixedTermDepositStatisticsResponseDto>> get(
+    public ResponseEntity<BaseResponse<SavingAccountStatisticsResponseDto>> get(
         @SessionUser User user
     ) {
         return ResponseFactory.ok(
-            fixedTermDepositStatisticsService.execute(user), 
+            savingAccountStatisticsService.execute(user), 
             SuccessfulMessages.okSuccessfully()
         );
     }
-    
 }

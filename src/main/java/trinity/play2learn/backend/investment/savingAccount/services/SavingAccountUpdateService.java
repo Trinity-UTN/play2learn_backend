@@ -23,17 +23,17 @@ public class SavingAccountUpdateService implements ISavingAccountUpdateService {
     
     @Override
     @Scheduled(cron = "0 35 1 * * *")
+    //@Scheduled(cron = "*/20 * * * * *")
     @Transactional
     public void cu107updateSavingAccounts() {
         List<SavingAccount> savingAccounts = savingAccountRepository.findAllByDeletedAtIsNull();
 
         for (SavingAccount savingAccount : savingAccounts) {
             if (savingAccount.getLastUpdate().isBefore(LocalDate.now())) {
-
                 // Incremento del 0.1% diario
                 Double interest = savingAccount.getCurrentAmount() * 0.001;
 
-                savingAccount.setAccumulatedInterest(savingAccount.getAccumulatedInterest() + interest);
+                savingAccount.setAccumulatedInterest(((savingAccount.getAccumulatedInterest() == null) ? 0.0 : savingAccount.getAccumulatedInterest()) + interest);
 
                 savingAccount.setCurrentAmount(savingAccount.getCurrentAmount() + interest);
 
