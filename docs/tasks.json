@@ -1,388 +1,350 @@
 {
-  "feature_title": "Plan de pruebas unitarias para módulo Admin Student",
+  "feature_title": "Plan de pruebas unitarias para módulo Admin Teacher",
   "tasks": [
     {
       "id": "T01",
-      "title": "Auditar servicios, controladores y DTOs de Admin Student",
-      "description": "Inventariar clases, responsabilidades, reglas de validación y dependencias de los servicios, controladores y DTOs del módulo `admin/student`, excluyendo models, repositories, mappers y specs.",
+      "title": "Auditar servicios, controladores y DTOs de Admin Teacher",
+      "description": "Inventariar clases, responsabilidades, validaciones y dependencias de services, controllers y DTOs del módulo `admin/teacher`, excluyendo models, repositories, mappers y specs.",
       "command": "/analyze",
       "params": {
         "targets": [
-          "src/main/java/trinity/play2learn/backend/admin/student/services",
-          "src/main/java/trinity/play2learn/backend/admin/student/controllers",
-          "src/main/java/trinity/play2learn/backend/admin/student/dtos"
+          "src/main/java/trinity/play2learn/backend/admin/teacher/services",
+          "src/main/java/trinity/play2learn/backend/admin/teacher/controllers",
+          "src/main/java/trinity/play2learn/backend/admin/teacher/dtos"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Listado de clases y flujos cubiertos por cada servicio/controlador.",
-        "Documentación de validaciones, excepciones y dependencias externas críticas.",
-        "Identificación de riesgos de negocio sin cobertura de pruebas actual."
+        "Se documenta en `docs/testing/teacher-unit-tests-audit.md` el inventario de artefactos relevantes.",
+        "Quedan registradas validaciones clave, excepciones y dependencias externas por cada componente.",
+        "Se listan riesgos de negocio sin cobertura de pruebas actual."
       ]
     },
     {
       "id": "T02",
-      "title": "Diseñar estrategia de pruebas unitarias para Admin Student",
-      "description": "Documentar alcance, métricas, dobles necesarios y fixtures comunes para services, controllers y DTOs de `admin/student`, manteniendo excluidos models, repositories, mappers y specs.",
+      "title": "Diseñar estrategia de pruebas unitarias para Admin Teacher",
+      "description": "Definir alcance, métricas de cobertura, dobles de prueba y fixtures compartidos para services, controllers y DTOs del módulo `admin/teacher` siguiendo restricciones del contexto.",
       "command": "/design",
       "params": {
-        "artifact": "docs/testing/student-unit-test-strategy.md"
+        "artifact": "docs/testing/teacher-unit-test-strategy.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Estrategia define objetivos de cobertura y criterios de calidad específicos del módulo.",
+        "El documento establece objetivos de cobertura y criterios de salida por tipo de componente.",
         "Incluye matriz de escenarios priorizados por riesgo y dependencias simuladas.",
-        "Detalla datos de prueba reutilizables y lineamientos para fixtures compartidos."
+        "Detalla datos de prueba reutilizables y lineamientos para fixtures comunes."
       ]
     },
     {
       "id": "T03",
-      "title": "Generar pruebas para StudentRegisterService y StudentUpdateService",
-      "description": "Crear suites unitarias que cubran flujos felices, conflictos y validaciones de carga inicial al registrar y actualizar estudiantes.",
+      "title": "Generar pruebas para TeacherRegisterService y TeacherUpdateService",
+      "description": "Crear suites unitarias que validen registros y actualizaciones de docentes, cubriendo flujos felices y conflictos de negocio.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentUpdateServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherRegisterServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherUpdateServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Escenarios exitosos y de conflicto (DNI duplicado, email repetido, curso inexistente) verificados.",
-        "Mocks validan interacciones con servicios comunes (`StudentExistByDNIService`, `StudentGetByCourseService`, etc.).",
-        "Asserts aseguran construcción correcta de DTOs y mensajes de excepción esperados."
+        "Se cubren escenarios de éxito y conflictos por email/DNI duplicado o docente inexistente.",
+        "Mocks verifican interacciones con servicios commons y repositorios simulados.",
+        "Asserts validan DTO resultante y mensajes de excepción esperados."
       ]
     },
     {
       "id": "T04",
-      "title": "Refinar pruebas de registro y actualización de Student",
-      "description": "Optimizar suites de registro y actualización eliminando duplicidad, detallando intención y homogenizando datos de prueba.",
+      "title": "Refinar pruebas de registro y actualización de Teacher",
+      "description": "Optimizar suites de registro y actualización eliminando duplicidades, mejorando legibilidad y reutilización de datos.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentUpdateServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherRegisterServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherUpdateServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se reutilizan builders/helpers para solicitudes y entidades simuladas.",
-        "Cada caso usa `@DisplayName` con patrón Given-When-Then y asserts expresivos (AssertJ).",
-        "Cobertura de ramas clave se mantiene sin code smells ni warnings de Mockito."
+        "Helpers/builder centralizados generan requests y entidades simuladas consistentes.",
+        "Cada caso usa `@DisplayName` y asserts AssertJ descriptivos con patrón Given-When-Then.",
+        "Se mantiene cobertura de ramas sin warnings de Mockito ni code smells."
       ]
     },
     {
       "id": "T05",
-      "title": "Generar pruebas para StudentDeleteService y StudentRestoreService",
-      "description": "Implementar suites que validen borrado lógico, restricciones de asociaciones y restauración de estudiantes.",
+      "title": "Generar pruebas para TeacherDeleteService y TeacherRestoreService",
+      "description": "Implementar suites que validen borrado lógico y restauración de docentes, manejando reglas de asociaciones.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentDeleteServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentRestoreServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherDeleteServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherRestoreServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Cobertura de escenarios: estudiante inexistente, ya eliminado, asociaciones activas y eliminación/restauración exitosa.",
-        "Verificación de interacciones con repositorios y servicios comunes simulados.",
-        "Aserciones comprueban cambios de estado (`deletedAt`) y mensajes de excepción."
+        "Escenarios incluyen docente inexistente, ya eliminado, asociado a materias y flujos exitosos.",
+        "Mocks verifican interacciones con repositorios y servicios auxiliares requeridos.",
+        "Asserts confirman cambios de estado (`deletedAt`) y mensajes de error."
       ]
     },
     {
       "id": "T06",
-      "title": "Refinar pruebas de eliminación y restauración de Student",
-      "description": "Revisar suites de eliminación/restauración para mejorar organización, fixtures y claridad narrativa.",
+      "title": "Refinar pruebas de eliminación y restauración de Teacher",
+      "description": "Reorganizar suites de eliminación/restauración para mejorar intención, reutilización de fixtures y claridad narrativa.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentDeleteServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentRestoreServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherDeleteServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherRestoreServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Casos agrupados con `@Nested` o helpers que expliquen precondiciones y expectativas.",
-        "Fixtures comunes centralizadas y reutilizadas en los escenarios.",
-        "Sin duplicidad de código ni configuraciones de Mockito repetidas."
+        "Casos agrupados con `@Nested` u organización equivalente que describa precondiciones.",
+        "Fixtures comunes centralizados y reutilizados entre escenarios.",
+        "Configuraciones de Mockito sin duplicidad ni datos mágicos."
       ]
     },
     {
       "id": "T07",
-      "title": "Generar pruebas para StudentGetService y StudentsListServices",
-      "description": "Desarrollar suites que validen la obtención individual y listados simples de estudiantes, cubriendo filtros y estados.",
+      "title": "Generar pruebas para TeacherGetService y TeacherListService",
+      "description": "Desarrollar suites que validen la obtención individual y listados simples de docentes, contemplando filtros y estados.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentGetServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentsListServicesTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherGetServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherListServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "`StudentGetService` prueba rutas felices y `NotFoundException` ante IDs inexistentes.",
-        "`StudentsListServices` valida filtros por curso/estado y exclusión de registros eliminados.",
-        "Mocks aseguran delegación correcta hacia servicios commons y repositorios."
+        "`TeacherGetService` cubre rutas felices y `NotFoundException` ante IDs inexistentes.",
+        "`TeacherListService` valida filtros por estado/asignaciones y exclusión de eliminados.",
+        "Se verifican delegaciones correctas hacia servicios commons y repositorios simulados."
       ]
     },
     {
       "id": "T08",
-      "title": "Refinar pruebas de obtención y listados simples de Student",
-      "description": "Optimizar suites de obtención y listado simple para mejorar expresividad, reutilización de fixtures y documentación de casos límite.",
+      "title": "Refinar pruebas de obtención y listados simples de Teacher",
+      "description": "Pulir suites de obtención/listado para mejorar expresividad, documentación de casos límite y reutilización de datos.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentGetServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentsListServicesTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherGetServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherListServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Helpers generan colecciones y DTOs consistentes reutilizables entre escenarios.",
-        "Asserts detallan contenido de colecciones y mensajes devueltos.",
-        "Escenarios edge (sin resultados, registros eliminados) quedan documentados."
+        "Helpers generan colecciones/DTOs consistentes reutilizables en todos los escenarios.",
+        "Asserts describen contenido y usan AssertJ (`containsExactly`, `extracting`).",
+        "Casos edge (sin resultados, filtros vacíos) quedan cubiertos y documentados."
       ]
     },
     {
       "id": "T09",
-      "title": "Generar pruebas para StudentListPaginatedService",
-      "description": "Implementar suite que valide paginación, filtros dinámicos y ordenamientos para el listado paginado de estudiantes.",
+      "title": "Generar pruebas para TeacherListPaginatedService",
+      "description": "Crear suite que valide paginación, búsqueda y filtros dinámicos del listado paginado de docentes.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentListPaginatedServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherListPaginatedServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren combinaciones de `search`, `filters`, `order` y `pageable` con utilitarios simulados.",
-        "Verificación de mapeo a DTOs y adaptación de `PaginatedData`.",
-        "Se valida manejo de páginas vacías y parámetros inválidos."
+        "Se cubren combinaciones de `search`, `filters`, `order` y `pageable` incluyendo páginas vacías.",
+        "Mocks validan uso de `PaginatorUtils`, `PaginationHelper` y adaptaciones a DTOs.",
+        "Escenarios con parámetros inválidos o fuera de rango generan respuestas controladas."
       ]
     },
     {
       "id": "T10",
-      "title": "Refinar pruebas de listado paginado de Student",
-      "description": "Pulir la suite paginada para centralizar fixtures, mejorar asserts y clarificar casos límite.",
+      "title": "Refinar pruebas de listado paginado de Teacher",
+      "description": "Optimizar la suite paginada centralizando fixtures y fortaleciendo aserciones descriptivas.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/StudentListPaginatedServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/TeacherListPaginatedServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Uso de builders para `Page` y DTOs reutilizados en múltiples escenarios.",
-        "Asserts emplean AssertJ (`extracting`, `containsExactly`) describiendo resultados.",
-        "Documentación de variantes edge como paginación fuera de rango o filtros vacíos."
+        "Builders reutilizables crean `Page`, `PaginatedData` y DTOs para todos los casos.",
+        "Asserts emplean AssertJ con mensajes claros y verificación de campos clave.",
+        "Se documentan variantes edge como filtros vacíos o órdenes desconocidos."
       ]
     },
     {
       "id": "T11",
-      "title": "Generar pruebas para servicios commons de resolución de Student",
-      "description": "Crear suites unitarias para `StudentGetByIdService`, `StudentGetByEmailService` y `StudentGetByCourseService`, validando escenarios felices y excepciones.",
+      "title": "Generar pruebas para servicios commons de Teacher",
+      "description": "Implementar suites para `TeacherGetByIdService`, `TeacherGetByEmailService` y `TeacherExistsByDniService`.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentGetByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentGetByEmailServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentGetByCourseServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/commons/TeacherGetByIdServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/commons/TeacherGetByEmailServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/commons/TeacherExistsByDniServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Cada servicio cubre resoluciones exitosas y lanzamientos de `NotFoundException`.",
-        "Mocks verifican consultas a repositorios y normalización de resultados.",
-        "Se documentan supuestos de negocio (unicidad de email, pertenencia a curso) mediante asserts."
+        "Cada servicio cubre resoluciones exitosas y lanzamiento de `NotFoundException` o respuestas negativas.",
+        "Mocks verifican consultas correctas al repositorio y normalización de resultados.",
+        "Se documentan supuestos de negocio (unicidad de email, formato de DNI) mediante asserts."
       ]
     },
     {
       "id": "T12",
-      "title": "Refinar servicios commons de resolución de Student",
-      "description": "Revisar las suites commons para mejorar reutilización de fixtures y consistencia de asserts.",
+      "title": "Refinar servicios commons de Teacher",
+      "description": "Revisar suites commons para mejorar reutilización de fixtures, consistencia de asserts y claridad de supuestos.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentGetByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentGetByEmailServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentGetByCourseServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/commons/TeacherGetByIdServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/commons/TeacherGetByEmailServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/admin/teacher/services/commons/TeacherExistsByDniServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Fixtures y builders compartidos para estudiantes simulados definidos en una clase base.",
-        "Assertions usan AssertJ con mensajes descriptivos y verificación de interacciones.",
-        "Sin duplicación de preparación de mocks ni datos mágicos."
+        "Fixtures compartidos para docentes simulados se centralizan en una clase base o TestMother.",
+        "Assertions usan AssertJ con verificación de interacciones y mensajes descriptivos.",
+        "Se eliminan duplicaciones de configuración de mocks y datos mágicos."
       ]
     },
     {
       "id": "T13",
-      "title": "Generar pruebas para servicios commons de existencia y colecciones",
-      "description": "Implementar suites para `StudentExistByDNIService`, `StudentsExistByCourseService` y `StudentsGetByIdListService`, cubriendo respuestas booleanas y colecciones.",
+      "title": "Generar pruebas para controllers de escritura de Teacher",
+      "description": "Crear pruebas `@WebMvcTest`/`MockMvc` cubriendo registro, actualización, eliminación y restauración de docentes.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentExistByDNIServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentsExistByCourseServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentsGetByIdListServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/controllers/TeacherWriteControllersTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Escenarios cubren resultados positivos, negativos y manejo de entradas vacías.",
-        "Se validan transformaciones de colecciones y deduplicación de IDs.",
-        "Mocks aseguran consultas correctas al repositorio y propagación de excepciones."
+        "Se cubren respuestas exitosas (201/200/204) y errores relevantes (400/401/404/409).",
+        "Validación de payloads JSON mediante `jsonPath` y serialización esperada.",
+        "Mocks confirman delegación a servicios `TeacherRegisterService`, `TeacherUpdateService`, `TeacherDeleteService` y `TeacherRestoreService`."
       ]
     },
     {
       "id": "T14",
-      "title": "Refinar servicios commons de existencia y colecciones",
-      "description": "Optimizar suites de existencia y colecciones para estandarizar datos de prueba y asserts.",
+      "title": "Refinar pruebas de controllers de escritura de Teacher",
+      "description": "Pulir suite de controladores de escritura centralizando configuración y expresando claramente cada caso.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentExistByDNIServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentsExistByCourseServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/admin/student/services/commons/StudentsGetByIdListServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/controllers/TeacherWriteControllersTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Uso de constantes descriptivas para DNIs, correos y listas de IDs.",
-        "Asserts detallan resultados booleanos y contenido de colecciones.",
-        "Se eliminan duplicados de configuración de mocks y se documentan supuestos en comentarios."
+        "Configuración de MockMvc/ObjectMapper centralizada en `@BeforeEach` con helpers reutilizables.",
+        "Casos documentados con `@DisplayName` y comentarios breves del flujo validado.",
+        "Requests/responses JSON construidos mediante métodos utilitarios sin duplicidad."
       ]
     },
     {
       "id": "T15",
-      "title": "Generar pruebas para controllers de escritura de Student",
-      "description": "Crear pruebas `@WebMvcTest` o `MockMvc` para controladores de registro, actualización, eliminación y restauración de estudiantes.",
+      "title": "Generar pruebas para controllers de lectura de Teacher",
+      "description": "Implementar pruebas para `TeacherGetController`, `TeacherListController` y `TeacherListPaginatedController`.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/controllers/StudentWriteControllersTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/controllers/TeacherReadControllersTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Cobertura de respuestas 201/200/204 y errores relevantes (400/401/404/409).",
-        "Validación de payloads JSON mediante `jsonPath` y verificación de mensajes de error.",
-        "Mocks aseguran delegación correcta a servicios (`StudentRegisterService`, `StudentUpdateService`, etc.)."
+        "Respuestas 200 validan estructura esperada, datos simulados y metadatos de paginación.",
+        "Se cubren parámetros `search`, `filters`, `page`, `size`, `order` y errores 401/404.",
+        "Mocks comprueban delegación hacia servicios de consulta correspondientes."
       ]
     },
     {
       "id": "T16",
-      "title": "Refinar pruebas de controllers de escritura de Student",
-      "description": "Pulir suite de controladores de escritura centralizando configuración y mejorando intención de los casos.",
+      "title": "Refinar pruebas de controllers de lectura de Teacher",
+      "description": "Optimizar suite de lectura mejorando reutilización de fixtures y expresividad de aserciones.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/controllers/StudentWriteControllersTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/controllers/TeacherReadControllersTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Configuración de MockMvc y ObjectMapper centralizada en `@BeforeEach`.",
-        "Casos documentados con `@DisplayName` y comentarios breves sobre el flujo validado.",
-        "Sin duplicación en construcción de requests/responses JSON ni datos hardcodeados."
+        "Helpers generan respuestas list y paginated consistentes reutilizadas entre casos.",
+        "Asserts usan AssertJ y `jsonPath` con alias descriptivos para cada validación.",
+        "Casos edge (listas vacías, filtros inválidos) quedan documentados y cubiertos."
       ]
     },
     {
       "id": "T17",
-      "title": "Generar pruebas para controllers de lectura de Student",
-      "description": "Implementar pruebas para `StudentGetController`, `StudentListController` y `StudentListPaginatedController`, validando serialización y parámetros.",
+      "title": "Generar pruebas de validación para DTOs de Teacher",
+      "description": "Agregar pruebas de Bean Validation para `TeacherRequestDto` y `TeacherUpdateDto`, cubriendo mensajes y combinaciones límite.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/controllers/StudentReadControllersTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/dtos/TeacherDtoValidationTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Respuestas 200 incluyen estructura esperada y datos simulados consistentes.",
-        "Se validan parámetros `page`, `size`, `search`, `order`, `filters` y códigos de error 404/401.",
-        "Verificación de delegación a servicios de consulta con Mockito/AssertJ."
-      ]
-    },
-    {
-      "id": "T18",
-      "title": "Refinar pruebas de controllers de lectura de Student",
-      "description": "Optimizar suite de controladores de lectura mejorando reutilización de fixtures y expresividad de aserciones.",
-      "command": "/refine",
-      "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/controllers/StudentReadControllersTest.java"
-        ]
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "Helpers generan respuestas paginadas/listas consistentes y reutilizadas entre casos.",
-        "Asserts usan AssertJ y `jsonPath` con alias descriptivos.",
-        "Casos edge (sin resultados, filtros inválidos) documentados y cubiertos."
-      ]
-    },
-    {
-      "id": "T19",
-      "title": "Generar pruebas de validación para DTOs de Student",
-      "description": "Agregar pruebas de bean validation para `StudentRequestDto` y `StudentUpdateRequestDto`, incluyendo mensajes personalizados y casos límite.",
-      "command": "/generate",
-      "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/dtos/StudentDtoValidationTest.java"
-        ]
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "Validaciones `@NotEmpty`, `@Email`, `@Size`, `@Pattern`, `@NotNull` verificadas.",
-        "Escenarios válidos producen `ConstraintViolation` vacío.",
+        "Se verifican anotaciones `@NotBlank`, `@Email`, `@Size`, `@Pattern`, `@NotNull` según corresponda.",
+        "Escenarios válidos generan conjunto vacío de `ConstraintViolation`.",
         "Mensajes de error coinciden con `ValidationMessages` del módulo."
       ]
     },
     {
-      "id": "T20",
-      "title": "Refinar pruebas de DTOs de Student",
-      "description": "Revisar suite de validación de DTOs para mejorar reutilización de fixtures, mensajes descriptivos y cobertura de casos límite.",
+      "id": "T18",
+      "title": "Refinar pruebas de DTOs de Teacher",
+      "description": "Revisar la suite de validación para mejorar reutilización de fixtures y cobertura de combinaciones límite.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/admin/student/dtos/StudentDtoValidationTest.java"
+          "src/test/java/trinity/play2learn/backend/admin/teacher/dtos/TeacherDtoValidationTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Builders/helpers generan DTOs válidos e inválidos reutilizables.",
-        "Cada escenario documenta claramente el motivo de la violación esperada.",
-        "Cobertura incluye combinaciones de campos opcionales/nulos sin duplicar código."
+        "Builders/helpers generan DTOs válidos e inválidos reutilizables en todos los casos.",
+        "Cada escenario documenta explícitamente el motivo de la violación esperada.",
+        "Cobertura incluye campos opcionales/nulos sin duplicar código."
       ]
     },
     {
-      "id": "T21",
-      "title": "Preparar suites de Admin Student para ejecución con JaCoCo",
-      "description": "Ejecutar las suites unitarias preparando el agente JaCoCo y generando el reporte de cobertura actualizado.",
+      "id": "T19",
+      "title": "Preparar suites de Admin Teacher para ejecución con JaCoCo",
+      "description": "Ejecutar todas las suites unitarias del módulo `admin/teacher` preparando el agente JaCoCo y generando reporte de cobertura.",
       "command": "/test",
       "params": {
         "command": "./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El comando concluye exitosamente y produce `target/site/jacoco/index.html` con la cobertura del módulo.",
-        "Cobertura de services/controllers ≥ 85 % en líneas y ≥ 75 % en ramas para `admin/student`.",
-        "Se registran incidencias o fallas de pruebas para seguimiento inmediato."
+        "El comando finaliza sin errores y produce `target/site/jacoco/index.html` actualizado.",
+        "Cobertura de services/controllers alcanza ≥ 85 % en líneas y ≥ 75 % en ramas.",
+        "Incidencias o fallas detectadas quedan registradas para seguimiento inmediato."
       ]
     },
     {
-      "id": "T22",
-      "title": "Consolidar reporte automatizado de pruebas para Admin Student",
-      "description": "Ejecutar script de reporte para generar documentación consolidada de las pruebas del módulo en el repositorio.",
+      "id": "T20",
+      "title": "Consolidar reporte automatizado de pruebas para Admin Teacher",
+      "description": "Generar documentación consolidada de las pruebas del módulo ejecutando el script estándar.",
       "command": "/report",
       "params": {
-        "command": "python scripts/testing_report.py --module \"admin/student\" --output \"docs/testing/test_admin_student.md\""
+        "command": "python scripts/testing_report.py --module \"admin/teacher\" --output \"docs/testing/test_admin_teacher.md\""
       },
-      "status": "todo",
+      "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/testing/test_admin_student.md` contiene métricas actualizadas y hallazgos clave.",
-        "El reporte incluye resumen de cobertura, suites ejecutadas y notas de riesgos abiertos.",
-        "Se referencia el reporte de JaCoCo y próximos pasos pendientes en la documentación."
+        "El archivo `docs/testing/test_admin_teacher.md` resume métricas y hallazgos actualizados.",
+        "El reporte contiene cobertura JaCoCo, suites ejecutadas y riesgos remanentes.",
+        "Se incluyen siguientes pasos o pendientes identificados durante la ejecución."
       ]
     }
   ]
