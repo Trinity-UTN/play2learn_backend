@@ -14,30 +14,37 @@ import trinity.play2learn.backend.activity.clasificacion.services.interfaces.ICl
 import trinity.play2learn.backend.activity.clasificacion.services.interfaces.IClasificacionValidateConceptsNamesService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.admin.teacher.models.Teacher;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
 public class ClasificacionActivityGenerateService implements IClasificacionGenerateService {
     
     private final IClasificacionActivityRepository clasificacionRepository;
-
     private final ISubjectGetByIdService subjectGetService;
-
     private final IClasificacionValidateCategoriesNamesService validateCategoriesNamesService;
-
     private final IClasificacionValidateConceptsNamesService validateConceptsNamesService;
-
     private final ITransactionGenerateService transactionGenerateService;
+    private final ITeacherGetByEmailService teacherGetByEmailService;
 
     @Override
     @Transactional
-    public ClasificacionActivityResponseDto cu43GenerateClasificacionActivity(ClasificacionActivityRequestDto activityRequestDto) {
-        
+    public ClasificacionActivityResponseDto cu43GenerateClasificacionActivity(ClasificacionActivityRequestDto activityRequestDto, User user) {
+
+        Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
+
         //Lanza un 404 si no encuentra la materia con el id proporcionado
         Subject subject = subjectGetService.findById(activityRequestDto.getSubjectId());
+        
+        if (!subject.getTeacher().equals(teacher)) {
+            throw new ConflictException("El docente no esta asignado a la materia");
+        }
         
         //Lanza un 400 si las categorias tienen nombre repetidos
         validateCategoriesNamesService.validateCategoriesNames(activityRequestDto);

@@ -11,10 +11,12 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.response.Ordena
 import trinity.play2learn.backend.activity.ordenarSecuencia.mappers.OrdenarSecuenciaRequestMapper;
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IOrdenarSecuenciaActivityGenerateService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
+import trinity.play2learn.backend.user.models.User;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -38,7 +40,8 @@ public class OrdenarSecuenciaGenerateController {
     @SessionRequired (roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER})
     public ResponseEntity<BaseResponse<OrdenarSecuenciaResponseDto>> generate(
         @RequestParam("payload") String payloadJson,
-        @RequestParam MultiValueMap<String, MultipartFile> files
+        @RequestParam MultiValueMap<String, MultipartFile> files,
+        @SessionUser User user
     ) throws IOException {
 
         List<MultipartFile> images = files.values().stream()
@@ -48,7 +51,7 @@ public class OrdenarSecuenciaGenerateController {
         OrdenarSecuenciaRequestDto dto = OrdenarSecuenciaRequestMapper.toRequestDto(payloadJson, images);
         
         return ResponseFactory.created(
-            ordenarSecuenciaGenerateService.cu44GenerateOrdenarSecuencia(dto),
+            ordenarSecuenciaGenerateService.cu44GenerateOrdenarSecuencia(dto, user),
             SuccessfulMessages.createdSuccessfully("Actividad de ordenar secuencia")
         );
     }

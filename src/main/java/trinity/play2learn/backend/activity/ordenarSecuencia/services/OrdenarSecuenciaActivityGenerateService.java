@@ -18,9 +18,13 @@ import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.
 import trinity.play2learn.backend.activity.ordenarSecuencia.services.interfaces.IValidateEvents;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.admin.teacher.models.Teacher;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
@@ -28,18 +32,15 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
 
 
     private final ISubjectGetByIdService subjectGetService;
-
     private final IValidateEvents validateEvents;
-
     private final IOrdenarSecuenciaRepository ordenarSecuenciaRepository;
-
     private final IEventsGenerateService eventsGenerateService;
-
     private final ITransactionGenerateService transactionGenerateService;
-    
+    private final ITeacherGetByEmailService teacherGetByEmailService;
+
     @Override
     @Transactional
-    public OrdenarSecuenciaResponseDto cu44GenerateOrdenarSecuencia(OrdenarSecuenciaRequestDto dto) throws IOException {
+    public OrdenarSecuenciaResponseDto cu44GenerateOrdenarSecuencia(OrdenarSecuenciaRequestDto dto, User user) throws IOException {
         /**
          * Que tengo que hacer:
          * - Buscar el subject por id
@@ -50,7 +51,13 @@ public class OrdenarSecuenciaActivityGenerateService implements IOrdenarSecuenci
          * - Guardar la actividad
          * - Retornar el dto de respuesta con los datos de la actividad creada 
         */
+
+        Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
         Subject subject = subjectGetService.findById(dto.getSubjectId());
+
+        if (!subject.getTeacher().equals(teacher)) {
+            throw new ConflictException("El docente no esta asignado a la materia");
+        }
 
         // Validar los eventos
         validateEvents.validate(dto.getEvents());

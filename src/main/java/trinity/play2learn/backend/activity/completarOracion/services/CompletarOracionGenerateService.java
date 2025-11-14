@@ -14,30 +14,36 @@ import trinity.play2learn.backend.activity.completarOracion.services.interfaces.
 import trinity.play2learn.backend.activity.completarOracion.services.interfaces.ICompletarOracionValidateWordsOrderService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.admin.teacher.models.Teacher;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
 public class CompletarOracionGenerateService implements ICompletarOracionGenerateService {
     
     private final ICompletarOracionRepository completarOracionRepository;
-
     private final ISubjectGetByIdService getSubjectByIdService;
-
     private final ICompletarOracionValidateWordsOrderService completarOracionValidateWordsOrderService;
-    
     private final ICompletarOracionValidateWordMissingService completarOracionValidateWordMissingService;
-
     private final ITransactionGenerateService transactionGenerateService;
-
+    private final ITeacherGetByEmailService teacherGetByEmailService;
+    
     @Transactional
     @Override
-    public CompletarOracionActivityResponseDto cu42generateCompletarOracionActivity(CompletarOracionActivityRequestDto completarOracionActivityRequestDto) {
+    public CompletarOracionActivityResponseDto cu42generateCompletarOracionActivity(CompletarOracionActivityRequestDto completarOracionActivityRequestDto, User user) {
 
+        Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
         Subject subject = getSubjectByIdService.findById(completarOracionActivityRequestDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
 
+        if (!subject.getTeacher().equals(teacher)) {
+            throw new ConflictException("El docente no esta asignado a la materia");
+        }
+        
         //Si alguna validacion falla lanzo un 400
         completarOracionActivityRequestDto.getSentences().forEach(sentence -> {
 

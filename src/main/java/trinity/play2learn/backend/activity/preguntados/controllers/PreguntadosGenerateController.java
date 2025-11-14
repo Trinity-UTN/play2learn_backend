@@ -12,10 +12,12 @@ import trinity.play2learn.backend.activity.preguntados.dtos.request.PreguntadosR
 import trinity.play2learn.backend.activity.preguntados.dtos.response.PreguntadosResponseDto;
 import trinity.play2learn.backend.activity.preguntados.services.interfaces.IPreguntadosGenerateService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
+import trinity.play2learn.backend.user.models.User;
 
 @RestController
 @AllArgsConstructor
@@ -26,10 +28,10 @@ public class PreguntadosGenerateController {
 
     @PostMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER})
-    public ResponseEntity<BaseResponse<PreguntadosResponseDto>> generatePreguntados(@Valid @RequestBody PreguntadosRequestDto preguntadosRequestDto) {
+    public ResponseEntity<BaseResponse<PreguntadosResponseDto>> generatePreguntados(@Valid @RequestBody PreguntadosRequestDto preguntadosRequestDto, @SessionUser User user) {
 
         return ResponseFactory.created(
-            preguntadosGenerateService.cu40GeneratePreguntados(preguntadosRequestDto),
+            preguntadosGenerateService.cu40GeneratePreguntados(preguntadosRequestDto, user),
             SuccessfulMessages.createdSuccessfully("Actividad de preguntados")
         ); 
     }
