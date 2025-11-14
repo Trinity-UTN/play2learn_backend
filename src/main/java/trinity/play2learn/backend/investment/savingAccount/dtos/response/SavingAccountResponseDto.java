@@ -20,5 +20,7 @@ public class SavingAccountResponseDto {
     private LocalDate startDate;
 
     private LocalDate lastUpdate;
+
+    private String name;
     
 }

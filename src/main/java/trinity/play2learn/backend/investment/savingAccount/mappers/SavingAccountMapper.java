@@ -31,6 +31,7 @@ public class SavingAccountMapper {
             .accumulatedInterest((savingAccount.getAccumulatedInterest() == null) ? 0.0 : (double)savingAccount.getAccumulatedInterest())
             .startDate(savingAccount.getStartDate())
             .lastUpdate(savingAccount.getLastUpdate())
+            .name(savingAccount.getName())
             .build();
     }
 
