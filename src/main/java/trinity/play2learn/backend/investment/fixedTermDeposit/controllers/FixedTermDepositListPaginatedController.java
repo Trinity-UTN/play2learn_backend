@@ -17,6 +17,8 @@ import trinity.play2learn.backend.investment.fixedTermDeposit.dtos.response.Fixe
 import trinity.play2learn.backend.user.models.Role;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
+import trinity.play2learn.backend.configs.annotations.SessionUser;
+import trinity.play2learn.backend.user.models.User;
 
 @RequestMapping("/investment/fixed-term-deposit")
 @RestController
@@ -34,10 +36,12 @@ public class FixedTermDepositListPaginatedController {
             @RequestParam(name = "order_type", defaultValue = "asc") String orderType,
             @RequestParam(required = false) String search,
             @RequestParam(name = "filters", required = false) List<String> filters,
-            @RequestParam(name = "filtersValues", required = false) List<String> filtersValues
+            @RequestParam(name = "filtersValues", required = false) List<String> filtersValues,
+            @SessionUser User user
     ) {
         return ResponseFactory.paginated(
-            fixedTermDepositListPaginatedService.cu99ListPaginatedFixedTermDeposits(page, pageSize, orderBy, orderType, search, filters, filtersValues),
+            fixedTermDepositListPaginatedService.cu99ListPaginatedFixedTermDeposits(
+                page, pageSize, orderBy, orderType, search, filters, filtersValues, user),
             SuccessfulMessages.okSuccessfully()
         );
     }

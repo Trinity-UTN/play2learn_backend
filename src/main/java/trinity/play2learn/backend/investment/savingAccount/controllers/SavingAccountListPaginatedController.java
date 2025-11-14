@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.PaginatedData;
@@ -17,6 +18,7 @@ import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.investment.savingAccount.dtos.response.SavingAccountResponseDto;
 import trinity.play2learn.backend.investment.savingAccount.services.interfaces.ISavingAccountListPaginatedService;
 import trinity.play2learn.backend.user.models.Role;
+import trinity.play2learn.backend.user.models.User;
 
 @RequestMapping("/investment/saving-accounts")
 @RestController
@@ -34,10 +36,12 @@ public class SavingAccountListPaginatedController {
             @RequestParam(name = "order_type", defaultValue = "asc") String orderType,
             @RequestParam(required = false) String search,
             @RequestParam(name = "filters", required = false) List<String> filters,
-            @RequestParam(name = "filtersValues", required = false) List<String> filtersValues
+            @RequestParam(name = "filtersValues", required = false) List<String> filtersValues,
+            @SessionUser User user
     ) {
         return ResponseFactory.paginated(
-            savingAccountListPaginatedService.cu106listPaginatedSavingAccounts(page, pageSize, orderBy, orderType, search, filters, filtersValues),
+            savingAccountListPaginatedService.cu106listPaginatedSavingAccounts(
+                page, pageSize, orderBy, orderType, search, filters, filtersValues, user),
             SuccessfulMessages.okSuccessfully()
         );
     }

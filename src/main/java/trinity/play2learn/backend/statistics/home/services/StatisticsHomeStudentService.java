@@ -52,7 +52,7 @@ public class StatisticsHomeStudentService implements IStatisticsHomeStudentServi
         int[] activityCount = activityCountByStudent.execute(student);
         
         return StatisticsHomeStudentMapper.toDto(
-            student.getWallet().getBalance().intValue(), 
+            student.getWallet().getBalance().intValue()+student.getWallet().getInvertedBalance().intValue(), 
             (random.nextInt(3) + 1), 
             activityCount[0], 
             activityCount[1], 

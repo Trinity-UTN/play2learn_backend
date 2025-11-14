@@ -2,6 +2,7 @@ package trinity.play2learn.backend.investment.savingAccount.specs;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 
 public class SavingAccountSpecs {
@@ -21,6 +22,10 @@ public class SavingAccountSpecs {
 
     public static Specification<SavingAccount> notDeleted() {
         return (root, query, cb) -> cb.isNull(root.get("deletedAt"));
+    }
+
+    public static Specification<SavingAccount> hasWallet(Wallet wallet) {
+        return (root, query, cb) -> cb.equal(root.get("wallet"), wallet);
     }
 
 }
