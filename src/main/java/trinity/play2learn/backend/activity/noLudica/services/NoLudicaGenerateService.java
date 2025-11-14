@@ -13,25 +13,34 @@ import trinity.play2learn.backend.activity.noLudica.repositories.INoLudicaReposi
 import trinity.play2learn.backend.activity.noLudica.services.interfaces.INoLudicaGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.admin.teacher.models.Teacher;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
 public class NoLudicaGenerateService implements INoLudicaGenerateService{
 
     private final ISubjectGetByIdService findSubjectByIdService;
-
     private final INoLudicaRepository noLudicaRepository;
-
     private final ITransactionGenerateService transactionGenerateService;
+    private final ITeacherGetByEmailService teacherGetByEmailService;
 
     @Transactional
     @Override
-    public NoLudicaResponseDto cu45GenerateNoLudica(NoLudicaRequestDto dto) {
+    public NoLudicaResponseDto cu45GenerateNoLudica(NoLudicaRequestDto dto, User user) {
+        
+        Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
         
         Subject subject = findSubjectByIdService.findById(dto.getSubjectId());
+
+        if (!subject.getTeacher().equals(teacher)) {
+            throw new ConflictException("El docente no esta asignado a la materia");
+        }
 
         NoLudica noLudica = noLudicaRepository.save(NoLudicaMapper.toModel(dto, subject));
 

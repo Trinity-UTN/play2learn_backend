@@ -12,25 +12,35 @@ import trinity.play2learn.backend.activity.arbolDeDecision.repositories.IArbolDe
 import trinity.play2learn.backend.activity.arbolDeDecision.services.interfaces.IArbolDecisionGenerateService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
+import trinity.play2learn.backend.admin.teacher.models.Teacher;
+import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
 public class ArbolDecisionGenerateService implements IArbolDecisionGenerateService{
     
     private final IArbolDeDecisionRepository arbolDeDecisionRepository;
-    private final ISubjectGetByIdService subjectGetService;
-
+    private final ISubjectGetByIdService getSubjectByIdService;
     private final  ITransactionGenerateService transactionGenerateService;
+    private final ITeacherGetByEmailService teacherGetByEmailService;
 
     @Override
     @Transactional
-    public ArbolDeDecisionActivityResponseDto cu46GenerateArbolDeDecisionActivity(ArbolDeDecisionActivityRequestDto activityDto) {
+    public ArbolDeDecisionActivityResponseDto cu46GenerateArbolDeDecisionActivity(ArbolDeDecisionActivityRequestDto activityDto, User user) {
         
-        Subject subject = subjectGetService.findById(activityDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
+        Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
 
+        Subject subject = getSubjectByIdService.findById(activityDto.getSubjectId()); //Lanza un 404 si no encuentra la materia con el id proporcionado
+
+        if (!subject.getTeacher().equals(teacher)) {
+            throw new ConflictException("El docente no esta asignado a la materia");
+        }
+        
         ArbolDeDecisionActivity activity = arbolDeDecisionRepository.save(ArbolDeDecisionMapper.toModel(activityDto, subject));
 
         transactionGenerateService.generate (

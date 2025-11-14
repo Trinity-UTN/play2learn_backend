@@ -12,10 +12,12 @@ import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoRequestDto;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoResponseDto;
 import trinity.play2learn.backend.activity.ahorcado.services.interfaces.IAhorcadoGenerateService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
+import trinity.play2learn.backend.user.models.User;
 
 @RestController
 @AllArgsConstructor
@@ -26,9 +28,9 @@ public class GenerateAhorcadoController {
     
     @PostMapping
     @SessionRequired(roles = {Role.ROLE_ADMIN, Role.ROLE_TEACHER})
-    public ResponseEntity<BaseResponse<AhorcadoResponseDto>> generateAhorcado(@Valid @RequestBody AhorcadoRequestDto ahorcadoDto) {
+    public ResponseEntity<BaseResponse<AhorcadoResponseDto>> generateAhorcado(@Valid @RequestBody AhorcadoRequestDto ahorcadoDto, @SessionUser User user) {
         return ResponseFactory.created(
-            generateAhorcadoService.cu39GenerateAhorcado(ahorcadoDto), 
+            generateAhorcadoService.cu39GenerateAhorcado(ahorcadoDto, user), 
             SuccessfulMessages.createdSuccessfully("Actividad de ahorcado")
         );
     }

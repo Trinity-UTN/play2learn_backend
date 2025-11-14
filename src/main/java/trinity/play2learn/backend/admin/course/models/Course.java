@@ -54,4 +54,8 @@ public class Course {
     public void restore () {
         this.deletedAt = null;
     }
+
+    public String getFullName(){
+        return this.year.getName() + " " + this.name;
+    }
 }

@@ -18,11 +18,13 @@ import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.mappers.MemoramaRequestMapper;
 import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
+import trinity.play2learn.backend.configs.annotations.SessionUser;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
 import trinity.play2learn.backend.user.models.Role;
+import trinity.play2learn.backend.user.models.User;
 
 @RestController
 @AllArgsConstructor
@@ -43,7 +45,8 @@ public class MemoramaRegisterController {
         @RequestParam int attempts,
         @RequestParam Double initialBalance,
         @RequestParam List<String> concepts,
-        @RequestParam List<MultipartFile> images
+        @RequestParam List<MultipartFile> images,
+        @SessionUser User user
     ) throws BadRequestException, IOException {
         return ResponseFactory.created(
             memoramaRegisterService.cu41GenerateMemorama(MemoramaRequestMapper.toDto(
@@ -57,7 +60,7 @@ public class MemoramaRegisterController {
             concepts,
             images,
             initialBalance
-        )),
+        ), user),
             SuccessfulMessages.createdSuccessfully("Actividad de Memorama")
         );
     }
