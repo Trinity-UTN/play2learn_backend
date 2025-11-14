@@ -4,6 +4,7 @@ import java.util.List;
 
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.investment.fixedTermDeposit.dtos.response.FixedTermDepositResponseDto;
+import trinity.play2learn.backend.user.models.User;
 
 public interface IFixedTermDepositListPaginatedService {
     
@@ -14,7 +15,8 @@ public interface IFixedTermDepositListPaginatedService {
         String orderType, 
         String search, 
         List<String> filters, 
-        List<String> filterValues
+        List<String> filterValues,
+        User user
     );
 
 }

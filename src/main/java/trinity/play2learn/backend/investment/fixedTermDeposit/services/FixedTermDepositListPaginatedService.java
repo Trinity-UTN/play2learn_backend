@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit;
 import trinity.play2learn.backend.configs.response.PaginatedData;
+import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.investment.fixedTermDeposit.dtos.response.FixedTermDepositResponseDto;
 import trinity.play2learn.backend.investment.fixedTermDeposit.services.interfaces.IFixedTermDepositListPaginatedService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.specs.FixedTermDepositSpecs;
@@ -17,12 +18,16 @@ import trinity.play2learn.backend.utils.PaginatorUtils;
 import trinity.play2learn.backend.utils.PaginationHelper;
 import trinity.play2learn.backend.investment.fixedTermDeposit.mappers.FixedTermDepositMapper;
 import trinity.play2learn.backend.investment.fixedTermDeposit.repositories.IFixedTermDepositRepository;
+import trinity.play2learn.backend.user.models.User;
+import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 
 @Service
 @AllArgsConstructor
 public class FixedTermDepositListPaginatedService implements IFixedTermDepositListPaginatedService {
     
     private final IFixedTermDepositRepository fixedTermDepositRepository;
+
+    private final IStudentGetByEmailService studentGetByEmailService;
     
     @Override
     public PaginatedData<FixedTermDepositResponseDto> cu99ListPaginatedFixedTermDeposits (
@@ -32,10 +37,14 @@ public class FixedTermDepositListPaginatedService implements IFixedTermDepositLi
         String orderType,
         String search, 
         List<String> filters, 
-        List<String> filterValues
+        List<String> filterValues,
+        User user
     ) {
+
+        Wallet wallet = studentGetByEmailService.getByEmail(user.getEmail()).getWallet();
+
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
-        Specification<FixedTermDeposit> spec = Specification.where(null);
+        Specification<FixedTermDeposit> spec = Specification.where(FixedTermDepositSpecs.hasWallet(wallet));
 
         if (filters != null && filterValues != null && filters.size() == filterValues.size()) {
             for (int i = 0; i < filters.size(); i++) {
