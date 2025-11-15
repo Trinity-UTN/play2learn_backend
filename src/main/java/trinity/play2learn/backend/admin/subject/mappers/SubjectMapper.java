@@ -79,4 +79,10 @@ public class SubjectMapper {
             .initialBalance(subject.getInitialBalance())
             .build();
     }
+
+    public static List<SubjectSimplifiedResponseDto> toSimplifiedDtoList(List<Subject> subjects) {
+        return subjects.stream()
+            .map(SubjectMapper::toSimplifiedDto)
+            .toList();
+    }
 }
