@@ -1,6 +1,7 @@
 package trinity.play2learn.backend.activity.activity.mappers;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentGetResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
@@ -28,6 +29,17 @@ public class ActivityCompletedMapper {
             .state(activityCompleted.getState())
             .reward(activityCompleted.getReward() == null ? 0.0 : (Math.round(activityCompleted.getReward() * 100.0) / 100.0))
             .remainingAttempts(activityCompleted.getRemainingAttempts())
+            .build();
+    }
+
+    public static ActivityStudentGetResponseDto toStudentGetDto(
+        String studentName, ActivityCompletedState state, int attempts, Double reward) {
+
+        return ActivityStudentGetResponseDto.builder()
+            .studentName(studentName)
+            .state(state)
+            .attempts(attempts)
+            .reward(reward == null ? 0.0 : (Math.round(reward * 100.0) / 100.0))
             .build();
     }
 

@@ -23,4 +23,6 @@ public interface IActivityCompletedRepository extends CrudRepository<ActivityCom
 
     List<ActivityCompleted> findTop5ByStudentAndStateNotOrderByCompletedAtDesc(Student student, ActivityCompletedState state);
 
+    List<ActivityCompleted> findAllByActivity(Activity activity);
+
 }

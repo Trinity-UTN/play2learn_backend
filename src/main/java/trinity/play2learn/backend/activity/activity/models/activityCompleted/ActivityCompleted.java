@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.activity.models.activityCompleted;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.CascadeType;
@@ -55,5 +56,9 @@ public class ActivityCompleted {
     @PrePersist //Antes de persistir la actividad se guarda su fecha de creacion
     private void setStartedAt(){
         this.startedAt = LocalDateTime.now();
+    }
+
+    public int getCompletionTime() {
+        return (int) (Duration.between(startedAt, completedAt).getSeconds());
     }
 }
