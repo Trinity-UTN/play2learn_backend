@@ -2,10 +2,17 @@ package trinity.play2learn.backend.admin.teacher.mapper;
 
 import java.util.List;
 
+import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
+import trinity.play2learn.backend.admin.course.models.Course;
+import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
+import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherRequestDto;
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherResponseDto;
+import trinity.play2learn.backend.admin.teacher.dtos.TeacherSubjectsDto;
 import trinity.play2learn.backend.admin.teacher.dtos.TeacherUpdateDto;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
+import trinity.play2learn.backend.admin.year.mappers.YearMapper;
+import trinity.play2learn.backend.admin.year.models.Year;
 import trinity.play2learn.backend.user.mapper.UserMapper;
 import trinity.play2learn.backend.user.models.User;
 
@@ -50,5 +57,13 @@ public class TeacherMapper {
             .stream()
             .map(TeacherMapper::toDto)
             .toList();
+    }
+
+    public static TeacherSubjectsDto toTeacherSubjectsDto(List<Subject> subjects, List<Course> courses, List<Year> years) {
+        return TeacherSubjectsDto.builder()
+            .subjects(SubjectMapper.toSimplifiedDtoList(subjects))
+            .courses(CourseMapper.toListDto(courses))
+            .years(YearMapper.toListDto(years))
+            .build();
     }
 }
