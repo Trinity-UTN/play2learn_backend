@@ -85,4 +85,8 @@ public abstract class Activity {
     private void setCreatedAt(){
         this.createdAt = LocalDateTime.now();
     }
+
+    public boolean isAvailable(){
+        return this.createdAt.isBefore(LocalDateTime.now()) && this.endDate.isAfter (LocalDateTime.now());
+    }
 }
