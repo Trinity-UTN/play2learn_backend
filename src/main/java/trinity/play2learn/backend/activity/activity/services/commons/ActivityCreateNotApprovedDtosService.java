@@ -46,7 +46,7 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
             
             Double minReward = 0.0; 
             
-            Double maxReward = Math.round(rewardStrategyService.execute(activity) * 100.0) / 100.0;
+            Double maxReward = Math.floor(rewardStrategyService.execute(activity));
             
             Boolean pending = false;
 
