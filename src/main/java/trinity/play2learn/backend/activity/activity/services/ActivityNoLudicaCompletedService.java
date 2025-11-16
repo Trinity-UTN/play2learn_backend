@@ -77,7 +77,7 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
             throw new ConflictException("La actividad se encuentra pendiente de revision.");
         }
 
-        Optional<ActivityCompleted> lastStarted = activityCompletedGetLastStartedService.get(activity, student);
+        Optional<ActivityCompleted> lastStarted = activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student);
 
         if (lastStarted.isEmpty()) {
             throw new ConflictException("No se puede realizar la actividad ya que no se encuentra en curso.");

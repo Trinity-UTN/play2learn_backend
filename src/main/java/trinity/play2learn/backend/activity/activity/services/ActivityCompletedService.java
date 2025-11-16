@@ -58,7 +58,7 @@ public class ActivityCompletedService implements IActivityCompletedService {
             throw new ConflictException("La actividad ya ha sido aprobada.");
         }
 
-        Optional<ActivityCompleted> lastStarted = activityCompletedGetLastStartedService.get(activity, student);
+        Optional<ActivityCompleted> lastStarted = activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student);
         
         if (lastStarted.isEmpty()){
             throw new ConflictException("No se puede actualizar la actividad ya que no se encuentra en curso.");

@@ -3,6 +3,7 @@ package trinity.play2learn.backend.activity.activity.services.commons;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
@@ -11,15 +12,18 @@ import trinity.play2learn.backend.activity.activity.mappers.ActivityCompletedMap
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedGetLastStartedService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCountCompletedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateStudentGetDtosService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetLastCompletedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 @Service
 @AllArgsConstructor
 public class ActivityCreateStudentGetDtosService implements IActivityCreateStudentGetDtosService {
 
-    private final IActivityGetLastCompletedService activityGetLastCompletedService;
+    private final IActivityCompletedGetLastStartedService activityCompletedGetLastStartedService;
+
+    private final IActivityCountCompletedService activityCountCompletedService;
 
     @Override
     @Transactional(readOnly = true)
@@ -29,24 +33,30 @@ public class ActivityCreateStudentGetDtosService implements IActivityCreateStude
 
         for (Student student : activity.getSubject().getStudents()) {
 
-            ActivityCompleted activityCompleted = activityGetLastCompletedService.getLastCompleted(activity, student);
+            Optional<ActivityCompleted> optionalActivityCompleted = activityCompletedGetLastStartedService.getLastStarted(activity, student); 
+            //Obtiene el ultimo intento iniciado
 
             String studentName = student.getCompleteName();
 
-            if (activityCompleted == null) {
+            //Si no hay intentos, la actividad esta en estado no completada
+            if (optionalActivityCompleted.isEmpty()) {
                 activityStudentGetDtos.add(ActivityCompletedMapper.toStudentGetDto(studentName,
                         ActivityCompletedState.NOT_COMPLETED, 0, 0.0));
                 continue;
             }
 
+            ActivityCompleted activityCompleted = optionalActivityCompleted.get();
+
             ActivityCompletedState state = activityCompleted.getState();
             Double reward = activityCompleted.getReward();
-            int attempts = activity.getAttempts() - activityCompleted.getRemainingAttempts();
+
+            int attempts = activityCountCompletedService.countCompletedByActivityAndStudent(activity, student); 
+            //Cuenta cuantos intentos realizo un estudiante de una actividad
 
             // Si desaprobo el ultimo intento pero le quedan intentos restantes, la
             // actividad esta en progreso
             if (activityCompleted.getState() == ActivityCompletedState.DISAPPROVED
-                    && activityCompleted.getRemainingAttempts() != 0) {
+                    && activityCompleted.getRemainingAttempts() > 0) {
                 state = ActivityCompletedState.IN_PROGRESS;
             }
 

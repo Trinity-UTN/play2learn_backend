@@ -16,13 +16,19 @@ public interface IActivityCompletedRepository extends CrudRepository<ActivityCom
     Optional<ActivityCompleted> findTopByActivityAndStudentOrderByCompletedAtDesc(Activity activity, Student student); 
 
     Optional<ActivityCompleted> findTopByActivityAndStudentAndStateOrderByStartedAtDesc(Activity activity, Student student, ActivityCompletedState state);
+    
+    Optional<ActivityCompleted> findTopByActivityAndStudentOrderByStartedAtDesc(Activity activity, Student student);
 
     int countByActivityAndState (Activity activity, ActivityCompletedState state);
 
     int countByActivity (Activity activity);
 
+    int countByActivityAndStudent(Activity activity, Student student);
+    
     List<ActivityCompleted> findTop5ByStudentAndStateNotOrderByCompletedAtDesc(Student student, ActivityCompletedState state);
 
     List<ActivityCompleted> findAllByActivity(Activity activity);
+
+
 
 }

@@ -46,7 +46,6 @@ public class ActivityStartService implements IActivityStartService{
     private final IActivityCompletedService activityCompletedService;
 
     @Override
-    @Transactional
     public ActivityCompletedResponseDto execute(User user, Long activityId) {
 
         Student student = studentGetByEmailService.getByEmail(user.getEmail());
@@ -71,7 +70,7 @@ public class ActivityStartService implements IActivityStartService{
         // En caso de que exista, la finalizo como desaprobada\
         // Luego valido, si luego de desaprobar la misma, quedan intentos
         // En caso de que no queden intentos, no dejo iniciar una nueva
-        Optional<ActivityCompleted> lastStartedOpt = activityCompletedGetLastStartedService.get(activity, student);
+        Optional<ActivityCompleted> lastStartedOpt = activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student);
         if (lastStartedOpt.isPresent()) {
             ActivityCompletedResponseDto attemptDisapproved = activityCompletedService.cu61ActivityCompleted(
                 ActivityCompletedRequestMapper.toDto(
