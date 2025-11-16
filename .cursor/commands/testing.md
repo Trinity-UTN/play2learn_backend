@@ -21,7 +21,7 @@ Automatiza el flujo de pruebas unitarias para un módulo determinado del backend
 6. Comparte al usuario la ruta del archivo generado (`docs/testing/test_<MODULO_SANITIZADO>.md`) junto con un breve resumen de cobertura.
 
 # Template para testear
-Quiero un plan de testing para el módulo "<benefits>"
+Quiero un plan de testing para el módulo "<investment>", junto con sus submodulos "<fixedTermDeposit>", "<investment>", "<stock>" y "<savingAccount>".
 Enfócate únicamente en services, controllers y DTOs; excluye models, repositories, mappers y specs. El plan debe:
 - Detallar tareas secuenciales y numeradas.
 - Incluir refinamientos tras cada entrega de código relevante.
@@ -32,3 +32,4 @@ Provee el plan en el formato JSON esperado por `docs/tasks.json`, siguiendo la c
 
 No quiero tareas de escaneo de seguridad.
 
+ 

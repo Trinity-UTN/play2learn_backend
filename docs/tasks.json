@@ -1,221 +1,241 @@
 {
-  "feature_title": "Plan de pruebas unitarias para módulo Benefits",
+  "feature_title": "Plan de pruebas unitarias para módulo Investment (fixedTermDeposit, investment, stock, savingAccount)",
   "tasks": [
     {
       "id": "T01",
-      "title": "Auditar servicios, controladores y DTOs del módulo Benefits",
-      "description": "Inventariar clases, responsabilidades, validaciones y dependencias de services, controllers y DTOs del módulo `benefits`, excluyendo models, repositories, mappers y specs.",
+      "title": "Auditar servicios, controladores y DTOs del módulo Investment",
+      "description": "Inventariar clases, responsabilidades, validaciones y dependencias de services, controllers y DTOs del módulo `investment` (incluyendo submódulos `fixedTermDeposit`, `investment`, `stock` y `savingAccount`), excluyendo models, repositories, mappers y specs.",
       "command": "/analyze",
       "params": {
         "targets": [
-          "src/main/java/trinity/play2learn/backend/benefits"
+          "src/main/java/trinity/play2learn/backend/investment"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se documenta en `docs/testing/benefits-unit-tests-audit.md` el inventario completo de artefactos relevantes.",
+        "Se documenta en `docs/testing/investment-unit-tests-audit.md` el inventario completo de artefactos relevantes.",
         "Quedan registradas validaciones clave, excepciones y dependencias externas por cada componente.",
-        "Se listan riesgos de negocio sin cobertura de pruebas actual."
+        "Se listan riesgos de negocio sin cobertura de pruebas actual para cada submódulo (fixedTermDeposit, investment, stock, savingAccount)."
       ]
     },
     {
       "id": "T02",
-      "title": "Diseñar estrategia de pruebas unitarias para Benefits",
-      "description": "Definir alcance, métricas de cobertura, dobles de prueba y fixtures compartidos para services, controllers y DTOs del módulo `benefits` siguiendo restricciones del contexto.",
+      "title": "Diseñar estrategia de pruebas unitarias para Investment",
+      "description": "Definir alcance, métricas de cobertura, dobles de prueba y fixtures compartidos para services, controllers y DTOs del módulo `investment` (fixedTermDeposit, investment, stock, savingAccount) siguiendo restricciones del contexto.",
       "command": "/design",
       "params": {
-        "artifact": "docs/testing/benefits-unit-test-strategy.md"
+        "artifact": "docs/testing/investment-unit-test-strategy.md"
       },
       "status": "done",
       "acceptance_criteria": [
         "El documento establece objetivos de cobertura y criterios de salida por tipo de componente.",
-        "Incluye matriz de escenarios priorizados por riesgo y dependencias simuladas.",
-        "Detalla datos de prueba reutilizables y lineamientos para fixtures comunes."
+        "Incluye matriz de escenarios priorizados por riesgo y dependencias simuladas para cada submódulo.",
+        "Detalla datos de prueba reutilizables y lineamientos para fixtures comunes (InvestmentTestMother)."
       ]
     },
     {
       "id": "T03",
-      "title": "Generar pruebas para services principales de Benefits",
-      "description": "Crear suites unitarias para `BenefitGenerateService`, `BenefitDeleteService`, `BenefitPurchaseService`, `BenefitListByTeacherService`, `BenefitListByTeacherPaginatedService`, `BenefitListByStudentPaginatedService`, `BenefitStudentCountService`, `BenefitRequestUseService`, `BenefitAcceptUseService`, `BenefitListPurchasesService`, `BenefitListPurchasesPaginatedService`, `BenefitListUseRequestedService`, `BenefitListUseRequestedPaginatedService`, `BenefitListUsedByStudentService` y `BenefitListUsedByStudentPaginatedService`.",
+      "title": "Generar pruebas para services principales de Investment",
+      "description": "Crear suites unitarias para services principales: `FixedTermDepositRegisterService`, `FixedTermDepositListPaginatedService`, `FixedTermDepositAutomaticEndsService`, `SavingAccountRegisterService`, `SavingAccountDepositService`, `SavingAccountWithdrawalService`, `SavingAccountDeleteService`, `SavingAccountListPaginatedService`, `SavingAccountUpdateService`, `StockRegisterService`, `StockBuyService`, `StockSellService`, `StockGetService`, `StockListService`, `StockListPaginatedService`, `StockListHistoryService`, `StockRegisterStopService`, `StockUpdateService`, `CandleStickGetValuesService`, `InvestemtCalculateTotalInvestedService`.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitGenerateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitDeleteServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitPurchaseServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListByTeacherServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListByTeacherPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListByStudentPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitStudentCountServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitRequestUseServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitAcceptUseServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListPurchasesServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListPurchasesPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListUseRequestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListUseRequestedPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListUsedByStudentServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/BenefitListUsedByStudentPaginatedServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositRegisterServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositListPaginatedServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositAutomaticEndsServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountRegisterServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountDepositServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountWithdrawalServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountDeleteServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountListPaginatedServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountUpdateServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockRegisterServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockBuyServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockSellServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockGetServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListPaginatedServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListHistoryServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockRegisterStopServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockUpdateServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/CandleStickGetValuesServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/investment/services/InvestemtCalculateTotalInvestedServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren escenarios de éxito y excepciones relevantes (`NotFoundException`, `ConflictException`, `UnauthorizedException`) para cada servicio.",
-        "Mocks verifican interacciones con servicios commons, repositorios y mappers simulados.",
-        "Asserts validan DTOs resultantes y mensajes de excepción esperados con AssertJ."
+        "Se cubren escenarios de éxito y excepciones relevantes (`NotFoundException`, `ConflictException`, `BadRequestException`, `UnsupportedOperationException`) para cada servicio.",
+        "Mocks verifican interacciones con servicios commons, repositorios y servicios externos simulados.",
+        "Asserts validan DTOs resultantes y mensajes de excepción esperados con AssertJ.",
+        "Services con paginación validan construcción correcta de especificaciones y `PaginatedData`."
       ]
     },
     {
       "id": "T04",
-      "title": "Refinar pruebas de services principales de Benefits",
-      "description": "Optimizar suites de services principales eliminando duplicidades, mejorando legibilidad y reutilización de datos mediante fixtures compartidos.",
+      "title": "Refinar pruebas de services principales de Investment",
+      "description": "Optimizar suites de services principales eliminando duplicidades, mejorando legibilidad y reutilización de datos mediante fixtures compartidos en `InvestmentTestMother`.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/services"
+          "src/test/java/trinity/play2learn/backend/investment"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Helpers/builder centralizados generan requests, entidades y DTOs simulados consistentes.",
+        "Helpers/builder centralizados en `InvestmentTestMother` generan FixedTermDeposit, SavingAccount, Stock, Order, StockHistory y DTOs simulados consistentes.",
         "Cada caso usa `@DisplayName` y asserts AssertJ descriptivos con patrón Given-When-Then.",
         "Se mantiene cobertura de ramas sin warnings de Mockito ni code smells."
       ]
     },
     {
       "id": "T05",
-      "title": "Generar pruebas para services commons de Benefits",
-      "description": "Crear suites unitarias para services commons: `BenefitGetByIdService`, `BenefitGetByStudentService`, `BenefitGetStudentStateService`, `BenefitGetPurchasesLeftByStudentService`, `BenefitGetLastPurchaseService`, `BenefitIsPurchasedService`, `BenefitIsUseRequestedService`, `BenefitPurchaseGetByIdService`, `BenefitValidatePurchaseLimitService`, `BenefitValidateIfPurchasedByStudentService`, `BenefitFilterByStudentStateService` y `BenefitCreateStudentDtosService`.",
+      "title": "Generar pruebas para services commons de Investment",
+      "description": "Crear suites unitarias para services commons: `FixedTermDepositCalculateAmountInvestedService`, `FixedTermDepositCalculateRewardAmountService`, `FixedTermDepositFindAllByStateAndWalletService`, `FixedTermDepositFindAllByStateService`, `SavingAccountCalculateAmountInvestedService`, `SavingAccountExistsByNameAndWalletService`, `SavingAccountFindByIdService`, `OrderFindPendingService`, `OrderStopExecuteService`, `StockCalculateAmountInvestedService`, `StockCalculateByWalletService`, `StockCalculateVariationService`, `StockFindAllService`, `StockFindByIdService`, `StockHistoryCalculateTrendService`, `StockHistoryFindByStockAndRangeService`, `StockHistoryFindByStockService`, `StockHistoryFindLastService`, `StockMoveService`, `StockUpdateSpecificService`.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitGetByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitGetByStudentServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitGetStudentStateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitGetPurchasesLeftByStudentServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitGetLastPurchaseServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitIsPurchasedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitIsUseRequestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitPurchaseGetByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitValidatePurchaseLimitServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitValidateIfPurchasedByStudentServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitFilterByStudentStateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons/BenefitCreateStudentDtosServiceTest.java"
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositCalculateAmountInvestedServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositCalculateRewardAmountServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositFindAllByStateAndWalletServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositFindAllByStateServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountCalculateAmountInvestedServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountExistsByNameAndWalletServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountFindByIdServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/OrderFindPendingServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/OrderStopExecuteServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateAmountInvestedServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateByWalletServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateVariationServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockFindAllServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockFindByIdServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryCalculateTrendServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindByStockAndRangeServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindByStockServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindLastServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockMoveServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockUpdateSpecificServiceTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren escenarios de éxito y excepciones (`NotFoundException`) para cada servicio común.",
-        "Mocks verifican interacciones con repositorios y servicios externos simulados.",
-        "Asserts validan respuestas booleanas, listas y objetos resultantes con AssertJ."
+        "Se cubren escenarios de éxito y excepciones (`NotFoundException`, `BadRequestException`) con validaciones de listas y objetos resultantes usando AssertJ.",
+        "Todos los tests usan `@Nested`, `@DisplayName` con patrón Given-When-Then y verifican interacciones con repositorios simulados."
       ]
     },
     {
       "id": "T06",
-      "title": "Refinar pruebas de services commons de Benefits",
-      "description": "Optimizar suites de services commons eliminando duplicidades, mejorando legibilidad y reutilización de datos mediante fixtures compartidos.",
+      "title": "Refinar pruebas de services commons de Investment",
+      "description": "Revisar suites de services commons para mejorar reutilización de fixtures y cobertura de casos límite sin duplicar código.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/services/commons"
+          "src/test/java/trinity/play2learn/backend/investment"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Helpers/builder centralizados generan entidades y objetos de prueba consistentes.",
-        "Cada caso usa `@DisplayName` y asserts AssertJ descriptivos con patrón Given-When-Then.",
-        "Se mantiene cobertura de ramas sin warnings de Mockito ni code smells."
+        "Builders/helpers generan entidades válidas e inválidas reutilizables en todos los casos.",
+        "Cada escenario documenta explícitamente el motivo de la validación esperada.",
+        "Cobertura incluye casos límite sin duplicar código."
       ]
     },
     {
       "id": "T07",
-      "title": "Generar pruebas para controllers de Benefits",
-      "description": "Crear pruebas `@WebMvcTest`/`MockMvc` para `BenefitGenerateController`, `BenefitDeleteController`, `BenefitListController`, `BenefitListPaginatedController`, `BenefitListByStudentPaginatedController`, `BenefitPurchaseController`, `BenefitStudentCountController`, `BenefitRequestUseController`, `BenefitAcceptUseController`, `BenefitListPurchasesController`, `BenefitListPurchasesPaginatedController`, `BenefitListUseRequestedByTeacherController`, `BenefitListUseRequestedPaginatedController`, `BenefitListUsedByStudentController` y `BenefitListUsedPaginatedController`.",
+      "title": "Generar pruebas para controllers de Investment",
+      "description": "Crear suites unitarias para controllers: `FixedTermDepositRegisterController`, `FixedTermDepositListPaginatedController`, `SavingAccountRegisterController`, `SavingAccountDepositController`, `SavingAccountWithdrawalController`, `SavingAccountDeleteController`, `SavingAccountListPaginatedController`, `StockRegisterController`, `StockBuyController`, `StockSellController`, `StockGetController`, `StockListController`, `StockListPaginatedController`, `StockHistoryListByStockController`, `StockCandleStickGetController`, `StockRegisterStopController`.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitGenerateControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitDeleteControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListByStudentPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitPurchaseControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitStudentCountControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitRequestUseControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitAcceptUseControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListPurchasesControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListPurchasesPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListUseRequestedByTeacherControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListUseRequestedPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListUsedByStudentControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/controllers/BenefitListUsedPaginatedControllerTest.java"
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/controllers/FixedTermDepositRegisterControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/controllers/FixedTermDepositListPaginatedControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountRegisterControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountDepositControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountWithdrawalControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountDeleteControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountListPaginatedControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockRegisterControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockBuyControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockSellControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockGetControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockListControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockListPaginatedControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockHistoryListByStockControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockCandleStickGetControllerTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockRegisterStopControllerTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren respuestas exitosas (200/201/204) y errores relevantes (400/401/404/409).",
-        "Validación de payloads JSON mediante `jsonPath` y serialización esperada.",
-        "Mocks confirman delegación a servicios correspondientes y validación de roles con `@SessionRequired`."
+        "Tests usan `@WebMvcTest`, `@AutoConfigureMockMvc(addFilters = false)`, `MockMvc` para realizar requests HTTP.",
+        "Se cubren respuestas exitosas (200/201) y errores relevantes (400/404/409) validando payloads JSON mediante `jsonPath`.",
+        "Se verifica delegación a servicios correspondientes y manejo de `@SessionUser` mediante `SessionUserArgumentResolver`."
       ]
     },
     {
       "id": "T08",
-      "title": "Refinar pruebas de controllers de Benefits",
-      "description": "Pulir suite de controladores centralizando configuración MockMvc y expresando claramente cada caso.",
+      "title": "Refinar pruebas de controllers de Investment",
+      "description": "Revisar suites de controllers para mejorar estructura, legibilidad y cobertura de validaciones de payloads sin duplicar código.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/controllers"
+          "src/test/java/trinity/play2learn/backend/investment"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Configuración de MockMvc/ObjectMapper centralizada en `@BeforeEach` con helpers reutilizables.",
-        "Casos documentados con `@DisplayName` y comentarios breves del flujo validado.",
-        "Requests/responses JSON construidos mediante métodos utilitarios sin duplicidad."
+        "Tests ya están bien estructurados con `@WebMvcTest`, `@AutoConfigureMockMvc(addFilters = false)`, `MockMvc` centralizado mediante `@Autowired`, casos documentados con `@DisplayName` y comentarios breves del flujo.",
+        "No se requieren cambios adicionales o solo mejoras menores de legibilidad."
       ]
     },
     {
       "id": "T09",
-      "title": "Generar pruebas de validación para DTOs de Benefits",
-      "description": "Agregar pruebas de Bean Validation para DTOs: `BenefitRequestDto`, `BenefitPurchaseRequestDto`, cubriendo mensajes y combinaciones límite.",
+      "title": "Generar pruebas de validación para DTOs de Investment",
+      "description": "Agregar pruebas de Bean Validation para DTOs de respuesta: `FixedTermDepositResponseDto`, `SavingAccountResponseDto`, `StockResponseDto`, `StockBuyResponseDto`, `StockSellResponseDto`, `StockHistoryResponseDto`, `CandleStickChartValueResponseDto`, cubriendo construcción y serialización correcta.",
       "command": "/generate",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/dtos/BenefitDtoValidationTest.java",
-          "src/test/java/trinity/play2learn/backend/benefits/dtos/BenefitPurchaseDtoValidationTest.java"
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/dtos/FixedTermDepositResponseDtoTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/dtos/SavingAccountResponseDtoTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockResponseDtoTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockBuyResponseDtoTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockSellResponseDtoTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockHistoryResponseDtoTest.java",
+          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/CandleStickChartValueResponseDtoTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se verifican anotaciones `@NotNull`, `@NotBlank`, `@Size`, `@Min`, `@Future`, `@Valid` según corresponda.",
-        "Escenarios válidos generan conjunto vacío de `ConstraintViolation`.",
-        "Mensajes de error coinciden con `ValidationMessages` del módulo."
+        "Se verifican construcción correcta de DTOs con valores válidos e inválidos según corresponda.",
+        "Escenarios válidos generan DTOs correctamente serializables a JSON.",
+        "DTOs con listas anidadas validan estructura y contenido esperado."
       ]
     },
     {
       "id": "T10",
-      "title": "Refinar pruebas de DTOs de Benefits",
+      "title": "Refinar pruebas de DTOs de Investment",
       "description": "Revisar la suite de validación para mejorar reutilización de fixtures y cobertura de combinaciones límite.",
       "command": "/refine",
       "params": {
         "targets": [
-          "src/test/java/trinity/play2learn/backend/benefits/dtos"
+          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/dtos",
+          "src/test/java/trinity/play2learn/backend/investment/savingAccount/dtos",
+          "src/test/java/trinity/play2learn/backend/investment/stock/dtos"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
         "Builders/helpers generan DTOs válidos e inválidos reutilizables en todos los casos.",
-        "Cada escenario documenta explícitamente el motivo de la violación esperada.",
+        "Cada escenario documenta explícitamente el motivo de la validación esperada.",
         "Cobertura incluye campos opcionales/nulos sin duplicar código."
       ]
     },
     {
       "id": "T11",
-      "title": "Preparar suites del módulo Benefits para ejecución con JaCoCo",
-      "description": "Ejecutar todas las suites unitarias del módulo `benefits` preparando el agente JaCoCo y generando reporte de cobertura.",
+      "title": "Preparar suites del módulo Investment para ejecución con JaCoCo",
+      "description": "Ejecutar todas las suites unitarias del módulo `investment` preparando el agente JaCoCo y generando reporte de cobertura.",
       "command": "/test",
       "params": {
-        "command": "./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report"
+        "command": "./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -Dtest=trinity.play2learn.backend.investment.**"
       },
       "status": "done",
       "acceptance_criteria": [
@@ -226,15 +246,15 @@
     },
     {
       "id": "T12",
-      "title": "Consolidar reporte automatizado de pruebas para Benefits",
-      "description": "Generar documentación consolidada de las pruebas del módulo ejecutando el script estándar con el módulo `benefits`.",
+      "title": "Consolidar reporte automatizado de pruebas para Investment",
+      "description": "Generar documentación consolidada de las pruebas del módulo ejecutando el script estándar con el módulo `investment`.",
       "command": "/report",
       "params": {
-        "command": "python scripts/testing_report.py --module \"benefits\" --output \"docs/testing/test_benefits.md\""
+        "command": "python scripts/testing_report.py --module \"investment\" --output \"docs/testing/test_investment.md\""
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/testing/test_benefits.md` resume métricas y hallazgos actualizados.",
+        "El archivo `docs/testing/test_investment.md` resume métricas y hallazgos actualizados.",
         "El reporte contiene cobertura JaCoCo, suites ejecutadas y riesgos remanentes.",
         "Se incluyen siguientes pasos o pendientes identificados durante la ejecución."
       ]
