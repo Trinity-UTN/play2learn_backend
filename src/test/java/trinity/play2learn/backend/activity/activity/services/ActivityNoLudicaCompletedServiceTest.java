@@ -118,7 +118,7 @@ class ActivityNoLudicaCompletedServiceTest {
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetCompletedStateService.getActivityCompletedState(activity, student))
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.of(lastStarted));
             when(noLudicaCreateAttemptService.createAttempt(PLAIN_TEXT, null)).thenReturn(attempt);
             when(activityCompletedRepository.save(any(ActivityCompleted.class))).thenReturn(savedCompleted);
@@ -175,7 +175,7 @@ class ActivityNoLudicaCompletedServiceTest {
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetCompletedStateService.getActivityCompletedState(activity, student))
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.of(lastStarted));
             when(noLudicaCreateAttemptService.createAttempt("", null)).thenReturn(attempt);
             when(activityCompletedRepository.save(any(ActivityCompleted.class))).thenReturn(savedCompleted);
@@ -242,7 +242,7 @@ class ActivityNoLudicaCompletedServiceTest {
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetCompletedStateService.getActivityCompletedState(activity, student))
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> activityNoLudicaCompletedService.cu72ActivityNoLudicaCompleted(

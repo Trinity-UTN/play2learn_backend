@@ -1,9 +1,13 @@
 package trinity.play2learn.backend.activity.activity.mappers;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentCountResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentGetResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityTeacher.ActivityTeacherGetResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityTeacher.ActivityTeacherSimpleDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
@@ -74,6 +78,31 @@ public class ActivityMapper {
                                 .yearId(activity.getSubject().getCourse().getYear().getId())
                                 .status(status)
                                 .date(date)
+                                .build();
+        }
+
+        public static ActivityTeacherGetResponseDto toTeacherGetDto(Activity activity, int studentsAttemptedCount, int studentsApprovedCount,
+                        Double averageCompletionTime, Double participationPercentage, Double successPercentage,
+                        List<ActivityStudentGetResponseDto> activityStudentGetDtos, Double reward) {
+                return ActivityTeacherGetResponseDto.builder()
+                                .id(activity.getId())
+                                .name(activity.getName())
+                                .description(activity.getDescription())
+                                .startDate(activity.getStartDate())
+                                .endDate(activity.getEndDate())
+                                .difficulty(activity.getDifficulty())
+                                .maxTime(activity.getMaxTime()) 
+                                .subjectName(activity.getSubject().getName())
+                                .courseName(activity.getSubject().getCourse().getFullName())
+                                .attempts(activity.getAttempts())
+                                .reward(reward == null ? 0.0 : (Math.round(reward * 100.0) / 100.0))
+                                .typeReward(activity.getTypeReward())
+                                .studentsAttemptedCount(studentsAttemptedCount)
+                                .studentsApprovedCount(studentsApprovedCount)
+                                .participationPercentage(participationPercentage)
+                                .averageCompletionTime(averageCompletionTime)
+                                .successPercentage(successPercentage)
+                                .activityStudentGetDtos(activityStudentGetDtos)
                                 .build();
         }
 }

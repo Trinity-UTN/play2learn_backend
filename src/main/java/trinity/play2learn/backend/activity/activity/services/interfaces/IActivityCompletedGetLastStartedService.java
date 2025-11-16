@@ -8,6 +8,7 @@ import trinity.play2learn.backend.admin.student.models.Student;
 
 public interface IActivityCompletedGetLastStartedService {
 
-    public Optional<ActivityCompleted> get (Activity activity, Student student);
+    Optional<ActivityCompleted> getLastStartedInProgress (Activity activity, Student student);
     
+    Optional<ActivityCompleted> getLastStarted(Activity activity, Student student);
 }

@@ -107,7 +107,7 @@ class ActivityCompletedServiceTest {
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetCompletedStateService.getActivityCompletedState(activity, student))
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.of(lastStarted));
             when(approvedStrategyService.execute(lastStarted)).thenReturn(expectedResponse);
 
@@ -142,7 +142,7 @@ class ActivityCompletedServiceTest {
                 .hasMessageContaining("La actividad ya ha sido aprobada");
 
             verify(activityValidatePublishedStatusService).validatePublishedStatus(activity);
-            verify(activityCompletedGetLastStartedService, never()).get(any(), any());
+            verify(activityCompletedGetLastStartedService, never()).getLastStartedInProgress(any(), any());
         }
 
         @Test
@@ -160,7 +160,7 @@ class ActivityCompletedServiceTest {
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetCompletedStateService.getActivityCompletedState(activity, student))
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.empty());
 
             assertThatThrownBy(() -> activityCompletedService.cu61ActivityCompleted(request, user))
@@ -201,7 +201,7 @@ class ActivityCompletedServiceTest {
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetCompletedStateService.getActivityCompletedState(activity, student))
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.of(lastStarted));
             when(disapprovedStrategyService.execute(lastStarted)).thenReturn(expectedResponse);
 

@@ -100,7 +100,7 @@ class ActivityStartServiceTest {
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
             when(activityGetRemainingAttemptsService.getStudentRemainingAttempts(activity, student))
                 .thenReturn(REMAINING_ATTEMPTS);
-            when(activityCompletedGetLastStartedService.get(activity, student)).thenReturn(Optional.empty());
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student)).thenReturn(Optional.empty());
             when(activityCompletedRepository.save(any(ActivityCompleted.class))).thenReturn(savedCompleted);
 
             // When
@@ -209,7 +209,7 @@ class ActivityStartServiceTest {
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
             when(activityGetRemainingAttemptsService.getStudentRemainingAttempts(activity, student))
                 .thenReturn(3);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.of(lastStarted));
             when(activityCompletedService.cu61ActivityCompleted(any(ActivityCompletedRequestDto.class), any(User.class)))
                 .thenReturn(disapprovedResponse);
@@ -254,7 +254,7 @@ class ActivityStartServiceTest {
                 .thenReturn(ActivityCompletedState.DISAPPROVED);
             when(activityGetRemainingAttemptsService.getStudentRemainingAttempts(activity, student))
                 .thenReturn(1);
-            when(activityCompletedGetLastStartedService.get(activity, student))
+            when(activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student))
                 .thenReturn(Optional.of(lastStarted));
             when(activityCompletedService.cu61ActivityCompleted(any(ActivityCompletedRequestDto.class), any(User.class)))
                 .thenReturn(disapprovedResponse);
