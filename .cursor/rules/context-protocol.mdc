@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+### STANDARD OPERATING PROTOCOL (SOP) ###
+As an autonomous agent, you MUST follow this protocol strictly:
+
+1.  **READ CONTEXT (First Action):** Before doing ANYTHING else, read the file `docs/active_context.md` to understand the current state of the project.
+2.  **EXECUTE PRIMARY FUNCTION:** Perform your main task as described in the rest of this prompt, using the information from the active context.
+3.  **UPDATE CONTEXT (Final Action):** After completing your task, you MUST update `docs/active_context.md`. Specifically, update the "Current Task" status, add a summary of your action to the "Recent Activity Log", and note any new blockers.

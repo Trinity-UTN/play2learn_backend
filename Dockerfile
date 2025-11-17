@@ -1,6 +1,5 @@
 # Usa una imagen oficial de Java como base
-FROM openjdk:21-slim AS build
-
+FROM eclipse-temurin:21-jdk-jammy AS build
 # Instala Maven
 RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
@@ -20,16 +19,18 @@ COPY src ./src
 RUN mvn clean package -DskipTests
 
 # Fase final: usa una imagen ligera de Java para la ejecución
-FROM openjdk:21-slim
+FROM eclipse-temurin:21-jdk-jammy
 
 # Establece el directorio de trabajo en el contenedor
 WORKDIR /app
 
 # Copia el .jar generado desde la fase de construcción
-COPY --from=build /app/target/mega_store-0.0.1-SNAPSHOT.jar /app/mega_store.jar
+COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar /app/backend.jar
+
+COPY .env /app/.env
 
 # Expone el puerto 8080 para que la aplicación sea accesible
-EXPOSE 8081
+EXPOSE 8082
 
 # Comando para ejecutar la aplicación
-ENTRYPOINT ["java", "-jar", "play2learn_backend.jar"]
+ENTRYPOINT ["java", "-jar", "/app/backend.jar"]

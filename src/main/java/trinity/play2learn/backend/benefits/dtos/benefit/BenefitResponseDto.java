@@ -1,0 +1,31 @@
+package trinity.play2learn.backend.benefits.dtos.benefit;
+
+import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import trinity.play2learn.backend.admin.subject.dtos.SubjectSimplifiedResponseDto;
+import trinity.play2learn.backend.benefits.models.BenefitCategory;
+import trinity.play2learn.backend.benefits.models.BenefitColor;
+import trinity.play2learn.backend.benefits.models.BenefitIcon;
+import trinity.play2learn.backend.benefits.models.BenefitState;
+
+@Data
+@Builder
+@AllArgsConstructor
+public class BenefitResponseDto {
+    
+    private Long id;
+    private String name;
+    private String description;
+    private Long cost;
+    private Integer purchaseLimit;
+    private Integer purchaseLimitPerStudent;
+    private LocalDateTime endAt;
+    private BenefitState state;
+    private SubjectSimplifiedResponseDto subjectDto;
+    private BenefitIcon icon;
+    private BenefitCategory category;
+    private BenefitColor color;
+}
