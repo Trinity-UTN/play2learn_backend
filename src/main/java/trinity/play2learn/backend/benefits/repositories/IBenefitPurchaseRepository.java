@@ -22,7 +22,7 @@ public interface IBenefitPurchaseRepository extends CrudRepository<BenefitPurcha
 
     Optional<BenefitPurchase> findByIdAndDeletedAtIsNull(Long id);
 
-    int countByStudentAndState(Student student, BenefitPurchaseState state);
+    int countByStudentAndStateAndDeletedAtIsNull(Student student, BenefitPurchaseState state);
 
     List<BenefitPurchase> findAllByStudentAndStateAndDeletedAtIsNull(Student student, BenefitPurchaseState state);
 

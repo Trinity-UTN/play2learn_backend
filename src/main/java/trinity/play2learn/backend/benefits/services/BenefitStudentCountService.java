@@ -40,7 +40,7 @@ public class BenefitStudentCountService implements IBenefitStudentCountService {
 
         List<Benefit> benefits = benefitGetByStudentService.getByStudent(student);
 
-        int used = benefitPurchaseRepository.countByStudentAndState(student, BenefitPurchaseState.USED);
+        int used = benefitPurchaseRepository.countByStudentAndStateAndDeletedAtIsNull(student, BenefitPurchaseState.USED);
         
         List<Benefit> available = new ArrayList<>();
         List<Benefit> purchased = new ArrayList<>();

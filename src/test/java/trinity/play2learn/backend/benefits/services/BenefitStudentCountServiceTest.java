@@ -82,7 +82,7 @@ class BenefitStudentCountServiceTest {
 
             when(studentGetByEmailService.getByEmail(STUDENT_EMAIL)).thenReturn(student);
             when(benefitGetByStudentService.getByStudent(student)).thenReturn(allBenefits);
-            when(benefitPurchaseRepository.countByStudentAndState(student, BenefitPurchaseState.USED)).thenReturn(0);
+            when(benefitPurchaseRepository.countByStudentAndStateAndDeletedAtIsNull(student, BenefitPurchaseState.USED)).thenReturn(0);
             
             when(benefitGetLastPurchaseService.getLastPurchase(availableBenefit, student)).thenReturn(Optional.empty());
             when(benefitGetLastPurchaseService.getLastPurchase(purchasedBenefit, student)).thenReturn(Optional.of(purchasedPurchase));
@@ -97,7 +97,7 @@ class BenefitStudentCountServiceTest {
             // Then
             verify(studentGetByEmailService).getByEmail(STUDENT_EMAIL);
             verify(benefitGetByStudentService).getByStudent(student);
-            verify(benefitPurchaseRepository).countByStudentAndState(student, BenefitPurchaseState.USED);
+            verify(benefitPurchaseRepository).countByStudentAndStateAndDeletedAtIsNull(student, BenefitPurchaseState.USED);
             
             assertThat(result.getAvailable()).isEqualTo(1);
             assertThat(result.getPurchased()).isEqualTo(1);
@@ -115,7 +115,7 @@ class BenefitStudentCountServiceTest {
 
             when(studentGetByEmailService.getByEmail(STUDENT_EMAIL)).thenReturn(student);
             when(benefitGetByStudentService.getByStudent(student)).thenReturn(List.of());
-            when(benefitPurchaseRepository.countByStudentAndState(student, BenefitPurchaseState.USED)).thenReturn(0);
+            when(benefitPurchaseRepository.countByStudentAndStateAndDeletedAtIsNull(student, BenefitPurchaseState.USED)).thenReturn(0);
 
             // When
             BenefitStudentCountResponseDto result = benefitStudentCountService.cu89CountByStudentState(user);
