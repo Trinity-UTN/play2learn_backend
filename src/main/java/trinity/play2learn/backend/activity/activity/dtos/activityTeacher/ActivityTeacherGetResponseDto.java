@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentGetResponseDto;
+import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
 import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.activity.models.activity.TypeReward;
 
@@ -22,6 +23,7 @@ public class ActivityTeacherGetResponseDto {
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private ActivityStatus status; // CREATED, PUBLISHED, EXPIRED
     private Difficulty difficulty;
     private int maxTime;
     private String subjectName;

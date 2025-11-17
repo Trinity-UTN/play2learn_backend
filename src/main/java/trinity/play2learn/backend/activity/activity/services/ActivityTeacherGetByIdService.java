@@ -11,10 +11,12 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.dtos.activityTeacher.ActivityTeacherGetResponseDto;
 import trinity.play2learn.backend.activity.activity.mappers.ActivityMapper;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
+import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityAverageCompletionTimeService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCalculateRewardStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateStudentGetDtosService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetStatusService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityStudentsApprovedCountService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityStudentsAttemptedCountService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityTeacherGetByIdService;
@@ -34,6 +36,7 @@ public class ActivityTeacherGetByIdService implements IActivityTeacherGetByIdSer
     private final IActivityAverageCompletionTimeService activityAverageCompletionTimeService;
     private final IActivityCreateStudentGetDtosService activityCreateStudentGetDtosService;
     private final Map<String, IActivityCalculateRewardStrategyService> activityCalculateRewardStrategyServiceMap;
+    private final IActivityGetStatusService activityGetStatusService;
 
     @Override
     @Transactional(readOnly = true)
@@ -57,9 +60,11 @@ public class ActivityTeacherGetByIdService implements IActivityTeacherGetByIdSer
 
         //Recompensa que obtiene cada estudiante por completar la actividad
         Double reward = activityCalculateRewardStrategyServiceMap.get(activity.getTypeReward().name()).execute(activity);
+        
+        ActivityStatus status = activityGetStatusService.getStatus(activity);
 
         return ActivityMapper.toTeacherGetDto(
-            activity, studentsAttemptedCount, studentsApprovedCount, averageCompletionTime, 
+            activity,status, studentsAttemptedCount, studentsApprovedCount, averageCompletionTime, 
             participationPercentage, successPercentage, activityStudentGetDtos, reward);
     }
 }

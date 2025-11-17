@@ -81,7 +81,7 @@ public class ActivityMapper {
                                 .build();
         }
 
-        public static ActivityTeacherGetResponseDto toTeacherGetDto(Activity activity, int studentsAttemptedCount, int studentsApprovedCount,
+        public static ActivityTeacherGetResponseDto toTeacherGetDto(Activity activity, ActivityStatus status, int studentsAttemptedCount, int studentsApprovedCount,
                         Double averageCompletionTime, Double participationPercentage, Double successPercentage,
                         List<ActivityStudentGetResponseDto> activityStudentGetDtos, Double reward) {
                 return ActivityTeacherGetResponseDto.builder()
@@ -90,6 +90,7 @@ public class ActivityMapper {
                                 .description(activity.getDescription())
                                 .startDate(activity.getStartDate())
                                 .endDate(activity.getEndDate())
+                                .status(status)
                                 .difficulty(activity.getDifficulty())
                                 .maxTime(activity.getMaxTime()) 
                                 .subjectName(activity.getSubject().getName())
