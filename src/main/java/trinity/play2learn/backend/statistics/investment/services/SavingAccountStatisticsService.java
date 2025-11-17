@@ -34,8 +34,6 @@ public class SavingAccountStatisticsService implements ISavingAccountStatisticsS
             return SavingAccountStatisticsMapper.toDto(0.0, 0, 0.0);
         }
 
-        System.out.println("savingAccounts: " + savingAccounts);
-
         Double totalInvested = 0.0;
         Double totalReward = 0.0;
 
@@ -44,7 +42,6 @@ public class SavingAccountStatisticsService implements ISavingAccountStatisticsS
             totalReward += (savingAccount.getAccumulatedInterest() == null) ? 0.0 : savingAccount.getAccumulatedInterest();
         }
 
-        System.out.println("1");
         return SavingAccountStatisticsMapper.toDto(totalInvested, savingAccounts.size(), totalReward);
     }
 }

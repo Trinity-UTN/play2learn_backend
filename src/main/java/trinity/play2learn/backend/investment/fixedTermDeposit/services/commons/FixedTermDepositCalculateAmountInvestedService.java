@@ -19,7 +19,7 @@ public class FixedTermDepositCalculateAmountInvestedService implements IFixedTer
     public Double execute(Wallet wallet) {
         Double total = 0.0;
 
-        for (FixedTermDeposit fixedTermDeposit : fixedTermDepositRepository.findByFixedTermState(FixedTermState.IN_PROGRESS)){
+        for (FixedTermDeposit fixedTermDeposit : fixedTermDepositRepository.findByWalletAndFixedTermState(wallet, FixedTermState.IN_PROGRESS)){
             total += fixedTermDeposit.getAmountReward();
         }
 
