@@ -21,7 +21,14 @@ public class InvestemtCalculateTotalInvestedService implements IInvestmentCalcul
     
     @Override
     public Double cu110calculateTotalInvested(Wallet wallet) {
-        return stockCalculateAmountInvestedService.execute(wallet) + fixedTermDepositCalculateAmountInvestedService.execute(wallet) + savingAccountCalculateAmountInvestedService.execute(wallet);
+
+        Double stocks = stockCalculateAmountInvestedService.execute(wallet);
+
+        Double fixedTerms = fixedTermDepositCalculateAmountInvestedService.execute(wallet);
+
+        Double savings = savingAccountCalculateAmountInvestedService.execute(wallet);
+        
+        return stocks + fixedTerms + savings;
     }
     
 }

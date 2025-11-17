@@ -49,7 +49,7 @@ public class DepositSavingAccountTransactionService implements ITransactionStrat
         FixedTermDeposit fixedTermDeposit, 
         SavingAccount savingAccount
     ) {
-        
+
         if (amount <= 0) {
             throw new BadRequestException("El monto debe ser mayor a 0");
         }
