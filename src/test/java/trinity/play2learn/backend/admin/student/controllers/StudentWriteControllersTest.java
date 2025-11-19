@@ -64,7 +64,7 @@ class StudentWriteControllersTest {
                 new StudentDeleteController(studentDeleteService),
                 new StudentRestoreController(studentRestoreService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         objectMapper = new ObjectMapper()

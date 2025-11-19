@@ -50,7 +50,7 @@ class ArbolDeDecisionGenerateControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ArbolDeDecisionGenerateController(generateArbolDeDecisionService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         reset(generateArbolDeDecisionService);

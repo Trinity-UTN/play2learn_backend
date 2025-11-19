@@ -48,7 +48,7 @@ class NoLudicaGenerateControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new NoLudicaGenerateController(noLudicaGenerateService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         objectMapper = new ObjectMapper();

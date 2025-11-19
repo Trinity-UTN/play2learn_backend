@@ -51,7 +51,7 @@ class GenerateAhorcadoControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new GenerateAhorcadoController(generateAhorcadoService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         reset(generateAhorcadoService);

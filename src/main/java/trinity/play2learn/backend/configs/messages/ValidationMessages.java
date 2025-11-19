@@ -111,5 +111,10 @@ public class ValidationMessages {
     public static final String FUTURE_END_AT = "La fecha de finalizacion debe ser mayor a la fecha actual.";
     public static final String NOT_NULL_BENEFIT_ID = "El id del beneficio no puede estar vacio.";
 
+    //------------------------------------- LOGS ------------------------------------------------------
+    public static final String NOT_EMPTY_MESSAGE = "El mensaje no puede estar vacio.";
+    public static final String MAX_LENGTH_MESSAGE_5000 = "El mensaje no puede tener mas de 5000 caracteres.";
+    public static final String NOT_NULL_LOG_LEVEL = "El nivel de log no puede estar vacio.";
+
 }
 

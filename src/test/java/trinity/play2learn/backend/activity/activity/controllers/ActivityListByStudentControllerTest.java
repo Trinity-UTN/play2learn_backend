@@ -55,7 +55,7 @@ class ActivityListByStudentControllerTest {
                     activityListApproveByStudentService
                 )
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         notApprovedResponses = buildNotApprovedResponses();

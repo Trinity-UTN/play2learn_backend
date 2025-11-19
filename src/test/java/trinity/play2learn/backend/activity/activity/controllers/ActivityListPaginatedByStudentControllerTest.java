@@ -57,7 +57,7 @@ class ActivityListPaginatedByStudentControllerTest {
                     activityApprovedListPaginatedService
                 )
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         notApprovedPaginated = buildNotApprovedPaginated();

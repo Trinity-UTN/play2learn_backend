@@ -44,7 +44,7 @@ class ActivityGetControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ActivityGetController(activityGetService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         activityResponse = buildActivityResponse(ACTIVITY_ID);
