@@ -46,7 +46,7 @@ class ActivityStartedControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ActivityStartedController(activityStartService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         activityCompletedResponse = buildInProgressResponse(ACTIVITY_ID, REMAINING_ATTEMPTS);

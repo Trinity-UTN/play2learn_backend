@@ -65,7 +65,7 @@ class TeacherReadControllersTest {
                 new TeacherListController(teacherListService),
                 new TeacherListPaginatedController(teacherListPaginatedService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         teacherResponse = toDto(TeacherTestMother.teacher(TEACHER_ID, "12345678"));
