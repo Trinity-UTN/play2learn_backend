@@ -1,109 +1,214 @@
 {
-  "feature_title": "Registro automático de logs para peticiones HTTP exitosas",
-  "description": "Implementar un sistema que registre automáticamente logs con nivel INFO cuando ocurran peticiones HTTP exitosas (códigos 2xx). El sistema debe interceptar todas las peticiones exitosas, extraer información relevante (URL, método HTTP, status code, tiempo de respuesta, etc.) y registrar el log de forma asíncrona usando el LogsClientService existente.",
+  "feature_title": "Análisis completo del proyecto - Búsqueda de fallas, mejoras y optimizaciones",
+  "description": "Realizar un análisis exhaustivo de todos los módulos funcionales del proyecto buscando posibles fallas, puntos de mejora, mejoras de rendimiento y mejoras de seguridad. Documentar los hallazgos en archivos .md separados por módulo en la carpeta docs/analisis.",
   "tasks": [
     {
       "id": "T01",
-      "title": "Crear interceptor HTTP para registro de logs de peticiones exitosas",
-      "description": "Crear `SuccessfulRequestLoggingInterceptor` que implemente `HandlerInterceptor` para interceptar peticiones HTTP exitosas. El interceptor debe: implementar `afterCompletion` para capturar peticiones exitosas (status 2xx), extraer información relevante de la request (URL, método HTTP, query params si aplica), calcular tiempo de respuesta, extraer información del usuario si está disponible (desde request attributes), y llamar a `LogsClientService.registerLog` con nivel INFO de forma asíncrona. El interceptor debe evitar registrar logs para peticiones que ya generaron errores (verificar que no haya excepciones).",
+      "title": "Crear estructura de carpetas y plantilla de análisis",
+      "description": "Crear la carpeta docs/analisis y generar una plantilla base para los reportes de análisis que incluya secciones estándar: Resumen Ejecutivo, Análisis de Fallas, Puntos de Mejora, Mejoras de Rendimiento, Mejoras de Seguridad, Recomendaciones Prioritarias. Esta plantilla servirá como base para todos los módulos.",
       "command": "/generate",
       "params": {
-        "target_file": "src/main/java/trinity/play2learn/backend/configs/logs/interceptors/SuccessfulRequestLoggingInterceptor.java"
+        "target_file": "docs/analisis/README.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `src/main/java/trinity/play2learn/backend/configs/logs/interceptors/SuccessfulRequestLoggingInterceptor.java` existe e implementa `HandlerInterceptor`.",
-        "El interceptor implementa `afterCompletion` para capturar peticiones exitosas (status 2xx).",
-        "El interceptor extrae información relevante: URL, método HTTP, status code, tiempo de respuesta.",
-        "El interceptor llama a `LogsClientService.registerLog` con nivel INFO de forma asíncrona.",
-        "El interceptor incluye JavaDoc completo explicando su propósito y comportamiento."
+        "La carpeta docs/analisis existe.",
+        "El archivo docs/analisis/README.md existe con estructura de plantilla completa.",
+        "La plantilla incluye todas las secciones estándar mencionadas."
       ]
     },
     {
       "id": "T02",
-      "title": "Configurar interceptor en WebMvcConfigurer",
-      "description": "Crear o actualizar configuración de WebMvc para registrar el `SuccessfulRequestLoggingInterceptor`. Si existe un archivo de configuración de WebMvc, agregar el interceptor allí. Si no existe, crear `LogsInterceptorConfig` que implemente `WebMvcConfigurer` y registre el interceptor. El interceptor debe aplicarse a todas las rutas excepto posiblemente rutas de health checks o rutas estáticas si es necesario. Seguir el patrón existente del proyecto (similar a `ArgumentSolversConfig`).",
-      "command": "/generate",
+      "title": "Análisis del módulo Activity",
+      "description": "Analizar el módulo activity (incluyendo todos sus submódulos: activity, ahorcado, arbolDeDecision, clasificacion, completarOracion, memorama, noLudica, ordenarSecuencia, preguntados) buscando: posibles fallas (manejo de excepciones, validaciones faltantes, errores lógicos), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, operaciones costosas, paginación ineficiente), y mejoras de seguridad (validación de entrada, autorización, exposición de datos sensibles). Documentar hallazgos en docs/analisis/activity.md con ejemplos de código, ubicaciones de archivos, y recomendaciones específicas.",
+      "command": "/analyze",
       "params": {
-        "target_file": "src/main/java/trinity/play2learn/backend/configs/logs/configs/LogsInterceptorConfig.java"
+        "target_directory": "src/main/java/trinity/play2learn/backend/activity",
+        "output_file": "docs/analisis/activity.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo de configuración existe y registra el `SuccessfulRequestLoggingInterceptor`.",
-        "El interceptor está configurado para aplicarse a todas las rutas REST (o rutas específicas según necesidad).",
-        "La configuración sigue el patrón existente del proyecto usando `WebMvcConfigurer`.",
-        "La configuración incluye JavaDoc explicando su propósito."
+        "El archivo docs/analisis/activity.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Cada hallazgo incluye ubicación del código, descripción del problema, y recomendación.",
+        "Se identifican al menos 5 problemas potenciales por categoría."
       ]
     },
     {
       "id": "T03",
-      "title": "Refinar interceptor y configuración",
-      "description": "Mejorar el código del interceptor y la configuración agregando: mejor manejo de edge cases (request null, response null, etc.), filtrado opcional de rutas específicas si es necesario (por ejemplo, health checks), mejor extracción de información del usuario si está disponible, optimización del cálculo de tiempo de respuesta, y mejor documentación JavaDoc. Asegurar que el código cumple con estándares de estilo del proyecto.",
-      "command": "/refine",
+      "title": "Análisis del módulo Admin",
+      "description": "Analizar el módulo admin (incluyendo todos sus submódulos: course, student, subject, teacher, year) buscando: posibles fallas (manejo de excepciones, validaciones faltantes, errores lógicos en operaciones CRUD), puntos de mejora (código duplicado, diseño, arquitectura, especificaciones de búsqueda), mejoras de rendimiento (consultas N+1, falta de índices, paginación ineficiente, eager loading innecesario), y mejoras de seguridad (validación de entrada, autorización por roles, exposición de datos sensibles, validación de permisos). Documentar hallazgos en docs/analisis/admin.md.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/main/java/trinity/play2learn/backend/configs/logs/interceptors/SuccessfulRequestLoggingInterceptor.java",
-          "src/main/java/trinity/play2learn/backend/configs/logs/configs/LogsInterceptorConfig.java"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/admin",
+        "output_file": "docs/analisis/admin.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El código maneja edge cases apropiadamente (null checks, validaciones).",
-        "El código incluye JavaDoc completo y detallado.",
-        "El código cumple con estándares de estilo y mejores prácticas de Spring.",
-        "El interceptor es eficiente y no afecta el rendimiento de las peticiones."
+        "El archivo docs/analisis/admin.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Cada hallazgo incluye ubicación del código, descripción del problema, y recomendación.",
+        "Se identifican problemas específicos de operaciones administrativas (CRUD, búsquedas, permisos)."
       ]
     },
     {
       "id": "T04",
-      "title": "Escribir pruebas unitarias para SuccessfulRequestLoggingInterceptor",
-      "description": "Crear suite de pruebas `SuccessfulRequestLoggingInterceptorTest` cubriendo: interceptación de peticiones exitosas (2xx) con verificación de llamada a LogsClientService, verificación de metadata enviada (URL, método HTTP, status code, tiempo de respuesta), verificación de nivel INFO en el log, no registro de logs para peticiones con errores (4xx, 5xx), no registro de logs cuando hay excepciones, manejo de edge cases (request null, response null), verificación de que el registro es asíncrono (no bloquea), y diferentes métodos HTTP (GET, POST, PUT, DELETE). Los tests deben usar `@ExtendWith(MockitoExtension.class)`, mocks apropiados, y seguir patrón Given-When-Then con `@Nested` y `@DisplayName`.",
-      "command": "/generate",
+      "title": "Análisis del módulo Benefits",
+      "description": "Analizar el módulo benefits buscando: posibles fallas (validaciones de estado, transacciones concurrentes, condiciones de carrera), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, paginación ineficiente, cálculos costosos), y mejoras de seguridad (validación de entrada, autorización, validación de propiedad de beneficios, prevención de uso duplicado). Documentar hallazgos en docs/analisis/benefits.md.",
+      "command": "/analyze",
       "params": {
-        "target_file": "src/test/java/trinity/play2learn/backend/configs/logs/interceptors/SuccessfulRequestLoggingInterceptorTest.java"
+        "target_directory": "src/main/java/trinity/play2learn/backend/benefits",
+        "output_file": "docs/analisis/benefits.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "La suite `SuccessfulRequestLoggingInterceptorTest` existe y cubre todos los escenarios críticos mencionados.",
-        "Los tests usan `@Nested`, `@DisplayName` con patrón Given-When-Then y mocks apropiados.",
-        "Los tests verifican comportamiento asíncrono y no bloqueante del interceptor.",
-        "Los tests cubren edge cases y diferentes métodos HTTP.",
-        "Todos los tests pasan exitosamente con cobertura ≥ 85%."
+        "El archivo docs/analisis/benefits.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican problemas específicos de gestión de beneficios (estados, compras, uso).",
+        "Se analizan posibles condiciones de carrera en operaciones concurrentes."
       ]
     },
     {
       "id": "T05",
-      "title": "Refinar pruebas unitarias",
-      "description": "Revisar y mejorar suite de pruebas agregando helpers reutilizables si es necesario, mejorando legibilidad, asegurando cobertura completa sin duplicar código, y mejorando documentación de tests con comentarios Given-When-Then más detallados.",
-      "command": "/refine",
+      "title": "Análisis del módulo Configs",
+      "description": "Analizar el módulo configs (incluyendo async, logs, security, exceptions, interceptors, messages, response, etc.) buscando: posibles fallas (configuración incorrecta, manejo de excepciones, validaciones faltantes), puntos de mejora (código duplicado, diseño, arquitectura, centralización), mejoras de rendimiento (configuración de pools, timeouts, caché), y mejoras de seguridad (configuración de CORS, JWT, validación de tokens, manejo de sesiones, exposición de información sensible en logs). Documentar hallazgos en docs/analisis/configs.md.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/configs/logs/interceptors"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/configs",
+        "output_file": "docs/analisis/configs.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Los tests usan fixtures compartidos y helpers reutilizables donde corresponde.",
-        "Cada escenario documenta explícitamente el motivo de la validación esperada.",
-        "La cobertura incluye casos límite sin duplicar código.",
-        "Todos los tests mantienen patrón Given-When-Then con documentación clara."
+        "El archivo docs/analisis/configs.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se analiza específicamente SecurityConfig (CORS, CSRF, autorización).",
+        "Se analiza la configuración asíncrona y de logs.",
+        "Se identifican problemas de seguridad críticos en configuración."
       ]
     },
     {
       "id": "T06",
-      "title": "Ejecutar pruebas y verificar cobertura",
-      "description": "Ejecutar todas las suites de pruebas del módulo de logs (incluyendo el nuevo interceptor) con JaCoCo para verificar que todos los tests pasan y la cobertura cumple con los criterios establecidos.",
-      "command": "/test",
+      "title": "Análisis del módulo Economy",
+      "description": "Analizar el módulo economy (reserve, transaction, wallet) buscando: posibles fallas (validaciones de balance, transacciones concurrentes, condiciones de carrera, integridad de datos), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, transacciones costosas, bloqueos innecesarios), y mejoras de seguridad (validación de entrada, autorización, prevención de manipulación de balances, validación de montos, auditoría). Documentar hallazgos en docs/analisis/economy.md.",
+      "command": "/analyze",
       "params": {
-        "command": "./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -Dtest=trinity.play2learn.backend.configs.logs.**"
+        "target_directory": "src/main/java/trinity/play2learn/backend/economy",
+        "output_file": "docs/analisis/economy.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El comando finaliza sin errores y produce `target/site/jacoco/index.html` actualizado.",
-        "Cobertura de interceptores/servicios alcanza ≥ 85% en líneas y ≥ 75% en ramas.",
-        "Todas las suites de pruebas pasan exitosamente (0 fallos, 0 errores)."
+        "El archivo docs/analisis/economy.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican problemas críticos de integridad de datos financieros.",
+        "Se analizan posibles condiciones de carrera en operaciones concurrentes.",
+        "Se identifican problemas de seguridad relacionados con manipulación de balances."
+      ]
+    },
+    {
+      "id": "T07",
+      "title": "Análisis del módulo Investment",
+      "description": "Analizar el módulo investment (fixedTermDeposit, investment, savingAccount, stock) buscando: posibles fallas (validaciones de inversión, cálculos financieros incorrectos, condiciones de carrera, ejecución de órdenes), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, cálculos costosos, actualizaciones masivas, schedulers ineficientes), y mejoras de seguridad (validación de entrada, autorización, validación de propiedad, prevención de manipulación de precios, validación de límites). Documentar hallazgos en docs/analisis/investment.md.",
+      "command": "/analyze",
+      "params": {
+        "target_directory": "src/main/java/trinity/play2learn/backend/investment",
+        "output_file": "docs/analisis/investment.md"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo docs/analisis/investment.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican problemas críticos en cálculos financieros.",
+        "Se analizan posibles condiciones de carrera en operaciones de compra/venta.",
+        "Se identifican problemas de rendimiento en schedulers y actualizaciones automáticas."
+      ]
+    },
+    {
+      "id": "T08",
+      "title": "Análisis del módulo Security",
+      "description": "Analizar específicamente el módulo de seguridad (SecurityConfig, JwtSessionAspect, SessionUserArgumentResolver, JwtService) buscando: posibles fallas (validación de tokens, manejo de excepciones, expiración, firma), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (validación de tokens, caché de usuarios), y mejoras de seguridad críticas (configuración de CORS permisiva, CSRF deshabilitado, validación de tokens, manejo de sesiones, exposición de información en excepciones, rate limiting, validación de roles). Documentar hallazgos en docs/analisis/security.md con énfasis en vulnerabilidades críticas.",
+      "command": "/analyze",
+      "params": {
+        "target_directory": "src/main/java/trinity/play2learn/backend/configs/security",
+        "additional_files": [
+          "src/main/java/trinity/play2learn/backend/configs/interceptors/JwtSessionAspect.java",
+          "src/main/java/trinity/play2learn/backend/configs/interceptors/SessionUserArgumentResolver.java",
+          "src/main/java/trinity/play2learn/backend/user/services/jwt/JwtService.java"
+        ],
+        "output_file": "docs/analisis/security.md"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo docs/analisis/security.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican vulnerabilidades críticas de seguridad.",
+        "Se analiza específicamente SecurityConfig (CORS, CSRF, autorización).",
+        "Se analiza la implementación de JWT y validación de tokens.",
+        "Se proporcionan recomendaciones prioritarias de seguridad."
+      ]
+    },
+    {
+      "id": "T09",
+      "title": "Análisis transversal de rendimiento",
+      "description": "Realizar un análisis transversal de rendimiento en todo el proyecto buscando: consultas N+1 en repositorios, falta de índices en entidades, operaciones costosas sin caché, paginación ineficiente, transacciones largas, operaciones síncronas que deberían ser asíncronas, falta de lazy loading, eager loading innecesario, y problemas de concurrencia. Documentar hallazgos en docs/analisis/rendimiento-transversal.md con métricas y recomendaciones específicas.",
+      "command": "/analyze",
+      "params": {
+        "target_directory": "src/main/java/trinity/play2learn/backend",
+        "output_file": "docs/analisis/rendimiento-transversal.md",
+        "focus": "performance"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo docs/analisis/rendimiento-transversal.md existe con análisis completo.",
+        "Se identifican consultas N+1 en al menos 3 módulos.",
+        "Se identifican índices faltantes en al menos 5 entidades.",
+        "Se proporcionan recomendaciones específicas con ejemplos de código."
+      ]
+    },
+    {
+      "id": "T10",
+      "title": "Análisis transversal de seguridad",
+      "description": "Realizar un análisis transversal de seguridad en todo el proyecto buscando: validación de entrada insuficiente, exposición de datos sensibles, falta de autorización, inyección SQL (aunque se use JPA), problemas de CORS/CSRF, manejo inseguro de tokens, logging de información sensible, falta de rate limiting, y problemas de autenticación/autorización. Documentar hallazgos en docs/analisis/seguridad-transversal.md con clasificación de severidad (Crítica, Alta, Media, Baja).",
+      "command": "/analyze",
+      "params": {
+        "target_directory": "src/main/java/trinity/play2learn/backend",
+        "output_file": "docs/analisis/seguridad-transversal.md",
+        "focus": "security"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo docs/analisis/seguridad-transversal.md existe con análisis completo.",
+        "Se identifican vulnerabilidades críticas y altas.",
+        "Cada vulnerabilidad incluye clasificación de severidad.",
+        "Se proporcionan recomendaciones prioritarias con ejemplos de código."
+      ]
+    },
+    {
+      "id": "T11",
+      "title": "Consolidar análisis y generar reporte ejecutivo",
+      "description": "Consolidar todos los análisis individuales en un reporte ejecutivo (docs/analisis/reporte-ejecutivo.md) que incluya: resumen de hallazgos por módulo, top 10 problemas críticos de seguridad, top 10 problemas críticos de rendimiento, top 10 mejoras prioritarias, y roadmap de implementación recomendado. El reporte debe ser conciso y accionable.",
+      "command": "/generate",
+      "params": {
+        "target_file": "docs/analisis/reporte-ejecutivo.md",
+        "source_files": [
+          "docs/analisis/activity.md",
+          "docs/analisis/admin.md",
+          "docs/analisis/benefits.md",
+          "docs/analisis/configs.md",
+          "docs/analisis/economy.md",
+          "docs/analisis/investment.md",
+          "docs/analisis/security.md",
+          "docs/analisis/rendimiento-transversal.md",
+          "docs/analisis/seguridad-transversal.md"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo docs/analisis/reporte-ejecutivo.md existe.",
+        "El reporte incluye resumen ejecutivo de todos los módulos.",
+        "Se identifican top 10 problemas críticos de seguridad.",
+        "Se identifican top 10 problemas críticos de rendimiento.",
+        "Se proporciona roadmap de implementación recomendado."
       ]
     }
   ]
 }
-
