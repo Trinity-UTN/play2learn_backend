@@ -25,7 +25,7 @@ public class UserChangePasswordService implements IUserChangePasswordService {
 
     @Override
     @Transactional
-    public void changePassword(User user, String oldPassword, String newPassword) {
+    public void cu113ChangePassword(User user, String oldPassword, String newPassword) {
 
         if (!validateEqualsPasswordService.validate(oldPassword, user.getPassword())) { //Valida que la contraseña actual sea correcta
             throw new UnauthorizedException(UnauthorizedExceptionMessages.PASSWORD_INVALID_FORMAT);

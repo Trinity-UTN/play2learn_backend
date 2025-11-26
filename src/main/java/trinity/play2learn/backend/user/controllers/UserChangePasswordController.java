@@ -31,7 +31,7 @@ public class UserChangePasswordController {
         @SessionUser User user, 
         @Valid @RequestBody ChangePasswordRequestDto requestDto
     ) {
-        userChangePasswordService.changePassword(user, requestDto.getOldPassword(), requestDto.getNewPassword());
+        userChangePasswordService.cu113ChangePassword(user, requestDto.getOldPassword(), requestDto.getNewPassword());
         return ResponseFactory.ok(null, SuccessfulMessages.updatedSuccessfully("Contraseña"));
     }
 }
