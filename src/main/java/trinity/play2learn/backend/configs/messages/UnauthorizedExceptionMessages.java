@@ -7,6 +7,7 @@ import trinity.play2learn.backend.user.models.Role;
 public class UnauthorizedExceptionMessages {
     
     public static final String UNAUTHORIZED = "Credenciales invalidas o acceso denegado.";
+    public static final String PASSWORD_INVALID_FORMAT = "La contraseña no es valida.";
     public static final String TOKEN_EXPIRED = "El token ha expirado.";
     public static final String INVALID_REFRESH_TOKEN = "El refresh token es invalido.";
     public static final String INVALID_ACCESS_TOKEN = "El access token es invalido.";
