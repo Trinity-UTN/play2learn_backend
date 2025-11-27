@@ -47,7 +47,7 @@ class ActivityListByTeacherPaginatedControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ActivityListByTeacherPaginatedController(activityListByTeacherPaginatedService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         paginatedResponse = buildPaginatedResponse();

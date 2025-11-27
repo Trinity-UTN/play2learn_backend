@@ -51,7 +51,7 @@ class OrdenarSecuenciaGenerateControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new OrdenarSecuenciaGenerateController(ordenarSecuenciaGenerateService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         objectMapper = new ObjectMapper();

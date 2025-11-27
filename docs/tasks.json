@@ -1,262 +1,213 @@
 {
-  "feature_title": "Plan de pruebas unitarias para módulo Investment (fixedTermDeposit, investment, stock, savingAccount)",
+  "feature_title": "Análisis completo del proyecto - Búsqueda de fallas, mejoras y optimizaciones",
+  "description": "Realizar un análisis exhaustivo de todos los módulos funcionales del proyecto buscando posibles fallas, puntos de mejora, mejoras de rendimiento y mejoras de seguridad. Documentar los hallazgos en archivos .md separados por módulo en la carpeta docs/analisis.",
   "tasks": [
     {
       "id": "T01",
-      "title": "Auditar servicios, controladores y DTOs del módulo Investment",
-      "description": "Inventariar clases, responsabilidades, validaciones y dependencias de services, controllers y DTOs del módulo `investment` (incluyendo submódulos `fixedTermDeposit`, `investment`, `stock` y `savingAccount`), excluyendo models, repositories, mappers y specs.",
-      "command": "/analyze",
+      "title": "Crear estructura de carpetas y plantilla de análisis",
+      "description": "Crear la carpeta docs/analisis y generar una plantilla base para los reportes de análisis que incluya secciones estándar: Resumen Ejecutivo, Análisis de Fallas, Puntos de Mejora, Mejoras de Rendimiento, Mejoras de Seguridad, Recomendaciones Prioritarias. Esta plantilla servirá como base para todos los módulos.",
+      "command": "/generate",
       "params": {
-        "targets": [
-          "src/main/java/trinity/play2learn/backend/investment"
-        ]
+        "target_file": "docs/analisis/README.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se documenta en `docs/testing/investment-unit-tests-audit.md` el inventario completo de artefactos relevantes.",
-        "Quedan registradas validaciones clave, excepciones y dependencias externas por cada componente.",
-        "Se listan riesgos de negocio sin cobertura de pruebas actual para cada submódulo (fixedTermDeposit, investment, stock, savingAccount)."
+        "La carpeta docs/analisis existe.",
+        "El archivo docs/analisis/README.md existe con estructura de plantilla completa.",
+        "La plantilla incluye todas las secciones estándar mencionadas."
       ]
     },
     {
       "id": "T02",
-      "title": "Diseñar estrategia de pruebas unitarias para Investment",
-      "description": "Definir alcance, métricas de cobertura, dobles de prueba y fixtures compartidos para services, controllers y DTOs del módulo `investment` (fixedTermDeposit, investment, stock, savingAccount) siguiendo restricciones del contexto.",
-      "command": "/design",
+      "title": "Análisis del módulo Activity",
+      "description": "Analizar el módulo activity (incluyendo todos sus submódulos: activity, ahorcado, arbolDeDecision, clasificacion, completarOracion, memorama, noLudica, ordenarSecuencia, preguntados) buscando: posibles fallas (manejo de excepciones, validaciones faltantes, errores lógicos), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, operaciones costosas, paginación ineficiente), y mejoras de seguridad (validación de entrada, autorización, exposición de datos sensibles). Documentar hallazgos en docs/analisis/activity.md con ejemplos de código, ubicaciones de archivos, y recomendaciones específicas.",
+      "command": "/analyze",
       "params": {
-        "artifact": "docs/testing/investment-unit-test-strategy.md"
+        "target_directory": "src/main/java/trinity/play2learn/backend/activity",
+        "output_file": "docs/analisis/activity.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El documento establece objetivos de cobertura y criterios de salida por tipo de componente.",
-        "Incluye matriz de escenarios priorizados por riesgo y dependencias simuladas para cada submódulo.",
-        "Detalla datos de prueba reutilizables y lineamientos para fixtures comunes (InvestmentTestMother)."
+        "El archivo docs/analisis/activity.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Cada hallazgo incluye ubicación del código, descripción del problema, y recomendación.",
+        "Se identifican al menos 5 problemas potenciales por categoría."
       ]
     },
     {
       "id": "T03",
-      "title": "Generar pruebas para services principales de Investment",
-      "description": "Crear suites unitarias para services principales: `FixedTermDepositRegisterService`, `FixedTermDepositListPaginatedService`, `FixedTermDepositAutomaticEndsService`, `SavingAccountRegisterService`, `SavingAccountDepositService`, `SavingAccountWithdrawalService`, `SavingAccountDeleteService`, `SavingAccountListPaginatedService`, `SavingAccountUpdateService`, `StockRegisterService`, `StockBuyService`, `StockSellService`, `StockGetService`, `StockListService`, `StockListPaginatedService`, `StockListHistoryService`, `StockRegisterStopService`, `StockUpdateService`, `CandleStickGetValuesService`, `InvestemtCalculateTotalInvestedService`.",
-      "command": "/generate",
+      "title": "Análisis del módulo Admin",
+      "description": "Analizar el módulo admin (incluyendo todos sus submódulos: course, student, subject, teacher, year) buscando: posibles fallas (manejo de excepciones, validaciones faltantes, errores lógicos en operaciones CRUD), puntos de mejora (código duplicado, diseño, arquitectura, especificaciones de búsqueda), mejoras de rendimiento (consultas N+1, falta de índices, paginación ineficiente, eager loading innecesario), y mejoras de seguridad (validación de entrada, autorización por roles, exposición de datos sensibles, validación de permisos). Documentar hallazgos en docs/analisis/admin.md.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositListPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositAutomaticEndsServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountDepositServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountWithdrawalServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountDeleteServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountListPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountUpdateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockBuyServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockSellServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockGetServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListHistoryServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockRegisterStopServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockUpdateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/CandleStickGetValuesServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/investment/services/InvestemtCalculateTotalInvestedServiceTest.java"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/admin",
+        "output_file": "docs/analisis/admin.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren escenarios de éxito y excepciones relevantes (`NotFoundException`, `ConflictException`, `BadRequestException`, `UnsupportedOperationException`) para cada servicio.",
-        "Mocks verifican interacciones con servicios commons, repositorios y servicios externos simulados.",
-        "Asserts validan DTOs resultantes y mensajes de excepción esperados con AssertJ.",
-        "Services con paginación validan construcción correcta de especificaciones y `PaginatedData`."
+        "El archivo docs/analisis/admin.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Cada hallazgo incluye ubicación del código, descripción del problema, y recomendación.",
+        "Se identifican problemas específicos de operaciones administrativas (CRUD, búsquedas, permisos)."
       ]
     },
     {
       "id": "T04",
-      "title": "Refinar pruebas de services principales de Investment",
-      "description": "Optimizar suites de services principales eliminando duplicidades, mejorando legibilidad y reutilización de datos mediante fixtures compartidos en `InvestmentTestMother`.",
-      "command": "/refine",
+      "title": "Análisis del módulo Benefits",
+      "description": "Analizar el módulo benefits buscando: posibles fallas (validaciones de estado, transacciones concurrentes, condiciones de carrera), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, paginación ineficiente, cálculos costosos), y mejoras de seguridad (validación de entrada, autorización, validación de propiedad de beneficios, prevención de uso duplicado). Documentar hallazgos en docs/analisis/benefits.md.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/benefits",
+        "output_file": "docs/analisis/benefits.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Helpers/builder centralizados en `InvestmentTestMother` generan FixedTermDeposit, SavingAccount, Stock, Order, StockHistory y DTOs simulados consistentes.",
-        "Cada caso usa `@DisplayName` y asserts AssertJ descriptivos con patrón Given-When-Then.",
-        "Se mantiene cobertura de ramas sin warnings de Mockito ni code smells."
+        "El archivo docs/analisis/benefits.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican problemas específicos de gestión de beneficios (estados, compras, uso).",
+        "Se analizan posibles condiciones de carrera en operaciones concurrentes."
       ]
     },
     {
       "id": "T05",
-      "title": "Generar pruebas para services commons de Investment",
-      "description": "Crear suites unitarias para services commons: `FixedTermDepositCalculateAmountInvestedService`, `FixedTermDepositCalculateRewardAmountService`, `FixedTermDepositFindAllByStateAndWalletService`, `FixedTermDepositFindAllByStateService`, `SavingAccountCalculateAmountInvestedService`, `SavingAccountExistsByNameAndWalletService`, `SavingAccountFindByIdService`, `OrderFindPendingService`, `OrderStopExecuteService`, `StockCalculateAmountInvestedService`, `StockCalculateByWalletService`, `StockCalculateVariationService`, `StockFindAllService`, `StockFindByIdService`, `StockHistoryCalculateTrendService`, `StockHistoryFindByStockAndRangeService`, `StockHistoryFindByStockService`, `StockHistoryFindLastService`, `StockMoveService`, `StockUpdateSpecificService`.",
-      "command": "/generate",
+      "title": "Análisis del módulo Configs",
+      "description": "Analizar el módulo configs (incluyendo async, logs, security, exceptions, interceptors, messages, response, etc.) buscando: posibles fallas (configuración incorrecta, manejo de excepciones, validaciones faltantes), puntos de mejora (código duplicado, diseño, arquitectura, centralización), mejoras de rendimiento (configuración de pools, timeouts, caché), y mejoras de seguridad (configuración de CORS, JWT, validación de tokens, manejo de sesiones, exposición de información sensible en logs). Documentar hallazgos en docs/analisis/configs.md.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositCalculateAmountInvestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositCalculateRewardAmountServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositFindAllByStateAndWalletServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositFindAllByStateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountCalculateAmountInvestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountExistsByNameAndWalletServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountFindByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/OrderFindPendingServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/OrderStopExecuteServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateAmountInvestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateByWalletServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateVariationServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockFindAllServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockFindByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryCalculateTrendServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindByStockAndRangeServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindByStockServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindLastServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockMoveServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockUpdateSpecificServiceTest.java"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/configs",
+        "output_file": "docs/analisis/configs.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren escenarios de éxito y excepciones (`NotFoundException`, `BadRequestException`) con validaciones de listas y objetos resultantes usando AssertJ.",
-        "Todos los tests usan `@Nested`, `@DisplayName` con patrón Given-When-Then y verifican interacciones con repositorios simulados."
+        "El archivo docs/analisis/configs.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se analiza específicamente SecurityConfig (CORS, CSRF, autorización).",
+        "Se analiza la configuración asíncrona y de logs.",
+        "Se identifican problemas de seguridad críticos en configuración."
       ]
     },
     {
       "id": "T06",
-      "title": "Refinar pruebas de services commons de Investment",
-      "description": "Revisar suites de services commons para mejorar reutilización de fixtures y cobertura de casos límite sin duplicar código.",
-      "command": "/refine",
+      "title": "Análisis del módulo Economy",
+      "description": "Analizar el módulo economy (reserve, transaction, wallet) buscando: posibles fallas (validaciones de balance, transacciones concurrentes, condiciones de carrera, integridad de datos), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, transacciones costosas, bloqueos innecesarios), y mejoras de seguridad (validación de entrada, autorización, prevención de manipulación de balances, validación de montos, auditoría). Documentar hallazgos en docs/analisis/economy.md.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/economy",
+        "output_file": "docs/analisis/economy.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Builders/helpers generan entidades válidas e inválidas reutilizables en todos los casos.",
-        "Cada escenario documenta explícitamente el motivo de la validación esperada.",
-        "Cobertura incluye casos límite sin duplicar código."
+        "El archivo docs/analisis/economy.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican problemas críticos de integridad de datos financieros.",
+        "Se analizan posibles condiciones de carrera en operaciones concurrentes.",
+        "Se identifican problemas de seguridad relacionados con manipulación de balances."
       ]
     },
     {
       "id": "T07",
-      "title": "Generar pruebas para controllers de Investment",
-      "description": "Crear suites unitarias para controllers: `FixedTermDepositRegisterController`, `FixedTermDepositListPaginatedController`, `SavingAccountRegisterController`, `SavingAccountDepositController`, `SavingAccountWithdrawalController`, `SavingAccountDeleteController`, `SavingAccountListPaginatedController`, `StockRegisterController`, `StockBuyController`, `StockSellController`, `StockGetController`, `StockListController`, `StockListPaginatedController`, `StockHistoryListByStockController`, `StockCandleStickGetController`, `StockRegisterStopController`.",
-      "command": "/generate",
+      "title": "Análisis del módulo Investment",
+      "description": "Analizar el módulo investment (fixedTermDeposit, investment, savingAccount, stock) buscando: posibles fallas (validaciones de inversión, cálculos financieros incorrectos, condiciones de carrera, ejecución de órdenes), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, cálculos costosos, actualizaciones masivas, schedulers ineficientes), y mejoras de seguridad (validación de entrada, autorización, validación de propiedad, prevención de manipulación de precios, validación de límites). Documentar hallazgos en docs/analisis/investment.md.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/controllers/FixedTermDepositRegisterControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/controllers/FixedTermDepositListPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountRegisterControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountDepositControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountWithdrawalControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountDeleteControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountListPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockRegisterControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockBuyControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockSellControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockGetControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockListControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockListPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockHistoryListByStockControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockCandleStickGetControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockRegisterStopControllerTest.java"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/investment",
+        "output_file": "docs/analisis/investment.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Tests usan `@WebMvcTest`, `@AutoConfigureMockMvc(addFilters = false)`, `MockMvc` para realizar requests HTTP.",
-        "Se cubren respuestas exitosas (200/201) y errores relevantes (400/404/409) validando payloads JSON mediante `jsonPath`.",
-        "Se verifica delegación a servicios correspondientes y manejo de `@SessionUser` mediante `SessionUserArgumentResolver`."
+        "El archivo docs/analisis/investment.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican problemas críticos en cálculos financieros.",
+        "Se analizan posibles condiciones de carrera en operaciones de compra/venta.",
+        "Se identifican problemas de rendimiento en schedulers y actualizaciones automáticas."
       ]
     },
     {
       "id": "T08",
-      "title": "Refinar pruebas de controllers de Investment",
-      "description": "Revisar suites de controllers para mejorar estructura, legibilidad y cobertura de validaciones de payloads sin duplicar código.",
-      "command": "/refine",
+      "title": "Análisis del módulo Security",
+      "description": "Analizar específicamente el módulo de seguridad (SecurityConfig, JwtSessionAspect, SessionUserArgumentResolver, JwtService) buscando: posibles fallas (validación de tokens, manejo de excepciones, expiración, firma), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (validación de tokens, caché de usuarios), y mejoras de seguridad críticas (configuración de CORS permisiva, CSRF deshabilitado, validación de tokens, manejo de sesiones, exposición de información en excepciones, rate limiting, validación de roles). Documentar hallazgos en docs/analisis/security.md con énfasis en vulnerabilidades críticas.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend/configs/security",
+        "additional_files": [
+          "src/main/java/trinity/play2learn/backend/configs/interceptors/JwtSessionAspect.java",
+          "src/main/java/trinity/play2learn/backend/configs/interceptors/SessionUserArgumentResolver.java",
+          "src/main/java/trinity/play2learn/backend/user/services/jwt/JwtService.java"
+        ],
+        "output_file": "docs/analisis/security.md"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Tests ya están bien estructurados con `@WebMvcTest`, `@AutoConfigureMockMvc(addFilters = false)`, `MockMvc` centralizado mediante `@Autowired`, casos documentados con `@DisplayName` y comentarios breves del flujo.",
-        "No se requieren cambios adicionales o solo mejoras menores de legibilidad."
+        "El archivo docs/analisis/security.md existe con análisis completo.",
+        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
+        "Se identifican vulnerabilidades críticas de seguridad.",
+        "Se analiza específicamente SecurityConfig (CORS, CSRF, autorización).",
+        "Se analiza la implementación de JWT y validación de tokens.",
+        "Se proporcionan recomendaciones prioritarias de seguridad."
       ]
     },
     {
       "id": "T09",
-      "title": "Generar pruebas de validación para DTOs de Investment",
-      "description": "Agregar pruebas de Bean Validation para DTOs de respuesta: `FixedTermDepositResponseDto`, `SavingAccountResponseDto`, `StockResponseDto`, `StockBuyResponseDto`, `StockSellResponseDto`, `StockHistoryResponseDto`, `CandleStickChartValueResponseDto`, cubriendo construcción y serialización correcta.",
-      "command": "/generate",
+      "title": "Análisis transversal de rendimiento",
+      "description": "Realizar un análisis transversal de rendimiento en todo el proyecto buscando: consultas N+1 en repositorios, falta de índices en entidades, operaciones costosas sin caché, paginación ineficiente, transacciones largas, operaciones síncronas que deberían ser asíncronas, falta de lazy loading, eager loading innecesario, y problemas de concurrencia. Documentar hallazgos en docs/analisis/rendimiento-transversal.md con métricas y recomendaciones específicas.",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/dtos/FixedTermDepositResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/dtos/SavingAccountResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockBuyResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockSellResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockHistoryResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/CandleStickChartValueResponseDtoTest.java"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend",
+        "output_file": "docs/analisis/rendimiento-transversal.md",
+        "focus": "performance"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se verifican construcción correcta de DTOs con valores válidos e inválidos según corresponda.",
-        "Escenarios válidos generan DTOs correctamente serializables a JSON.",
-        "DTOs con listas anidadas validan estructura y contenido esperado."
+        "El archivo docs/analisis/rendimiento-transversal.md existe con análisis completo.",
+        "Se identifican consultas N+1 en al menos 3 módulos.",
+        "Se identifican índices faltantes en al menos 5 entidades.",
+        "Se proporcionan recomendaciones específicas con ejemplos de código."
       ]
     },
     {
       "id": "T10",
-      "title": "Refinar pruebas de DTOs de Investment",
-      "description": "Revisar la suite de validación para mejorar reutilización de fixtures y cobertura de combinaciones límite.",
-      "command": "/refine",
+      "title": "Análisis transversal de seguridad",
+      "description": "Realizar un análisis transversal de seguridad en todo el proyecto buscando: validación de entrada insuficiente, exposición de datos sensibles, falta de autorización, inyección SQL (aunque se use JPA), problemas de CORS/CSRF, manejo inseguro de tokens, logging de información sensible, falta de rate limiting, y problemas de autenticación/autorización. Documentar hallazgos en docs/analisis/seguridad-transversal.md con clasificación de severidad (Crítica, Alta, Media, Baja).",
+      "command": "/analyze",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/dtos",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/dtos",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos"
-        ]
+        "target_directory": "src/main/java/trinity/play2learn/backend",
+        "output_file": "docs/analisis/seguridad-transversal.md",
+        "focus": "security"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Builders/helpers generan DTOs válidos e inválidos reutilizables en todos los casos.",
-        "Cada escenario documenta explícitamente el motivo de la validación esperada.",
-        "Cobertura incluye campos opcionales/nulos sin duplicar código."
+        "El archivo docs/analisis/seguridad-transversal.md existe con análisis completo.",
+        "Se identifican vulnerabilidades críticas y altas.",
+        "Cada vulnerabilidad incluye clasificación de severidad.",
+        "Se proporcionan recomendaciones prioritarias con ejemplos de código."
       ]
     },
     {
       "id": "T11",
-      "title": "Preparar suites del módulo Investment para ejecución con JaCoCo",
-      "description": "Ejecutar todas las suites unitarias del módulo `investment` preparando el agente JaCoCo y generando reporte de cobertura.",
-      "command": "/test",
+      "title": "Consolidar análisis y generar reporte ejecutivo",
+      "description": "Consolidar todos los análisis individuales en un reporte ejecutivo (docs/analisis/reporte-ejecutivo.md) que incluya: resumen de hallazgos por módulo, top 10 problemas críticos de seguridad, top 10 problemas críticos de rendimiento, top 10 mejoras prioritarias, y roadmap de implementación recomendado. El reporte debe ser conciso y accionable.",
+      "command": "/generate",
       "params": {
-        "command": "./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -Dtest=trinity.play2learn.backend.investment.**"
+        "target_file": "docs/analisis/reporte-ejecutivo.md",
+        "source_files": [
+          "docs/analisis/activity.md",
+          "docs/analisis/admin.md",
+          "docs/analisis/benefits.md",
+          "docs/analisis/configs.md",
+          "docs/analisis/economy.md",
+          "docs/analisis/investment.md",
+          "docs/analisis/security.md",
+          "docs/analisis/rendimiento-transversal.md",
+          "docs/analisis/seguridad-transversal.md"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El comando finaliza sin errores y produce `target/site/jacoco/index.html` actualizado.",
-        "Cobertura de services/controllers/DTOs alcanza ≥ 85 % en líneas y ≥ 75 % en ramas.",
-        "Incidencias o fallas detectadas quedan registradas para seguimiento inmediato."
-      ]
-    },
-    {
-      "id": "T12",
-      "title": "Consolidar reporte automatizado de pruebas para Investment",
-      "description": "Generar documentación consolidada de las pruebas del módulo ejecutando el script estándar con el módulo `investment`.",
-      "command": "/report",
-      "params": {
-        "command": "python scripts/testing_report.py --module \"investment\" --output \"docs/testing/test_investment.md\""
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo `docs/testing/test_investment.md` resume métricas y hallazgos actualizados.",
-        "El reporte contiene cobertura JaCoCo, suites ejecutadas y riesgos remanentes.",
-        "Se incluyen siguientes pasos o pendientes identificados durante la ejecución."
+        "El archivo docs/analisis/reporte-ejecutivo.md existe.",
+        "El reporte incluye resumen ejecutivo de todos los módulos.",
+        "Se identifican top 10 problemas críticos de seguridad.",
+        "Se identifican top 10 problemas críticos de rendimiento.",
+        "Se proporciona roadmap de implementación recomendado."
       ]
     }
   ]

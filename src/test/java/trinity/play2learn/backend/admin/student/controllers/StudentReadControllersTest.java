@@ -48,7 +48,7 @@ class StudentReadControllersTest {
                 new StudentListController(studentListService),
                 new StudentListPaginatedController(studentListPaginatedService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
     }
 

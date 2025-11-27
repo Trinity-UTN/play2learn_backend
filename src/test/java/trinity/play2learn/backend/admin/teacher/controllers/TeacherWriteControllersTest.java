@@ -72,7 +72,7 @@ class TeacherWriteControllersTest {
                 new TeacherDeleteController(teacherDeleteService),
                 new TeacherRestoreController(teacherRestoreService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         registerRequest = TeacherTestMother.registerRequestBuilder().build();

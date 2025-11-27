@@ -49,7 +49,7 @@ class PreguntadosGenerateControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new PreguntadosGenerateController(preguntadosGenerateService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         objectMapper = new ObjectMapper();

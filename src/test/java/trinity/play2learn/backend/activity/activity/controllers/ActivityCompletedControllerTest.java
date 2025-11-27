@@ -59,7 +59,7 @@ class ActivityCompletedControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ActivityCompletedController(activityCompletedService, activityNoLudicaCompletedService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         requestDto = buildApprovedRequest(ACTIVITY_ID);

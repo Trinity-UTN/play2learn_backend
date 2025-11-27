@@ -69,7 +69,7 @@ class SubjectWriteControllersTest {
             updateController,
             deleteController,
             assignController
-        ).setControllerAdvice(new GlobalExceptionHandler()).build();
+        ).setControllerAdvice(new GlobalExceptionHandler(null)).build();
         objectMapper = new ObjectMapper();
     }
 

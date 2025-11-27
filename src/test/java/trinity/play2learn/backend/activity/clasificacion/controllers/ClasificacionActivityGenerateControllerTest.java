@@ -51,7 +51,7 @@ class ClasificacionActivityGenerateControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ClasificacionActivityGenerateController(generateClasificacionService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         reset(generateClasificacionService);

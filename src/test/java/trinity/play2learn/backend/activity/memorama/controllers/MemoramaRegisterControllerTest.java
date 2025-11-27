@@ -51,7 +51,7 @@ class MemoramaRegisterControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new MemoramaRegisterController(memoramaRegisterService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         reset(memoramaRegisterService);
