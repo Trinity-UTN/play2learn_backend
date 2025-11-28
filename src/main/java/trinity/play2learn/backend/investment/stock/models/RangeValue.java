@@ -3,7 +3,7 @@ package trinity.play2learn.backend.investment.stock.models;
 public enum RangeValue {
     DIARIO (1),
     SEMANAL (7),
-    QUINZENAL (15),
+    QUINCENAL (15),
     MENSUAL (30),
     HISTORICO (0);
     
