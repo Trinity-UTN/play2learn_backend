@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
 import trinity.play2learn.backend.configs.messages.UnauthorizedExceptionMessages;
-import trinity.play2learn.backend.utils.PasswordTemplate;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserChangePasswordService;
 import trinity.play2learn.backend.user.services.user.interfaces.IUserValidateEqualsPasswordService;
@@ -35,10 +34,6 @@ public class UserChangePasswordService implements IUserChangePasswordService {
             throw new UnauthorizedException(UnauthorizedExceptionMessages.PASSWORD_INVALID_FORMAT);
         }
 
-        if (!PasswordTemplate.validate(newPassword)) { //Valida que la nueva contraseña sea valida
-            throw new UnauthorizedException(UnauthorizedExceptionMessages.PASSWORD_INVALID_FORMAT);
-        }
-        
         user.setPassword(passwordEncoder.encode(newPassword));
 
         userRepository.save(user);
