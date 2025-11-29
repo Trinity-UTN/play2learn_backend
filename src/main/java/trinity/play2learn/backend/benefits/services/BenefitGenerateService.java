@@ -18,37 +18,37 @@ import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGenerateS
 import trinity.play2learn.backend.configs.exceptions.UnauthorizedException;
 import trinity.play2learn.backend.configs.messages.UnauthorizedExceptionMessages;
 import trinity.play2learn.backend.notification.models.NotificationType;
-import trinity.play2learn.backend.notification.services.interfaces.ICreateUsersNotifications;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateByUsersService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
 @AllArgsConstructor
-public class BenefitGenerateService implements IBenefitGenerateService{
-    
+public class BenefitGenerateService implements IBenefitGenerateService {
+
     private final IBenefitRepository benefitRepository;
     private final ISubjectGetByIdService subjectGetService;
-    private final ICreateUsersNotifications createUsersNotifications;
-    
+    private final INotificationCreateByUsersService createUsersNotifications;
+
     @Override
     @Transactional
-    public BenefitResponseDto cu51GenerateBenefit(BenefitRequestDto benefitDto , User user) {
-        
-        Subject subject = subjectGetService.findById(benefitDto.getSubjectId()); 
+    public BenefitResponseDto cu51GenerateBenefit(BenefitRequestDto benefitDto, User user) {
 
-        //Valida que el docente este asignado a la materia sobre la cual quiere crear el beneficio
+        Subject subject = subjectGetService.findById(benefitDto.getSubjectId());
+
+        // Valida que el docente este asignado a la materia sobre la cual quiere crear
+        // el beneficio
         if (!subject.hasTeacherByEmail(user.getEmail())) {
             throw new UnauthorizedException(UnauthorizedExceptionMessages.BENEFIT_UNAUTHORIZED_TEACHER);
         }
 
-        Benefit benefit = BenefitMapper.toModel(benefitDto, subject); 
+        Benefit benefit = BenefitMapper.toModel(benefitDto, subject);
 
         List<User> users = benefit.getSubject().getStudents().stream().map(Student::getUser).toList();
 
         createUsersNotifications.createUsersNotifications(users,
                 NotificationType.NEW_BENEFIT);
 
-        return BenefitMapper.toDto(benefitRepository.save(benefit)); 
+        return BenefitMapper.toDto(benefitRepository.save(benefit));
     }
 
-    
 }
