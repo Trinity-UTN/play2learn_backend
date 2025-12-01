@@ -21,7 +21,7 @@ public class NotificationCreateByUsersService implements INotificationCreateByUs
     @Override
     public void createUsersNotifications(List<User> users, NotificationType notificationType) {
         users.forEach(user -> {
-            notificationRepository.save(NotificationMapper.toModel(notificationType, user));
+            notificationRepository.save(NotificationMapper.toModel(notificationType, user, null));
         });
     }
 }

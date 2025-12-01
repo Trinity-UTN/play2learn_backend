@@ -7,9 +7,9 @@ import trinity.play2learn.backend.user.models.User;
 
 public class NotificationMapper {
     
-    public static Notification toModel(NotificationType notificationType, User user){
+    public static Notification toModel(NotificationType notificationType, User user, String title){
         return Notification.builder()
-            .title(notificationType.getTitle())
+            .title(title != null ? title : notificationType.getTitle())
             .type(notificationType)
             .read(false)
             .user(user)

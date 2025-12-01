@@ -14,6 +14,7 @@ import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.notification.models.NotificationType;
 import trinity.play2learn.backend.notification.services.interfaces.INotificationCheckByActivitiesService;
 import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateByUsersService;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -22,7 +23,7 @@ public class NotificationCheckActivityService implements INotificationCheckByAct
 
     private final IActivityRepository activityRepository;
     private final INotificationCreateByUsersService createUsersNotifications;
-
+    private final INotificationCreateSingleWithTitleService createSingleNotificationWithTitleService;
     @Override
     @Scheduled(cron = "0 30 1 * * ?") // Cada dia a las 1:30
     @Transactional
@@ -42,16 +43,33 @@ public class NotificationCheckActivityService implements INotificationCheckByAct
 
                 List<User> users = activity.getSubject().getStudents().stream().map(Student::getUser).toList();
 
-                createUsersNotifications.createUsersNotifications(users,
-                        NotificationType.NEW_ACTIVITY_PUBLISHED);
+                //Notificaciones para estudiantes
+                createUsersNotifications.createUsersNotifications(users,NotificationType.NEW_ACTIVITY_PUBLISHED);
+
+                //Notificacion para docente
+                createSingleNotificationWithTitleService.createSingleNotificationWithTitle(
+                    activity.getSubject().getTeacher().getUser(),
+                    NotificationType.NEW_ACTIVITY_PUBLISHED,
+                    "Tu actividad " + activity.getName() + " ha sido publicada"
+                );
+
             });
         }
 
         if (!activitiesAboutToExpire.isEmpty()) {
             activitiesAboutToExpire.forEach(activity -> {
                 List<User> users = activity.getSubject().getStudents().stream().map(Student::getUser).toList();
-                createUsersNotifications.createUsersNotifications(users,
-                        NotificationType.ACTIVITY_ABOUT_TO_EXPIRE);
+
+                //Notificaciones para estudiantes
+                createUsersNotifications.createUsersNotifications(users,NotificationType.ACTIVITY_ABOUT_TO_EXPIRE);
+
+                //Notificacion para docente
+                createSingleNotificationWithTitleService.createSingleNotificationWithTitle(
+                    activity.getSubject().getTeacher().getUser(),
+                    NotificationType.ACTIVITY_ABOUT_TO_EXPIRE,
+                    "Tu actividad " + activity.getName() + " expira hoy"
+                );
+
             });
         }
     }

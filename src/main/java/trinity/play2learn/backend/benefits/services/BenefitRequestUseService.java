@@ -18,6 +18,8 @@ import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetByIdSe
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetLastPurchaseService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitRequestUseService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.notification.models.NotificationType;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -29,6 +31,7 @@ public class BenefitRequestUseService implements IBenefitRequestUseService {
     private final ISubjectHasStudentService subjectHasStudentService;
     private final IBenefitGetLastPurchaseService benefitGetLastPurchaseService;
     private final IBenefitPurchaseRepository benefitPurchaseRepository;
+    private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
 
     @Override
     @Transactional
@@ -56,6 +59,13 @@ public class BenefitRequestUseService implements IBenefitRequestUseService {
 
         lastBenefitPurchase.setState(BenefitPurchaseState.USE_REQUESTED);
 
+        //Genera la notificacion al docente
+        notificationCreateSingleWithTitleService.createSingleNotificationWithTitle(
+            benefit.getSubject().getTeacher().getUser(),
+            NotificationType.BENEFIT_USE_REQUESTED,
+            student.getCompleteName() + " solicito el uso de tu beneficio: " + benefit.getName()
+        );
+        
         return BenefitPurchaseMapper.toSimpleDto(benefitPurchaseRepository.save(lastBenefitPurchase));
     } 
 }

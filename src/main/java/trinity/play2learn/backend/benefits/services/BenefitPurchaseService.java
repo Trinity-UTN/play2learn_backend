@@ -21,6 +21,8 @@ import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.notification.models.NotificationType;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -35,6 +37,7 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
     private final IBenefitValidateIfPurchasedByStudentService benefitValidateIfPurchasedByStudentService;
     private final ITransactionGenerateService transactionGenerateService;
     private final IBenefitPurchaseRepository benefitPurchaseRepository;
+    private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
 
     @Override
     @Transactional
@@ -87,6 +90,13 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
         //Decrementa el número de compras restantes si el beneficio tiene un límite
         benefit.decrementPurchasesLeft();
 
+        //Genera la notificacion al docente
+        notificationCreateSingleWithTitleService.createSingleNotificationWithTitle(
+            benefit.getSubject().getTeacher().getUser(),
+            NotificationType.BENEFIT_PURCHASED,
+            student.getCompleteName() + " compró tu beneficio: " + benefit.getName()
+        );
+        
         return BenefitPurchaseMapper.toDto(benefitPurchaseRepository.save(BenefitPurchaseMapper.toModel(benefit, student)), purchasesLeftByStudent);
     }
 }
