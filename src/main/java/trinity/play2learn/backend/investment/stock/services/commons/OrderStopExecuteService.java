@@ -19,22 +19,20 @@ import trinity.play2learn.backend.investment.stock.services.interfaces.IOrderSto
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockCalculateByWalletService;
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockHistoryFindLastService;
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockMoveService;
+import trinity.play2learn.backend.notification.models.NotificationType;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 
 @Service
 @AllArgsConstructor
 public class OrderStopExecuteService implements IOrderStopExecuteService {
 
     private final IOrderRepository orderRepository;
-
     private final IStockCalculateByWalletService stockCalculateByWalletService;
-
     private final IStockHistoryFindLastService stockHistoryFindLastService;
-
     private final ITransactionGenerateService transactionGenerateService;
-
     private final IStockMoveService stockMoveService;
-
     private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
+    private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
     
     @Override
     public void execute(Stock stock) {
@@ -103,6 +101,11 @@ public class OrderStopExecuteService implements IOrderStopExecuteService {
 
             walletUpdateInvestedBalanceService.execute(order.getWallet());
 
+            notificationCreateSingleWithTitleService.createSingleNotificationWithTitle(
+                order.getWallet().getStudent().getUser(),
+                NotificationType.STOCK_ORDER_EXECUTED,
+                "Se ejecuto la orden de venta de acciones sobre " + stock.getName()
+            );
         }
 
     }

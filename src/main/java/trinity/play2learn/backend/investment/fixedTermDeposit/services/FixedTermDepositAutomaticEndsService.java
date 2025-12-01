@@ -17,18 +17,18 @@ import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermSt
 import trinity.play2learn.backend.investment.fixedTermDeposit.repositories.IFixedTermDepositRepository;
 import trinity.play2learn.backend.investment.fixedTermDeposit.services.interfaces.IFixedTermDepositAutomaticEndsService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.services.interfaces.IFixedTermDepositFindAllByStateService;
+import trinity.play2learn.backend.notification.models.NotificationType;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 
 @Service
 @AllArgsConstructor
 public class FixedTermDepositAutomaticEndsService implements IFixedTermDepositAutomaticEndsService {
     
     private final IFixedTermDepositFindAllByStateService fixedTermDepositFindAllByStateService;
-
     private final IFixedTermDepositRepository fixedTermDepositRepository;
-
     private final ITransactionGenerateService transactionGenerateService;
-
     private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
+    private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
 
     @Override
     @Scheduled(cron = "0 30 1 * * *")
@@ -64,6 +64,12 @@ public class FixedTermDepositAutomaticEndsService implements IFixedTermDepositAu
 
             walletUpdateInvestedBalanceService.execute(fixedTermDeposit.getWallet());
 
+            //Genera la notificacion al estudiante
+            notificationCreateSingleWithTitleService.createSingleNotificationWithTitle(
+                fixedTermDeposit.getWallet().getStudent().getUser(),
+                NotificationType.FIXED_TERM_DEPOSIT_ENDED,
+                null
+            );
         }
 
     }

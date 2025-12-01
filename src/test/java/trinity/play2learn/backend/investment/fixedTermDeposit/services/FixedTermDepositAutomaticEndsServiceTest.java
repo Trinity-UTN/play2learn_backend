@@ -29,6 +29,7 @@ import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDe
 import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermState;
 import trinity.play2learn.backend.investment.fixedTermDeposit.repositories.IFixedTermDepositRepository;
 import trinity.play2learn.backend.investment.fixedTermDeposit.services.interfaces.IFixedTermDepositFindAllByStateService;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 
 @ExtendWith(MockitoExtension.class)
 class FixedTermDepositAutomaticEndsServiceTest {
@@ -45,6 +46,9 @@ class FixedTermDepositAutomaticEndsServiceTest {
     @Mock
     private IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
 
+    @Mock
+    private INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
+
     private FixedTermDepositAutomaticEndsService fixedTermDepositAutomaticEndsService;
 
     @BeforeEach
@@ -53,7 +57,8 @@ class FixedTermDepositAutomaticEndsServiceTest {
             fixedTermDepositFindAllByStateService,
             fixedTermDepositRepository,
             transactionGenerateService,
-            walletUpdateInvestedBalanceService
+            walletUpdateInvestedBalanceService,
+            notificationCreateSingleWithTitleService
         );
     }
 

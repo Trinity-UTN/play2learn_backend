@@ -10,6 +10,8 @@ public enum NotificationType {
     NEW_ACHIEVEMENT("Nuevo logro disponible"),
     RANKING_TOP_1("Has llegado a la cima del ranking"),
     BENEFIT_USE_ACCEPTED("El docente acepto el uso del beneficio que solicitaste"),
+    STOCK_ORDER_EXECUTED("Se ejecuto la orden de venta de acciones"),
+    FIXED_TERM_DEPOSIT_ENDED("Finalizo tu plazo fijo y las monedas fueron depositadas en tu billetera"),
 
     //Docente
     STUDENT_COMPLETE_ACTIVITY("Un estudiante realizo tu actividad"),
