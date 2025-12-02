@@ -36,6 +36,7 @@ import trinity.play2learn.backend.benefits.services.commons.BenefitGetByIdServic
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetLastPurchaseService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.exceptions.NotFoundException;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -54,6 +55,8 @@ class BenefitRequestUseServiceTest {
     private IBenefitGetLastPurchaseService benefitGetLastPurchaseService;
     @Mock
     private IBenefitPurchaseRepository benefitPurchaseRepository;
+    @Mock
+    private INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
 
     private BenefitRequestUseService benefitRequestUseService;
 
@@ -64,7 +67,8 @@ class BenefitRequestUseServiceTest {
             benefitGetByIdService,
             subjectHasStudentService,
             benefitGetLastPurchaseService,
-            benefitPurchaseRepository
+            benefitPurchaseRepository,
+            notificationCreateSingleWithTitleService
         );
     }
 
