@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.notification.mappers;
 
+import java.util.List;
+
 import trinity.play2learn.backend.notification.dtos.NotificationResponseDto;
 import trinity.play2learn.backend.notification.models.Notification;
 import trinity.play2learn.backend.notification.models.NotificationType;
@@ -24,5 +26,12 @@ public class NotificationMapper {
             .createdAt(notification.getCreatedAt())
             .read(notification.isRead())
             .build();
+    }
+
+    public static List<NotificationResponseDto> toDtoList(List<Notification> notifications){
+        return notifications
+            .stream()
+            .map(NotificationMapper::toDto)
+            .toList();
     }
 }

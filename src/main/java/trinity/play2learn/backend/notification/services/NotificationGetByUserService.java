@@ -25,6 +25,6 @@ public class NotificationGetByUserService implements INotificationGetByUserServi
 
                 List<Notification> notifications = notificationRepository.findAllByUserAndExpiredAtAfterOrderByReadAscCreatedAtDesc(user,LocalDateTime.now());
 
-                return notifications.stream().map(NotificationMapper::toDto).toList();
+                return NotificationMapper.toDtoList(notifications);
         }
 }
