@@ -8,20 +8,20 @@ import trinity.play2learn.backend.notification.models.NotificationType;
 import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateByUsersService;
 import trinity.play2learn.backend.notification.services.interfaces.INotificationDevGenerateByUserService;
 import trinity.play2learn.backend.user.models.User;
-import trinity.play2learn.backend.user.repository.IUserRepository;
+import trinity.play2learn.backend.user.services.user.interfaces.IUserFindByIdService;
 
 @Service
 @AllArgsConstructor
 public class NotificationDevGenerateByUserService implements INotificationDevGenerateByUserService {
 
     private final INotificationCreateByUsersService createUsersNotifications;
-    private final IUserRepository userRepository;
+    private final IUserFindByIdService userFindByIdService;
 
     @Override
     @Transactional
     public void generateUserTestNotifications(Long userId, NotificationType notificationType) {
 
-        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userFindByIdService.findUserById(userId);
         List<User> users = List.of(user);
         createUsersNotifications.createUsersNotifications(users, notificationType);
     }
