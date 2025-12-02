@@ -12,4 +12,6 @@ public interface INotificationRepository extends CrudRepository<Notification, Lo
     List<Notification> findAllByUserAndExpiredAtAfter(User user, LocalDateTime now);
 
     void deleteAllByExpiredAtBefore(LocalDateTime now);
+
+    List<Notification> findAllByUserAndExpiredAtAfterOrderByReadAscCreatedAtDesc(User user, LocalDateTime now);
 }       

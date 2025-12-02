@@ -1,7 +1,6 @@
 package trinity.play2learn.backend.notification.services;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,13 +23,7 @@ public class NotificationGetByUserService implements INotificationGetByUserServi
         @Transactional(readOnly = true)
         public List<NotificationResponseDto> getUserNotifications(User user) {
 
-                List<Notification> notifications = notificationRepository.findAllByUserAndExpiredAtAfter(user,LocalDateTime.now());
-
-                notifications = notifications
-                                .stream()
-                                .sorted(Comparator.comparing(Notification::getCreatedAt).reversed()) // 1. MÁS NUEVAS primero (Descendente)
-                                .sorted(Comparator.comparing(Notification::isRead)) // 2. NO LEÍDAS (false) antes que LEÍDAS (true) (Ascendente natural)
-                                .toList();
+                List<Notification> notifications = notificationRepository.findAllByUserAndExpiredAtAfterOrderByReadAscCreatedAtDesc(user,LocalDateTime.now());
 
                 return notifications.stream().map(NotificationMapper::toDto).toList();
         }
