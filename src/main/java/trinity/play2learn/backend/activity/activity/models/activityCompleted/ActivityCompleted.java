@@ -44,6 +44,14 @@ public class ActivityCompleted {
     @NotNull
     private Student student;
 
+    private int score; //Puntaje obtenido en la actividad
+
+    private int correctAnswers; //Cantidad de respuestas correctas
+
+    private int incorrectAnswers; //Cantidad de respuestas incorrectas
+
+    private int unanswered; //Cantidad de respuestas sin responder
+    
     private LocalDateTime completedAt;
 
     private LocalDateTime startedAt;
