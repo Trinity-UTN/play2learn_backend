@@ -82,6 +82,11 @@ public class ValidationMessages {
     public static final String NOT_NULL_ACTIVITY_ID = "El id de la actividad no puede estar vacio.";
     public static final String NOT_NULL_STATE = "El estado no puede estar vacio.";
 
+    public static final String NOT_NULL_SCORE = "El puntaje no puede estar vacio.";
+    public static final String NOT_NULL_CORRECT_ANSWERS = "La cantidad de respuestas correctas no puede estar vacia.";
+    public static final String NOT_NULL_INCORRECT_ANSWERS = "La cantidad de respuestas incorrectas no puede estar vacia.";
+    public static final String NOT_NULL_UNANSWERED = "La cantidad de respuestas sin responder no puede estar vacia.";
+    
     //------------------------------------- ARBOL DE DECISION ------------------------------------------------------
     public static final String NOT_NULL_DECISION_TREE = "El arbol de decision no puede estar vacio.";
     public static final String OPTIONS_SIZE = "Una decisión debe tener exactamente 2 opciones o ninguna.";

@@ -92,7 +92,11 @@ public class ActivityStartService implements IActivityStartService{
                     null, 
                     remainingAttempts, 
                     ActivityCompletedState.IN_PROGRESS,
-                    null
+                    null,
+                    0,
+                    0,
+                    0,
+                    0
                 )
             )
         );

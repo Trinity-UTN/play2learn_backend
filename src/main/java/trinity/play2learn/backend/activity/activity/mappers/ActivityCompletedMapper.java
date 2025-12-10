@@ -1,6 +1,9 @@
 package trinity.play2learn.backend.activity.activity.mappers;
 
+import java.time.Duration;
+
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityStudentResultsResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentGetResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
@@ -10,7 +13,9 @@ import trinity.play2learn.backend.admin.student.models.Student;
 
 public class ActivityCompletedMapper {
     
-    public static ActivityCompleted toModel(Activity activity, Student student, Double reward, Integer remainingAttempts, ActivityCompletedState state, NoLudicaAttempt noLudicaAttempt) {
+    public static ActivityCompleted toModel(
+        Activity activity, Student student, Double reward, Integer remainingAttempts, ActivityCompletedState state, 
+        NoLudicaAttempt noLudicaAttempt, int score, int correctAnswers, int incorrectAnswers, int unanswered) {
 
         return ActivityCompleted.builder()
             .activity(activity)
@@ -19,6 +24,10 @@ public class ActivityCompletedMapper {
             .remainingAttempts(remainingAttempts)
             .state(state)
             .noLudicaAttempt(noLudicaAttempt)
+            .score(score)
+            .correctAnswers(correctAnswers)
+            .incorrectAnswers(incorrectAnswers)
+            .unanswered(unanswered)
             .build();
     }
 
@@ -43,4 +52,20 @@ public class ActivityCompletedMapper {
             .build();
     }
 
+    public static ActivityStudentResultsResponseDto toStudentResultsDto(
+        ActivityCompleted activityCompleted, int attempts) {
+
+        return ActivityStudentResultsResponseDto.builder()
+            .id(activityCompleted.getId())
+            .activityId(activityCompleted.getActivity().getId())
+            .state(activityCompleted.getState())
+            .attempts(attempts)
+            .reward(activityCompleted.getReward() == null ? 0.0 : (Math.round(activityCompleted.getReward() * 100.0) / 100.0))
+            .completedTimeInSeconds(Duration.between(activityCompleted.getStartedAt(), activityCompleted.getCompletedAt()).getSeconds())
+            .score(activityCompleted.getScore())
+            .correctAnswers(activityCompleted.getCorrectAnswers())
+            .incorrectAnswers(activityCompleted.getIncorrectAnswers())
+            .unanswered(activityCompleted.getUnanswered())
+            .build();
+    }
 }

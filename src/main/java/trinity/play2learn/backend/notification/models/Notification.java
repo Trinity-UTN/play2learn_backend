@@ -3,6 +3,8 @@ package trinity.play2learn.backend.notification.models;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +29,8 @@ public class Notification {
     private Long id;
 
     private String title;
-
+    
+    @Enumerated(EnumType.STRING)
     private NotificationType type;
 
     private boolean read;
