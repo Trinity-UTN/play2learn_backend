@@ -22,14 +22,14 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.admin.student.models.Student;
-import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
+import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailBlockedService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 
 @Service
 @AllArgsConstructor
 public class ActivityStartService implements IActivityStartService{
 
-    private final IStudentGetByEmailService studentGetByEmailService;   
+    private final IStudentGetByEmailBlockedService studentGetByEmailService;   
     
     private final IActivityGetByIdService activityFindByIdService;
 
@@ -49,7 +49,9 @@ public class ActivityStartService implements IActivityStartService{
     @Transactional 
     public ActivityCompletedResponseDto execute(User user, Long activityId) {
 
-        Student student = studentGetByEmailService.getByEmail(user.getEmail());
+        // Bloqueo pesimista: Validacion de que el estudiante no este bloqueado por otra transaccion de inicio de actividad (Inicio la actividad dos veces)
+        //En caso de que otra transaccion haya bloqueado al estudiante, se espera a que se desbloquee y luego continua
+        Student student = studentGetByEmailService.getByEmailBlocked(user.getEmail());
 
         Activity activity = activityFindByIdService.findActivityById(activityId);
 
