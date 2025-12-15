@@ -3,6 +3,8 @@ package trinity.play2learn.backend.activity.activity.services;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
 import trinity.play2learn.backend.activity.activity.mappers.ActivityCompletedMapper;
@@ -44,6 +46,7 @@ public class ActivityStartService implements IActivityStartService{
     private final IActivityCompletedService activityCompletedService;
 
     @Override
+    @Transactional 
     public ActivityCompletedResponseDto execute(User user, Long activityId) {
 
         Student student = studentGetByEmailService.getByEmail(user.getEmail());

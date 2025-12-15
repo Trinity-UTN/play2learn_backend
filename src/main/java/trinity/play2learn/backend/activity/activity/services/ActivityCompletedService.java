@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedRequestDto;
@@ -41,8 +42,10 @@ public class ActivityCompletedService implements IActivityCompletedService {
     private final IActivityCompletedGetLastStartedService activityCompletedGetLastStartedService;
 
 
+    //Aisla la transaccion para que no se pierda la transaccion de desaprobar el ultimo intento
+    //Si el el metodo para iniciar una actividad lanza una excepcion, no se pierde esta transaccion
+    @Transactional(propagation = Propagation.REQUIRES_NEW) 
     @Override
-    @Transactional
     public ActivityCompletedResponseDto cu61ActivityCompleted(ActivityCompletedRequestDto activityCompletedRequestDto, User user) {
 
         Activity activity = activityFindByIdService.findActivityById(activityCompletedRequestDto.getActivityId());
