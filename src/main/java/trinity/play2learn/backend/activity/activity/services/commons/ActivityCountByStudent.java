@@ -12,7 +12,7 @@ import trinity.play2learn.backend.admin.student.models.Student;
 
 @Service
 @AllArgsConstructor
-public class ActivityCountByStudent implements IActivityCountByStudent{
+public class ActivityCountByStudent implements IActivityCountByStudent {
 
     private final IActivityGetByStudentService activityGetByStudentService;
 
@@ -23,14 +23,15 @@ public class ActivityCountByStudent implements IActivityCountByStudent{
 
         List<Activity> activities = activityGetByStudentService.getByStudent(student);
 
-        List<Activity> availableActivities = activities.stream().filter(a -> a.isAvailable()).toList();
+        List<Activity> availableActivities = activities.stream().filter(a -> a.isPublished()).toList();
 
-        int totalActivities = availableActivities.size(); //Cantidad de actividades disponibles
+        int totalActivities = availableActivities.size(); // Cantidad de actividades disponibles
 
-        int totalCompletedActivities = activityFilterApprovedService.filterByApproved(availableActivities, student).size(); 
-        //Filtra las aprobadas de las disponibles y las cuenta
- 
-        return new int[]{totalActivities, totalCompletedActivities};
+        int totalCompletedActivities = activityFilterApprovedService.filterByApproved(availableActivities, student)
+                .size();
+        // Filtra las aprobadas de las disponibles y las cuenta
+
+        return new int[] { totalActivities, totalCompletedActivities };
     }
-    
+
 }
