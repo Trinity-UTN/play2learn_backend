@@ -2,6 +2,7 @@ package trinity.play2learn.backend.activity.activity.dtos.activityCreated;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -40,4 +41,9 @@ public abstract class ActivityRequestDto {
     private Double initialBalance;
 
     private TypeReward typeReward;
+
+    @AssertTrue(message = "La fecha de fin debe ser posterior a la fecha de inicio")
+    public boolean isValidDateRange() {
+        return endDate == null || startDate == null || endDate.isAfter(startDate);
+    }
 }
