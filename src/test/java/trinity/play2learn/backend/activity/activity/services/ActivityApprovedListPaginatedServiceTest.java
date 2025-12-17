@@ -31,6 +31,7 @@ import trinity.play2learn.backend.activity.activity.repositories.IActivityPagina
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateApprovedDtosService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterApprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityApprovedListPaginatedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;

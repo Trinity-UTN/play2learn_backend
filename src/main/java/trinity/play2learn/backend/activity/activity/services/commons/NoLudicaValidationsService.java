@@ -12,7 +12,7 @@ public class NoLudicaValidationsService implements INoLudicaValidationsService{
     @Override
     public void validateNoLudicaCompleted(String plaintext, MultipartFile file) {
         
-        if ((file == null || file.isEmpty()) && (plaintext.length() == 0 || plaintext == null)) {
+        if ((file == null || file.isEmpty()) && (plaintext == null || plaintext.length() == 0)) {
             throw new BadRequestException("El texto y el archivo no pueden estar vacios");
             
         }

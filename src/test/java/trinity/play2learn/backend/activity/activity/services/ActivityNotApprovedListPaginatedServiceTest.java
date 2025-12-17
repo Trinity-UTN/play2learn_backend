@@ -32,6 +32,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterByDisapprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterNotApprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityNotApprovedListPaginatedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;

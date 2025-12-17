@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.services;
+package trinity.play2learn.backend.activity.activity.services.student;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
