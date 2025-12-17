@@ -23,7 +23,7 @@ public class ActivityGetController {
     private final IActivityGetService activityGetService;
 
     @GetMapping("/{id}")
-    @SessionRequired(roles = Role.ROLE_STUDENT)
+    @SessionRequired(roles = {Role.ROLE_STUDENT, Role.ROLE_TEACHER})
     public ResponseEntity<BaseResponse<ActivityResponseDto>> getActivity(@PathVariable Long id) {
 
         return ResponseFactory.ok(activityGetService.cu64GetActivity(id), SuccessfulMessages.okSuccessfully());
