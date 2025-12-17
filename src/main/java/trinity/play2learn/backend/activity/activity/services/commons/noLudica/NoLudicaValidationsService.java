@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.services.commons;
+package trinity.play2learn.backend.activity.activity.services.commons.noLudica;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;

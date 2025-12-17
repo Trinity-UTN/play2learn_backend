@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.services.commons;
+package trinity.play2learn.backend.activity.activity.services.commons.noLudica;
 
 import java.util.Map;
 
@@ -11,13 +11,13 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.NoL
 import trinity.play2learn.backend.activity.activity.services.interfaces.INoLudicaCreateAttemptService;
 import trinity.play2learn.backend.configs.uploadCare.mappers.UploadFileMapper;
 import trinity.play2learn.backend.configs.uploadCare.models.UploadedFile;
-import trinity.play2learn.backend.configs.uploadCare.services.UploadcareService;
+import trinity.play2learn.backend.configs.uploadCare.services.UploadToUploadcareService;
 
 @Service
 @AllArgsConstructor
 public class NoLudicaCreateAttemptService implements INoLudicaCreateAttemptService {
-    
-    private final UploadcareService uploadcareService;
+
+    private final UploadToUploadcareService uploadcareService;
 
     @Override
     public NoLudicaAttempt createAttempt(String plainText, MultipartFile file) {
@@ -26,14 +26,14 @@ public class NoLudicaCreateAttemptService implements INoLudicaCreateAttemptServi
 
         if (!(file == null || file.isEmpty())) {
             Map<String, String> uploadResult = uploadcareService.uploadToUploadcare(file);
-            
-            uploadedFile = UploadFileMapper.toModel(uploadResult.get("fileName"), uploadResult.get("uuid"), uploadResult.get("cdnUrl"));
-            
+
+            uploadedFile = UploadFileMapper.toModel(uploadResult.get("fileName"), uploadResult.get("uuid"),
+                    uploadResult.get("cdnUrl"));
+
         }
 
         return NoLudicaAttemptMapper.toModel(plainText, uploadedFile);
 
     }
-    
-    
+
 }
