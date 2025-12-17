@@ -21,5 +21,4 @@ public class ActivityAddBalanceService implements IActivityAddBalanceService {
         activityRepository.save(activity);
 
     }
-    
 }

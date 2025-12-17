@@ -28,6 +28,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityTeacher.Activit
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateTeacherSimpleDtosService;
+import trinity.play2learn.backend.activity.activity.services.teacher.ActivityListByTeacherPaginatedService;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;

@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.services;
+package trinity.play2learn.backend.activity.activity.services.teacher;
 
 import java.util.List;
 import java.util.Map;

@@ -20,6 +20,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateApprovedDtosService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityListApprovedByStudentService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.user.models.User;

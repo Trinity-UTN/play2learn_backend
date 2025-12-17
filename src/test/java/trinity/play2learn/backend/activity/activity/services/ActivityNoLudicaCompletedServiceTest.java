@@ -33,6 +33,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.INoLudicaCreateAttemptService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.INoLudicaValidationsService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityNoLudicaCompletedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
