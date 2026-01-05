@@ -13,7 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import trinity.play2learn.backend.configs.uploadCare.models.UploadedFile;
+import trinity.play2learn.backend.configs.fileUpload.models.StoredFile;
 
 @Entity
 @Builder
@@ -22,7 +22,7 @@ import trinity.play2learn.backend.configs.uploadCare.models.UploadedFile;
 @NoArgsConstructor
 @Table(name = "no_ludica_attempt")
 public class NoLudicaAttempt {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,7 +31,7 @@ public class NoLudicaAttempt {
     private String plainText;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "uploaded_file_id")
-    private UploadedFile file;
+    @JoinColumn(name = "stored_file_id")
+    private StoredFile file;
 
 }

@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
 import trinity.play2learn.backend.activity.activity.mappers.ActivityCompletedMapper;
 import trinity.play2learn.backend.activity.activity.mappers.ActivityCompletedRequestMapper;
+import trinity.play2learn.backend.activity.activity.mappers.NoLudicaAttemptMapper;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
@@ -22,11 +23,12 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNoLudicaCompletedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.INoLudicaCreateAttemptService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.INoLudicaUploadFileService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.INoLudicaValidationsService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.fileUpload.models.StoredFile;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -42,7 +44,7 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
 
     private final IActivityCompletedGetLastStartedService activityCompletedGetLastStartedService;
 
-    private final INoLudicaCreateAttemptService noLudicaCreateAttemptService;
+    private final INoLudicaUploadFileService noLudicaUploadFileService;
 
     private final IActivityCompletedRepository activityCompletedRepository;
 
@@ -54,9 +56,10 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
     public ActivityCompletedResponseDto cu72ActivityNoLudicaCompleted(Long activityId, String plainText,
             MultipartFile file, User user) {
 
-        if(plainText == null) plainText = "";//Si no se pasa el texto lo deja vacio
-         
-        //Realiza validaciones de atributos
+        if (plainText == null)
+            plainText = "";// Si no se pasa el texto lo deja vacio
+
+        // Realiza validaciones de atributos
         noLudicaValidationsService.validateNoLudicaCompleted(plainText, file);
 
         Activity activity = activityFindByIdService.findActivityById(activityId);
@@ -72,12 +75,13 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
                 .getActivityCompletedState(activity, student);
         if (activityCompletedState == ActivityCompletedState.APPROVED) {
             throw new ConflictException("La actividad ya ha sido aprobada.");
-        }else if(activityCompletedState == ActivityCompletedState.PENDING){
+        } else if (activityCompletedState == ActivityCompletedState.PENDING) {
 
             throw new ConflictException("La actividad se encuentra pendiente de revision.");
         }
 
-        Optional<ActivityCompleted> lastStarted = activityCompletedGetLastStartedService.getLastStartedInProgress(activity, student);
+        Optional<ActivityCompleted> lastStarted = activityCompletedGetLastStartedService
+                .getLastStartedInProgress(activity, student);
 
         if (lastStarted.isEmpty()) {
             throw new ConflictException("No se puede realizar la actividad ya que no se encuentra en curso.");
@@ -87,27 +91,29 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
         // desaprueba automaticamente
         if (((int) (Duration.between(lastStarted.get().getStartedAt(), LocalDateTime.now()).getSeconds())
                 / 60) > activity.getMaxTime()) {
-            
+
             activityCompletedService.cu61ActivityCompleted(
                     ActivityCompletedRequestMapper.toDto(activityId, ActivityCompletedState.DISAPPROVED),
                     user);
-            
+
             throw new ConflictException("No se puede realizar la actividad ya que no se encuentra en curso.");
         }
 
         ActivityCompleted activityCompleted = lastStarted.get();
 
         activityCompleted.setState(ActivityCompletedState.PENDING);
-        
-        //Sube el archivo a uploadCare y crea el intento de NoLudica
-        NoLudicaAttempt noLudicaAttempt = noLudicaCreateAttemptService.createAttempt(plainText, file);
+
+        // Sube el archivo a Google Drive
+        StoredFile storedFile = noLudicaUploadFileService.uploadFileIfExist(file);
+
+        //Crea el intento de NoLudica
+        NoLudicaAttempt noLudicaAttempt = NoLudicaAttemptMapper.toModel(plainText, storedFile);
+
         activityCompleted.setNoLudicaAttempt(noLudicaAttempt);
 
         activityCompleted.setCompletedAt(LocalDateTime.now());
 
-        ActivityCompleted savedActivityCompleted = activityCompletedRepository.save(activityCompleted);
-        
-        return ActivityCompletedMapper.toDto(savedActivityCompleted);
+        return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
     }
 
 }
