@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.configs.uploadCare.services;
+package trinity.play2learn.backend.configs.fileUpload.services;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,10 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import trinity.play2learn.backend.configs.fileUpload.services.interfaces.IUploadToUploadcareService;
 
 @Service
 @RequiredArgsConstructor
-public class UploadcareService {
+public class UploadToUploadcareService implements IUploadToUploadcareService{
 
     @Value("${UPLOAD_CARE_API_KEY}")
     private String publicKey;
@@ -31,6 +32,7 @@ public class UploadcareService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
+    @Override
     public Map<String, String> uploadToUploadcare(MultipartFile file) {
 
         if (file == null || file.isEmpty()) {
@@ -65,7 +67,8 @@ public class UploadcareService {
                 throw new RuntimeException("Fallo en la subida: Uploadcare devolvió un error: " + resp.getBody());
             }
 
-            // La respuesta puede venir en formatos variados: {"file":"uuid"} o {"myfile.jpg":"uuid"}
+            // La respuesta puede venir en formatos variados: {"file":"uuid"} o
+            // {"myfile.jpg":"uuid"}
             JsonNode root = objectMapper.readTree(resp.getBody());
 
             String uuid = null;
@@ -96,7 +99,7 @@ public class UploadcareService {
         } catch (RestClientException e) {
             throw new RuntimeException("Error de conexión con Uploadcare: " + e.getMessage(), e);
         } catch (Exception e) {
-            
+
             throw new RuntimeException("Error al procesar el archivo: " + e.getMessage(), e);
         }
     }

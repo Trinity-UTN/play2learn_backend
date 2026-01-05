@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.configs.uploadCare.models;
+package trinity.play2learn.backend.configs.fileUpload.models;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UploadedFile {
-    
+public class StoredFile {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,10 +28,14 @@ public class UploadedFile {
     private String fileName;
 
     @NotNull
-    private String uuid;
+    private String providerFileId; // Google Drive fileId
 
     @NotNull
-    private String cdnUrl;
+    private String provider; // "GOOGLE_DRIVE"
+
+    private String mimeType;
+
+    private Long fileSize;
 
     private LocalDateTime uploadedAt;
 
@@ -39,6 +43,5 @@ public class UploadedFile {
     public void setUploadedAt() {
         this.uploadedAt = LocalDateTime.now();
     }
-
 
 }

@@ -3,7 +3,6 @@ package trinity.play2learn.backend.activity.activity.models.activityCompleted;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

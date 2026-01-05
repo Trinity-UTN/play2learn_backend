@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.services.commons;
+package trinity.play2learn.backend.activity.activity.services.commons.ranking;
 
 import java.util.List;
 import java.util.stream.Collectors;

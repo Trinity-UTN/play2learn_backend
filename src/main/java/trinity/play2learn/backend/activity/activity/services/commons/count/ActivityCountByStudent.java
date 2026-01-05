@@ -1,4 +1,4 @@
-package trinity.play2learn.backend.activity.activity.services.commons;
+package trinity.play2learn.backend.activity.activity.services.commons.count;
 
 import java.util.List;
 
