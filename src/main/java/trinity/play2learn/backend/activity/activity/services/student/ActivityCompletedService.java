@@ -72,17 +72,6 @@ public class ActivityCompletedService implements IActivityCompletedService {
             throw new ConflictException("No se puede actualizar la actividad ya que no se encuentra en curso.");
         }
 
-        // Valido consistencia entre estado y score
-        if (activityCompletedRequestDto.getState() == ActivityCompletedState.APPROVED
-                && activityCompletedRequestDto.getScore() < 60) {
-            throw new ConflictException("La actividad no puede ser aprobada con un puntaje menor a 60.");
-        }
-
-        if (activityCompletedRequestDto.getState() == ActivityCompletedState.DISAPPROVED
-                && activityCompletedRequestDto.getScore() >= 60) {
-            throw new ConflictException("La actividad no puede ser desaprobada con un puntaje mayor o igual a 60.");
-        }
-
         // Si el tiempo de intento es mayor al tiempo maximo de la actividad, se
         // desaprueba automaticamente
         if (this.calculateTimeAttemp(lastStartedOp.get().getStartedAt()) > activity.getMaxTime()) {
