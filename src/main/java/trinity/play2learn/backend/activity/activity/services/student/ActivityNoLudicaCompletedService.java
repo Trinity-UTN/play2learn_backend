@@ -103,7 +103,7 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
 
         activityCompleted.setState(ActivityCompletedState.PENDING);
 
-        // Sube el archivo a Google Drive
+        // Sube el archivo a Cloudinary
         StoredFile storedFile = noLudicaUploadFileService.uploadFileIfExist(file);
 
         //Crea el intento de NoLudica

@@ -7,11 +7,12 @@ import trinity.play2learn.backend.configs.fileUpload.models.StoredFile;
 
 public class StoredFileMapper {
 
-    public static StoredFile toModel(String fileName, String providerFileId, String mimeType, Long fileSize) {
+    public static StoredFile toModel(String fileName, String providerFileId, String fileUrl, String mimeType, Long fileSize) {
         return StoredFile.builder()
                 .fileName(fileName)
                 .providerFileId(providerFileId)
-                .provider("GOOGLE_DRIVE")
+                .fileUrl(fileUrl)
+                .provider("CLOUDINARY")
                 .mimeType(mimeType)
                 .fileSize(fileSize)
                 .build();
