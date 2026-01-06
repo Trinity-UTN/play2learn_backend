@@ -1,8 +1,5 @@
 package trinity.play2learn.backend.activity.activity.controllers;
 
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +9,6 @@ import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.noLudica.NoLudicaAttemptResponseDto;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetNoLudicaAttemptService;
 import trinity.play2learn.backend.configs.annotations.SessionUser;
-import trinity.play2learn.backend.configs.fileUpload.dtos.FileDownloadData;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
 import trinity.play2learn.backend.configs.response.BaseResponse;
 import trinity.play2learn.backend.configs.response.ResponseFactory;
@@ -20,7 +16,7 @@ import trinity.play2learn.backend.user.models.User;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/activity/teacher/noLudica")
+@RequestMapping("/activity/teacher/no-ludica")
 public class ActivityGetNoLudicaAttemptController {
 
     private final IActivityGetNoLudicaAttemptService activityGetNoLudicaAttemptService;
@@ -29,20 +25,5 @@ public class ActivityGetNoLudicaAttemptController {
     @GetMapping("/{activityCompletedId}")
     public ResponseEntity<BaseResponse<NoLudicaAttemptResponseDto>> getNoLudicaAttempt(@PathVariable Long activityCompletedId, @SessionUser User user) {
         return ResponseFactory.ok(activityGetNoLudicaAttemptService.cu127GetNoLudicaAttempt(activityCompletedId, user),SuccessfulMessages.okSuccessfully());
-    }
-
-    //Endpoint que devuelve el archivo subido por el estudiante en el intento NoLudica.
-    @GetMapping("/{activityCompletedId}/file")
-    public ResponseEntity<Resource> downloadFile(
-            @PathVariable Long activityCompletedId,
-            @SessionUser User user) {
-
-        FileDownloadData file = activityGetNoLudicaAttemptService.cu128GetNoLudicaAttemptFile(activityCompletedId, user);
-
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(file.getContentType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\"" + file.getFileName() + "\"")
-                .body(file.getResource());
     }
 }

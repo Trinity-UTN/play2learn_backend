@@ -3,6 +3,7 @@ package trinity.play2learn.backend.configs.fileUpload.mappers;
 import org.springframework.core.io.Resource;
 
 import trinity.play2learn.backend.configs.fileUpload.dtos.FileDownloadData;
+import trinity.play2learn.backend.configs.fileUpload.dtos.StoredFileResponseDto;
 import trinity.play2learn.backend.configs.fileUpload.models.StoredFile;
 
 public class StoredFileMapper {
@@ -25,4 +26,18 @@ public class StoredFileMapper {
                 .resource(resource)
                 .build();
     }
+    
+    public static StoredFileResponseDto toDto(StoredFile storedFile) {
+        if (storedFile == null) {
+            return null;
+        }
+        return StoredFileResponseDto.builder()
+                .fileName(storedFile.getFileName())
+                .fileUrl(storedFile.getFileUrl())
+                .mimeType(storedFile.getMimeType())
+                .fileSize(storedFile.getFileSize())
+                .uploadedAt(storedFile.getUploadedAt())
+                .build();
+    }
+
 }
