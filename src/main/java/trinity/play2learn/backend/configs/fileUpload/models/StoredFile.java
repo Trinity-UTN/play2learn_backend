@@ -28,10 +28,13 @@ public class StoredFile {
     private String fileName;
 
     @NotNull
-    private String providerFileId; // Google Drive fileId
+    private String providerFileId; //Public ID de Cloudinary
 
     @NotNull
-    private String provider; // "GOOGLE_DRIVE"
+    private String fileUrl; //Secure URL de Cloudinary
+    
+    @NotNull
+    private String provider; // "CLOUDINARY"
 
     private String mimeType;
 

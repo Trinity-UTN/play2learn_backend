@@ -2,6 +2,7 @@ package trinity.play2learn.backend.activity.activity.mappers;
 
 import trinity.play2learn.backend.activity.activity.dtos.noLudica.NoLudicaAttemptResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.NoLudicaAttempt;
+import trinity.play2learn.backend.configs.fileUpload.mappers.StoredFileMapper;
 import trinity.play2learn.backend.configs.fileUpload.models.StoredFile;
 
 public class NoLudicaAttemptMapper {
@@ -13,13 +14,12 @@ public class NoLudicaAttemptMapper {
                 .build();
     }
 
-    public static NoLudicaAttemptResponseDto toDto(String plainText, Boolean hasFile, String fileName,
-            String downloadUrl) {
+    public static NoLudicaAttemptResponseDto toDto(NoLudicaAttempt noLudicaAttempt, Long studentId) {
         return NoLudicaAttemptResponseDto.builder()
-                .plainText(plainText)
-                .hasFile(hasFile)
-                .fileName(fileName)
-                .downloadUrl(downloadUrl)
+                .studentId(studentId)
+                .plainText(noLudicaAttempt.getPlainText())
+                .hasFile(noLudicaAttempt.getFile() != null)
+                .fileData(StoredFileMapper.toDto(noLudicaAttempt.getFile()))
                 .build();
     }
 }

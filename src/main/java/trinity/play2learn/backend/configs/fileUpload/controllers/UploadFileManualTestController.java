@@ -15,8 +15,8 @@ import trinity.play2learn.backend.user.models.Role;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/test/googleDrive")
-public class UploadToDriveManualTestController {
+@RequestMapping("/test/upload-file")
+public class UploadFileManualTestController {
 
     private final INoLudicaUploadFileService noLudicaUploadFileService;
 

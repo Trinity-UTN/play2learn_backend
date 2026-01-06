@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.configs.fileUpload.dtos.StoredFileResponseDto;
 
 @Data
 @Builder
@@ -11,8 +12,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class NoLudicaAttemptResponseDto {
     
+    private Long studentId;
     private String plainText;
     private Boolean hasFile;
-    private String fileName;
-    private String downloadUrl;
+    private StoredFileResponseDto fileData;
 }

@@ -71,16 +71,7 @@ class ActivityNoLudicaCompletedServiceTest {
 
     @BeforeEach
     void setUp() {
-        activityNoLudicaCompletedService = new ActivityNoLudicaCompletedService(
-                activityFindByIdService,
-                studentGetByEmailService,
-                activityValidatePublishedStatusService,
-                activityGetCompletedStateService,
-                activityCompletedGetLastStartedService,
-                noLudicaCreateAttemptService,
-                activityCompletedRepository,
-                noLudicaValidationsService,
-                activityCompletedService);
+        activityNoLudicaCompletedService = new ActivityNoLudicaCompletedService(activityFindByIdService, studentGetByEmailService, activityValidatePublishedStatusService, activityGetCompletedStateService, noLudicaCreateAttemptService, activityCompletedRepository, noLudicaValidationsService, null);
     }
 
     @Nested

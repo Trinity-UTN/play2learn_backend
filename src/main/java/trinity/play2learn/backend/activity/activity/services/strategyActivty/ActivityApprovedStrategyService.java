@@ -14,6 +14,7 @@ import trinity.play2learn.backend.activity.activity.repositories.IActivityComple
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCalculateRewardStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityDidAllStudentsApproveService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -32,6 +33,11 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
     
     @Override
     public ActivityCompletedResponseDto execute(ActivityCompleted activityCompleted) {
+
+        //Valido consistencia entre estado y score
+        if (activityCompleted.getScore() < 60) {
+            throw new ConflictException("La actividad no puede ser aprobada con un puntaje menor a 60.");
+        }
 
         IActivityCalculateRewardStrategyService rewardStrategyService = activityCalculateRewardStrategyServiceMap.get(
             activityCompleted.getActivity().getTypeReward().name()
