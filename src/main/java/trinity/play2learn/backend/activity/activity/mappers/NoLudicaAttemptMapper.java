@@ -14,8 +14,9 @@ public class NoLudicaAttemptMapper {
                 .build();
     }
 
-    public static NoLudicaAttemptResponseDto toDto(NoLudicaAttempt noLudicaAttempt) {
+    public static NoLudicaAttemptResponseDto toDto(NoLudicaAttempt noLudicaAttempt, Long studentId) {
         return NoLudicaAttemptResponseDto.builder()
+                .studentId(studentId)
                 .plainText(noLudicaAttempt.getPlainText())
                 .hasFile(noLudicaAttempt.getFile() != null)
                 .fileData(StoredFileMapper.toDto(noLudicaAttempt.getFile()))

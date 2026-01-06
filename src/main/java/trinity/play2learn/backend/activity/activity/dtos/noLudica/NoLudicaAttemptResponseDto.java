@@ -12,6 +12,7 @@ import trinity.play2learn.backend.configs.fileUpload.dtos.StoredFileResponseDto;
 @NoArgsConstructor
 public class NoLudicaAttemptResponseDto {
     
+    private Long studentId;
     private String plainText;
     private Boolean hasFile;
     private StoredFileResponseDto fileData;

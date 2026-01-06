@@ -30,7 +30,7 @@ public class ActivityGetNoLudicaAttemptService implements IActivityGetNoLudicaAt
 
         NoLudicaAttempt noLudicaAttempt = activityCompleted.getNoLudicaAttempt();
 
-        return NoLudicaAttemptMapper.toDto(noLudicaAttempt);
+        return NoLudicaAttemptMapper.toDto(noLudicaAttempt, activityCompleted.getStudent().getId());
     }
 
     private ActivityCompleted findAndValidateActivityCompleted(Long activityCompletedId, User user) {

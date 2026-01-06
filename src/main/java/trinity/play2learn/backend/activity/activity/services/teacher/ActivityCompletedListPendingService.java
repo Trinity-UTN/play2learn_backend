@@ -1,11 +1,8 @@
 package trinity.play2learn.backend.activity.activity.services.teacher;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedPendingDto;
 import trinity.play2learn.backend.activity.activity.mappers.ActivityCompletedMapper;
