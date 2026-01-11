@@ -60,6 +60,10 @@ public class Profile {
     @Builder.Default
     private List<Aspect> ownedAspects = new ArrayList<>();
 
+    private Long currentXp;
+
+    private Long currentLevel;
+
     @Override
     public int hashCode() {
         return Objects.hash(id); // suficiente en entidades JPA

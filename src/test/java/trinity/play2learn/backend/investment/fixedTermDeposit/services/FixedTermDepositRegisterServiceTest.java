@@ -63,7 +63,7 @@ class FixedTermDepositRegisterServiceTest {
             fixedTermDepositCalculateInterestService,
             fixedTermDepositRepository,
             transactionGenerateService,
-            walletUpdateInvestedBalanceService
+            walletUpdateInvestedBalanceService, null
         );
     }
 

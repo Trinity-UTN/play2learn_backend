@@ -39,6 +39,7 @@ import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 
 @ExtendWith(MockitoExtension.class)
 class BenefitPurchaseServiceTest {
@@ -59,7 +60,8 @@ class BenefitPurchaseServiceTest {
     private ITransactionGenerateService transactionGenerateService;
     @Mock
     private IBenefitPurchaseRepository benefitPurchaseRepository;
-
+    @Mock
+    private IProfileUpdateLevelService profileUpdateLevelService;   
     @Mock
     private INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
     
@@ -76,7 +78,8 @@ class BenefitPurchaseServiceTest {
             benefitValidateIfPurchasedByStudentService,
             transactionGenerateService,
             benefitPurchaseRepository,
-            notificationCreateSingleWithTitleService
+            notificationCreateSingleWithTitleService,
+            profileUpdateLevelService
         );
     }
 

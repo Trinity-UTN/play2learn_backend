@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.levels.ValueXp;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -23,6 +24,7 @@ import trinity.play2learn.backend.investment.stock.services.interfaces.IStockBuy
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockFindByIdService;
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockMoveService;
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockUpdateSpecificService;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -43,6 +45,8 @@ public class StockBuyService implements IStockBuyService {
 
     private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
     
+    private final IProfileUpdateLevelService profileUpdateLevelService;
+
     @Override
     @Transactional
     public StockBuyResponseDto cu84buystocks(StockBuyRequestDto stockBuyRequestDto, User user) {
@@ -91,6 +95,8 @@ public class StockBuyService implements IStockBuyService {
         stockUpdateSpecificService.execute(stock);
 
         walletUpdateInvestedBalanceService.execute(wallet);
+
+        profileUpdateLevelService.execute(wallet.getStudent().getProfile(), ValueXp.STOCK_BOUGHT.getValue());
 
         return OrderMapper.toBuyDto(order);
     }

@@ -78,7 +78,7 @@ class StockBuyServiceTest {
             transactionGenerateService,
             stockMoveService,
             stockUpdateSpecificService,
-            walletUpdateInvestedBalanceService
+            walletUpdateInvestedBalanceService, null
         );
     }
 

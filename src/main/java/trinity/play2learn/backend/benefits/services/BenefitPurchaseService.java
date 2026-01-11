@@ -18,11 +18,13 @@ import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidateP
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidateIfPurchasedByStudentService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetPurchasesLeftByStudentService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.configs.levels.ValueXp;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
 import trinity.play2learn.backend.notification.models.NotificationType;
 import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -38,6 +40,7 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
     private final ITransactionGenerateService transactionGenerateService;
     private final IBenefitPurchaseRepository benefitPurchaseRepository;
     private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
+    private final IProfileUpdateLevelService profileUpdateLevelService;
 
     @Override
     @Transactional
@@ -96,7 +99,11 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
             NotificationType.BENEFIT_PURCHASED,
             student.getCompleteName() + " compró tu beneficio: " + benefit.getName()
         );
-        
+
+        // Actualiza el nivel del estudiante
+        profileUpdateLevelService.execute(student.getProfile(), ValueXp.BENEFIT_BOUGHT.getValue());
+
+        // Retorna el beneficio comprado
         return BenefitPurchaseMapper.toDto(benefitPurchaseRepository.save(BenefitPurchaseMapper.toModel(benefit, student)), purchasesLeftByStudent);
     }
 }
