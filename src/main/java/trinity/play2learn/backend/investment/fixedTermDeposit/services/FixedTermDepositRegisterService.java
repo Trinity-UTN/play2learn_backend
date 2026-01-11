@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
+import trinity.play2learn.backend.configs.levels.ValueXp;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -20,6 +21,7 @@ import trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermSt
 import trinity.play2learn.backend.investment.fixedTermDeposit.repositories.IFixedTermDepositRepository;
 import trinity.play2learn.backend.investment.fixedTermDeposit.services.interfaces.IFixedTermDepositCalculateInterestService;
 import trinity.play2learn.backend.investment.fixedTermDeposit.services.interfaces.IFixedTermDepositRegisterService;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -35,6 +37,8 @@ public class FixedTermDepositRegisterService implements IFixedTermDepositRegiste
     private final ITransactionGenerateService transactionGenerateService;
 
     private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
+
+    private final IProfileUpdateLevelService profileUpdateLevelService;
 
     @Override
     @Transactional
@@ -81,6 +85,8 @@ public class FixedTermDepositRegisterService implements IFixedTermDepositRegiste
         );
 
         walletUpdateInvestedBalanceService.execute(wallet);
+
+        profileUpdateLevelService.execute(wallet.getStudent().getProfile(), ValueXp.FIXED_INVESTMENT.getValue());
 
         return FixedTermDepositMapper.toDto(fixedTermDeposit);
         

@@ -24,6 +24,9 @@ import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.user.models.User;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
+import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
+import trinity.play2learn.backend.configs.levels.ValueXp;
 
 @Service
 @AllArgsConstructor
@@ -40,6 +43,15 @@ public class ActivityCompletedService implements IActivityCompletedService {
     private final IActivityGetCompletedStateService activityGetCompletedStateService;
 
     private final IActivityCompletedGetLastStartedService activityCompletedGetLastStartedService;
+
+    private final IProfileUpdateLevelService profileUpdateLevelService;
+
+    // Map que sirve para mapear una Dificultad a un valor de XP
+    private final Map<Difficulty, ValueXp> difficultyXpMap = Map.of(
+        Difficulty.FACIL, ValueXp.ACTIVITY_FACIL,
+        Difficulty.MEDIO, ValueXp.ACTIVITY_MEDIO,
+        Difficulty.DIFICIL, ValueXp.ACTIVITY_DIFICIL
+    );
 
     // Aisla la transaccion para que no se pierda la transaccion de desaprobar el
     // ultimo intento
@@ -87,6 +99,14 @@ public class ActivityCompletedService implements IActivityCompletedService {
 
         IActivityCompletedStrategyService strategyService = activityCompletedStrategyServiceMap
                 .get(activityCompletedRequestDto.getState().name());
+
+        // Experiencia obtenida por la actividad, depende de la dificultad
+        if (activity.getDifficulty() != null) {
+            ValueXp valueXp = difficultyXpMap.get(activity.getDifficulty());
+            profileUpdateLevelService.execute(student.getProfile(), valueXp.getValue());
+        } else {
+            profileUpdateLevelService.execute(student.getProfile(), ValueXp.ACTIVITY_FACIL.getValue());
+        }
 
         return strategyService.execute(lastStarted);
     }

@@ -35,6 +35,7 @@ import trinity.play2learn.backend.activity.activity.services.student.ActivityCom
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 import trinity.play2learn.backend.user.models.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,7 +57,9 @@ class ActivityCompletedServiceTest {
     private IActivityCompletedStrategyService approvedStrategyService;
     @Mock
     private IActivityCompletedStrategyService disapprovedStrategyService;
-
+    @Mock
+    private IProfileUpdateLevelService profileUpdateLevelService;
+    @Mock
     private ActivityCompletedService activityCompletedService;
 
     @BeforeEach
@@ -71,7 +74,8 @@ class ActivityCompletedServiceTest {
             studentGetByEmailService,
             activityValidatePublishedStatusService,
             activityGetCompletedStateService,
-            activityCompletedGetLastStartedService
+            activityCompletedGetLastStartedService,
+            profileUpdateLevelService
         );
     }
 

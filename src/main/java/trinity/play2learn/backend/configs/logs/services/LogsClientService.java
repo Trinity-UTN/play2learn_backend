@@ -83,6 +83,9 @@ public class LogsClientService {
     @Value("${logs.api.private.key}")
     private String logsApiPrivateKey;
 
+    @Value("${debug}")
+    private String debug;
+
     /**
      * Constructor por defecto que inicializa RestTemplate y ObjectMapper.
      * 
@@ -124,6 +127,9 @@ public class LogsClientService {
      */
     @Async("taskExecutor")
     public void registerLog(String mensaje, LogLevel nivel, String stackTrace, Map<String, Object> metadata) {
+        if (!debug.equals("true")) {
+            return;
+        }
         try {
             // Validar configuración antes de procesar
             if (!isConfigurationValid()) {
