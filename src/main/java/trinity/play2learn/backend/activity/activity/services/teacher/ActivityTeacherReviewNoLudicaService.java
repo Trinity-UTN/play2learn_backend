@@ -61,6 +61,8 @@ public class ActivityTeacherReviewNoLudicaService implements IActivityTeacherRev
 
         activityCompleted.setScore(activityReviewNoLudicaDto.getScore());
 
+        activityCompleted.setComment(activityReviewNoLudicaDto.getComment());
+
         IActivityCompletedStrategyService strategyService = activityCompletedStrategyServiceMap
                 .get(activityReviewNoLudicaDto.getState().name());
 

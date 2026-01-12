@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedPendingDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityReviewResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityStudentResultsResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentGetResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
@@ -98,5 +99,12 @@ public class ActivityCompletedMapper {
         return activityCompletedList.stream()
             .map(ActivityCompletedMapper::toPendingDto)
             .collect(Collectors.toList());
+    }
+
+    public static ActivityReviewResponseDto toReviewDto(ActivityCompleted activityCompleted) {
+        return ActivityReviewResponseDto.builder()
+            .comment(activityCompleted.getComment())
+            .score(activityCompleted.getScore())
+            .build();
     }
 }
