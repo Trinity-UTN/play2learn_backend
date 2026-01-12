@@ -27,6 +27,8 @@ public class ActivityReviewNoLudicaRequestDto {
     @NotNull
     private int score;
 
+    private String comment;
+
     @AssertTrue(message = "El estado debe ser APROBADO o DESAPROBADO")
     public boolean isApprovedOrDisapproved() {
         return state == ActivityCompletedState.APPROVED

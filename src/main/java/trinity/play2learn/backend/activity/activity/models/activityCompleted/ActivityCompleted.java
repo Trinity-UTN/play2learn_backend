@@ -66,6 +66,9 @@ public class ActivityCompleted {
     @OneToOne(cascade = CascadeType.ALL)
     private NoLudicaAttempt noLudicaAttempt;
 
+    @Column(nullable = true)
+    private String comment;
+
     @PrePersist //Antes de persistir la actividad se guarda su fecha de creacion
     private void setStartedAt(){
         this.startedAt = LocalDateTime.now();

@@ -80,4 +80,11 @@ public interface IActivityCompletedRepository extends CrudRepository<ActivityCom
             "FROM Student st WHERE st = :targetStudent")
     Object[] findPositionByStudentInApprovedActivitiesInList(Student targetStudent, List<Student> students, ActivityCompletedState state);
 
+    // Trae el ultimo intento de realizacion que no este en el estado pasado por parametro
+    @Query("SELECT ac FROM ActivityCompleted ac WHERE ac.activity = :activity AND ac.student = :student AND ac.state != :state ORDER BY ac.completedAt DESC")
+    Optional<ActivityCompleted> findTopByActivityAndStudentAndNotStateOrderByCompletedAtDesc(
+        Activity activity, 
+        Student student, 
+        ActivityCompletedState state
+    );
 }

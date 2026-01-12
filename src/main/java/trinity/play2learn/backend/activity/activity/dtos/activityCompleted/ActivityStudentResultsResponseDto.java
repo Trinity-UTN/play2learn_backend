@@ -22,4 +22,6 @@ public class ActivityStudentResultsResponseDto {
     private int correctAnswers;
     private int incorrectAnswers;
     private int unanswered;
+    private String comment;
+    
 }
