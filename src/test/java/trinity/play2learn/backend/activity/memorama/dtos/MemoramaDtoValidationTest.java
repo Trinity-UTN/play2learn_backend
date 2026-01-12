@@ -3,7 +3,6 @@ package trinity.play2learn.backend.activity.memorama.dtos;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.validation.ConstraintViolation;
@@ -13,11 +12,6 @@ import jakarta.validation.Validator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.http.MediaType;
-
-import trinity.play2learn.backend.activity.activity.ActivityTestMother;
-import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.memorama.MemoramaTestMother;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 

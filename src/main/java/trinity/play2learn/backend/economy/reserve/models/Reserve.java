@@ -45,6 +45,7 @@ public class Reserve {
     private LocalDateTime lastUpdateAt;
 
     @OneToMany(mappedBy = "reserve", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Transaction> transactions = new ArrayList<>();
 
     @PrePersist //Antes de persistir la actividad se guarda su fecha de creacion

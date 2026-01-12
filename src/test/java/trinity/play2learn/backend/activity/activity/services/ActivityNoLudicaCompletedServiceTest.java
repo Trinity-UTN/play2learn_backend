@@ -1,6 +1,5 @@
 package trinity.play2learn.backend.activity.activity.services;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -14,17 +13,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.multipart.MultipartFile;
 
 import trinity.play2learn.backend.activity.activity.ActivityTestMother;
-import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
-import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
-import trinity.play2learn.backend.activity.activity.models.activityCompleted.NoLudicaAttempt;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedGetLastStartedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedService;
@@ -40,6 +35,7 @@ import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.user.models.User;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("unused")
 class ActivityNoLudicaCompletedServiceTest {
 
     private static final Long ACTIVITY_COMPLETED_ID = 500L;

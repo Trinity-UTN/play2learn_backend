@@ -193,6 +193,7 @@ class AhorcadoDtoValidationTest {
         }
     }
 
+    @SuppressWarnings("unused")
     private <T> void assertViolation(Set<ConstraintViolation<T>> violations, String expectedMessage, String expectedPath) {
         assertViolation(violations, expectedMessage, expectedPath, null);
     }

@@ -24,9 +24,11 @@ class BenefitDeleteControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private IBenefitDeleteService benefitDeleteService;
 
+    @SuppressWarnings({ "removal"})
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

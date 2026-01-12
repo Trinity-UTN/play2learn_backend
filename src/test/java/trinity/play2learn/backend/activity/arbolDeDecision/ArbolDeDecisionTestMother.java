@@ -96,6 +96,7 @@ public final class ArbolDeDecisionTestMother {
             .build();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static ArbolDeDecisionActivityResponseDto arbolDeDecisionResponseDto(
         Long id,
         String introduction,

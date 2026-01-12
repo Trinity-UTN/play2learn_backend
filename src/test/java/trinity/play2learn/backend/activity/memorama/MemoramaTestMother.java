@@ -101,6 +101,7 @@ public final class MemoramaTestMother {
         return couples;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static MemoramaResponseDto memoramaResponseDto(
         Long id,
         List<?> couples

@@ -32,9 +32,11 @@ class FixedTermDepositRegisterControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private IFixedTermDepositRegisterService fixedTermDepositRegisterService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

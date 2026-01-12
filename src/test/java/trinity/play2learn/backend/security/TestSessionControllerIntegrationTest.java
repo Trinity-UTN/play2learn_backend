@@ -34,6 +34,7 @@ class TestSessionControllerIntegrationTest {
     @Autowired
     private IUserRepository userRepository;
 
+    @SuppressWarnings("removal")
     @MockBean
     private ImageUploadService imageUploadService;
 

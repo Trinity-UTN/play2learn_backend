@@ -61,6 +61,7 @@ class ActivityStudentCountServiceTest {
     @DisplayName("cu88CountActivitiesPerState")
     class CountActivitiesPerState {
 
+        @SuppressWarnings("unused")
         @Test
         @DisplayName("Given student with activities in different states When counting Then returns correct counts")
         void whenActivitiesInDifferentStates_returnsCorrectCounts() {

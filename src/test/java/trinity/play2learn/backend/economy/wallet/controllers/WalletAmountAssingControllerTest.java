@@ -29,15 +29,19 @@ class WalletAmountAssingControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private ITransactionGenerateService generateTransactionService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private IStudentGetByIdService studentGetByIdService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private ISubjectGetByIdService subjectGetByIdService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

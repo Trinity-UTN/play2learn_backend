@@ -81,6 +81,7 @@ public class TestController {
     private final ISignUpService signUpService;
 
 
+    @SuppressWarnings("unused")
     @PostMapping("/created")
     @Transactional
     public ResponseEntity<BaseResponse<String>> testCreated() {

@@ -64,6 +64,7 @@ class FixedTermDepositListPaginatedServiceTest {
     @DisplayName("cu99ListPaginatedFixedTermDeposits")
     class Cu99ListPaginatedFixedTermDeposits {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given valid pagination parameters When listing Then returns paginated fixed term deposits")
         void whenValidParameters_returnsPaginatedData() {
@@ -122,6 +123,7 @@ class FixedTermDepositListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given filters for state and days When listing Then applies all filters correctly")
         void whenFiltersProvided_appliesAllFilters() {
@@ -181,6 +183,7 @@ class FixedTermDepositListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given empty results When listing Then returns empty paginated data")
         void whenEmptyResults_returnsEmptyPaginatedData() {

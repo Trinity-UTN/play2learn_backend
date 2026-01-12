@@ -79,6 +79,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
     @DisplayName("cu66listNotApprovedActivitiesPaginated")
     class ListNotApprovedActivitiesPaginated {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given student with not approved activities When listing paginated Then returns paginated data with not approved activities")
         void whenNotApprovedActivitiesExist_returnsPaginatedData() {
@@ -148,6 +149,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given student with no not approved activities When listing paginated Then returns empty page")
         void whenNoNotApprovedActivities_returnsEmptyPage() {
@@ -184,6 +186,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given filter disapproved When listing paginated Then applies disapproved filter")
         void whenDisapprovedFilter_appliesFilter() {
