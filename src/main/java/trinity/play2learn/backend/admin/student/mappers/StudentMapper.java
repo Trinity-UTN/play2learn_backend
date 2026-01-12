@@ -86,6 +86,16 @@ public class StudentMapper {
             .build();
     }
 
+    public static StudentSimplificatedResponse toSimplificatedDto (Student student, boolean registered) {
+        return StudentSimplificatedResponse.builder()
+            .id(student.getId())
+            .name(student.getName())
+            .lastname(student.getLastname())
+            .dni(student.getDni())
+            .registered(registered)
+            .build();
+    }
+
     public static List<StudentSimplificatedResponse> toSimplificatedDtos (List<Student> students) {
         return students
             .stream()

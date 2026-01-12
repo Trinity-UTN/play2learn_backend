@@ -68,6 +68,7 @@ class ActivityListByTeacherPaginatedServiceTest {
     @DisplayName("cu111ListActivityByTeacherPaginated")
     class ListActivityByTeacherPaginated {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given teacher with activities When listing paginated Then returns paginated data with teacher's activities")
         void whenTeacherHasActivities_returnsPaginatedData() {
@@ -134,6 +135,7 @@ class ActivityListByTeacherPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given teacher with no activities When listing paginated Then returns empty paginated data")
         void whenNoActivities_returnsEmptyPage() {

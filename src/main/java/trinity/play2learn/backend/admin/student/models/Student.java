@@ -2,7 +2,6 @@ package trinity.play2learn.backend.admin.student.models;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -39,6 +38,7 @@ import trinity.play2learn.backend.user.models.User;
 public class Student {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Long id;
 
     @NotBlank
@@ -88,10 +88,6 @@ public class Student {
     public void restore () {
         this.deletedAt = null;
         user.restore();
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(id); // suficiente en entidades JPA
     }
 
     public String getCompleteName() {

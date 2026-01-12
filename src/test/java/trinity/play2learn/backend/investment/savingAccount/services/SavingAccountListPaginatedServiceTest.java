@@ -64,6 +64,7 @@ class SavingAccountListPaginatedServiceTest {
     @DisplayName("cu106listPaginatedSavingAccounts")
     class Cu106listPaginatedSavingAccounts {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given valid pagination parameters When listing Then returns paginated saving accounts")
         void whenValidParameters_returnsPaginatedData() {
@@ -124,6 +125,7 @@ class SavingAccountListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given filters When listing Then applies all filters correctly")
         void whenFiltersProvided_appliesAllFilters() {

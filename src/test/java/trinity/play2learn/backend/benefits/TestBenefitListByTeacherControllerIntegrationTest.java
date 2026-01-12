@@ -62,6 +62,7 @@ class TestBenefitListByTeacherControllerIntegrationTest {
     @Autowired
     private IBenefitRepository benefitRepository;
 
+    @SuppressWarnings("removal")
     @MockBean
     private ImageUploadService imageUploadService;
 

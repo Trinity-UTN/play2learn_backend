@@ -114,6 +114,7 @@ public final class PreguntadosTestMother {
         return questions;
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static PreguntadosResponseDto preguntadosResponseDto(
         Long id,
         List<?> questions

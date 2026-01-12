@@ -54,6 +54,7 @@ class StockListPaginatedServiceTest {
     @DisplayName("cu87ListPaginatedStock")
     class Cu87ListPaginatedStock {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given valid pagination parameters with search When listing Then returns paginated stocks")
         void whenValidParametersWithSearch_returnsPaginatedData() {
@@ -104,6 +105,7 @@ class StockListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given filters When listing Then applies all filters correctly")
         void whenFiltersProvided_appliesAllFilters() {

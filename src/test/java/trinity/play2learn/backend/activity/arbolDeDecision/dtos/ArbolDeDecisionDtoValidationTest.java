@@ -14,7 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import trinity.play2learn.backend.activity.activity.ActivityTestMother;
 import trinity.play2learn.backend.activity.arbolDeDecision.ArbolDeDecisionTestMother;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.request.ArbolDeDecisionActivityRequestDto;
 import trinity.play2learn.backend.activity.arbolDeDecision.dtos.request.ConsecuenceArbolDecisionRequestDto;

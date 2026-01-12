@@ -69,4 +69,12 @@ public class Profile {
         return Objects.hash(id); // suficiente en entidades JPA
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Profile profile = (Profile) obj;
+        return Objects.equals(id, profile.id);
+    }
+
 }

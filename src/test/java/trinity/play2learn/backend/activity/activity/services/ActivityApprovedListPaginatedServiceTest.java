@@ -75,6 +75,7 @@ class ActivityApprovedListPaginatedServiceTest {
     @DisplayName("cu69ListApprovedActivitiesPaginated")
     class ListApprovedActivitiesPaginated {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given student with approved activities When listing paginated Then returns paginated data with approved activities")
         void whenApprovedActivitiesExist_returnsPaginatedData() {
@@ -143,6 +144,7 @@ class ActivityApprovedListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given student with no approved activities When listing paginated Then returns empty page")
         void whenNoApprovedActivities_returnsEmptyPage() {
