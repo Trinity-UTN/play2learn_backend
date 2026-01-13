@@ -3,6 +3,7 @@ package trinity.play2learn.backend.activity.activity.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
@@ -12,7 +13,7 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 
-public interface IActivityCompletedRepository extends CrudRepository<ActivityCompleted, Long> {
+public interface IActivityCompletedRepository extends CrudRepository<ActivityCompleted, Long>, JpaSpecificationExecutor<ActivityCompleted> {
 
     //Trae todas las actividades completadas cuya actividad pertenezca a un docente
     List<ActivityCompleted> findByStateAndActivity_Subject_Teacher(ActivityCompletedState state, Teacher teacher);
