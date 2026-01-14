@@ -22,4 +22,6 @@ public interface IWalletRepository extends CrudRepository<Wallet, Long> {
     @Query("SELECT COUNT(w) + 1 FROM Wallet w WHERE w.student IN :students AND ((w.balance + COALESCE(w.invertedBalance, 0)) > (SELECT (w2.balance + COALESCE(w2.invertedBalance, 0)) FROM Wallet w2 WHERE w2.student = :targetStudent) OR ((w.balance + COALESCE(w.invertedBalance, 0)) = (SELECT (w2.balance + COALESCE(w2.invertedBalance, 0)) FROM Wallet w2 WHERE w2.student = :targetStudent) AND w.id < (SELECT w2.id FROM Wallet w2 WHERE w2.student = :targetStudent)))")
     Long findPositionByStudentInStudentsList(Student targetStudent, List<Student> students);
 
+    List<Wallet> findAll();
+
 }
