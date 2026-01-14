@@ -10,5 +10,6 @@ public enum TypeTransaction {
     STOCK,
     PLAZO_FIJO,
     INGRESO_CAJA_AHORRO,
-    RETIRO_CAJA_AHORRO
+    RETIRO_CAJA_AHORRO,
+    REINICIO_WALLET
 }
