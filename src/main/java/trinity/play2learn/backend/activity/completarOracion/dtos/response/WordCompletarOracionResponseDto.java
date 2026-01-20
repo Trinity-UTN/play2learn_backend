@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class WordCompletarOracionResponseDto {
     
     private Long id;
-    private String word;
+    private String wordOrder;
     private int order;
     private Boolean isMissing;
 }

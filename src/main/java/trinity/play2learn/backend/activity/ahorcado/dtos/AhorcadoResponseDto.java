@@ -15,6 +15,9 @@ import trinity.play2learn.backend.activity.activity.dtos.activityCreated.Activit
 public class AhorcadoResponseDto extends ActivityResponseDto {
 
     private String word;
-    private int errorsPermited; //Se devolvera el numero de errores permitidos
+    private String errorsPermited; //Se devolvera el nombre del enum Errors (TRES o CINCO)
+
+    private int errorsPermitedValue; //Se devolvera el valor del enum Errors (3 o 5)
+
 
 }

@@ -45,7 +45,8 @@ public class AhorcadoMapper implements IActivityMapper{
             .endDate(ahorcado.getEndDate())
             .attempts(ahorcado.getAttempts())
             .word(ahorcado.getWord())
-            .errorsPermited(ahorcado.getErrorsPermited().getValue()) //Devuelvo el valor entero de los errores.
+            .errorsPermited(ahorcado.getErrorsPermited().name()) //Devuelvo el nombre del enum Errors (TRES o CINCO)
+            .errorsPermitedValue(ahorcado.getErrorsPermited().getValue()) //Devuelvo el valor entero del enum Errors (3 o 5)
             .actualBalance(ahorcado.getActualBalance())
             .initialBalance(ahorcado.getInitialBalance())
             .typeReward(ahorcado.getTypeReward())
