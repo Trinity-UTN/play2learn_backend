@@ -27,7 +27,7 @@ public class WordCompletarOracionMapper {
     public static WordCompletarOracionResponseDto toDto(WordCompletarOracion word) {
         return WordCompletarOracionResponseDto.builder()
             .id(word.getId())
-            .word(word.getWord())
+            .wordOrder(word.getWord())
             .order(word.getWordOrder())
             .isMissing(word.getIsMissing())
             .build();
