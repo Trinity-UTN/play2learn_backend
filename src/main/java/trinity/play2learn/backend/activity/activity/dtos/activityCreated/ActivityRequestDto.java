@@ -3,6 +3,7 @@ package trinity.play2learn.backend.activity.activity.dtos.activityCreated;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public abstract class ActivityRequestDto {
     private String description;
 
     @NotNull (message = ValidationMessages.NOT_NULL_START_DATE)
+    @Future(message = ValidationMessages.FUTURE_START_DATE)
     private LocalDateTime startDate;
 
     @NotNull (message = ValidationMessages.NOT_NULL_END_DATE)
