@@ -13,9 +13,9 @@ import trinity.play2learn.backend.admin.subject.mappers.SubjectMapper;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
 @Component("noLudicaMapper")
-public class NoLudicaMapper implements IActivityMapper{
+public class NoLudicaMapper implements IActivityMapper {
 
-    public static NoLudica toModel (NoLudicaRequestDto dto, Subject subject) {
+    public static NoLudica toModel(NoLudicaRequestDto dto, Subject subject) {
         return NoLudica.builder()
                 .name("No Ludica")
                 .description(dto.getDescription())
@@ -25,8 +25,7 @@ public class NoLudicaMapper implements IActivityMapper{
                 .endDate(dto.getEndDate())
                 .attempts(dto.getAttempts())
                 .subject(subject)
-                .excercise(dto.getExcercise())
-                .tipoEntrega(dto.getTipoEntrega())
+                .exercise(dto.getExercise())
                 .actualBalance(0.0)
                 .initialBalance(dto.getInitialBalance())
                 .typeReward((dto.getTypeReward() != null) ? dto.getTypeReward() : TypeReward.EQUITATIVO)
@@ -44,8 +43,7 @@ public class NoLudicaMapper implements IActivityMapper{
                 .endDate(noLudica.getEndDate())
                 .attempts(noLudica.getAttempts())
                 .subject(SubjectMapper.toSimplifiedDto(noLudica.getSubject()))
-                .excercise(noLudica.getExcercise())
-                .tipoEntrega(noLudica.getTipoEntrega().name())
+                .exercise(noLudica.getExercise())
                 .actualBalance(noLudica.getActualBalance())
                 .initialBalance(noLudica.getInitialBalance())
                 .typeReward(noLudica.getTypeReward())
@@ -60,5 +58,5 @@ public class NoLudicaMapper implements IActivityMapper{
         NoLudica noLudica = (NoLudica) activity;
         return toDto(noLudica);
     }
-    
+
 }

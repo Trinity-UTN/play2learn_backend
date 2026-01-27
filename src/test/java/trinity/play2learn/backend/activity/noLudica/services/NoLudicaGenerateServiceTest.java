@@ -57,11 +57,10 @@ class NoLudicaGenerateServiceTest {
     @BeforeEach
     void setUp() {
         noLudicaGenerateService = new NoLudicaGenerateService(
-            findSubjectByIdService,
-            noLudicaRepository,
-            transactionGenerateService,
-            teacherGetByEmailService
-        );
+                findSubjectByIdService,
+                noLudicaRepository,
+                transactionGenerateService,
+                teacherGetByEmailService);
     }
 
     @Nested
@@ -75,33 +74,30 @@ class NoLudicaGenerateServiceTest {
             User user = ActivityTestMother.teacherUser(TEACHER_ID, TEACHER_EMAIL);
             Teacher teacher = ActivityTestMother.teacher(TEACHER_ID, TEACHER_EMAIL);
             Subject subject = ActivityTestMother.subjectWithTeacher(
-                ActivityTestMother.SUBJECT_ID,
-                "Matemáticas",
-                teacher
-            );
+                    ActivityTestMother.SUBJECT_ID,
+                    "Matemáticas",
+                    teacher);
             NoLudicaRequestDto requestDto = NoLudicaTestMother.validNoLudicaRequestDto();
             NoLudica savedNoLudica = NoLudicaTestMother.savedNoLudica(
-                ActivityTestMother.ACTIVITY_ID,
-                subject
-            );
+                    ActivityTestMother.ACTIVITY_ID,
+                    subject);
 
             when(teacherGetByEmailService.getByEmail(TEACHER_EMAIL)).thenReturn(teacher);
             when(findSubjectByIdService.findById(ActivityTestMother.SUBJECT_ID)).thenReturn(subject);
             when(noLudicaRepository.save(any(NoLudica.class))).thenReturn(savedNoLudica);
             when(transactionGenerateService.generate(
-                any(TypeTransaction.class),
-                any(Double.class),
-                any(String.class),
-                any(TransactionActor.class),
-                any(TransactionActor.class),
-                any(),
-                any(Subject.class),
-                any(NoLudica.class),
-                any(),
-                any(),
-                any(),
-                any()
-            )).thenReturn(mock(trinity.play2learn.backend.economy.transaction.models.Transaction.class));
+                    any(TypeTransaction.class),
+                    any(Double.class),
+                    any(String.class),
+                    any(TransactionActor.class),
+                    any(TransactionActor.class),
+                    any(),
+                    any(Subject.class),
+                    any(NoLudica.class),
+                    any(),
+                    any(),
+                    any(),
+                    any())).thenReturn(mock(trinity.play2learn.backend.economy.transaction.models.Transaction.class));
 
             // When
             NoLudicaResponseDto response = noLudicaGenerateService.cu45GenerateNoLudica(requestDto, user);
@@ -110,26 +106,24 @@ class NoLudicaGenerateServiceTest {
             assertThat(response).isNotNull();
             assertThat(response.getId()).isEqualTo(ActivityTestMother.ACTIVITY_ID);
             assertThat(response.getName()).isEqualTo("No Ludica");
-            assertThat(response.getExcercise()).isEqualTo(requestDto.getExcercise());
-            assertThat(response.getTipoEntrega()).isEqualTo(requestDto.getTipoEntrega().name());
+            assertThat(response.getExercise()).isEqualTo(requestDto.getExercise());
 
             verify(teacherGetByEmailService).getByEmail(TEACHER_EMAIL);
             verify(findSubjectByIdService).findById(ActivityTestMother.SUBJECT_ID);
             verify(noLudicaRepository).save(any(NoLudica.class));
             verify(transactionGenerateService).generate(
-                eq(TypeTransaction.ACTIVIDAD),
-                eq(NoLudicaTestMother.DEFAULT_INITIAL_BALANCE),
-                eq("Actividad No Ludica"),
-                eq(TransactionActor.SISTEMA),
-                eq(TransactionActor.SISTEMA),
-                eq(null),
-                eq(subject),
-                eq(savedNoLudica),
-                eq(null),
-                eq(null),
-                eq(null),
-                eq(null)
-            );
+                    eq(TypeTransaction.ACTIVIDAD),
+                    eq(NoLudicaTestMother.DEFAULT_INITIAL_BALANCE),
+                    eq("Actividad No Ludica"),
+                    eq(TransactionActor.SISTEMA),
+                    eq(TransactionActor.SISTEMA),
+                    eq(null),
+                    eq(subject),
+                    eq(savedNoLudica),
+                    eq(null),
+                    eq(null),
+                    eq(null),
+                    eq(null));
         }
 
         @Test
@@ -142,19 +136,18 @@ class NoLudicaGenerateServiceTest {
 
             when(teacherGetByEmailService.getByEmail(TEACHER_EMAIL)).thenReturn(teacher);
             when(findSubjectByIdService.findById(ActivityTestMother.SUBJECT_ID))
-                .thenThrow(new NotFoundException("La materia no fue encontrada"));
+                    .thenThrow(new NotFoundException("La materia no fue encontrada"));
 
             // When & Then
             assertThatThrownBy(() -> noLudicaGenerateService.cu45GenerateNoLudica(requestDto, user))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("La materia no fue encontrada");
+                    .isInstanceOf(NotFoundException.class)
+                    .hasMessageContaining("La materia no fue encontrada");
 
             verify(teacherGetByEmailService).getByEmail(TEACHER_EMAIL);
             verify(findSubjectByIdService).findById(ActivityTestMother.SUBJECT_ID);
             verify(noLudicaRepository, org.mockito.Mockito.never()).save(any());
             verify(transactionGenerateService, org.mockito.Mockito.never()).generate(
-                any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()
-            );
+                    any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any());
         }
 
         @Test
@@ -165,10 +158,9 @@ class NoLudicaGenerateServiceTest {
             Teacher teacher = ActivityTestMother.teacher(TEACHER_ID, TEACHER_EMAIL);
             Teacher otherTeacher = ActivityTestMother.teacher(500L, "other@example.com");
             Subject subject = ActivityTestMother.subjectWithTeacher(
-                ActivityTestMother.SUBJECT_ID,
-                "Matemáticas",
-                otherTeacher
-            );
+                    ActivityTestMother.SUBJECT_ID,
+                    "Matemáticas",
+                    otherTeacher);
             NoLudicaRequestDto requestDto = NoLudicaTestMother.validNoLudicaRequestDto();
 
             when(teacherGetByEmailService.getByEmail(TEACHER_EMAIL)).thenReturn(teacher);
@@ -176,15 +168,14 @@ class NoLudicaGenerateServiceTest {
 
             // When & Then
             assertThatThrownBy(() -> noLudicaGenerateService.cu45GenerateNoLudica(requestDto, user))
-                .isInstanceOf(ConflictException.class)
-                .hasMessageContaining("El docente no esta asignado a la materia");
+                    .isInstanceOf(ConflictException.class)
+                    .hasMessageContaining("El docente no esta asignado a la materia");
 
             verify(teacherGetByEmailService).getByEmail(TEACHER_EMAIL);
             verify(findSubjectByIdService).findById(ActivityTestMother.SUBJECT_ID);
             verify(noLudicaRepository, org.mockito.Mockito.never()).save(any());
             verify(transactionGenerateService, org.mockito.Mockito.never()).generate(
-                any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any()
-            );
+                    any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any(), any());
         }
 
         @Test
@@ -194,33 +185,30 @@ class NoLudicaGenerateServiceTest {
             User user = ActivityTestMother.teacherUser(TEACHER_ID, TEACHER_EMAIL);
             Teacher teacher = ActivityTestMother.teacher(TEACHER_ID, TEACHER_EMAIL);
             Subject subject = ActivityTestMother.subjectWithTeacher(
-                ActivityTestMother.SUBJECT_ID,
-                "Matemáticas",
-                teacher
-            );
+                    ActivityTestMother.SUBJECT_ID,
+                    "Matemáticas",
+                    teacher);
             NoLudicaRequestDto requestDto = NoLudicaTestMother.validNoLudicaRequestDto();
             NoLudica savedNoLudica = NoLudicaTestMother.savedNoLudica(
-                ActivityTestMother.ACTIVITY_ID,
-                subject
-            );
+                    ActivityTestMother.ACTIVITY_ID,
+                    subject);
 
             when(teacherGetByEmailService.getByEmail(TEACHER_EMAIL)).thenReturn(teacher);
             when(findSubjectByIdService.findById(ActivityTestMother.SUBJECT_ID)).thenReturn(subject);
             when(noLudicaRepository.save(any(NoLudica.class))).thenReturn(savedNoLudica);
             when(transactionGenerateService.generate(
-                any(TypeTransaction.class),
-                any(Double.class),
-                any(String.class),
-                any(TransactionActor.class),
-                any(TransactionActor.class),
-                any(),
-                any(Subject.class),
-                any(NoLudica.class),
-                any(),
-                any(),
-                any(),
-                any()
-            )).thenReturn(mock(trinity.play2learn.backend.economy.transaction.models.Transaction.class));
+                    any(TypeTransaction.class),
+                    any(Double.class),
+                    any(String.class),
+                    any(TransactionActor.class),
+                    any(TransactionActor.class),
+                    any(),
+                    any(Subject.class),
+                    any(NoLudica.class),
+                    any(),
+                    any(),
+                    any(),
+                    any())).thenReturn(mock(trinity.play2learn.backend.economy.transaction.models.Transaction.class));
 
             // When
             noLudicaGenerateService.cu45GenerateNoLudica(requestDto, user);
@@ -231,23 +219,18 @@ class NoLudicaGenerateServiceTest {
 
             NoLudica capturedNoLudica = noLudicaCaptor.getValue();
             assertThat(capturedNoLudica)
-                .extracting(
-                    NoLudica::getName,
-                    NoLudica::getDescription,
-                    NoLudica::getSubject,
-                    NoLudica::getInitialBalance,
-                    NoLudica::getExcercise,
-                    NoLudica::getTipoEntrega
-                )
-                .containsExactly(
-                    "No Ludica",
-                    requestDto.getDescription(),
-                    subject,
-                    NoLudicaTestMother.DEFAULT_INITIAL_BALANCE,
-                    requestDto.getExcercise(),
-                    requestDto.getTipoEntrega()
-                );
+                    .extracting(
+                            NoLudica::getName,
+                            NoLudica::getDescription,
+                            NoLudica::getSubject,
+                            NoLudica::getInitialBalance,
+                            NoLudica::getExercise)
+                    .containsExactly(
+                            "No Ludica",
+                            requestDto.getDescription(),
+                            subject,
+                            NoLudicaTestMother.DEFAULT_INITIAL_BALANCE,
+                            requestDto.getExercise());
         }
     }
 }
-
