@@ -24,7 +24,8 @@ public class UploadToCloudinaryService implements IUploadToCloudinaryService{
             return cloudinary.uploader().upload(
                     file.getBytes(),
                     ObjectUtils.asMap(
-                            "resource_type", "raw",    
+                            "resource_type", "auto",
+                            "format", "pdf",    
                             "use_filename", true,
                             "unique_filename", true,
                             "folder", "pdfs_no_ludica"
