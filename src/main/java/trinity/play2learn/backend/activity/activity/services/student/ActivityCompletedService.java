@@ -84,10 +84,15 @@ public class ActivityCompletedService implements IActivityCompletedService {
             throw new ConflictException("No se puede actualizar la actividad ya que no se encuentra en curso.");
         }
 
-        // Si el tiempo de intento es mayor al tiempo maximo de la actividad, se
-        // desaprueba automaticamente
-        if (this.calculateTimeAttemp(lastStartedOp.get().getStartedAt()) > activity.getMaxTime()) {
-            activityCompletedRequestDto.setState(ActivityCompletedState.DISAPPROVED);
+        // Si la actividad tiene un tiempo maximo, se valida que el tiempo de intento
+        // sea menor al tiempo maximo
+        if (activity.getMaxTime() > 0) {
+            
+            // Si el tiempo de intento es mayor al tiempo maximo de la actividad, se
+            // desaprueba automaticamente
+            if (this.calculateTimeAttemp(lastStartedOp.get().getStartedAt()) > activity.getMaxTime()) {
+                activityCompletedRequestDto.setState(ActivityCompletedState.DISAPPROVED);
+            }
         }
 
         ActivityCompleted lastStarted = lastStartedOp.get();
