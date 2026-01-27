@@ -5,10 +5,13 @@ import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedRequestDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityCompleted.ActivityCompletedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
@@ -19,6 +22,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNoLudicaStartService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
@@ -29,7 +33,7 @@ import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.configs.levels.ValueXp;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ActivityCompletedService implements IActivityCompletedService {
 
     private final IActivityGetByIdService activityFindByIdService;
@@ -45,6 +49,10 @@ public class ActivityCompletedService implements IActivityCompletedService {
     private final IActivityCompletedGetLastStartedService activityCompletedGetLastStartedService;
 
     private final IProfileUpdateLevelService profileUpdateLevelService;
+
+    @Autowired
+    @Lazy
+    private IActivityNoLudicaStartService activityNoLudicaStartService;
 
     // Map que sirve para mapear una Dificultad a un valor de XP
     private final Map<Difficulty, ValueXp> difficultyXpMap = Map.of(
@@ -77,6 +85,13 @@ public class ActivityCompletedService implements IActivityCompletedService {
             throw new ConflictException("La actividad ya ha sido aprobada.");
         }
 
+        /*
+        En caso de que la actividad sea no ludica, se inicia en el momento
+        en que se completa, esto para saltar la verificacion de los otros tipos de actividades
+        los cuales deben estar en curso para poder completarse
+        */
+        activityNoLudicaStartService.startNoLudicaActivity(user, activity);
+
         Optional<ActivityCompleted> lastStartedOp = activityCompletedGetLastStartedService
                 .getLastStartedInProgress(activity, student);
 
@@ -84,10 +99,15 @@ public class ActivityCompletedService implements IActivityCompletedService {
             throw new ConflictException("No se puede actualizar la actividad ya que no se encuentra en curso.");
         }
 
-        // Si el tiempo de intento es mayor al tiempo maximo de la actividad, se
-        // desaprueba automaticamente
-        if (this.calculateTimeAttemp(lastStartedOp.get().getStartedAt()) > activity.getMaxTime()) {
-            activityCompletedRequestDto.setState(ActivityCompletedState.DISAPPROVED);
+        // Si la actividad tiene un tiempo maximo, se valida que el tiempo de intento
+        // sea menor al tiempo maximo
+        if (activity.getMaxTime() > 0) {
+
+            // Si el tiempo de intento es mayor al tiempo maximo de la actividad, se
+            // desaprueba automaticamente
+            if (this.calculateTimeAttemp(lastStartedOp.get().getStartedAt()) > activity.getMaxTime()) {
+                activityCompletedRequestDto.setState(ActivityCompletedState.DISAPPROVED);
+            }
         }
 
         ActivityCompleted lastStarted = lastStartedOp.get();
