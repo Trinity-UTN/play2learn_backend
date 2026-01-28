@@ -37,7 +37,7 @@ public class ActivityCompletedListPendingService implements IActivityCompletedLi
 
         Teacher teacher = teacherGetByEmailService.getByEmail(user.getEmail());
 
-        //Trae todas las actividades completadas cuya actividad pertenezca a un docente
+        //Trae todas las actividades completadas cuya materia pertenezca a un docente
         List<ActivityCompleted> pendingActivitiesCompleted = activityCompletedRepository.findByStateAndActivity_Subject_Teacher(
             ActivityCompletedState.PENDING, teacher);
         

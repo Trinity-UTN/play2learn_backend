@@ -7,7 +7,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityApprovedListPaginatedService;
@@ -34,7 +34,7 @@ public class ActivityApprovedListPaginatedService implements IActivityApprovedLi
 
     @Override
     @Transactional(readOnly = true)
-    public PaginatedData<ActivityStudentApprovedResponseDto> cu69ListApprovedActivitiesPaginated(int page, int size,
+    public PaginatedData<ActivityStudentStateResponseDto> cu69ListApprovedActivitiesPaginated(int page, int size,
             String orderBy, String orderType, String search, List<String> filters, List<String> filterValues,
             User user) {
 
@@ -74,7 +74,7 @@ public class ActivityApprovedListPaginatedService implements IActivityApprovedLi
 
         Page<Activity> pageResult = activityPaginatedRepository.findAll(spec, pageable);
 
-        List<ActivityStudentApprovedResponseDto> dtos = activityCreateApprovedDtosService
+        List<ActivityStudentStateResponseDto> dtos = activityCreateApprovedDtosService
                 .createApprovedDtos(pageResult.getContent(), student);
 
         return PaginationHelper.fromPage(pageResult, dtos);
