@@ -52,13 +52,6 @@ public class ActivityTeacherReviewNoLudicaService implements IActivityTeacherRev
             throw new ConflictException("La actividad no se encuentra en estado pendiente");
         }
 
-        // Valida que la actividad no haya sido aprobada
-        ActivityCompletedState activityCompletedState = activityGetCompletedStateService
-                .getActivityCompletedState(activityCompleted.getActivity(), activityCompleted.getStudent());
-        if (activityCompletedState == ActivityCompletedState.APPROVED) {
-            throw new ConflictException("La actividad ya ha sido aprobada.");
-        }
-
         activityCompleted.setScore(activityReviewNoLudicaDto.getScore());
 
         activityCompleted.setComment(activityReviewNoLudicaDto.getComment());
