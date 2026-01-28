@@ -11,18 +11,17 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 @Data
 @Builder
 @AllArgsConstructor
-public class ActivityStudentApprovedResponseDto {
-    
+public class ActivityStudentStateResponseDto {
+
     private Long id;
-    private String name; 
+    private String name;
     private String description;
     private Difficulty difficulty;
     private Long subjectId;
     private String subjectName;
     private int attempts;
-    private Integer remainingAttempts; //Intentos restantes del estudiante en la actividad
+    private Integer remainingAttempts; // Intentos restantes del estudiante en la actividad
     private LocalDateTime completedAt;
     private Double reward;
-    private ActivityCompletedState state; //APPROVE
+    private ActivityCompletedState state; // APPROVE, PENDING, DISAPPROVED
 }
-

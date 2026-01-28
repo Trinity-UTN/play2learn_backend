@@ -21,7 +21,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityListApproveByStudentService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityListNotApprovedByStudentService;
@@ -45,18 +45,16 @@ class ActivityListByStudentControllerTest {
     private IActivityListApproveByStudentService activityListApproveByStudentService;
 
     private List<ActivityStudentNotApprovedResponseDto> notApprovedResponses;
-    private List<ActivityStudentApprovedResponseDto> approvedResponses;
+    private List<ActivityStudentStateResponseDto> approvedResponses;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ActivityListByStudentController(
-                    activityListNotApprovedByStudentService,
-                    activityListApproveByStudentService
-                )
-            )
-            .setControllerAdvice(new GlobalExceptionHandler(null))
-            .build();
+                        activityListNotApprovedByStudentService,
+                        activityListApproveByStudentService))
+                .setControllerAdvice(new GlobalExceptionHandler(null))
+                .build();
 
         notApprovedResponses = buildNotApprovedResponses();
         approvedResponses = buildApprovedResponses();
@@ -66,27 +64,25 @@ class ActivityListByStudentControllerTest {
 
     private List<ActivityStudentNotApprovedResponseDto> buildNotApprovedResponses() {
         return List.of(
-            ActivityStudentNotApprovedResponseDto.builder()
-                .id(1L)
-                .name("Ahorcado")
-                .remainingAttempts(2)
-                .build(),
-            ActivityStudentNotApprovedResponseDto.builder()
-                .id(2L)
-                .name("Preguntados")
-                .remainingAttempts(1)
-                .build()
-        );
+                ActivityStudentNotApprovedResponseDto.builder()
+                        .id(1L)
+                        .name("Ahorcado")
+                        .remainingAttempts(2)
+                        .build(),
+                ActivityStudentNotApprovedResponseDto.builder()
+                        .id(2L)
+                        .name("Preguntados")
+                        .remainingAttempts(1)
+                        .build());
     }
 
-    private List<ActivityStudentApprovedResponseDto> buildApprovedResponses() {
+    private List<ActivityStudentStateResponseDto> buildApprovedResponses() {
         return List.of(
-            ActivityStudentApprovedResponseDto.builder()
-                .id(3L)
-                .name("Ahorcado")
-                .reward(50.0)
-                .build()
-        );
+                ActivityStudentStateResponseDto.builder()
+                        .id(3L)
+                        .name("Ahorcado")
+                        .reward(50.0)
+                        .build());
     }
 
     @Nested
@@ -98,21 +94,19 @@ class ActivityListByStudentControllerTest {
         void shouldReturnNotApprovedActivities() throws Exception {
             // Given
             when(activityListNotApprovedByStudentService.cu62ListNotApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            )).thenReturn(notApprovedResponses);
+                    org.mockito.ArgumentMatchers.any(User.class))).thenReturn(notApprovedResponses);
 
             // When & Then
             performGetNotApproved()
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()").value(2))
-                .andExpect(jsonPath("$.data[0].id").value(1L))
-                .andExpect(jsonPath("$.data[0].name").value("Ahorcado"))
-                .andExpect(jsonPath("$.data[1].id").value(2L))
-                .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.length()").value(2))
+                    .andExpect(jsonPath("$.data[0].id").value(1L))
+                    .andExpect(jsonPath("$.data[0].name").value("Ahorcado"))
+                    .andExpect(jsonPath("$.data[1].id").value(2L))
+                    .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
 
             verify(activityListNotApprovedByStudentService).cu62ListNotApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            );
+                    org.mockito.ArgumentMatchers.any(User.class));
         }
 
         @Test
@@ -120,18 +114,16 @@ class ActivityListByStudentControllerTest {
         void shouldReturnEmptyNotApprovedList() throws Exception {
             // Given
             when(activityListNotApprovedByStudentService.cu62ListNotApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            )).thenReturn(new ArrayList<>());
+                    org.mockito.ArgumentMatchers.any(User.class))).thenReturn(new ArrayList<>());
 
             // When & Then
             performGetNotApproved()
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()").value(0))
-                .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.length()").value(0))
+                    .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
 
             verify(activityListNotApprovedByStudentService).cu62ListNotApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            );
+                    org.mockito.ArgumentMatchers.any(User.class));
         }
     }
 
@@ -144,21 +136,19 @@ class ActivityListByStudentControllerTest {
         void shouldReturnApprovedActivities() throws Exception {
             // Given
             when(activityListApproveByStudentService.cu63ListApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            )).thenReturn(approvedResponses);
+                    org.mockito.ArgumentMatchers.any(User.class))).thenReturn(approvedResponses);
 
             // When & Then
             performGetApproved()
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()").value(1))
-                .andExpect(jsonPath("$.data[0].id").value(3L))
-                .andExpect(jsonPath("$.data[0].name").value("Ahorcado"))
-                .andExpect(jsonPath("$.data[0].reward").value(50.0))
-                .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.length()").value(1))
+                    .andExpect(jsonPath("$.data[0].id").value(3L))
+                    .andExpect(jsonPath("$.data[0].name").value("Ahorcado"))
+                    .andExpect(jsonPath("$.data[0].reward").value(50.0))
+                    .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
 
             verify(activityListApproveByStudentService).cu63ListApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            );
+                    org.mockito.ArgumentMatchers.any(User.class));
         }
 
         @Test
@@ -166,18 +156,16 @@ class ActivityListByStudentControllerTest {
         void shouldReturnEmptyApprovedList() throws Exception {
             // Given
             when(activityListApproveByStudentService.cu63ListApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            )).thenReturn(new ArrayList<>());
+                    org.mockito.ArgumentMatchers.any(User.class))).thenReturn(new ArrayList<>());
 
             // When & Then
             performGetApproved()
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.length()").value(0))
-                .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.length()").value(0))
+                    .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
 
             verify(activityListApproveByStudentService).cu63ListApprovedActivitiesByStudent(
-                org.mockito.ArgumentMatchers.any(User.class)
-            );
+                    org.mockito.ArgumentMatchers.any(User.class));
         }
     }
 
@@ -189,4 +177,3 @@ class ActivityListByStudentControllerTest {
         return mockMvc.perform(get(APPROVED_PATH));
     }
 }
-

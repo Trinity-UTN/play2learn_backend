@@ -4,6 +4,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
+import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 
 public class ActivityCompletedSpecs {
@@ -15,6 +16,10 @@ public class ActivityCompletedSpecs {
 
     public static Specification<ActivityCompleted> filterByTeacher(Teacher teacher) {
         return (root, query, cb) -> cb.equal(root.get("activity").get("subject").get("teacher"), teacher);
+    }
+
+    public static Specification<ActivityCompleted> filterByStudent(Student student) {
+        return (root, query, cb) -> cb.equal(root.get("student"), student);
     }
 
     public static Specification<ActivityCompleted> filterByState(ActivityCompletedState state) {
