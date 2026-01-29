@@ -30,7 +30,6 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNoLudicaStartService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
 import trinity.play2learn.backend.activity.activity.services.student.ActivityCompletedService;
 import trinity.play2learn.backend.admin.student.models.Student;
@@ -60,8 +59,6 @@ class ActivityCompletedServiceTest {
     private IActivityCompletedStrategyService disapprovedStrategyService;
     @Mock
     private IProfileUpdateLevelService profileUpdateLevelService;
-    @Mock
-    private IActivityNoLudicaStartService activityNoLudicaStartService;
     @Mock
     private ActivityCompletedService activityCompletedService;
 

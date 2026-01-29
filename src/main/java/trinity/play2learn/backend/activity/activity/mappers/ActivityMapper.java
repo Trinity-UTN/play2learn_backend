@@ -16,7 +16,7 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 public class ActivityMapper {
 
         public static ActivityStudentNotApprovedResponseDto toNotApprovedDto(
-                        Activity activity, Integer remainingAttempts, Boolean pending,
+                        Activity activity, Integer remainingAttempts,
                         ActivityStatus status, Double minReward, Double maxReward) {
 
                 return ActivityStudentNotApprovedResponseDto.builder()
@@ -34,7 +34,6 @@ public class ActivityMapper {
                                 .status(status)
                                 .minReward(minReward)
                                 .maxReward(maxReward)
-                                .pending(pending)
                                 .build();
         }
 

@@ -19,9 +19,6 @@ public class ActivityReviewNoLudicaRequestDto {
     private Long activityCompletedId;
 
     @NotNull
-    private Long studentId;
-
-    @NotNull
     private ActivityCompletedState state;
 
     @NotNull

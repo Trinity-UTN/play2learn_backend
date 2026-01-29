@@ -15,7 +15,6 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityListPendingPaginatedService;
 import trinity.play2learn.backend.activity.activity.specs.ActivityCompletedSpecs;
-import trinity.play2learn.backend.activity.activity.specs.ActivitySpecs;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;

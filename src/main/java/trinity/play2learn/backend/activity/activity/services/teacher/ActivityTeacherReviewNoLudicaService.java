@@ -12,7 +12,6 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityTeacherReviewNoLudicaService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedByIdService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
 import trinity.play2learn.backend.activity.noLudica.models.NoLudica;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
@@ -25,7 +24,6 @@ public class ActivityTeacherReviewNoLudicaService implements IActivityTeacherRev
 
     private final ITeacherGetByEmailService teacherGetByEmailService;
     private final IActivityGetCompletedByIdService activityGetCompletedByIdService;
-    private final IActivityGetCompletedStateService activityGetCompletedStateService;
     private final Map<String, IActivityCompletedStrategyService> activityCompletedStrategyServiceMap;
 
     @Override
@@ -52,17 +50,11 @@ public class ActivityTeacherReviewNoLudicaService implements IActivityTeacherRev
             throw new ConflictException("La actividad no se encuentra en estado pendiente");
         }
 
-        // Valida que la actividad no haya sido aprobada
-        ActivityCompletedState activityCompletedState = activityGetCompletedStateService
-                .getActivityCompletedState(activityCompleted.getActivity(), activityCompleted.getStudent());
-        if (activityCompletedState == ActivityCompletedState.APPROVED) {
-            throw new ConflictException("La actividad ya ha sido aprobada.");
-        }
-
         activityCompleted.setScore(activityReviewNoLudicaDto.getScore());
 
         activityCompleted.setComment(activityReviewNoLudicaDto.getComment());
 
+        //Llamo a la estrategia correspondiente
         IActivityCompletedStrategyService strategyService = activityCompletedStrategyServiceMap
                 .get(activityReviewNoLudicaDto.getState().name());
 

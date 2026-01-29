@@ -63,6 +63,10 @@ public class ActivityStartService implements IActivityStartService{
             throw new ConflictException("La actividad ya ha sido aprobada.");
         }
 
+        if (activityCompletedState == ActivityCompletedState.PENDING) {
+            throw new ConflictException("La actividad esta pendiente de revision.");
+        }
+
         Integer remainingAttempts = activityGetRemainingAttemptsService.getStudentRemainingAttempts(activity, student);
 
         if (remainingAttempts == 0) {
