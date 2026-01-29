@@ -53,10 +53,9 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
         // esta asignado
         List<Activity> activities = activityGetByStudentService.getByStudent(student);
 
-        // Filtro por las no aprobadas
+        // Filtro por las no aprobadas y no pendientes
         List<Activity> notApprovedActivities = activityFilterNotApprovedService.filterByNotApproved(activities,
                 student);
-
 
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
         Specification<Activity> spec = Specification.where(ActivitySpecs.notDeleted());
