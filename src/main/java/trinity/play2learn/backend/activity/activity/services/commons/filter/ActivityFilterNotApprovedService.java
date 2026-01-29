@@ -16,12 +16,17 @@ public class ActivityFilterNotApprovedService implements IActivityFilterNotAppro
     
     private final IActivityGetCompletedStateService activityGetCompletedStateService;
 
+    //Filtra las actividades no aprobadas y no pendientes
     @Override
     public List<Activity> filterByNotApproved(List<Activity> activities, Student student) {
 
         return activities
             .stream()
-            .filter(activity -> activityGetCompletedStateService.getActivityCompletedState(activity, student) != ActivityCompletedState.APPROVED)
+            .filter(activity -> {
+
+                ActivityCompletedState state = activityGetCompletedStateService.getActivityCompletedState(activity, student);
+                return state != ActivityCompletedState.APPROVED && state != ActivityCompletedState.PENDING;
+            })
             .toList();
     }
     
