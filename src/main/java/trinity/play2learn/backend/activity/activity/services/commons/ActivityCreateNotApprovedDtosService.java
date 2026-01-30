@@ -15,6 +15,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateNotApprovedDtosService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetRemainingAttemptsService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetStatusService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityIsBeingDoneService;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 @Service
@@ -26,6 +27,8 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
     private final IActivityGetStatusService activityGetStatusService;
 
     private final Map<String, IActivityCalculateRewardStrategyService> activityCalculateRewardStrategyServiceMap;
+
+    private final IActivityIsBeingDoneService activityIsBeingDoneService;
 
     @Override
     public List<ActivityStudentNotApprovedResponseDto> createNotApprovedDtos(List<Activity> activities, Student student) {
@@ -44,7 +47,14 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
             
             Double maxReward = Math.floor(rewardStrategyService.execute(activity));
             
-            activitiesDto.add(ActivityMapper.toNotApprovedDto(activity, remainingAttempts, activityStatus, minReward, maxReward));
+            activitiesDto.add(ActivityMapper.toNotApprovedDto(
+                activity, 
+                remainingAttempts, 
+                activityStatus, 
+                minReward, 
+                maxReward, 
+                activityIsBeingDoneService.execute(activity, student)
+            ));
 
         }
 

@@ -17,7 +17,7 @@ public class ActivityMapper {
 
         public static ActivityStudentNotApprovedResponseDto toNotApprovedDto(
                         Activity activity, Integer remainingAttempts,
-                        ActivityStatus status, Double minReward, Double maxReward) {
+                        ActivityStatus status, Double minReward, Double maxReward, boolean isBeingDone) {
 
                 return ActivityStudentNotApprovedResponseDto.builder()
                                 .id(activity.getId())
@@ -34,6 +34,7 @@ public class ActivityMapper {
                                 .status(status)
                                 .minReward(minReward)
                                 .maxReward(maxReward)
+                                .isBeingDone(isBeingDone)
                                 .build();
         }
 
