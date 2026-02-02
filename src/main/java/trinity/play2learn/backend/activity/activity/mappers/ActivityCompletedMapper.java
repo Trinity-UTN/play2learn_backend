@@ -73,6 +73,7 @@ public class ActivityCompletedMapper {
             .correctAnswers(activityCompleted.getCorrectAnswers())
             .incorrectAnswers(activityCompleted.getIncorrectAnswers())
             .unanswered(activityCompleted.getUnanswered())
+            .comment(activityCompleted.getComment())
             .build();
     }
 
