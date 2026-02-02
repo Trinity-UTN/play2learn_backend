@@ -15,7 +15,7 @@ import trinity.play2learn.backend.configs.messages.ValidationMessages;
 public class NoLudicaRequestDto extends ActivityRequestDto {
 
     @NotNull(message = ValidationMessages.NOT_NULL_EXCERSICE)
-    @Size(max = 300, message = ValidationMessages.MAX_LENGTH_EXCERSICE)
+    @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_EXCERSICE)
     private String exercise;
 
 }
