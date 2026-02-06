@@ -3,6 +3,7 @@ package trinity.play2learn.backend.profile.ranking.mappers;
 import java.util.ArrayList;
 import java.util.List;
 
+import trinity.play2learn.backend.profile.avatar.mappers.AspectMapper;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardParticipantResponseDto;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardResponseDto;
 import trinity.play2learn.backend.admin.student.models.Student;
@@ -14,6 +15,9 @@ public class LeaderboardByActivitiesMapper {
             .position(position)
             .name(student.getLastname()+" "+student.getName())
             .quantity(quantity)
+            .selectedBody(student.getProfile().getSelectedBody() != null ? AspectMapper.toSimpleDto(student.getProfile().getSelectedBody()) : null)
+            .selectedShirt(student.getProfile().getSelectedShirt() != null ? AspectMapper.toSimpleDto(student.getProfile().getSelectedShirt()) : null)
+            .selectedHat(student.getProfile().getSelectedHat() != null ? AspectMapper.toSimpleDto(student.getProfile().getSelectedHat()) : null)
             .build();
     }
 

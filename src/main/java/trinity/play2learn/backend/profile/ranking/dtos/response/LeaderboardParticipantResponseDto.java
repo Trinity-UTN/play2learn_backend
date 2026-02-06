@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import trinity.play2learn.backend.profile.avatar.dtos.response.AspectSimpleResponseDto;
 
 @Data
 @Builder
@@ -16,5 +17,11 @@ public class LeaderboardParticipantResponseDto {
     private String name;
 
     private Double quantity;
+
+    private AspectSimpleResponseDto selectedBody;
+
+    private AspectSimpleResponseDto selectedShirt;
+
+    private AspectSimpleResponseDto selectedHat; 
 
 }
