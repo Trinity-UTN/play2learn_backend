@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
+import trinity.play2learn.backend.profile.avatar.mappers.AspectMapper;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardParticipantResponseDto;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardResponseDto;
 
@@ -14,6 +15,9 @@ public class LeaderboardByCoinsMapper {
             .position(position)
             .name(wallet.getStudent().getLastname()+ " " + wallet.getStudent().getName())
             .quantity(Math.round((wallet.getBalance()+wallet.getInvertedBalance()) * 100.0) / 100.0)
+            .selectedBody(wallet.getStudent().getProfile().getSelectedBody() != null ? AspectMapper.toSimpleDto(wallet.getStudent().getProfile().getSelectedBody()) : null)
+            .selectedShirt(wallet.getStudent().getProfile().getSelectedShirt() != null ? AspectMapper.toSimpleDto(wallet.getStudent().getProfile().getSelectedShirt()) : null)
+            .selectedHat(wallet.getStudent().getProfile().getSelectedHat() != null ? AspectMapper.toSimpleDto(wallet.getStudent().getProfile().getSelectedHat()) : null)
             .build();
     }
 
