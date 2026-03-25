@@ -21,15 +21,16 @@ import trinity.play2learn.backend.user.models.User;
 @AllArgsConstructor
 @RequestMapping("/notifications/mark-as-read")
 public class NotificationMarkAsReadController {
-    
+
     private final INotificationMarkAsReadService notificationMarkAsReadService;
 
     @PutMapping("/{notificationId}")
-    @SessionRequired(roles = {Role.ROLE_STUDENT, Role.ROLE_TEACHER})
-    public ResponseEntity<BaseResponse<NotificationResponseDto>> markAsRead(@SessionUser User user, @PathVariable Long notificationId) {
+    @SessionRequired(roles = { Role.ROLE_STUDENT, Role.ROLE_TEACHER })
+    public ResponseEntity<BaseResponse<NotificationResponseDto>> markAsRead(@SessionUser User user,
+            @PathVariable Long notificationId) {
 
         return ResponseFactory.ok(
-            notificationMarkAsReadService.markAsRead(user, notificationId), 
-            SuccessfulMessages.updatedSuccessfully("Notificacion"));
+                notificationMarkAsReadService.cu118markAsRead(user, notificationId),
+                SuccessfulMessages.updatedSuccessfully("Notificacion"));
     }
 }
