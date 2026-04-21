@@ -16,11 +16,19 @@ public class CourseSpecs {
     }
 
     // Filtro dinámico: cualquier campo = valor exacto (ej: Course_type = 'primario')
-    public static Specification<Course> genericFilter (String campo, String valor) {
+    public static Specification<Course> genericFilter (String field, String value) {
+        
+        if ("active".equalsIgnoreCase(field)) {
+            boolean isActive = Boolean.parseBoolean(value);
+            return (root, query, cb) -> isActive
+                    ? cb.isNull(root.get("deletedAt"))
+                    : cb.isNotNull(root.get("deletedAt")); 
+        }
+
         return (root, query, cb) -> {
             try {
                 // Este get es dinámico, pero puede fallar si el campo no existe
-                return cb.equal(root.get(campo), valor);
+                return cb.equal(root.get(field), value);
             } catch (IllegalArgumentException e) {
                 // Esto es útil si querés ignorar filtros inválidos silenciosamente
                 return cb.conjunction(); // no aplica ningún filtro

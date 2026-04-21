@@ -23,6 +23,14 @@ public class TeacherSpecs {
 
     // Filtro dinámico: cualquier campo = valor exacto (ej: dni = '12345678')
     public static Specification<Teacher> genericFilter(String field, String value) {
+        
+        if ("active".equalsIgnoreCase(field)) {
+            boolean isActive = Boolean.parseBoolean(value);
+            return (root, query, cb) -> isActive
+                    ? cb.isNull(root.get("deletedAt")) 
+                    : cb.isNotNull(root.get("deletedAt")); 
+        }
+
         return (root, query, cb) -> {
             try {
                 return cb.equal(root.get(field), value);

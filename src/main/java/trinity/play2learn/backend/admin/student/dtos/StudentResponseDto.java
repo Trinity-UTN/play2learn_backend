@@ -38,6 +38,4 @@ public class StudentResponseDto {
     private ProfileResponseDto profile;
 
     private WalletResponseDto wallet;
-
-
 }

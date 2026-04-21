@@ -32,7 +32,13 @@ public class StudentListPaginatedService implements IStudentListPaginatedService
             String orderType,
             String search,
             List<String> filters,
-            List<String> filterValues) {
+            List<String> filterValues
+        ) {
+
+        if ("active".equalsIgnoreCase(orderBy)) {
+            orderBy = "deletedAt";
+            orderType = "DESC".equalsIgnoreCase(orderType) ? "ASC" : "DESC";
+        }
 
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
         Specification<Student> spec = Specification.where(null); // Quite restriction notDeleted
