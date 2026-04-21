@@ -27,6 +27,8 @@ public class StudentResponseDto {
 
     private LocalDate birthDate;
 
+    private int age;
+    
     private String emailTutor;
     
     private UserResponseDto user;

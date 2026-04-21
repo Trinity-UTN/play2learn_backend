@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.admin.student.mappers;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
@@ -31,12 +33,14 @@ public class StudentMapper {
     }
 
     public static StudentResponseDto toDto(Student student) {
+        int age = student.getBirthDate() != null ? Period.between(student.getBirthDate(), LocalDate.now()).getYears() : 0;
         return StudentResponseDto.builder()
             .id(student.getId())
             .name(student.getName())
             .lastname(student.getLastname())
             .dni(student.getDni())
             .birthDate(student.getBirthDate())
+            .age(age)
             .emailTutor(student.getEmailTutor())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
