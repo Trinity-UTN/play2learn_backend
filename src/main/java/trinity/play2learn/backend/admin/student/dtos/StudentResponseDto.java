@@ -25,7 +25,7 @@ public class StudentResponseDto {
 
     private String dni;
 
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
     private String emailTutor;
     

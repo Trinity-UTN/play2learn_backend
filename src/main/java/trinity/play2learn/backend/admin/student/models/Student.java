@@ -75,7 +75,7 @@ public class Student {
     private Wallet wallet;
 
     @Column(nullable = true)
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
     @Column(nullable = true)
     private String emailTutor;
