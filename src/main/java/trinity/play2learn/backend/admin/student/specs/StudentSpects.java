@@ -4,7 +4,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 import trinity.play2learn.backend.admin.student.models.Student;
 
-
 public class StudentSpects {
 
     // Filtro base: trae solo los que NO fueron eliminados lógicamente
@@ -13,11 +12,16 @@ public class StudentSpects {
     }
 
     // Filtro por búsqueda textual (ej: nombre LIKE %search%)
-    public static Specification<Student> nameContains(String search) {
-        return (root, query, cb) -> cb.like(cb.lower(root.get("name")), "%" + search.toLowerCase() + "%");
+    public static Specification<Student> nameOrLastNameContains(String search) {
+        return (root, query, cb) -> {
+            String lowered = "%" + search.toLowerCase() + "%";
+            return cb.or(
+                    cb.like(cb.lower(root.get("name")), lowered),
+                    cb.like(cb.lower(root.get("lastname")), lowered));
+        };
     }
 
-    // Filtro dinámico: cualquier campo = valor exacto 
+    // Filtro dinámico: cualquier campo = valor exacto
     public static Specification<Student> genericFilter(String campo, String valor) {
         return (root, query, cb) -> {
             try {

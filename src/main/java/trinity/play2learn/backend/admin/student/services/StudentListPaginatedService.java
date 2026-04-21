@@ -20,26 +20,25 @@ import trinity.play2learn.backend.utils.PaginatorUtils;
 
 @Service
 @AllArgsConstructor
-public class StudentListPaginatedService implements IStudentListPaginatedService{
+public class StudentListPaginatedService implements IStudentListPaginatedService {
 
     private final IStudentRepository studentRepository;
 
     @Override
     public PaginatedData<StudentResponseDto> cu21ListPaginatedStudents(
-        int page, 
-        int size, 
-        String orderBy,
-        String orderType, 
-        String search, 
-        List<String> filters, 
-        List<String> filterValues
-        ) {
+            int page,
+            int size,
+            String orderBy,
+            String orderType,
+            String search,
+            List<String> filters,
+            List<String> filterValues) {
 
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
         Specification<Student> spec = Specification.where(null); // Quite restriction notDeleted
 
         if (search != null && !search.isBlank()) {
-        spec = spec.and(StudentSpects.nameContains(search));
+            spec = spec.and(StudentSpects.nameOrLastNameContains(search));
         }
         if (filters != null && filterValues != null && filters.size() == filterValues.size()) {
             for (int i = 0; i < filters.size(); i++) {
@@ -53,5 +52,5 @@ public class StudentListPaginatedService implements IStudentListPaginatedService
 
         return PaginationHelper.fromPage(pageResult, dtos);
     }
-    
+
 }

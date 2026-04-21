@@ -65,45 +65,46 @@ class StudentListPaginatedServiceTest {
             Page<Student> pageResult = new PageImpl<>(List.of(student), pageable, 1);
 
             StudentResponseDto studentDto = StudentResponseDto.builder()
-                .id(student.getId())
-                .name(student.getName())
-                .active(true)
-                .build();
+                    .id(student.getId())
+                    .name(student.getName())
+                    .active(true)
+                    .build();
             PaginatedData<StudentResponseDto> expectedPaginatedData = PaginatedData.<StudentResponseDto>builder()
-                .results(List.of(studentDto))
-                .count(1)
-                .totalPages(1)
-                .currentPage(PAGE)
-                .pageSize(SIZE)
-                .build();
+                    .results(List.of(studentDto))
+                    .count(1)
+                    .totalPages(1)
+                    .currentPage(PAGE)
+                    .pageSize(SIZE)
+                    .build();
 
             when(studentRepository.findAll(any(), eq(pageable))).thenReturn(pageResult);
 
             try (
-                MockedStatic<PaginatorUtils> paginatorUtilsMock = mockStatic(PaginatorUtils.class);
-                MockedStatic<StudentSpects> studentSpectsMock = mockStatic(StudentSpects.class);
-                MockedStatic<StudentMapper> studentMapperMock = mockStatic(StudentMapper.class);
-                MockedStatic<PaginationHelper> paginationHelperMock = mockStatic(PaginationHelper.class)
-            ) {
-                paginatorUtilsMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE)).thenReturn(pageable);
+                    MockedStatic<PaginatorUtils> paginatorUtilsMock = mockStatic(PaginatorUtils.class);
+                    MockedStatic<StudentSpects> studentSpectsMock = mockStatic(StudentSpects.class);
+                    MockedStatic<StudentMapper> studentMapperMock = mockStatic(StudentMapper.class);
+                    MockedStatic<PaginationHelper> paginationHelperMock = mockStatic(PaginationHelper.class)) {
+                paginatorUtilsMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
+                        .thenReturn(pageable);
 
                 Specification<Student> nameSpec = (root, query, cb) -> null;
                 Specification<Student> courseSpec = (root, query, cb) -> null;
                 Specification<Student> activeSpec = (root, query, cb) -> null;
 
-                studentSpectsMock.when(() -> StudentSpects.nameContains(search)).thenReturn(nameSpec);
+                studentSpectsMock.when(() -> StudentSpects.nameOrLastNameContains(search)).thenReturn(nameSpec);
                 studentSpectsMock.when(() -> StudentSpects.genericFilter("courseId", "20")).thenReturn(courseSpec);
                 studentSpectsMock.when(() -> StudentSpects.genericFilter("active", "true")).thenReturn(activeSpec);
 
-                studentMapperMock.when(() -> StudentMapper.toListDto(pageResult.getContent())).thenReturn(List.of(studentDto));
-                paginationHelperMock.when(() -> PaginationHelper.fromPage(pageResult, List.of(studentDto))).thenReturn(expectedPaginatedData);
+                studentMapperMock.when(() -> StudentMapper.toListDto(pageResult.getContent()))
+                        .thenReturn(List.of(studentDto));
+                paginationHelperMock.when(() -> PaginationHelper.fromPage(pageResult, List.of(studentDto)))
+                        .thenReturn(expectedPaginatedData);
 
                 PaginatedData<StudentResponseDto> result = studentListPaginatedService.cu21ListPaginatedStudents(
-                    PAGE, SIZE, ORDER_BY, ORDER_TYPE, search, filters, filterValues
-                );
+                        PAGE, SIZE, ORDER_BY, ORDER_TYPE, search, filters, filterValues);
 
                 paginatorUtilsMock.verify(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE));
-                studentSpectsMock.verify(() -> StudentSpects.nameContains(search));
+                studentSpectsMock.verify(() -> StudentSpects.nameOrLastNameContains(search));
                 studentSpectsMock.verify(() -> StudentSpects.genericFilter("courseId", "20"));
                 studentSpectsMock.verify(() -> StudentSpects.genericFilter("active", "true"));
                 studentMapperMock.verify(() -> StudentMapper.toListDto(pageResult.getContent()));
@@ -120,28 +121,28 @@ class StudentListPaginatedServiceTest {
             Pageable pageable = Pageable.ofSize(SIZE);
             Page<Student> emptyPage = new PageImpl<>(List.of(), pageable, 0);
             PaginatedData<StudentResponseDto> expectedPaginatedData = PaginatedData.<StudentResponseDto>builder()
-                .results(List.of())
-                .count(0)
-                .totalPages(0)
-                .currentPage(PAGE)
-                .pageSize(SIZE)
-                .build();
+                    .results(List.of())
+                    .count(0)
+                    .totalPages(0)
+                    .currentPage(PAGE)
+                    .pageSize(SIZE)
+                    .build();
 
             when(studentRepository.findAll(any(), eq(pageable))).thenReturn(emptyPage);
 
             try (
-                MockedStatic<PaginatorUtils> paginatorUtilsMock = mockStatic(PaginatorUtils.class);
-                MockedStatic<StudentSpects> studentSpectsMock = mockStatic(StudentSpects.class);
-                MockedStatic<StudentMapper> studentMapperMock = mockStatic(StudentMapper.class);
-                MockedStatic<PaginationHelper> paginationHelperMock = mockStatic(PaginationHelper.class)
-            ) {
-                paginatorUtilsMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE)).thenReturn(pageable);
+                    MockedStatic<PaginatorUtils> paginatorUtilsMock = mockStatic(PaginatorUtils.class);
+                    MockedStatic<StudentSpects> studentSpectsMock = mockStatic(StudentSpects.class);
+                    MockedStatic<StudentMapper> studentMapperMock = mockStatic(StudentMapper.class);
+                    MockedStatic<PaginationHelper> paginationHelperMock = mockStatic(PaginationHelper.class)) {
+                paginatorUtilsMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
+                        .thenReturn(pageable);
                 studentMapperMock.when(() -> StudentMapper.toListDto(emptyPage.getContent())).thenReturn(List.of());
-                paginationHelperMock.when(() -> PaginationHelper.fromPage(emptyPage, List.of())).thenReturn(expectedPaginatedData);
+                paginationHelperMock.when(() -> PaginationHelper.fromPage(emptyPage, List.of()))
+                        .thenReturn(expectedPaginatedData);
 
                 PaginatedData<StudentResponseDto> result = studentListPaginatedService.cu21ListPaginatedStudents(
-                    PAGE, SIZE, ORDER_BY, ORDER_TYPE, "   ", List.of("courseId"), List.of()
-                );
+                        PAGE, SIZE, ORDER_BY, ORDER_TYPE, "   ", List.of("courseId"), List.of());
 
                 paginatorUtilsMock.verify(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE));
                 studentSpectsMock.verifyNoInteractions();
@@ -154,4 +155,3 @@ class StudentListPaginatedServiceTest {
         }
     }
 }
-
