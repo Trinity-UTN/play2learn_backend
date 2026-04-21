@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.admin.teacher.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.repository.CrudRepository;
@@ -21,4 +22,5 @@ public interface ITeacherRepository extends CrudRepository<Teacher,Long> {
 
     int countByDeletedAtIsNull();
 
+    List<Teacher> findByDeletedAtIsNull();
 }
