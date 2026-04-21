@@ -13,10 +13,16 @@ public class SubjectSpecs {
 
     // Filtro por búsqueda textual (ej: nombre LIKE %search%)
     public static Specification<Subject> nameContains(String search) {
-        return (root, query, cb) -> cb.like(cb.lower(root.get("name")), "%" + search.toLowerCase() + "%");
+        return (root, query, cb) -> {
+            String lowered = "%" + search.toLowerCase() + "%";
+            return cb.or(
+                    cb.like(cb.lower(root.get("name")), lowered),
+                    cb.like(cb.lower(root.get("course").get("name")), lowered),
+                    cb.like(cb.lower(root.get("course").get("year").get("name")), lowered));
+        };
     }
 
-    // Filtro dinámico: cualquier campo = valor exacto 
+    // Filtro dinámico: cualquier campo = valor exacto
     public static Specification<Subject> genericFilter(String campo, String valor) {
         return (root, query, cb) -> {
             try {
