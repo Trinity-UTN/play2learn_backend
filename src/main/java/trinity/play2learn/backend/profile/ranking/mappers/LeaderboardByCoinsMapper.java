@@ -35,11 +35,13 @@ public class LeaderboardByCoinsMapper {
 
     public static LeaderboardResponseDto toDto (
         List<LeaderboardParticipantResponseDto> participants, 
-        LeaderboardParticipantResponseDto currentUserPosition
+        LeaderboardParticipantResponseDto currentUserPosition,
+        Integer totalParticipants
     ) {
         return LeaderboardResponseDto.builder()
             .currentUserPosition(currentUserPosition)
             .participants(participants)
+            .totalParticipants(totalParticipants)
             .build();
     }
 
