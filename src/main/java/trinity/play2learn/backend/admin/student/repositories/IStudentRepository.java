@@ -35,5 +35,7 @@ public interface IStudentRepository extends CrudRepository<Student, Long>, JpaSp
     int countByDeletedAtIsNull();
 
     List<Student> findByDeletedAtIsNull();
+
+    List<Student> findAllByDeletedAtIsNull();
 }
 

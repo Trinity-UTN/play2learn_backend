@@ -14,6 +14,5 @@ public class LeaderboardRequestDto {
 
     private LeaderboardType type;
 
-    private Long id;
-    
+    private Long id;    
 }

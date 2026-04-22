@@ -3,6 +3,7 @@ package trinity.play2learn.backend.profile.ranking.services.RankingByCoinsStrate
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingByCoinsStrategyService;
+import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingFindCoinsDtoService;
 import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingGetStudentPositionService;
 import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingGetTop10StudentsService;
 import trinity.play2learn.backend.profile.ranking.dtos.StudentWithRewardTotalDto;
@@ -26,6 +27,7 @@ public class RankingByCoinsSubjectService implements IRankingByCoinsStrategyServ
     private final IActivityCompletedGetSubjectTotalRewardService activityCompletedGetSubjectTotalRewardService;
     private final IRankingGetTop10StudentsService rankingGetTop10StudentsService;
     private final IRankingGetStudentPositionService rankingGetStudentPositionService;
+    private final IRankingFindCoinsDtoService rankingFindCoinsDtoService;
     
     @Override
     public LeaderboardResponseDto execute(LeaderboardRequestDto leaderboardRequestDto, Student student) {
@@ -57,7 +59,7 @@ public class RankingByCoinsSubjectService implements IRankingByCoinsStrategyServ
 
         List<LeaderboardParticipantResponseDto> participants = LeaderboardByCoinsMapper.toDtoListByStudentWithRewardTotalDto(top10Students);
 
-        StudentWithRewardTotalDto studentDto = findDtoByStudent(studentsWithRewardTotal, student);
+        StudentWithRewardTotalDto studentDto = rankingFindCoinsDtoService.findDtoByStudent(studentsWithRewardTotal, student);
 
         //Obtiene la posicion del estudiante en el ranking
         Long studentPosition = rankingGetStudentPositionService.getStudentRankingPositionByCoins(studentsWithRewardTotal, studentDto);
@@ -67,14 +69,8 @@ public class RankingByCoinsSubjectService implements IRankingByCoinsStrategyServ
             studentPosition
         );
 
-        return LeaderboardByCoinsMapper.toDto(participants, currentUserPosition);
+        return LeaderboardByCoinsMapper.toDto(participants, currentUserPosition, students.size());
     }
 
-    private StudentWithRewardTotalDto findDtoByStudent(List<StudentWithRewardTotalDto> list, Student targetStudent) {
-    return list.stream()
-        // Filtramos por el ID del estudiante
-        .filter(dto -> dto.getStudent().equals(targetStudent))
-        .findFirst()
-        .orElse(null);
-}
+    
 }
