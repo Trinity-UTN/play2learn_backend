@@ -17,6 +17,7 @@ public class WalletGetTotalRankingService implements IWalletGetTotalRakingServic
 
     @Override
     public List<Wallet> execute() {
+        //Trae los 10 wallets con mayor balance total
         return walletRepository.findTop10OrderByTotalBalanceDesc();
     }
     
