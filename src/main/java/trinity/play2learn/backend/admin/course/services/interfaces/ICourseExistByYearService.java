@@ -4,6 +4,6 @@ import trinity.play2learn.backend.admin.year.models.Year;
 
 public interface ICourseExistByYearService {
 
-    public boolean validate (Year year);
+    void validate(Year year);
     
 } 
