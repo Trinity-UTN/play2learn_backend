@@ -22,6 +22,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidateSubjectAssociationService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
@@ -38,11 +39,14 @@ class SubjectDeleteServiceTest {
     @Mock
     private ISubjectGetByIdService findSubjectByIdService;
 
+    @Mock
+    private IActivityValidateSubjectAssociationService validateSubjectAssociationService;
+
     private SubjectDeleteService subjectDeleteService;
 
     @BeforeEach
     void setUp() {
-        subjectDeleteService = new SubjectDeleteService(subjectRepository, findSubjectByIdService);
+        subjectDeleteService = new SubjectDeleteService(subjectRepository, findSubjectByIdService, validateSubjectAssociationService);
     }
 
     @Nested

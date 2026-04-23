@@ -15,4 +15,7 @@ public interface IActivityRepository extends CrudRepository<Activity, Long> {
     List<Activity> findAllByStartDateBetweenAndDeletedAtIsNull(LocalDateTime startPeriod, LocalDateTime endPeriod);
 
     List<Activity> findAllByEndDateBetweenAndDeletedAtIsNull(LocalDateTime startPeriod, LocalDateTime endPeriod);  
+
+    //valida si existe una actividad de la materia que aun no finalizo
+    boolean existsBySubjectAndEndDateAfter(Subject subject, LocalDateTime today);
 }
