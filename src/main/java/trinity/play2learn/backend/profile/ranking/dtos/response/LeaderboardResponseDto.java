@@ -16,5 +16,6 @@ public class LeaderboardResponseDto {
     private LeaderboardParticipantResponseDto currentUserPosition;
 
     private List<LeaderboardParticipantResponseDto> participants;
-    
+
+    private Integer totalParticipants;
 }

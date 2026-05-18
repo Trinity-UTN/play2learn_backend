@@ -2,16 +2,17 @@ package trinity.play2learn.backend.activity.activity.repositories;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-
+import org.springframework.data.repository.query.Param;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.admin.student.models.Student;
+import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
+import trinity.play2learn.backend.profile.ranking.dtos.StudentWithRewardTotalDto;
 
 public interface IActivityCompletedRepository extends CrudRepository<ActivityCompleted, Long>, JpaSpecificationExecutor<ActivityCompleted> {
 
@@ -87,5 +88,35 @@ public interface IActivityCompletedRepository extends CrudRepository<ActivityCom
         Activity activity, 
         Student student, 
         ActivityCompletedState state
+    );
+
+    //Trae la suma de las recompensas de un estudiante por materia y estado (Para el ranking de monedas por materia) 
+    @Query("SELECT COALESCE(SUM(ac.reward), 0) " +
+           "FROM ActivityCompleted ac " +
+           "WHERE ac.state = :state " +
+           "AND ac.activity.subject = :subject " +
+           "AND ac.student = :student")
+    Double sumRewardBySubjectAndStateAndStudent(
+            @Param("subject") Subject subject,
+            @Param("state") ActivityCompletedState state,
+            @Param("student") Student student
+    );
+
+    //Trae la suma de las recompensas de un estudiante por estado (Para el ranking de monedas por institucion y curso) 
+    @Query("SELECT COALESCE(SUM(ac.reward), 0) " +
+           "FROM ActivityCompleted ac " +
+           "WHERE ac.state = :state " +
+           "AND ac.student = :student")
+    Double sumRewardByStateAndStudent(
+            @Param("state") ActivityCompletedState state,
+            @Param("student") Student student
+    );
+
+    @Query("SELECT new trinity.play2learn.backend.profile.ranking.dtos.StudentWithRewardTotalDto(ac.student, SUM(ac.reward)) " +
+       "FROM ActivityCompleted ac " +
+       "WHERE ac.state = :state " +
+       "GROUP BY ac.student")
+    List<StudentWithRewardTotalDto> sumRewardByStateGroupedByStudent(
+        @Param("state") ActivityCompletedState state
     );
 }
