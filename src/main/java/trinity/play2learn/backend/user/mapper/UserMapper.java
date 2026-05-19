@@ -24,13 +24,11 @@ public class UserMapper {
             .build();
     }
 
-    public static LoginResponseDto toLoginDto(User user , String accessToken , String refreshToken , Object roleData) {
+    public static LoginResponseDto toLoginDto(User user , Object roleData) {
         return LoginResponseDto.builder()
             .id(user.getId())
             .email(user.getEmail())
             .role(user.getRole())
-            .accessToken(accessToken)
-            .refreshToken(refreshToken)
             .roleData(roleData)
             .build();
     }
