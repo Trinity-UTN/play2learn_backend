@@ -64,7 +64,11 @@ public class ActivityCreateStudentGetDtosService implements IActivityCreateStude
         }
 
         // Ordeno segun el estado (Aprobadas, en progreso, desaprobadas, no completadas)
-        activityStudentGetDtos.sort(Comparator.comparingInt(dto -> dto.getState().ordinal())); //Ordena segun el orden del enum
+        activityStudentGetDtos.sort(Comparator.comparingInt(dto -> {
+            ActivityCompletedState activityCompletedState = dto.getState();
+            if (activityCompletedState == ActivityCompletedState.PENDING) return -1; // PENDING siempre primero
+            return activityCompletedState.ordinal();
+        }));
 
         return activityStudentGetDtos;
     }
