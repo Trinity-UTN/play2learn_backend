@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.ahorcado.mappers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
@@ -16,13 +18,15 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 public class AhorcadoMapper implements IActivityMapper{
     
     public static Ahorcado toModel(AhorcadoRequestDto ahorcadoDto , Subject subject) {
+        LocalDateTime startDate = (ahorcadoDto.getStartDate() != null) ? ahorcadoDto.getStartDate() : LocalDateTime.now();
+
         return Ahorcado.builder()
             .name("Ahorcado")
             .description(ahorcadoDto.getDescription())
             .difficulty(ahorcadoDto.getDifficulty())
             .maxTime(ahorcadoDto.getMaxTime())
             .subject(subject)
-            .startDate(ahorcadoDto.getStartDate())
+            .startDate(startDate)
             .endDate(ahorcadoDto.getEndDate())
             .attempts(ahorcadoDto.getAttempts())
             .word(ahorcadoDto.getWord())

@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.preguntados.Mappers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
@@ -16,13 +18,15 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 public class PreguntadosMapper implements IActivityMapper{
     
     public static Preguntados toModel(PreguntadosRequestDto preguntadosDto, Subject subject) {
+        LocalDateTime startDate = (preguntadosDto.getStartDate() != null) ? preguntadosDto.getStartDate() : LocalDateTime.now();
+
         Preguntados preguntados = Preguntados.builder()
             .name("Preguntados")
             .description(preguntadosDto.getDescription())
             .difficulty(preguntadosDto.getDifficulty())
             .maxTime(preguntadosDto.getMaxTime())
             .subject(subject)
-            .startDate(preguntadosDto.getStartDate())
+            .startDate(startDate)
             .endDate(preguntadosDto.getEndDate())
             .attempts(preguntadosDto.getAttempts())
             .maxTimePerQuestion(preguntadosDto.getMaxTimePerQuestionInSeconds())

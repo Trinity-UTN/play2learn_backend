@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.memorama.mappers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
@@ -16,12 +18,14 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 public class MemoramaMapper implements IActivityMapper {
     
     public static Memorama toModel (MemoramaRequestDto dto, Subject subject) {
+        LocalDateTime startDate = (dto.getStartDate() != null) ? dto.getStartDate() : LocalDateTime.now();
+
         return Memorama.builder()
             .name("Memorama")
             .description(dto.getDescription())
             .difficulty(dto.getDifficulty())
             .maxTime(dto.getMaxTime())
-            .startDate(dto.getStartDate())
+            .startDate(startDate)
             .endDate(dto.getEndDate())
             .attempts(dto.getAttempts())
             .subject(subject)

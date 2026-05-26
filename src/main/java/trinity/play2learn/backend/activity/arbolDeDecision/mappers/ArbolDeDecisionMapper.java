@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.arbolDeDecision.mappers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
@@ -16,13 +18,15 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 public class ArbolDeDecisionMapper implements IActivityMapper {
     
     public static ArbolDeDecisionActivity toModel(ArbolDeDecisionActivityRequestDto activityDto , Subject subject) {
+        LocalDateTime startDate = (activityDto.getStartDate() != null) ? activityDto.getStartDate() : LocalDateTime.now();
+
         ArbolDeDecisionActivity activity = ArbolDeDecisionActivity.builder()
             .name("Arbol de decision")
             .description(activityDto.getDescription())
             .difficulty(activityDto.getDifficulty())
             .maxTime(activityDto.getMaxTime())
             .subject(subject)
-            .startDate(activityDto.getStartDate())
+            .startDate(startDate)
             .endDate(activityDto.getEndDate())
             .attempts(activityDto.getAttempts())
             .introduction(activityDto.getIntroduction())

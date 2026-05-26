@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.ordenarSecuencia.mappers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
@@ -16,12 +18,14 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 public class OrdenarSecuenciaMapper implements IActivityMapper{
 
     public static OrdenarSecuencia toModel (OrdenarSecuenciaRequestDto dto, Subject subject) {
+        LocalDateTime startDate = (dto.getStartDate() != null) ? dto.getStartDate() : LocalDateTime.now();
+
         return OrdenarSecuencia.builder()
             .name("Ordenar Secuencia")
             .description(dto.getDescription())
             .difficulty(dto.getDifficulty())
             .maxTime(dto.getMaxTime())
-            .startDate(dto.getStartDate())
+            .startDate(startDate)
             .endDate(dto.getEndDate())
             .attempts(dto.getAttempts())
             .subject(subject)

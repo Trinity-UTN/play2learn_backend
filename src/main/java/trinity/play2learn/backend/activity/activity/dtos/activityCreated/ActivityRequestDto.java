@@ -21,8 +21,7 @@ public abstract class ActivityRequestDto {
     @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION_1000)
     private String description;
 
-    @NotNull (message = ValidationMessages.NOT_NULL_START_DATE)
-    private LocalDateTime startDate;
+    private LocalDateTime startDate; //En caso de llegar null, se setea como la fecha y hora actual
 
     @NotNull (message = ValidationMessages.NOT_NULL_END_DATE)
     private LocalDateTime endDate;
