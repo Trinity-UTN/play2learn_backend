@@ -1,9 +1,9 @@
 package trinity.play2learn.backend.user.services.jwt.interfaces;
 
-import trinity.play2learn.backend.user.dtos.token.AccessTokenDto;
-import trinity.play2learn.backend.user.dtos.token.RefreshTokenDto;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface IRefreshTokenService {
     
-    AccessTokenDto refreshAccessToken(RefreshTokenDto refreshTokenDto);
+    void refreshAccessToken( HttpServletRequest request, HttpServletResponse response);
 }
