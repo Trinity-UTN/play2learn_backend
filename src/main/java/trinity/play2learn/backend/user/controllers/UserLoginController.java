@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
@@ -23,9 +24,9 @@ public class UserLoginController {
     private final IUserLoginService loginService;
     
     @PostMapping
-    public ResponseEntity<BaseResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto loginDto) {
+    public ResponseEntity<BaseResponse<LoginResponseDto>> login(@Valid @RequestBody LoginRequestDto loginDto, HttpServletResponse response) {
         return ResponseFactory.ok(
-            loginService.cu1Login(loginDto),
+            loginService.cu1Login(loginDto, response),
             SuccessfulMessages.loginSuccessfully()
         );
     }

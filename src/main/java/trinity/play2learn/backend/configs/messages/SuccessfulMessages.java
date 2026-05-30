@@ -52,4 +52,8 @@ public class SuccessfulMessages {
         return "Token actualizado correctamente";
     }
 
+    public static final String logoutSuccessfully(){
+        return "Cesion cerrada correctamente";
+    }
+
 }
