@@ -1,213 +1,178 @@
 {
-  "feature_title": "Análisis completo del proyecto - Búsqueda de fallas, mejoras y optimizaciones",
-  "description": "Realizar un análisis exhaustivo de todos los módulos funcionales del proyecto buscando posibles fallas, puntos de mejora, mejoras de rendimiento y mejoras de seguridad. Documentar los hallazgos en archivos .md separados por módulo en la carpeta docs/analisis.",
+  "feature_title": "Diagrama de Clases (Entidades y Enums)",
+  "description": "Generar un diagrama de clases que registre únicamente las clases de entidad (anotadas con JPA) y los enums declarados en el backend, incluyendo sus relaciones basadas en tipos referenciados (sin listar controladores/servicios/repositorios).",
   "tasks": [
     {
       "id": "T01",
-      "title": "Crear estructura de carpetas y plantilla de análisis",
-      "description": "Crear la carpeta docs/analisis y generar una plantilla base para los reportes de análisis que incluya secciones estándar: Resumen Ejecutivo, Análisis de Fallas, Puntos de Mejora, Mejoras de Rendimiento, Mejoras de Seguridad, Recomendaciones Prioritarias. Esta plantilla servirá como base para todos los módulos.",
+      "title": "Definir alcance y criterio de inclusión",
+      "description": "Establecer reglas explícitas para qué se considera 'entidad' y 'enum' para el diagrama: entidades JPA (clases con `@Entity`, y opcionalmente `@Embeddable`/`@MappedSuperclass` si se encuentran en el proyecto) y todos los `enum` de Java dentro del backend. Documentar el alcance en un archivo de trabajo.",
       "command": "/generate",
       "params": {
-        "target_file": "docs/analisis/README.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "La carpeta docs/analisis existe.",
-        "El archivo docs/analisis/README.md existe con estructura de plantilla completa.",
-        "La plantilla incluye todas las secciones estándar mencionadas."
-      ]
-    },
-    {
-      "id": "T02",
-      "title": "Análisis del módulo Activity",
-      "description": "Analizar el módulo activity (incluyendo todos sus submódulos: activity, ahorcado, arbolDeDecision, clasificacion, completarOracion, memorama, noLudica, ordenarSecuencia, preguntados) buscando: posibles fallas (manejo de excepciones, validaciones faltantes, errores lógicos), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, operaciones costosas, paginación ineficiente), y mejoras de seguridad (validación de entrada, autorización, exposición de datos sensibles). Documentar hallazgos en docs/analisis/activity.md con ejemplos de código, ubicaciones de archivos, y recomendaciones específicas.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend/activity",
-        "output_file": "docs/analisis/activity.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/activity.md existe con análisis completo.",
-        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
-        "Cada hallazgo incluye ubicación del código, descripción del problema, y recomendación.",
-        "Se identifican al menos 5 problemas potenciales por categoría."
-      ]
-    },
-    {
-      "id": "T03",
-      "title": "Análisis del módulo Admin",
-      "description": "Analizar el módulo admin (incluyendo todos sus submódulos: course, student, subject, teacher, year) buscando: posibles fallas (manejo de excepciones, validaciones faltantes, errores lógicos en operaciones CRUD), puntos de mejora (código duplicado, diseño, arquitectura, especificaciones de búsqueda), mejoras de rendimiento (consultas N+1, falta de índices, paginación ineficiente, eager loading innecesario), y mejoras de seguridad (validación de entrada, autorización por roles, exposición de datos sensibles, validación de permisos). Documentar hallazgos en docs/analisis/admin.md.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend/admin",
-        "output_file": "docs/analisis/admin.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/admin.md existe con análisis completo.",
-        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
-        "Cada hallazgo incluye ubicación del código, descripción del problema, y recomendación.",
-        "Se identifican problemas específicos de operaciones administrativas (CRUD, búsquedas, permisos)."
-      ]
-    },
-    {
-      "id": "T04",
-      "title": "Análisis del módulo Benefits",
-      "description": "Analizar el módulo benefits buscando: posibles fallas (validaciones de estado, transacciones concurrentes, condiciones de carrera), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, paginación ineficiente, cálculos costosos), y mejoras de seguridad (validación de entrada, autorización, validación de propiedad de beneficios, prevención de uso duplicado). Documentar hallazgos en docs/analisis/benefits.md.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend/benefits",
-        "output_file": "docs/analisis/benefits.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/benefits.md existe con análisis completo.",
-        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
-        "Se identifican problemas específicos de gestión de beneficios (estados, compras, uso).",
-        "Se analizan posibles condiciones de carrera en operaciones concurrentes."
-      ]
-    },
-    {
-      "id": "T05",
-      "title": "Análisis del módulo Configs",
-      "description": "Analizar el módulo configs (incluyendo async, logs, security, exceptions, interceptors, messages, response, etc.) buscando: posibles fallas (configuración incorrecta, manejo de excepciones, validaciones faltantes), puntos de mejora (código duplicado, diseño, arquitectura, centralización), mejoras de rendimiento (configuración de pools, timeouts, caché), y mejoras de seguridad (configuración de CORS, JWT, validación de tokens, manejo de sesiones, exposición de información sensible en logs). Documentar hallazgos en docs/analisis/configs.md.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend/configs",
-        "output_file": "docs/analisis/configs.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/configs.md existe con análisis completo.",
-        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
-        "Se analiza específicamente SecurityConfig (CORS, CSRF, autorización).",
-        "Se analiza la configuración asíncrona y de logs.",
-        "Se identifican problemas de seguridad críticos en configuración."
-      ]
-    },
-    {
-      "id": "T06",
-      "title": "Análisis del módulo Economy",
-      "description": "Analizar el módulo economy (reserve, transaction, wallet) buscando: posibles fallas (validaciones de balance, transacciones concurrentes, condiciones de carrera, integridad de datos), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, transacciones costosas, bloqueos innecesarios), y mejoras de seguridad (validación de entrada, autorización, prevención de manipulación de balances, validación de montos, auditoría). Documentar hallazgos en docs/analisis/economy.md.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend/economy",
-        "output_file": "docs/analisis/economy.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/economy.md existe con análisis completo.",
-        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
-        "Se identifican problemas críticos de integridad de datos financieros.",
-        "Se analizan posibles condiciones de carrera en operaciones concurrentes.",
-        "Se identifican problemas de seguridad relacionados con manipulación de balances."
-      ]
-    },
-    {
-      "id": "T07",
-      "title": "Análisis del módulo Investment",
-      "description": "Analizar el módulo investment (fixedTermDeposit, investment, savingAccount, stock) buscando: posibles fallas (validaciones de inversión, cálculos financieros incorrectos, condiciones de carrera, ejecución de órdenes), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (consultas N+1, falta de índices, cálculos costosos, actualizaciones masivas, schedulers ineficientes), y mejoras de seguridad (validación de entrada, autorización, validación de propiedad, prevención de manipulación de precios, validación de límites). Documentar hallazgos en docs/analisis/investment.md.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend/investment",
-        "output_file": "docs/analisis/investment.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/investment.md existe con análisis completo.",
-        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
-        "Se identifican problemas críticos en cálculos financieros.",
-        "Se analizan posibles condiciones de carrera en operaciones de compra/venta.",
-        "Se identifican problemas de rendimiento en schedulers y actualizaciones automáticas."
-      ]
-    },
-    {
-      "id": "T08",
-      "title": "Análisis del módulo Security",
-      "description": "Analizar específicamente el módulo de seguridad (SecurityConfig, JwtSessionAspect, SessionUserArgumentResolver, JwtService) buscando: posibles fallas (validación de tokens, manejo de excepciones, expiración, firma), puntos de mejora (código duplicado, diseño, arquitectura), mejoras de rendimiento (validación de tokens, caché de usuarios), y mejoras de seguridad críticas (configuración de CORS permisiva, CSRF deshabilitado, validación de tokens, manejo de sesiones, exposición de información en excepciones, rate limiting, validación de roles). Documentar hallazgos en docs/analisis/security.md con énfasis en vulnerabilidades críticas.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend/configs/security",
-        "additional_files": [
-          "src/main/java/trinity/play2learn/backend/configs/interceptors/JwtSessionAspect.java",
-          "src/main/java/trinity/play2learn/backend/configs/interceptors/SessionUserArgumentResolver.java",
-          "src/main/java/trinity/play2learn/backend/user/services/jwt/JwtService.java"
-        ],
-        "output_file": "docs/analisis/security.md"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/security.md existe con análisis completo.",
-        "El análisis incluye secciones de fallas, mejoras, rendimiento y seguridad.",
-        "Se identifican vulnerabilidades críticas de seguridad.",
-        "Se analiza específicamente SecurityConfig (CORS, CSRF, autorización).",
-        "Se analiza la implementación de JWT y validación de tokens.",
-        "Se proporcionan recomendaciones prioritarias de seguridad."
-      ]
-    },
-    {
-      "id": "T09",
-      "title": "Análisis transversal de rendimiento",
-      "description": "Realizar un análisis transversal de rendimiento en todo el proyecto buscando: consultas N+1 en repositorios, falta de índices en entidades, operaciones costosas sin caché, paginación ineficiente, transacciones largas, operaciones síncronas que deberían ser asíncronas, falta de lazy loading, eager loading innecesario, y problemas de concurrencia. Documentar hallazgos en docs/analisis/rendimiento-transversal.md con métricas y recomendaciones específicas.",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend",
-        "output_file": "docs/analisis/rendimiento-transversal.md",
-        "focus": "performance"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/rendimiento-transversal.md existe con análisis completo.",
-        "Se identifican consultas N+1 en al menos 3 módulos.",
-        "Se identifican índices faltantes en al menos 5 entidades.",
-        "Se proporcionan recomendaciones específicas con ejemplos de código."
-      ]
-    },
-    {
-      "id": "T10",
-      "title": "Análisis transversal de seguridad",
-      "description": "Realizar un análisis transversal de seguridad en todo el proyecto buscando: validación de entrada insuficiente, exposición de datos sensibles, falta de autorización, inyección SQL (aunque se use JPA), problemas de CORS/CSRF, manejo inseguro de tokens, logging de información sensible, falta de rate limiting, y problemas de autenticación/autorización. Documentar hallazgos en docs/analisis/seguridad-transversal.md con clasificación de severidad (Crítica, Alta, Media, Baja).",
-      "command": "/analyze",
-      "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend",
-        "output_file": "docs/analisis/seguridad-transversal.md",
-        "focus": "security"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo docs/analisis/seguridad-transversal.md existe con análisis completo.",
-        "Se identifican vulnerabilidades críticas y altas.",
-        "Cada vulnerabilidad incluye clasificación de severidad.",
-        "Se proporcionan recomendaciones prioritarias con ejemplos de código."
-      ]
-    },
-    {
-      "id": "T11",
-      "title": "Consolidar análisis y generar reporte ejecutivo",
-      "description": "Consolidar todos los análisis individuales en un reporte ejecutivo (docs/analisis/reporte-ejecutivo.md) que incluya: resumen de hallazgos por módulo, top 10 problemas críticos de seguridad, top 10 problemas críticos de rendimiento, top 10 mejoras prioritarias, y roadmap de implementación recomendado. El reporte debe ser conciso y accionable.",
-      "command": "/generate",
-      "params": {
-        "target_file": "docs/analisis/reporte-ejecutivo.md",
-        "source_files": [
-          "docs/analisis/activity.md",
-          "docs/analisis/admin.md",
-          "docs/analisis/benefits.md",
-          "docs/analisis/configs.md",
-          "docs/analisis/economy.md",
-          "docs/analisis/investment.md",
-          "docs/analisis/security.md",
-          "docs/analisis/rendimiento-transversal.md",
-          "docs/analisis/seguridad-transversal.md"
+        "target_file": "docs/class-diagram/alcance.md",
+        "content_outline": [
+          "Definición de Entidad (anotaciones a detectar).",
+          "Definición de Enum (declara `enum` en Java).",
+          "Regla para relaciones: solo asociaciones entre tipos entidad/enum.",
+          "Regla de exclusión: no incluir controladores, servicios, repositorios ni DTOs si no son entidades."
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo docs/analisis/reporte-ejecutivo.md existe.",
-        "El reporte incluye resumen ejecutivo de todos los módulos.",
-        "Se identifican top 10 problemas críticos de seguridad.",
-        "Se identifican top 10 problemas críticos de rendimiento.",
-        "Se proporciona roadmap de implementación recomendado."
+        "El archivo `docs/class-diagram/alcance.md` existe.",
+        "Incluye criterios de inclusión para entidades y enums.",
+        "Incluye reglas de relaciones y exclusión."
+      ]
+    },
+    {
+      "id": "T02",
+      "title": "Indexar entidades y enums del backend",
+      "description": "Analizar `src/main/java` para construir un índice completo de tipos a representar en el diagrama: todas las clases con anotación JPA relevante y todos los enums. El índice debe incluir nombre simple, FQCN, tipo (entity/embeddable/mappedsuperclass/enum) y ubicación de archivo.",
+      "command": "/analyze",
+      "params": {
+        "target_directory": "src/main/java/trinity/play2learn/backend",
+        "output_file": "docs/class-diagram/entity-enum-index.json",
+        "detect": {
+          "entities": {
+            "jpa_annotations": [
+              "@jakarta.persistence.Entity",
+              "@javax.persistence.Entity",
+              "@jakarta.persistence.Embeddable",
+              "@javax.persistence.Embeddable",
+              "@jakarta.persistence.MappedSuperclass",
+              "@javax.persistence.MappedSuperclass"
+            ]
+          },
+          "enums": {
+            "java_construct": "enum"
+          }
+        }
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo `docs/class-diagram/entity-enum-index.json` existe.",
+        "El índice contiene al menos 1 entidad y 1 enum.",
+        "Cada entrada del índice incluye `name`, `fqcn`, `kind` y `source_path`."
+      ]
+    },
+    {
+      "id": "T03",
+      "title": "Refinar el índice (normalización y consistencia)",
+      "description": "Limpiar y normalizar el índice: asegurar unicidad por FQCN, eliminar duplicados, y verificar que las 'relaciones' potenciales se puedan derivar desde campos tipados hacia otros tipos del índice. Guardar el resultado como índice refinado.",
+      "command": "/refine",
+      "params": {
+        "target_file": "docs/class-diagram/entity-enum-index.json",
+        "output_file": "docs/class-diagram/entity-enum-index.refined.json",
+        "checks": [
+          "Unicidad por FQCN.",
+          "Normalización de nombres (si existen clases internas/estáticas, registrarlas correctamente).",
+          "Agregar/estandarizar metadatos útiles para relaciones (por ejemplo, campos tipados hacia otros FQCN del índice)."
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo `docs/class-diagram/entity-enum-index.refined.json` existe.",
+        "No hay FQCN duplicados.",
+        "Las entradas conservan `kind` y `source_path`."
+      ]
+    },
+    {
+      "id": "T04",
+      "title": "Elegir formato y generar plantilla del diagrama",
+      "description": "Seleccionar un formato de diagrama consistente (por ejemplo PlantUML o Mermaid) y generar una plantilla base que contenga solo nodos de entidad/enum según el índice refinado.",
+      "command": "/generate",
+      "params": {
+        "target_file": "docs/class-diagram/class-diagram-template.mmd",
+        "diagram_type": "mermaid",
+        "template_only": true,
+        "source_index": "docs/class-diagram/entity-enum-index.refined.json"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo `docs/class-diagram/class-diagram-template.mmd` existe.",
+        "La plantilla contiene referencias a clases y enums basadas en el índice (sin relaciones aún).",
+        "No aparecen tipos fuera de entidades/enums del índice."
+      ]
+    },
+    {
+      "id": "T05",
+      "title": "Refinar el diagrama (incluir relaciones y estilo)",
+      "description": "Completar el diagrama con relaciones inferidas únicamente entre tipos entidad/enum (p.ej. campos cuyo tipo coincide con otro FQCN del índice). Aplicar una convención visual: agrupar por paquete si aplica, y usar estereotipos (entity/enum) para legibilidad.",
+      "command": "/refine",
+      "params": {
+        "target_file": "docs/class-diagram/class-diagram.mmd",
+        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
+        "rules": [
+          "Solo relaciones entre miembros del índice (entidad/enum).",
+          "Si hay campos parametrizados (`List<Foo>`), inferir relación hacia `Foo` si `Foo` está en el índice.",
+          "Evitar relaciones hacia tipos no indexados."
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El archivo `docs/class-diagram/class-diagram.mmd` contiene relaciones entre nodos que existen en el índice refinado.",
+        "No incluye tipos fuera del conjunto entidad/enum.",
+        "El estilo del diagrama sigue la convención documentada en `docs/class-diagram/alcance.md`."
+      ]
+    },
+    {
+      "id": "T06",
+      "title": "Escaneo de seguridad del artefacto generado",
+      "description": "Ejecutar un escaneo sobre los artefactos generados del diagrama para asegurar que no se haya incluido información sensible (por ejemplo, rutas internas inesperadas, secretos, o datos hardcodeados) y que el archivo Mermaid no contenga contenido peligroso.",
+      "command": "/secure",
+      "params": {
+        "target_file": "docs/class-diagram/class-diagram.mmd",
+        "also_scan_files": [
+          "docs/class-diagram/entity-enum-index.refined.json",
+          "docs/class-diagram/alcance.md"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "El escaneo no reporta hallazgos críticos.",
+        "No se detectan secretos o credenciales.",
+        "No se detecta contenido potencialmente peligroso en el archivo del diagrama."
+      ]
+    },
+    {
+      "id": "T07",
+      "title": "Validar cobertura (solo entidades/enums)",
+      "description": "Verificar programáticamente o por comprobación determinista que el diagrama contiene exactamente los tipos del índice refinado (o un subconjunto controlado si hay limitaciones del formato) y que no hay clases externas al índice.",
+      "command": "/test",
+      "params": {
+        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
+        "target_diagram": "docs/class-diagram/class-diagram.mmd",
+        "validation_rules": [
+          "Conteo de clases/enums en el diagrama debe ser >= conteo de entries con kind entidad/enum.",
+          "Cada entry del índice debe aparecer al menos una vez en el diagrama (por FQCN o nombre).",
+          "No deben existir líneas `class`/`enum` que no correspondan al índice."
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "La validación completa sin fallos.",
+        "Se reporta el número de entidades/enums detectadas vs. representadas.",
+        "No hay clases externas al índice presentes en el diagrama."
+      ]
+    },
+    {
+      "id": "T08",
+      "title": "Documentar el uso del diagrama",
+      "description": "Generar una guía breve para renderizar el diagrama localmente (con Mermaid) y explicar cómo actualizarlo cuando cambien las entidades/enums.",
+      "command": "/generate",
+      "params": {
+        "target_file": "docs/class-diagram/README.md",
+        "template_outline": [
+          "Qué incluye el diagrama (entidades y enums únicamente).",
+          "Cómo renderizar `class-diagram.mmd`.",
+          "Cómo regenerar: pasos recomendados usando los scripts/herramientas del proyecto.",
+          "Limitaciones conocidas (si aplica)."
+        ]
+      },
+      "status": "todo",
+      "acceptance_criteria": [
+        "El archivo `docs/class-diagram/README.md` existe.",
+        "Incluye instrucciones para renderizar el diagrama.",
+        "Incluye una sección que explique el criterio de inclusión/exclusión."
       ]
     }
   ]
