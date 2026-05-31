@@ -1,178 +1,339 @@
 {
-  "feature_title": "Diagrama de Clases (Entidades y Enums)",
-  "description": "Generar un diagrama de clases que registre únicamente las clases de entidad (anotadas con JPA) y los enums declarados en el backend, incluyendo sus relaciones basadas en tipos referenciados (sin listar controladores/servicios/repositorios).",
+  "feature_title": "Servicio de repoblado de base de datos (Database Seed)",
+  "description": "Tras cambiar ddl-auto a create, implementar un servicio de seed que repueble la BD con datos mínimos operativos: Reserve, usuarios DEV/ADMIN, estructura académica (Year/Course/Teacher/Student/Subject), aspectos desde docs/aspects/, y generación de archivo de credenciales. Límites: máx. 6 years, 2 courses/year, 3 subjects/course, 30 students/year.",
+  "constraints": {
+    "max_years": 6,
+    "max_courses_per_year": 2,
+    "max_subjects_per_course": 3,
+    "max_students_per_year": 30,
+    "year_names": ["Primer Año", "Segundo Año", "Tercer Año", "Cuarto Año", "Quinto Año", "Sexto Año"],
+    "course_names": ["A", "B"],
+    "default_subjects": ["Matemática", "Lengua", "Geografía"],
+    "dev_credentials": { "email": "dev@gmail.com", "password": "12345678" },
+    "admin_credentials": { "email": "admin@gmail.com", "password": "12345678" },
+    "student_teacher_password_rule": "DNI del usuario",
+    "initial_reserve": {
+      "initialBalance": 1000000.0,
+      "reserveBalance": 1000000.0,
+      "circulationBalance": 0.0
+    },
+    "wallet_seed_amount": 1100.0,
+    "aspect_images_path": "docs/aspects/"
+  },
   "tasks": [
     {
       "id": "T01",
-      "title": "Definir alcance y criterio de inclusión",
-      "description": "Establecer reglas explícitas para qué se considera 'entidad' y 'enum' para el diagrama: entidades JPA (clases con `@Entity`, y opcionalmente `@Embeddable`/`@MappedSuperclass` si se encuentran en el proyecto) y todos los `enum` de Java dentro del backend. Documentar el alcance en un archivo de trabajo.",
+      "title": "Informe de modelos bootstrap obligatorios",
+      "description": "Documentar qué entidades requieren datos iniciales, por qué, en qué orden crearlos y qué servicios fallan sin ellos. Incluir Reserve como singleton crítico, cascada Student→Profile→Wallet, Subject con saldo, Teacher obligatorio para actividades/beneficios, y Aspect como catálogo recomendado.",
       "command": "/generate",
       "params": {
-        "target_file": "docs/class-diagram/alcance.md",
-        "content_outline": [
-          "Definición de Entidad (anotaciones a detectar).",
-          "Definición de Enum (declara `enum` en Java).",
-          "Regla para relaciones: solo asociaciones entre tipos entidad/enum.",
-          "Regla de exclusión: no incluir controladores, servicios, repositorios ni DTOs si no son entidades."
+        "target_file": "docs/seed/bootstrap-required-models.md",
+        "reference_files": [
+          "src/main/java/trinity/play2learn/backend/economy/reserve/services/commons/ReserveFindLastService.java",
+          "src/main/java/trinity/play2learn/backend/admin/student/services/StudentRegisterService.java",
+          "src/main/java/trinity/play2learn/backend/admin/subject/services/SubjectRefillBalanceService.java",
+          "src/main/java/trinity/play2learn/backend/pruebaConfigs/TestController.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/alcance.md` existe.",
-        "Incluye criterios de inclusión para entidades y enums.",
-        "Incluye reglas de relaciones y exclusión."
+        "El archivo docs/seed/bootstrap-required-models.md existe.",
+        "Lista Reserve como P0 con servicios dependientes.",
+        "Documenta cascada Student→Profile→Wallet y Subject+refill.",
+        "Incluye orden de bootstrap y matriz de dependencias."
       ]
     },
     {
       "id": "T02",
-      "title": "Indexar entidades y enums del backend",
-      "description": "Analizar `src/main/java` para construir un índice completo de tipos a representar en el diagrama: todas las clases con anotación JPA relevante y todos los enums. El índice debe incluir nombre simple, FQCN, tipo (entity/embeddable/mappedsuperclass/enum) y ubicación de archivo.",
-      "command": "/analyze",
+      "title": "Diseñar arquitectura del servicio de seed",
+      "description": "Definir interfaz IDatabaseSeedService, DTO de resultado SeedResultDto (con listas de credenciales generadas), configuración DatabaseSeedProperties (@ConfigurationProperties) con límites configurables, y orden de ejecución en fases. Decidir estrategia para aspectos: reutilizar AspectRegisterService (ImgBB) vs. persistencia directa en dev. Planificar reemplazo/refactor de TestController.",
+      "command": "/architect",
       "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend",
-        "output_file": "docs/class-diagram/entity-enum-index.json",
-        "detect": {
-          "entities": {
-            "jpa_annotations": [
-              "@jakarta.persistence.Entity",
-              "@javax.persistence.Entity",
-              "@jakarta.persistence.Embeddable",
-              "@javax.persistence.Embeddable",
-              "@jakarta.persistence.MappedSuperclass",
-              "@javax.persistence.MappedSuperclass"
-            ]
-          },
-          "enums": {
-            "java_construct": "enum"
-          }
-        }
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/",
+        "design_doc": "docs/seed/architecture.md",
+        "phases": [
+          "Fase 1: Reserve + Users (DEV/ADMIN)",
+          "Fase 2: Years + Courses",
+          "Fase 3: Teachers",
+          "Fase 4: Students (Profile+Wallet automático)",
+          "Fase 5: Subjects + SubjectRefillBalance",
+          "Fase 6: Aspects desde docs/aspects/",
+          "Fase 7: Fondeo wallets + inventario aspectos",
+          "Fase 8: Export credenciales MD"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/entity-enum-index.json` existe.",
-        "El índice contiene al menos 1 entidad y 1 enum.",
-        "Cada entrada del índice incluye `name`, `fqcn`, `kind` y `source_path`."
+        "docs/seed/architecture.md documenta interfaces, fases y decisiones.",
+        "Define SeedCredentialsDto con email, password, role, dni, name.",
+        "Especifica distribución de 30 students/year entre 2 courses.",
+        "Documenta estrategia de imágenes de aspectos."
       ]
     },
     {
       "id": "T03",
-      "title": "Refinar el índice (normalización y consistencia)",
-      "description": "Limpiar y normalizar el índice: asegurar unicidad por FQCN, eliminar duplicados, y verificar que las 'relaciones' potenciales se puedan derivar desde campos tipados hacia otros tipos del índice. Guardar el resultado como índice refinado.",
-      "command": "/refine",
+      "title": "Implementar fases core: Reserve y usuarios DEV/ADMIN",
+      "description": "Crear DatabaseSeedService con métodos seedReserve() y seedSystemUsers(). Reserve: 1 registro con initialBalance/reserveBalance=1_000_000, circulationBalance=0. Users: SignUpService para dev@gmail.com y admin@gmail.com con password 12345678. Validar idempotencia (no fallar si ya existen en re-ejecución).",
+      "command": "/generate",
       "params": {
-        "target_file": "docs/class-diagram/entity-enum-index.json",
-        "output_file": "docs/class-diagram/entity-enum-index.refined.json",
-        "checks": [
-          "Unicidad por FQCN.",
-          "Normalización de nombres (si existen clases internas/estáticas, registrarlas correctamente).",
-          "Agregar/estandarizar metadatos útiles para relaciones (por ejemplo, campos tipados hacia otros FQCN del índice)."
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/interfaces/IDatabaseSeedService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/dtos/SeedResultDto.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/dtos/SeedCredentialsDto.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/config/DatabaseSeedProperties.java"
+        ],
+        "reuse_services": [
+          "ISignUpService",
+          "IReserveRepository"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/entity-enum-index.refined.json` existe.",
-        "No hay FQCN duplicados.",
-        "Las entradas conservan `kind` y `source_path`."
+        "Tras ejecutar seed, existe al menos 1 Reserve.",
+        "Existen usuarios DEV y ADMIN con credenciales definidas.",
+        "ReserveFindLastService.get() no lanza NotFoundException.",
+        "SeedResultDto incluye credenciales de DEV y ADMIN."
       ]
     },
     {
       "id": "T04",
-      "title": "Elegir formato y generar plantilla del diagrama",
-      "description": "Seleccionar un formato de diagrama consistente (por ejemplo PlantUML o Mermaid) y generar una plantilla base que contenga solo nodos de entidad/enum según el índice refinado.",
-      "command": "/generate",
+      "title": "Refinar fases core",
+      "description": "Refinar DatabaseSeedService fases 1-2: JavaDoc, logging por fase, manejo de ConflictException en re-ejecución, extracción de constantes, transaccionalidad @Transactional en método execute().",
+      "command": "/refine",
       "params": {
-        "target_file": "docs/class-diagram/class-diagram-template.mmd",
-        "diagram_type": "mermaid",
-        "template_only": true,
-        "source_index": "docs/class-diagram/entity-enum-index.refined.json"
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/class-diagram-template.mmd` existe.",
-        "La plantilla contiene referencias a clases y enums basadas en el índice (sin relaciones aún).",
-        "No aparecen tipos fuera de entidades/enums del índice."
+        "Método execute() anotado @Transactional.",
+        "Logs INFO por cada fase completada.",
+        "Re-ejecución no rompe por usuarios/reserva existentes."
       ]
     },
     {
       "id": "T05",
-      "title": "Refinar el diagrama (incluir relaciones y estilo)",
-      "description": "Completar el diagrama con relaciones inferidas únicamente entre tipos entidad/enum (p.ej. campos cuyo tipo coincide con otro FQCN del índice). Aplicar una convención visual: agrupar por paquete si aplica, y usar estereotipos (entity/enum) para legibilidad.",
-      "command": "/refine",
+      "title": "Implementar estructura académica admin",
+      "description": "Fases 3-5 del seed: crear 6 Years (Primero-Sexto), 2 Courses por year (A, B), Teachers con Faker es-AR (mín. 6, reutilizables entre materias), Students distribuidos equitativamente (máx. 30/year total entre sus 2 courses), 3 Subjects por course (Matemática, Lengua, Geografía) con teacherId asignado y optional=false. Usar servicios oficiales: YearRegisterService, CourseRegisterService, TeacherRegisterService, StudentRegisterService, SubjectRegisterService.",
+      "command": "/generate",
       "params": {
-        "target_file": "docs/class-diagram/class-diagram.mmd",
-        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
-        "rules": [
-          "Solo relaciones entre miembros del índice (entidad/enum).",
-          "Si hay campos parametrizados (`List<Foo>`), inferir relación hacia `Foo` si `Foo` está en el índice.",
-          "Evitar relaciones hacia tipos no indexados."
-        ]
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
+        "limits": {
+          "years": 6,
+          "courses_per_year": 2,
+          "subjects_per_course": 3,
+          "students_per_year": 30
+        },
+        "student_distribution": "Math.floor(30 / 2) = 15 por course, alternando resto",
+        "reuse_from": "src/main/java/trinity/play2learn/backend/pruebaConfigs/TestController.java"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/class-diagram.mmd` contiene relaciones entre nodos que existen en el índice refinado.",
-        "No incluye tipos fuera del conjunto entidad/enum.",
-        "El estilo del diagrama sigue la convención documentada en `docs/class-diagram/alcance.md`."
+        "Existen 6 years y 12 courses (2 por year).",
+        "Existen 36 subjects (3 por course).",
+        "Total students <= 180 (30 × 6 years).",
+        "Cada student tiene Profile y Wallet (verificar vía StudentRegisterService).",
+        "Cada subject tiene teacher asignado.",
+        "SeedResultDto lista credenciales de teachers y students."
       ]
     },
     {
       "id": "T06",
-      "title": "Escaneo de seguridad del artefacto generado",
-      "description": "Ejecutar un escaneo sobre los artefactos generados del diagrama para asegurar que no se haya incluido información sensible (por ejemplo, rutas internas inesperadas, secretos, o datos hardcodeados) y que el archivo Mermaid no contenga contenido peligroso.",
-      "command": "/secure",
+      "title": "Implementar seed de economía post-estructura",
+      "description": "Fase 6: ejecutar SubjectRefillBalanceService.cu58RefillBalance() tras crear subjects+students. Fase 7: fondear wallets con walletAddAmountService (1100.0) y actualizar circulationBalance de Reserve proporcionalmente, igual que TestController.",
+      "command": "/generate",
       "params": {
-        "target_file": "docs/class-diagram/class-diagram.mmd",
-        "also_scan_files": [
-          "docs/class-diagram/entity-enum-index.refined.json",
-          "docs/class-diagram/alcance.md"
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
+        "reuse_services": [
+          "ISubjectRefillBalanceService",
+          "IWalletAddAmountService",
+          "IReserveFindLastService",
+          "IReserveRepository"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El escaneo no reporta hallazgos críticos.",
-        "No se detectan secretos o credenciales.",
-        "No se detecta contenido potencialmente peligroso en el archivo del diagrama."
+        "Subjects tienen actualBalance > 0 tras refill.",
+        "Students tienen wallet.balance >= 1100.",
+        "Reserve.circulationBalance refleja monedas en circulación.",
+        "Transacciones ASIGNACION generadas correctamente."
       ]
     },
     {
       "id": "T07",
-      "title": "Validar cobertura (solo entidades/enums)",
-      "description": "Verificar programáticamente o por comprobación determinista que el diagrama contiene exactamente los tipos del índice refinado (o un subconjunto controlado si hay limitaciones del formato) y que no hay clases externas al índice.",
-      "command": "/test",
+      "title": "Implementar seed de aspectos desde docs/aspects/",
+      "description": "Registrar los 9 aspectos mapeando carpeta→TypeAspect: docs/aspects/CUERPO/*.png→CUERPO, REMERA/*.png→REMERA, SOMBRERO/*.png→SOMBRERO. Derivar nombre legible del filename. Asignar precios default (ej. CUERPO=0 gratis, REMERA=500, SOMBRERO=300). Decidir upload: AspectRegisterService con MockMultipartFile o servicio interno que persista URL local/base64 para dev sin ImgBB. Tras crear catálogo, asignar todos los aspectos al inventario de cada student vía ProfileAddAspectToInventoryService.",
+      "command": "/generate",
       "params": {
-        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
-        "target_diagram": "docs/class-diagram/class-diagram.mmd",
-        "validation_rules": [
-          "Conteo de clases/enums en el diagrama debe ser >= conteo de entries con kind entidad/enum.",
-          "Cada entry del índice debe aparecer al menos una vez en el diagrama (por FQCN o nombre).",
-          "No deben existir líneas `class`/`enum` que no correspondan al índice."
-        ]
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/AspectSeedService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java"
+        ],
+        "aspect_mapping": {
+          "CUERPO": [
+            "CuerpoMasculinoCastanoSinFondo.png",
+            "CuerpoMasculinoRubioSinFondo.png",
+            "CuerpoFemeninoCastaño.png",
+            "CuerpoFemeninoRubio.png"
+          ],
+          "REMERA": [
+            "CamisetaMasculinaVelez.png",
+            "CamisetaMasculinaCAU.png"
+          ],
+          "SOMBRERO": [
+            "Corona.png",
+            "Tiara.png",
+            "White Hat.png"
+          ]
+        }
       },
-      "status": "todo",
+      "status": "done",
       "acceptance_criteria": [
-        "La validación completa sin fallos.",
-        "Se reporta el número de entidades/enums detectadas vs. representadas.",
-        "No hay clases externas al índice presentes en el diagrama."
+        "Existen 9 registros Aspect en BD.",
+        "Cada aspecto tiene type correcto (CUERPO/REMERA/SOMBRERO).",
+        "Cada student tiene los 9 aspectos en ownedAspects.",
+        "Catálogo visible vía AspectListService."
       ]
     },
     {
       "id": "T08",
-      "title": "Documentar el uso del diagrama",
-      "description": "Generar una guía breve para renderizar el diagrama localmente (con Mermaid) y explicar cómo actualizarlo cuando cambien las entidades/enums.",
-      "command": "/generate",
+      "title": "Refinar seed de aspectos y helpers",
+      "description": "Refinar AspectSeedService: helper para convertir File→MultipartFile, sanitizar nombres, evitar duplicados por nombre, logging, manejo de IOException.",
+      "command": "/refine",
       "params": {
-        "target_file": "docs/class-diagram/README.md",
-        "template_outline": [
-          "Qué incluye el diagrama (entidades y enums únicamente).",
-          "Cómo renderizar `class-diagram.mmd`.",
-          "Cómo regenerar: pasos recomendados usando los scripts/herramientas del proyecto.",
-          "Limitaciones conocidas (si aplica)."
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/AspectSeedService.java"
         ]
       },
-      "status": "todo",
+      "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/README.md` existe.",
-        "Incluye instrucciones para renderizar el diagrama.",
-        "Incluye una sección que explique el criterio de inclusión/exclusión."
+        "Re-ejecución no duplica aspectos existentes.",
+        "Nombres de aspectos son legibles y únicos.",
+        "Sin warnings de linting."
+      ]
+    },
+    {
+      "id": "T09",
+      "title": "Generador de archivo de credenciales",
+      "description": "Crear CredentialsMarkdownWriter que genere docs/seed/credentials.md con secciones: DEV, ADMIN, Teachers (tabla email/dni/password/nombre), Students (tabla email/dni/password/curso/año). Password rule: DNI para teachers/students, password explícito para dev/admin. Sobrescribir archivo en cada ejecución del seed.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/CredentialsMarkdownWriter.java",
+          "docs/seed/credentials.md"
+        ],
+        "template_sections": [
+          "Usuarios del sistema (DEV, ADMIN)",
+          "Docentes",
+          "Estudiantes"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "docs/seed/credentials.md se genera tras ejecutar seed.",
+        "Incluye email, password, rol, DNI y curso/año para students.",
+        "Formato markdown legible con tablas.",
+        "Archivo .gitignore opcional si contiene credenciales (documentar decisión)."
+      ]
+    },
+    {
+      "id": "T10",
+      "title": "Endpoint y configuración de activación",
+      "description": "Crear DatabaseSeedController con POST /api/dev/seed protegido por ROLE_DEV (o profile dev-only). Agregar spring.seed.enabled=true en application-dev.properties. Refactorizar TestController para delegar en IDatabaseSeedService o deprecarlo. Documentar uso: 1) cambiar ddl-auto=create, 2) arrancar app, 3) POST /api/dev/seed.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/controllers/DatabaseSeedController.java"
+        ],
+        "security": "ROLE_DEV only, disabled in production profile"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "POST /api/dev/seed ejecuta seed completo y retorna SeedResultDto.",
+        "Endpoint rechaza requests sin ROLE_DEV.",
+        "No disponible con profile production.",
+        "README o docs/seed/README.md con instrucciones de uso."
+      ]
+    },
+    {
+      "id": "T11",
+      "title": "Refinar servicio completo y controller",
+      "description": "Refinamiento final: consolidar fases en execute(), extraer SeedDataCollector para acumular credenciales, mejorar SeedResultDto con resumen (counts by entity), documentación JavaDoc completa.",
+      "command": "/refine",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "execute() orquesta todas las fases en orden documentado.",
+        "SeedResultDto incluye conteos: years, courses, teachers, students, subjects, aspects.",
+        "Código sigue convenciones del proyecto."
+      ]
+    },
+    {
+      "id": "T12",
+      "title": "Escaneo de seguridad del módulo seed",
+      "description": "Verificar que el endpoint de seed no esté expuesto en producción, que credentials.md no se commitee con secretos reales en CI, que passwords de dev sean configurables, y que no haya hardcoded secrets fuera de dev.",
+      "command": "/secure",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/",
+        "checks": [
+          "Endpoint protegido por rol",
+          "Profile-guard production",
+          "credentials.md en .gitignore",
+          "No ImgBB API key en código seed"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Escaneo sin warnings críticos.",
+        "docs/seed/credentials.md en .gitignore.",
+        "Seed deshabilitado por defecto (opt-in via property)."
+      ]
+    },
+    {
+      "id": "T13",
+      "title": "Pruebas unitarias del servicio de seed",
+      "description": "Tests para DatabaseSeedService (mock de servicios dependientes): verificar orden de llamadas, límites (6 years, 2 courses, 3 subjects, 30 students/year), generación de credenciales, idempotencia. Test de CredentialsMarkdownWriter. Test de DatabaseSeedController con @WebMvcTest y ROLE_DEV.",
+      "command": "/test",
+      "params": {
+        "target_files": [
+          "src/test/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/services/CredentialsMarkdownWriterTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/controllers/DatabaseSeedControllerTest.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Tests verifican límites de volumen configurados.",
+        "Tests verifican que Reserve se crea antes de transacciones.",
+        "Controller test valida 403 sin ROLE_DEV.",
+        "Todos los tests pasan con mvn test."
+      ]
+    },
+    {
+      "id": "T14",
+      "title": "Refinar pruebas y verificación manual",
+      "description": "Refinar tests, ejecutar seed en BD local con ddl-auto=create, verificar login de dev/admin/teacher/student, wallet con saldo, materias con balance, aspectos en inventario, y que credentials.md sea correcto.",
+      "command": "/refine",
+      "params": {
+        "manual_checklist": [
+          "Login dev@gmail.com",
+          "Login admin@gmail.com",
+          "Login teacher con DNI",
+          "Login student con DNI",
+          "GET /wallet retorna saldo",
+          "Listado aspectos no vacío",
+          "credentials.md generado"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Checklist manual completado.",
+        "Seed ejecutable en < 60 segundos en local.",
+        "Documentación actualizada en docs/seed/README.md."
       ]
     }
   ]
