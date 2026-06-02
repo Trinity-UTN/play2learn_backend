@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.completarOracion.mappers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
@@ -16,13 +18,15 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 public class CompletarOracionActivityMapper implements IActivityMapper{
 
     public static CompletarOracionActivity toModel(CompletarOracionActivityRequestDto activityDto , Subject subject) {
+        LocalDateTime startDate = (activityDto.getStartDate() != null) ? activityDto.getStartDate() : LocalDateTime.now();
+
         CompletarOracionActivity activity = CompletarOracionActivity.builder()
                 .name("Completar oracion")
                 .description(activityDto.getDescription())
                 .difficulty(activityDto.getDifficulty())
                 .maxTime(activityDto.getMaxTime())
                 .subject(subject)
-                .startDate(activityDto.getStartDate())
+                .startDate(startDate)
                 .endDate(activityDto.getEndDate())
                 .attempts(activityDto.getAttempts())
                 .actualBalance(0.0)

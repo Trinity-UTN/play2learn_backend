@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.noLudica.mappers;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Component;
 
 import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityResponseDto;
@@ -15,12 +17,16 @@ import trinity.play2learn.backend.admin.subject.models.Subject;
 @Component("noLudicaMapper")
 public class NoLudicaMapper implements IActivityMapper {
 
-    public static NoLudica toModel(NoLudicaRequestDto dto, Subject subject) {
+    public static NoLudica toModel (NoLudicaRequestDto dto, Subject subject) {
+
+        LocalDateTime startDate = (dto.getStartDate() != null) ? dto.getStartDate() : LocalDateTime.now();
+  
         return NoLudica.builder()
                 .name("No Ludica")
                 .description(dto.getDescription())
                 .difficulty(dto.getDifficulty())
-                .startDate(dto.getStartDate())
+                .maxTime(dto.getMaxTime())
+                .startDate(startDate)
                 .endDate(dto.getEndDate())
                 .attempts(dto.getAttempts())
                 .subject(subject)

@@ -19,6 +19,7 @@ public class BackendApplication {
     }
 
 	public static void main(String[] args) {
+		TimeZone.setDefault(TimeZone.getTimeZone("America/Argentina/Buenos_Aires"));
 		SpringApplication.run(BackendApplication.class, args);
 	}
 
