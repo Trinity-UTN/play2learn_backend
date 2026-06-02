@@ -2,7 +2,7 @@ package trinity.play2learn.backend.investment.fixedTermDeposit.models;
 
 public enum FixedTermDays {
     SEMANAL (7),
-    QUINZENAL (15),
+    QUINCENAL (15),
     MENSUAL (30);
     
     private final int valor;

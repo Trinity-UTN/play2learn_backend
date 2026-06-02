@@ -21,6 +21,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityCreated.Activit
 import trinity.play2learn.backend.activity.activity.mappers.IActivityMapper;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByIdService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityGetService;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoResponseDto;
 
 @ExtendWith(MockitoExtension.class)

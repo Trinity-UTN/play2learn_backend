@@ -10,6 +10,10 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedStrategyService;
+import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.notification.models.NotificationType;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
+
 import java.time.LocalDateTime;
 
 @Service("DISAPPROVED")
@@ -17,11 +21,16 @@ import java.time.LocalDateTime;
 public class ActivityDisapprovedStrategyService implements IActivityCompletedStrategyService{
     
     private final IActivityCompletedRepository activityCompletedRepository;
+    private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
 
     @Override
     @Transactional
     public ActivityCompletedResponseDto execute(ActivityCompleted activityCompleted) {
         
+        if (activityCompleted.getScore() >= 60) {
+            throw new ConflictException("La actividad no puede ser desaprobada con un puntaje mayor o igual a 60.");
+        }
+
         activityCompleted.setRemainingAttempts(activityCompleted.getRemainingAttempts()-1);
 
         activityCompleted.setState(ActivityCompletedState.DISAPPROVED);
@@ -30,6 +39,12 @@ public class ActivityDisapprovedStrategyService implements IActivityCompletedStr
 
         activityCompleted.setCompletedAt(LocalDateTime.now());
 
+        notificationCreateSingleWithTitleService.createSingleNotificationWithTitle(
+            activityCompleted.getActivity().getSubject().getTeacher().getUser(),
+            NotificationType.STUDENT_COMPLETE_ACTIVITY,
+            activityCompleted.getStudent().getCompleteName() + " ha desaprobado la actividad " + activityCompleted.getActivity().getName()
+        );
+        
         return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
     }
 

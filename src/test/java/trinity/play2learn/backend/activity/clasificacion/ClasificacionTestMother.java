@@ -103,6 +103,7 @@ public final class ClasificacionTestMother {
             .build();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static ClasificacionActivityResponseDto clasificacionResponseDto(
         Long id,
         List<?> categories

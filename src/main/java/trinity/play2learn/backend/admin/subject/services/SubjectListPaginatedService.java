@@ -34,6 +34,12 @@ public class SubjectListPaginatedService implements ISubjectListPaginatedService
         List<String> filters, 
         List<String> filterValues) {
         
+        //Ordenamiento por estado (activo/inactivo)
+        if (orderBy.equalsIgnoreCase("active")) {
+            orderBy = "deletedAt";
+            orderType = "DESC".equalsIgnoreCase(orderType) ? "ASC" : "DESC";
+        }
+
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
         Specification<Subject> spec = Specification.where(SubjectSpecs.notDeleted());
         

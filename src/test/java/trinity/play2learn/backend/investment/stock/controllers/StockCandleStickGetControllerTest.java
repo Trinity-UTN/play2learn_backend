@@ -32,9 +32,11 @@ class StockCandleStickGetControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private ICandleStickGetValuesService candleStickGetValuesService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

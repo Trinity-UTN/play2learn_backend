@@ -29,9 +29,11 @@ class BenefitListUseRequestedByTeacherControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private IBenefitListUseRequestedService benefitListUseRequestedService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

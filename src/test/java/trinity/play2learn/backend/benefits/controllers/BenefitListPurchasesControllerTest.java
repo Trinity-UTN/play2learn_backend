@@ -29,9 +29,12 @@ class BenefitListPurchasesControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    
+    @SuppressWarnings("removal")
     @MockBean
     private IBenefitListPurchasesService benefitListPurchasesService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

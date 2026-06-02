@@ -33,9 +33,11 @@ class SavingAccountDepositControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private ISavingAccountDepositService savingAccountDepositService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

@@ -9,7 +9,6 @@ import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequestDto;
 import trinity.play2learn.backend.activity.noLudica.dtos.response.NoLudicaResponseDto;
 import trinity.play2learn.backend.activity.noLudica.models.NoLudica;
-import trinity.play2learn.backend.activity.noLudica.models.TipoEntrega;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -20,13 +19,11 @@ public final class NoLudicaTestMother {
     public static final Double DEFAULT_INITIAL_BALANCE = 100.0;
 
     public static NoLudicaRequestDto noLudicaRequestDto(
-        String exercise,
-        TipoEntrega tipoEntrega
+        String exercise
     ) {
         LocalDateTime now = LocalDateTime.now();
         NoLudicaRequestDto dto = new NoLudicaRequestDto(
-            exercise,
-            tipoEntrega != null ? tipoEntrega : TipoEntrega.ENTREGA
+            exercise
         );
         dto.setDescription("Descripción de la actividad no lúdica");
         dto.setDifficulty(Difficulty.FACIL);
@@ -40,44 +37,37 @@ public final class NoLudicaTestMother {
     }
 
     public static NoLudicaRequestDto validNoLudicaRequestDto() {
-        return noLudicaRequestDto(DEFAULT_EXERCISE, TipoEntrega.ENTREGA);
+        return noLudicaRequestDto(DEFAULT_EXERCISE);
     }
 
     public static NoLudicaRequestDto noLudicaRequestDtoWithExercise(String exercise) {
-        return noLudicaRequestDto(exercise, TipoEntrega.ENTREGA);
-    }
-
-    public static NoLudicaRequestDto noLudicaRequestDtoWithTipoEntrega(TipoEntrega tipoEntrega) {
-        return noLudicaRequestDto(DEFAULT_EXERCISE, tipoEntrega);
+        return noLudicaRequestDto(exercise);
     }
 
     public static NoLudicaResponseDto noLudicaResponseDto(
         Long id,
-        String exercise,
-        String tipoEntrega
+        String exercise
     ) {
         return NoLudicaResponseDto.builder()
             .id(id)
             .name("No Ludica")
             .description(DEFAULT_EXERCISE)
-            .excercise(exercise != null ? exercise : DEFAULT_EXERCISE)
-            .tipoEntrega(tipoEntrega != null ? tipoEntrega : TipoEntrega.ENTREGA.name())
+            .exercise(exercise != null ? exercise : DEFAULT_EXERCISE)
             .build();
     }
 
     public static NoLudicaResponseDto validNoLudicaResponseDto(Long id) {
-        return noLudicaResponseDto(id, DEFAULT_EXERCISE, TipoEntrega.ENTREGA.name());
+        return noLudicaResponseDto(id, DEFAULT_EXERCISE);
     }
 
     public static NoLudica savedNoLudica(Long id, Subject subject) {
-        return savedNoLudica(id, subject, DEFAULT_EXERCISE, TipoEntrega.ENTREGA);
+        return savedNoLudica(id, subject, DEFAULT_EXERCISE);
     }
 
     public static NoLudica savedNoLudica(
         Long id,
         Subject subject,
-        String exercise,
-        TipoEntrega tipoEntrega
+        String exercise
     ) {
         return NoLudica.builder()
             .id(id)
@@ -91,8 +81,7 @@ public final class NoLudicaTestMother {
             .subject(subject)
             .initialBalance(DEFAULT_INITIAL_BALANCE)
             .actualBalance(0.0)
-            .excercise(exercise != null ? exercise : DEFAULT_EXERCISE)
-            .tipoEntrega(tipoEntrega != null ? tipoEntrega : TipoEntrega.ENTREGA)
+            .exercise(exercise != null ? exercise : DEFAULT_EXERCISE)
             .build();
     }
 }

@@ -51,7 +51,7 @@ class SubjectReadControllersTest {
             getController,
             listController,
             paginatedController
-        ).setControllerAdvice(new GlobalExceptionHandler()).build();
+        ).setControllerAdvice(new GlobalExceptionHandler(null)).build();
     }
 
     @Nested

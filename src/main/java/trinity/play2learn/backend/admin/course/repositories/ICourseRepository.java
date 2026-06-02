@@ -1,11 +1,8 @@
 package trinity.play2learn.backend.admin.course.repositories;
 
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import trinity.play2learn.backend.admin.course.models.Course;
@@ -43,21 +40,15 @@ public interface ICourseRepository extends CrudRepository<Course, Long>, JpaSpec
      * @return Iterable de cursos.
      */
     Iterable<Course> findAllByDeletedAtIsNull();
-
-
-    /**
-     * Verifica si existe un curso por su ID y que no haya sido eliminado.
-     *
-     * @param id ID del curso.
-     * @return boolean.
-     */
-    @Query("SELECT COUNT(c) > 0 FROM Course c WHERE c.year.id = :yearId AND c.deletedAt IS NULL")
-    boolean existsByYearIdAndDeletedAtIsNull(@Param("yearId") Long yearId);
-
+    
     Optional<Course> findByIdAndDeletedAtIsNull(Long id);
-
+    
     boolean existsByNameIgnoreCaseAndYearAndIdNot(String name, Year year , Long id);
-
+    
     int countByDeletedAtIsNull();
+
+    boolean existsByYear(Year year);
+
+    boolean existsByYearId(Long yearId);
 
 }

@@ -12,11 +12,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import trinity.play2learn.backend.activity.activity.ActivityTestMother;
-import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.noLudica.NoLudicaTestMother;
 import trinity.play2learn.backend.activity.noLudica.dtos.request.NoLudicaRequestDto;
-import trinity.play2learn.backend.activity.noLudica.models.TipoEntrega;
 import trinity.play2learn.backend.configs.messages.ValidationMessages;
 
 class NoLudicaDtoValidationTest {
@@ -28,7 +25,7 @@ class NoLudicaDtoValidationTest {
     class NoLudicaRequestDtoValidation {
 
         @Test
-        @DisplayName("Given valid request with exercise and tipoEntrega When validating Then no violations are returned")
+        @DisplayName("Given valid request with exercise When validating Then no violations are returned")
         void request_valid() {
             // Given
             NoLudicaRequestDto request = NoLudicaTestMother.validNoLudicaRequestDto();
@@ -51,7 +48,7 @@ class NoLudicaDtoValidationTest {
 
             // Then
             assertThat(violations).anyMatch(v -> 
-                v.getPropertyPath().toString().equals("excercise") &&
+                v.getPropertyPath().toString().equals("exercise") &&
                 v.getMessage().equals(ValidationMessages.NOT_NULL_EXCERSICE)
             );
         }
@@ -69,7 +66,7 @@ class NoLudicaDtoValidationTest {
 
             // Then
             assertThat(violations).anyMatch(v -> 
-                v.getPropertyPath().toString().equals("excercise") &&
+                v.getPropertyPath().toString().equals("exercise") &&
                 v.getMessage().equals(ValidationMessages.MAX_LENGTH_EXCERSICE)
             );
         }
@@ -89,67 +86,6 @@ class NoLudicaDtoValidationTest {
             assertThat(violations).isEmpty();
         }
 
-        @Test
-        @DisplayName("Given tipoEntrega is null (required field - edge case - tipo de entrega vacío) When validating Then reports NOT_NULL_TIPO_ENTREGA")
-        void request_tipoEntregaNull() {
-            // Given
-            NoLudicaRequestDto request = NoLudicaTestMother.validNoLudicaRequestDto();
-            request.setTipoEntrega(null);
-
-            // When
-            Set<ConstraintViolation<NoLudicaRequestDto>> violations = validator.validate(request);
-
-            // Then
-            assertThat(violations).anyMatch(v -> 
-                v.getPropertyPath().toString().equals("tipoEntrega") &&
-                v.getMessage().equals(ValidationMessages.NOT_NULL_TIPO_ENTREGA)
-            );
-        }
-
-        @Test
-        @DisplayName("Given tipoEntrega is ENTREGA When validating Then no violations are returned")
-        void request_tipoEntregaEntrega() {
-            // Given
-            NoLudicaRequestDto request = NoLudicaTestMother.noLudicaRequestDtoWithTipoEntrega(
-                TipoEntrega.ENTREGA
-            );
-
-            // When
-            Set<ConstraintViolation<NoLudicaRequestDto>> violations = validator.validate(request);
-
-            // Then
-            assertThat(violations).isEmpty();
-        }
-
-        @Test
-        @DisplayName("Given tipoEntrega is ENLACE When validating Then no violations are returned")
-        void request_tipoEntregaEnlace() {
-            // Given
-            NoLudicaRequestDto request = NoLudicaTestMother.noLudicaRequestDtoWithTipoEntrega(
-                TipoEntrega.ENLACE
-            );
-
-            // When
-            Set<ConstraintViolation<NoLudicaRequestDto>> violations = validator.validate(request);
-
-            // Then
-            assertThat(violations).isEmpty();
-        }
-
-        @Test
-        @DisplayName("Given tipoEntrega is TEXTO When validating Then no violations are returned")
-        void request_tipoEntregaTexto() {
-            // Given
-            NoLudicaRequestDto request = NoLudicaTestMother.noLudicaRequestDtoWithTipoEntrega(
-                TipoEntrega.TEXTO
-            );
-
-            // When
-            Set<ConstraintViolation<NoLudicaRequestDto>> violations = validator.validate(request);
-
-            // Then
-            assertThat(violations).isEmpty();
-        }
     }
 
 }

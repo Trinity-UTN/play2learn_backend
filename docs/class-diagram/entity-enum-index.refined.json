@@ -1,0 +1,476 @@
+{
+  "generated_at": "2026-03-23",
+  "entries": [
+    {
+      "name": "CategoryClasificacion",
+      "fqcn": "trinity.play2learn.backend.activity.clasificacion.models.CategoryClasificacion",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.clasificacion.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/clasificacion/models/CategoryClasificacion.java"
+    },
+    {
+      "name": "Profile",
+      "fqcn": "trinity.play2learn.backend.profile.profile.models.Profile",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.profile.profile.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/profile/profile/models/Profile.java"
+    },
+    {
+      "name": "Reserve",
+      "fqcn": "trinity.play2learn.backend.economy.reserve.models.Reserve",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.economy.reserve.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/economy/reserve/models/Reserve.java"
+    },
+    {
+      "name": "Aspect",
+      "fqcn": "trinity.play2learn.backend.profile.avatar.models.Aspect",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.profile.avatar.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/profile/avatar/models/Aspect.java"
+    },
+    {
+      "name": "Notification",
+      "fqcn": "trinity.play2learn.backend.notification.models.Notification",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.notification.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/notification/models/Notification.java"
+    },
+    {
+      "name": "Student",
+      "fqcn": "trinity.play2learn.backend.admin.student.models.Student",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.admin.student.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/admin/student/models/Student.java"
+    },
+    {
+      "name": "CouplesMemorama",
+      "fqcn": "trinity.play2learn.backend.activity.memorama.models.CouplesMemorama",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.memorama.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/memorama/models/CouplesMemorama.java"
+    },
+    {
+      "name": "Event",
+      "fqcn": "trinity.play2learn.backend.activity.ordenarSecuencia.models.Event",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.ordenarSecuencia.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/ordenarSecuencia/models/Event.java"
+    },
+    {
+      "name": "OrdenarSecuencia",
+      "fqcn": "trinity.play2learn.backend.activity.ordenarSecuencia.models.OrdenarSecuencia",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.ordenarSecuencia.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/ordenarSecuencia/models/OrdenarSecuencia.java"
+    },
+    {
+      "name": "CompletarOracionActivity",
+      "fqcn": "trinity.play2learn.backend.activity.completarOracion.models.CompletarOracionActivity",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.completarOracion.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/completarOracion/models/CompletarOracionActivity.java"
+    },
+    {
+      "name": "Memorama",
+      "fqcn": "trinity.play2learn.backend.activity.memorama.models.Memorama",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.memorama.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/memorama/models/Memorama.java"
+    },
+    {
+      "name": "Question",
+      "fqcn": "trinity.play2learn.backend.activity.preguntados.models.Question",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.preguntados.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/preguntados/models/Question.java"
+    },
+    {
+      "name": "Course",
+      "fqcn": "trinity.play2learn.backend.admin.course.models.Course",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.admin.course.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/admin/course/models/Course.java"
+    },
+    {
+      "name": "Subject",
+      "fqcn": "trinity.play2learn.backend.admin.subject.models.Subject",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.admin.subject.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/admin/subject/models/Subject.java"
+    },
+    {
+      "name": "Benefit",
+      "fqcn": "trinity.play2learn.backend.benefits.models.Benefit",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/Benefit.java"
+    },
+    {
+      "name": "Activity",
+      "fqcn": "trinity.play2learn.backend.activity.activity.models.activity.Activity",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.activity.models.activity",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/activity/models/activity/Activity.java"
+    },
+    {
+      "name": "User",
+      "fqcn": "trinity.play2learn.backend.user.models.User",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.user.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/user/models/User.java"
+    },
+    {
+      "name": "ConceptClasificacion",
+      "fqcn": "trinity.play2learn.backend.activity.clasificacion.models.ConceptClasificacion",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.clasificacion.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/clasificacion/models/ConceptClasificacion.java"
+    },
+    {
+      "name": "ClasificacionActivity",
+      "fqcn": "trinity.play2learn.backend.activity.clasificacion.models.ClasificacionActivity",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.clasificacion.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/clasificacion/models/ClasificacionActivity.java"
+    },
+    {
+      "name": "Transaction",
+      "fqcn": "trinity.play2learn.backend.economy.transaction.models.Transaction",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.economy.transaction.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/economy/transaction/models/Transaction.java"
+    },
+    {
+      "name": "FixedTermDeposit",
+      "fqcn": "trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDeposit",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.investment.fixedTermDeposit.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/fixedTermDeposit/models/FixedTermDeposit.java"
+    },
+    {
+      "name": "ConsecuenceArbolDecision",
+      "fqcn": "trinity.play2learn.backend.activity.arbolDeDecision.models.ConsecuenceArbolDecision",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.arbolDeDecision.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/arbolDeDecision/models/ConsecuenceArbolDecision.java"
+    },
+    {
+      "name": "Ahorcado",
+      "fqcn": "trinity.play2learn.backend.activity.ahorcado.models.Ahorcado",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.ahorcado.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/ahorcado/models/Ahorcado.java"
+    },
+    {
+      "name": "Year",
+      "fqcn": "trinity.play2learn.backend.admin.year.models.Year",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.admin.year.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/admin/year/models/Year.java"
+    },
+    {
+      "name": "DecisionArbolDecision",
+      "fqcn": "trinity.play2learn.backend.activity.arbolDeDecision.models.DecisionArbolDecision",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.arbolDeDecision.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/arbolDeDecision/models/DecisionArbolDecision.java"
+    },
+    {
+      "name": "Stock",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.Stock",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/Stock.java"
+    },
+    {
+      "name": "StockHistory",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.StockHistory",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/StockHistory.java"
+    },
+    {
+      "name": "StoredFile",
+      "fqcn": "trinity.play2learn.backend.configs.fileUpload.models.StoredFile",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.configs.fileUpload.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/configs/fileUpload/models/StoredFile.java"
+    },
+    {
+      "name": "BenefitPurchase",
+      "fqcn": "trinity.play2learn.backend.benefits.models.BenefitPurchase",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/BenefitPurchase.java"
+    },
+    {
+      "name": "Order",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.Order",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/Order.java"
+    },
+    {
+      "name": "ArbolDeDecisionActivity",
+      "fqcn": "trinity.play2learn.backend.activity.arbolDeDecision.models.ArbolDeDecisionActivity",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.arbolDeDecision.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/arbolDeDecision/models/ArbolDeDecisionActivity.java"
+    },
+    {
+      "name": "ActivityCompleted",
+      "fqcn": "trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.activity.models.activityCompleted",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/activity/models/activityCompleted/ActivityCompleted.java"
+    },
+    {
+      "name": "WordCompletarOracion",
+      "fqcn": "trinity.play2learn.backend.activity.completarOracion.models.WordCompletarOracion",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.completarOracion.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/completarOracion/models/WordCompletarOracion.java"
+    },
+    {
+      "name": "Option",
+      "fqcn": "trinity.play2learn.backend.activity.preguntados.models.Option",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.preguntados.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/preguntados/models/Option.java"
+    },
+    {
+      "name": "Preguntados",
+      "fqcn": "trinity.play2learn.backend.activity.preguntados.models.Preguntados",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.preguntados.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/preguntados/models/Preguntados.java"
+    },
+    {
+      "name": "Wallet",
+      "fqcn": "trinity.play2learn.backend.economy.wallet.models.Wallet",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.economy.wallet.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/economy/wallet/models/Wallet.java"
+    },
+    {
+      "name": "Teacher",
+      "fqcn": "trinity.play2learn.backend.admin.teacher.models.Teacher",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.admin.teacher.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/admin/teacher/models/Teacher.java"
+    },
+    {
+      "name": "NoLudica",
+      "fqcn": "trinity.play2learn.backend.activity.noLudica.models.NoLudica",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.noLudica.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/noLudica/models/NoLudica.java"
+    },
+    {
+      "name": "NoLudicaAttempt",
+      "fqcn": "trinity.play2learn.backend.activity.activity.models.activityCompleted.NoLudicaAttempt",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.activity.models.activityCompleted",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/activity/models/activityCompleted/NoLudicaAttempt.java"
+    },
+    {
+      "name": "SentenceCompletarOracion",
+      "fqcn": "trinity.play2learn.backend.activity.completarOracion.models.SentenceCompletarOracion",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.activity.completarOracion.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/completarOracion/models/SentenceCompletarOracion.java"
+    },
+    {
+      "name": "SavingAccount",
+      "fqcn": "trinity.play2learn.backend.investment.savingAccount.models.SavingAccount",
+      "kind": "entity",
+      "package": "trinity.play2learn.backend.investment.savingAccount.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/savingAccount/models/SavingAccount.java"
+    },
+
+    {
+      "name": "Difficulty",
+      "fqcn": "trinity.play2learn.backend.activity.activity.models.activity.Difficulty",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.activity.activity.models.activity",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/activity/models/activity/Difficulty.java"
+    },
+    {
+      "name": "ValueXp",
+      "fqcn": "trinity.play2learn.backend.configs.levels.ValueXp",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.configs.levels",
+      "source_path": "src/main/java/trinity/play2learn/backend/configs/levels/ValueXp.java"
+    },
+    {
+      "name": "TransactionActor",
+      "fqcn": "trinity.play2learn.backend.economy.transaction.models.TransactionActor",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.economy.transaction.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/economy/transaction/models/TransactionActor.java"
+    },
+    {
+      "name": "BenefitIcon",
+      "fqcn": "trinity.play2learn.backend.benefits.models.BenefitIcon",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/BenefitIcon.java"
+    },
+    {
+      "name": "RiskLevel",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.RiskLevel",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/RiskLevel.java"
+    },
+    {
+      "name": "OrderState",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.OrderState",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/OrderState.java"
+    },
+    {
+      "name": "TypeTransaction",
+      "fqcn": "trinity.play2learn.backend.economy.transaction.models.TypeTransaction",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.economy.transaction.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/economy/transaction/models/TypeTransaction.java"
+    },
+    {
+      "name": "BenefitCategory",
+      "fqcn": "trinity.play2learn.backend.benefits.models.BenefitCategory",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/BenefitCategory.java"
+    },
+    {
+      "name": "TypeAspect",
+      "fqcn": "trinity.play2learn.backend.profile.avatar.models.TypeAspect",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.profile.avatar.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/profile/avatar/models/TypeAspect.java"
+    },
+    {
+      "name": "Role",
+      "fqcn": "trinity.play2learn.backend.user.models.Role",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.user.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/user/models/Role.java"
+    },
+    {
+      "name": "TypeReward",
+      "fqcn": "trinity.play2learn.backend.activity.activity.models.activity.TypeReward",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.activity.activity.models.activity",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/activity/models/activity/TypeReward.java"
+    },
+    {
+      "name": "RangeValue",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.RangeValue",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/RangeValue.java"
+    },
+    {
+      "name": "LeaderboardType",
+      "fqcn": "trinity.play2learn.backend.profile.ranking.models.LeaderboardType",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.profile.ranking.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/profile/ranking/models/LeaderboardType.java"
+    },
+    {
+      "name": "ActivityCompletedState",
+      "fqcn": "trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.activity.activity.models.activityCompleted",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/activity/models/activityCompleted/ActivityCompletedState.java"
+    },
+    {
+      "name": "OrderStop",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.OrderStop",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/OrderStop.java"
+    },
+    {
+      "name": "ActivityStatus",
+      "fqcn": "trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.activity.activity.models.activity",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/activity/models/activity/ActivityStatus.java"
+    },
+    {
+      "name": "BenefitColor",
+      "fqcn": "trinity.play2learn.backend.benefits.models.BenefitColor",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/BenefitColor.java"
+    },
+    {
+      "name": "NotificationType",
+      "fqcn": "trinity.play2learn.backend.notification.models.NotificationType",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.notification.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/notification/models/NotificationType.java"
+    },
+    {
+      "name": "LogLevel",
+      "fqcn": "trinity.play2learn.backend.configs.logs.models.LogLevel",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.configs.logs.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/configs/logs/models/LogLevel.java"
+    },
+    {
+      "name": "OrderType",
+      "fqcn": "trinity.play2learn.backend.investment.stock.models.OrderType",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.investment.stock.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/stock/models/OrderType.java"
+    },
+    {
+      "name": "FixedTermState",
+      "fqcn": "trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermState",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.investment.fixedTermDeposit.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/fixedTermDeposit/models/FixedTermState.java"
+    },
+    {
+      "name": "Errors",
+      "fqcn": "trinity.play2learn.backend.activity.ahorcado.models.Errors",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.activity.ahorcado.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/activity/ahorcado/models/Errors.java"
+    },
+    {
+      "name": "FixedTermDays",
+      "fqcn": "trinity.play2learn.backend.investment.fixedTermDeposit.models.FixedTermDays",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.investment.fixedTermDeposit.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/investment/fixedTermDeposit/models/FixedTermDays.java"
+    },
+    {
+      "name": "BenefitPurchaseState",
+      "fqcn": "trinity.play2learn.backend.benefits.models.BenefitPurchaseState",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/BenefitPurchaseState.java"
+    },
+    {
+      "name": "BenefitState",
+      "fqcn": "trinity.play2learn.backend.benefits.models.BenefitState",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/BenefitState.java"
+    },
+    {
+      "name": "BenefitStudentState",
+      "fqcn": "trinity.play2learn.backend.benefits.models.BenefitStudentState",
+      "kind": "enum",
+      "package": "trinity.play2learn.backend.benefits.models",
+      "source_path": "src/main/java/trinity/play2learn/backend/benefits/models/BenefitStudentState.java"
+    }
+  ]
+}
+

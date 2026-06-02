@@ -3,7 +3,7 @@ package trinity.play2learn.backend.activity.activity.mappers;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentCountResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentGetResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
@@ -16,8 +16,8 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 public class ActivityMapper {
 
         public static ActivityStudentNotApprovedResponseDto toNotApprovedDto(
-                        Activity activity, Integer remainingAttempts, Boolean pending,
-                        ActivityStatus status, Double minReward, Double maxReward) {
+                        Activity activity, Integer remainingAttempts,
+                        ActivityStatus status, Double minReward, Double maxReward, boolean isBeingDone) {
 
                 return ActivityStudentNotApprovedResponseDto.builder()
                                 .id(activity.getId())
@@ -34,14 +34,14 @@ public class ActivityMapper {
                                 .status(status)
                                 .minReward(minReward)
                                 .maxReward(maxReward)
-                                .pending(pending)
+                                .isBeingDone(isBeingDone)
                                 .build();
         }
 
-        public static ActivityStudentApprovedResponseDto toApprovedDto(Activity activity, Integer remainingAttempts,
-                        Double reward, LocalDateTime completedAt) {
+        public static ActivityStudentStateResponseDto toStudentStateDto(Activity activity, Integer remainingAttempts,
+                        Double reward, LocalDateTime completedAt, ActivityCompletedState state) {
 
-                return ActivityStudentApprovedResponseDto.builder()
+                return ActivityStudentStateResponseDto.builder()
                                 .id(activity.getId())
                                 .name(activity.getName())
                                 .description(activity.getDescription())
@@ -52,7 +52,7 @@ public class ActivityMapper {
                                 .remainingAttempts(remainingAttempts)
                                 .completedAt(completedAt)
                                 .reward(reward)
-                                .state(ActivityCompletedState.APPROVED)
+                                .state(state)
                                 .build();
         }
 
@@ -66,7 +66,8 @@ public class ActivityMapper {
                                 .build();
         }
 
-        public static ActivityTeacherSimpleDto toSimpleDto(Activity activity, ActivityStatus status, LocalDateTime date) {
+        public static ActivityTeacherSimpleDto toSimpleDto(Activity activity, ActivityStatus status,
+                        LocalDateTime date) {
                 return ActivityTeacherSimpleDto.builder()
                                 .id(activity.getId())
                                 .name(activity.getName())
@@ -81,7 +82,8 @@ public class ActivityMapper {
                                 .build();
         }
 
-        public static ActivityTeacherGetResponseDto toTeacherGetDto(Activity activity, ActivityStatus status, int studentsAttemptedCount, int studentsApprovedCount,
+        public static ActivityTeacherGetResponseDto toTeacherGetDto(Activity activity, ActivityStatus status,
+                        int studentsAttemptedCount, int studentsApprovedCount,
                         Double averageCompletionTime, Double participationPercentage, Double successPercentage,
                         List<ActivityStudentGetResponseDto> activityStudentGetDtos, Double reward) {
                 return ActivityTeacherGetResponseDto.builder()
@@ -92,7 +94,7 @@ public class ActivityMapper {
                                 .endDate(activity.getEndDate())
                                 .status(status)
                                 .difficulty(activity.getDifficulty())
-                                .maxTime(activity.getMaxTime()) 
+                                .maxTime(activity.getMaxTime())
                                 .subjectName(activity.getSubject().getName())
                                 .courseName(activity.getSubject().getCourse().getFullName())
                                 .attempts(activity.getAttempts())

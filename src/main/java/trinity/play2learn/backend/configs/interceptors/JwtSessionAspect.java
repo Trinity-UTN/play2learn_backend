@@ -9,6 +9,8 @@ import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
@@ -44,15 +46,24 @@ public class JwtSessionAspect {
         }
 
         HttpServletRequest request = attrs.getRequest();
-        String authHeader = request.getHeader("Authorization"); //Obtiene el encabezado de autorizacion donde se ubica el token
+        
+        String jwt = null;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            jwt = Arrays.stream(cookies)
+                .filter(c -> "access_token".equals(c.getName()))
+                .map(Cookie::getValue)
+                .findFirst()
+                .orElse(null);
+        }
+
+        if (jwt == null) {
             throw new UnauthorizedException(
                 UnauthorizedExceptionMessages.INVALID_ACCESS_TOKEN
             );
         }
 
-        String jwt = authHeader.substring(7);
 
         //Chequeo que el token no haya expirado
         try {

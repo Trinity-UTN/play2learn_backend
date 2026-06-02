@@ -31,6 +31,7 @@ class TeacherRegisterControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private ITeacherRegisterService teacherRegisterService;
 

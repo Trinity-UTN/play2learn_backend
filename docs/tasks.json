@@ -1,262 +1,178 @@
 {
-  "feature_title": "Plan de pruebas unitarias para módulo Investment (fixedTermDeposit, investment, stock, savingAccount)",
+  "feature_title": "Diagrama de Clases (Entidades y Enums)",
+  "description": "Generar un diagrama de clases que registre únicamente las clases de entidad (anotadas con JPA) y los enums declarados en el backend, incluyendo sus relaciones basadas en tipos referenciados (sin listar controladores/servicios/repositorios).",
   "tasks": [
     {
       "id": "T01",
-      "title": "Auditar servicios, controladores y DTOs del módulo Investment",
-      "description": "Inventariar clases, responsabilidades, validaciones y dependencias de services, controllers y DTOs del módulo `investment` (incluyendo submódulos `fixedTermDeposit`, `investment`, `stock` y `savingAccount`), excluyendo models, repositories, mappers y specs.",
-      "command": "/analyze",
+      "title": "Definir alcance y criterio de inclusión",
+      "description": "Establecer reglas explícitas para qué se considera 'entidad' y 'enum' para el diagrama: entidades JPA (clases con `@Entity`, y opcionalmente `@Embeddable`/`@MappedSuperclass` si se encuentran en el proyecto) y todos los `enum` de Java dentro del backend. Documentar el alcance en un archivo de trabajo.",
+      "command": "/generate",
       "params": {
-        "targets": [
-          "src/main/java/trinity/play2learn/backend/investment"
+        "target_file": "docs/class-diagram/alcance.md",
+        "content_outline": [
+          "Definición de Entidad (anotaciones a detectar).",
+          "Definición de Enum (declara `enum` en Java).",
+          "Regla para relaciones: solo asociaciones entre tipos entidad/enum.",
+          "Regla de exclusión: no incluir controladores, servicios, repositorios ni DTOs si no son entidades."
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se documenta en `docs/testing/investment-unit-tests-audit.md` el inventario completo de artefactos relevantes.",
-        "Quedan registradas validaciones clave, excepciones y dependencias externas por cada componente.",
-        "Se listan riesgos de negocio sin cobertura de pruebas actual para cada submódulo (fixedTermDeposit, investment, stock, savingAccount)."
+        "El archivo `docs/class-diagram/alcance.md` existe.",
+        "Incluye criterios de inclusión para entidades y enums.",
+        "Incluye reglas de relaciones y exclusión."
       ]
     },
     {
       "id": "T02",
-      "title": "Diseñar estrategia de pruebas unitarias para Investment",
-      "description": "Definir alcance, métricas de cobertura, dobles de prueba y fixtures compartidos para services, controllers y DTOs del módulo `investment` (fixedTermDeposit, investment, stock, savingAccount) siguiendo restricciones del contexto.",
-      "command": "/design",
+      "title": "Indexar entidades y enums del backend",
+      "description": "Analizar `src/main/java` para construir un índice completo de tipos a representar en el diagrama: todas las clases con anotación JPA relevante y todos los enums. El índice debe incluir nombre simple, FQCN, tipo (entity/embeddable/mappedsuperclass/enum) y ubicación de archivo.",
+      "command": "/analyze",
       "params": {
-        "artifact": "docs/testing/investment-unit-test-strategy.md"
+        "target_directory": "src/main/java/trinity/play2learn/backend",
+        "output_file": "docs/class-diagram/entity-enum-index.json",
+        "detect": {
+          "entities": {
+            "jpa_annotations": [
+              "@jakarta.persistence.Entity",
+              "@javax.persistence.Entity",
+              "@jakarta.persistence.Embeddable",
+              "@javax.persistence.Embeddable",
+              "@jakarta.persistence.MappedSuperclass",
+              "@javax.persistence.MappedSuperclass"
+            ]
+          },
+          "enums": {
+            "java_construct": "enum"
+          }
+        }
       },
       "status": "done",
       "acceptance_criteria": [
-        "El documento establece objetivos de cobertura y criterios de salida por tipo de componente.",
-        "Incluye matriz de escenarios priorizados por riesgo y dependencias simuladas para cada submódulo.",
-        "Detalla datos de prueba reutilizables y lineamientos para fixtures comunes (InvestmentTestMother)."
+        "El archivo `docs/class-diagram/entity-enum-index.json` existe.",
+        "El índice contiene al menos 1 entidad y 1 enum.",
+        "Cada entrada del índice incluye `name`, `fqcn`, `kind` y `source_path`."
       ]
     },
     {
       "id": "T03",
-      "title": "Generar pruebas para services principales de Investment",
-      "description": "Crear suites unitarias para services principales: `FixedTermDepositRegisterService`, `FixedTermDepositListPaginatedService`, `FixedTermDepositAutomaticEndsService`, `SavingAccountRegisterService`, `SavingAccountDepositService`, `SavingAccountWithdrawalService`, `SavingAccountDeleteService`, `SavingAccountListPaginatedService`, `SavingAccountUpdateService`, `StockRegisterService`, `StockBuyService`, `StockSellService`, `StockGetService`, `StockListService`, `StockListPaginatedService`, `StockListHistoryService`, `StockRegisterStopService`, `StockUpdateService`, `CandleStickGetValuesService`, `InvestemtCalculateTotalInvestedService`.",
-      "command": "/generate",
+      "title": "Refinar el índice (normalización y consistencia)",
+      "description": "Limpiar y normalizar el índice: asegurar unicidad por FQCN, eliminar duplicados, y verificar que las 'relaciones' potenciales se puedan derivar desde campos tipados hacia otros tipos del índice. Guardar el resultado como índice refinado.",
+      "command": "/refine",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositListPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositAutomaticEndsServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountDepositServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountWithdrawalServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountDeleteServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountListPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountUpdateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockRegisterServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockBuyServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockSellServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockGetServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListPaginatedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockListHistoryServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockRegisterStopServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/StockUpdateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/CandleStickGetValuesServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/investment/services/InvestemtCalculateTotalInvestedServiceTest.java"
+        "target_file": "docs/class-diagram/entity-enum-index.json",
+        "output_file": "docs/class-diagram/entity-enum-index.refined.json",
+        "checks": [
+          "Unicidad por FQCN.",
+          "Normalización de nombres (si existen clases internas/estáticas, registrarlas correctamente).",
+          "Agregar/estandarizar metadatos útiles para relaciones (por ejemplo, campos tipados hacia otros FQCN del índice)."
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren escenarios de éxito y excepciones relevantes (`NotFoundException`, `ConflictException`, `BadRequestException`, `UnsupportedOperationException`) para cada servicio.",
-        "Mocks verifican interacciones con servicios commons, repositorios y servicios externos simulados.",
-        "Asserts validan DTOs resultantes y mensajes de excepción esperados con AssertJ.",
-        "Services con paginación validan construcción correcta de especificaciones y `PaginatedData`."
+        "El archivo `docs/class-diagram/entity-enum-index.refined.json` existe.",
+        "No hay FQCN duplicados.",
+        "Las entradas conservan `kind` y `source_path`."
       ]
     },
     {
       "id": "T04",
-      "title": "Refinar pruebas de services principales de Investment",
-      "description": "Optimizar suites de services principales eliminando duplicidades, mejorando legibilidad y reutilización de datos mediante fixtures compartidos en `InvestmentTestMother`.",
-      "command": "/refine",
+      "title": "Elegir formato y generar plantilla del diagrama",
+      "description": "Seleccionar un formato de diagrama consistente (por ejemplo PlantUML o Mermaid) y generar una plantilla base que contenga solo nodos de entidad/enum según el índice refinado.",
+      "command": "/generate",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment"
-        ]
+        "target_file": "docs/class-diagram/class-diagram-template.mmd",
+        "diagram_type": "mermaid",
+        "template_only": true,
+        "source_index": "docs/class-diagram/entity-enum-index.refined.json"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Helpers/builder centralizados en `InvestmentTestMother` generan FixedTermDeposit, SavingAccount, Stock, Order, StockHistory y DTOs simulados consistentes.",
-        "Cada caso usa `@DisplayName` y asserts AssertJ descriptivos con patrón Given-When-Then.",
-        "Se mantiene cobertura de ramas sin warnings de Mockito ni code smells."
+        "El archivo `docs/class-diagram/class-diagram-template.mmd` existe.",
+        "La plantilla contiene referencias a clases y enums basadas en el índice (sin relaciones aún).",
+        "No aparecen tipos fuera de entidades/enums del índice."
       ]
     },
     {
       "id": "T05",
-      "title": "Generar pruebas para services commons de Investment",
-      "description": "Crear suites unitarias para services commons: `FixedTermDepositCalculateAmountInvestedService`, `FixedTermDepositCalculateRewardAmountService`, `FixedTermDepositFindAllByStateAndWalletService`, `FixedTermDepositFindAllByStateService`, `SavingAccountCalculateAmountInvestedService`, `SavingAccountExistsByNameAndWalletService`, `SavingAccountFindByIdService`, `OrderFindPendingService`, `OrderStopExecuteService`, `StockCalculateAmountInvestedService`, `StockCalculateByWalletService`, `StockCalculateVariationService`, `StockFindAllService`, `StockFindByIdService`, `StockHistoryCalculateTrendService`, `StockHistoryFindByStockAndRangeService`, `StockHistoryFindByStockService`, `StockHistoryFindLastService`, `StockMoveService`, `StockUpdateSpecificService`.",
-      "command": "/generate",
+      "title": "Refinar el diagrama (incluir relaciones y estilo)",
+      "description": "Completar el diagrama con relaciones inferidas únicamente entre tipos entidad/enum (p.ej. campos cuyo tipo coincide con otro FQCN del índice). Aplicar una convención visual: agrupar por paquete si aplica, y usar estereotipos (entity/enum) para legibilidad.",
+      "command": "/refine",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositCalculateAmountInvestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositCalculateRewardAmountServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositFindAllByStateAndWalletServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/commons/FixedTermDepositFindAllByStateServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountCalculateAmountInvestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountExistsByNameAndWalletServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/services/commons/SavingAccountFindByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/OrderFindPendingServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/OrderStopExecuteServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateAmountInvestedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateByWalletServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateVariationServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockFindAllServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockFindByIdServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryCalculateTrendServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindByStockAndRangeServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindByStockServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockHistoryFindLastServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockMoveServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/services/commons/StockUpdateSpecificServiceTest.java"
+        "target_file": "docs/class-diagram/class-diagram.mmd",
+        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
+        "rules": [
+          "Solo relaciones entre miembros del índice (entidad/enum).",
+          "Si hay campos parametrizados (`List<Foo>`), inferir relación hacia `Foo` si `Foo` está en el índice.",
+          "Evitar relaciones hacia tipos no indexados."
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Se cubren escenarios de éxito y excepciones (`NotFoundException`, `BadRequestException`) con validaciones de listas y objetos resultantes usando AssertJ.",
-        "Todos los tests usan `@Nested`, `@DisplayName` con patrón Given-When-Then y verifican interacciones con repositorios simulados."
+        "El archivo `docs/class-diagram/class-diagram.mmd` contiene relaciones entre nodos que existen en el índice refinado.",
+        "No incluye tipos fuera del conjunto entidad/enum.",
+        "El estilo del diagrama sigue la convención documentada en `docs/class-diagram/alcance.md`."
       ]
     },
     {
       "id": "T06",
-      "title": "Refinar pruebas de services commons de Investment",
-      "description": "Revisar suites de services commons para mejorar reutilización de fixtures y cobertura de casos límite sin duplicar código.",
-      "command": "/refine",
+      "title": "Escaneo de seguridad del artefacto generado",
+      "description": "Ejecutar un escaneo sobre los artefactos generados del diagrama para asegurar que no se haya incluido información sensible (por ejemplo, rutas internas inesperadas, secretos, o datos hardcodeados) y que el archivo Mermaid no contenga contenido peligroso.",
+      "command": "/secure",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment"
+        "target_file": "docs/class-diagram/class-diagram.mmd",
+        "also_scan_files": [
+          "docs/class-diagram/entity-enum-index.refined.json",
+          "docs/class-diagram/alcance.md"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Builders/helpers generan entidades válidas e inválidas reutilizables en todos los casos.",
-        "Cada escenario documenta explícitamente el motivo de la validación esperada.",
-        "Cobertura incluye casos límite sin duplicar código."
+        "El escaneo no reporta hallazgos críticos.",
+        "No se detectan secretos o credenciales.",
+        "No se detecta contenido potencialmente peligroso en el archivo del diagrama."
       ]
     },
     {
       "id": "T07",
-      "title": "Generar pruebas para controllers de Investment",
-      "description": "Crear suites unitarias para controllers: `FixedTermDepositRegisterController`, `FixedTermDepositListPaginatedController`, `SavingAccountRegisterController`, `SavingAccountDepositController`, `SavingAccountWithdrawalController`, `SavingAccountDeleteController`, `SavingAccountListPaginatedController`, `StockRegisterController`, `StockBuyController`, `StockSellController`, `StockGetController`, `StockListController`, `StockListPaginatedController`, `StockHistoryListByStockController`, `StockCandleStickGetController`, `StockRegisterStopController`.",
-      "command": "/generate",
+      "title": "Validar cobertura (solo entidades/enums)",
+      "description": "Verificar programáticamente o por comprobación determinista que el diagrama contiene exactamente los tipos del índice refinado (o un subconjunto controlado si hay limitaciones del formato) y que no hay clases externas al índice.",
+      "command": "/test",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/controllers/FixedTermDepositRegisterControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/controllers/FixedTermDepositListPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountRegisterControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountDepositControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountWithdrawalControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountDeleteControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/controllers/SavingAccountListPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockRegisterControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockBuyControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockSellControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockGetControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockListControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockListPaginatedControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockHistoryListByStockControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockCandleStickGetControllerTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/controllers/StockRegisterStopControllerTest.java"
+        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
+        "target_diagram": "docs/class-diagram/class-diagram.mmd",
+        "validation_rules": [
+          "Conteo de clases/enums en el diagrama debe ser >= conteo de entries con kind entidad/enum.",
+          "Cada entry del índice debe aparecer al menos una vez en el diagrama (por FQCN o nombre).",
+          "No deben existir líneas `class`/`enum` que no correspondan al índice."
         ]
       },
-      "status": "done",
+      "status": "todo",
       "acceptance_criteria": [
-        "Tests usan `@WebMvcTest`, `@AutoConfigureMockMvc(addFilters = false)`, `MockMvc` para realizar requests HTTP.",
-        "Se cubren respuestas exitosas (200/201) y errores relevantes (400/404/409) validando payloads JSON mediante `jsonPath`.",
-        "Se verifica delegación a servicios correspondientes y manejo de `@SessionUser` mediante `SessionUserArgumentResolver`."
+        "La validación completa sin fallos.",
+        "Se reporta el número de entidades/enums detectadas vs. representadas.",
+        "No hay clases externas al índice presentes en el diagrama."
       ]
     },
     {
       "id": "T08",
-      "title": "Refinar pruebas de controllers de Investment",
-      "description": "Revisar suites de controllers para mejorar estructura, legibilidad y cobertura de validaciones de payloads sin duplicar código.",
-      "command": "/refine",
-      "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment"
-        ]
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "Tests ya están bien estructurados con `@WebMvcTest`, `@AutoConfigureMockMvc(addFilters = false)`, `MockMvc` centralizado mediante `@Autowired`, casos documentados con `@DisplayName` y comentarios breves del flujo.",
-        "No se requieren cambios adicionales o solo mejoras menores de legibilidad."
-      ]
-    },
-    {
-      "id": "T09",
-      "title": "Generar pruebas de validación para DTOs de Investment",
-      "description": "Agregar pruebas de Bean Validation para DTOs de respuesta: `FixedTermDepositResponseDto`, `SavingAccountResponseDto`, `StockResponseDto`, `StockBuyResponseDto`, `StockSellResponseDto`, `StockHistoryResponseDto`, `CandleStickChartValueResponseDto`, cubriendo construcción y serialización correcta.",
+      "title": "Documentar el uso del diagrama",
+      "description": "Generar una guía breve para renderizar el diagrama localmente (con Mermaid) y explicar cómo actualizarlo cuando cambien las entidades/enums.",
       "command": "/generate",
       "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/dtos/FixedTermDepositResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/dtos/SavingAccountResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockBuyResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockSellResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/StockHistoryResponseDtoTest.java",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos/CandleStickChartValueResponseDtoTest.java"
+        "target_file": "docs/class-diagram/README.md",
+        "template_outline": [
+          "Qué incluye el diagrama (entidades y enums únicamente).",
+          "Cómo renderizar `class-diagram.mmd`.",
+          "Cómo regenerar: pasos recomendados usando los scripts/herramientas del proyecto.",
+          "Limitaciones conocidas (si aplica)."
         ]
       },
-      "status": "done",
+      "status": "todo",
       "acceptance_criteria": [
-        "Se verifican construcción correcta de DTOs con valores válidos e inválidos según corresponda.",
-        "Escenarios válidos generan DTOs correctamente serializables a JSON.",
-        "DTOs con listas anidadas validan estructura y contenido esperado."
-      ]
-    },
-    {
-      "id": "T10",
-      "title": "Refinar pruebas de DTOs de Investment",
-      "description": "Revisar la suite de validación para mejorar reutilización de fixtures y cobertura de combinaciones límite.",
-      "command": "/refine",
-      "params": {
-        "targets": [
-          "src/test/java/trinity/play2learn/backend/investment/fixedTermDeposit/dtos",
-          "src/test/java/trinity/play2learn/backend/investment/savingAccount/dtos",
-          "src/test/java/trinity/play2learn/backend/investment/stock/dtos"
-        ]
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "Builders/helpers generan DTOs válidos e inválidos reutilizables en todos los casos.",
-        "Cada escenario documenta explícitamente el motivo de la validación esperada.",
-        "Cobertura incluye campos opcionales/nulos sin duplicar código."
-      ]
-    },
-    {
-      "id": "T11",
-      "title": "Preparar suites del módulo Investment para ejecución con JaCoCo",
-      "description": "Ejecutar todas las suites unitarias del módulo `investment` preparando el agente JaCoCo y generando reporte de cobertura.",
-      "command": "/test",
-      "params": {
-        "command": "./mvnw.cmd org.jacoco:jacoco-maven-plugin:prepare-agent test org.jacoco:jacoco-maven-plugin:report -Dtest=trinity.play2learn.backend.investment.**"
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El comando finaliza sin errores y produce `target/site/jacoco/index.html` actualizado.",
-        "Cobertura de services/controllers/DTOs alcanza ≥ 85 % en líneas y ≥ 75 % en ramas.",
-        "Incidencias o fallas detectadas quedan registradas para seguimiento inmediato."
-      ]
-    },
-    {
-      "id": "T12",
-      "title": "Consolidar reporte automatizado de pruebas para Investment",
-      "description": "Generar documentación consolidada de las pruebas del módulo ejecutando el script estándar con el módulo `investment`.",
-      "command": "/report",
-      "params": {
-        "command": "python scripts/testing_report.py --module \"investment\" --output \"docs/testing/test_investment.md\""
-      },
-      "status": "done",
-      "acceptance_criteria": [
-        "El archivo `docs/testing/test_investment.md` resume métricas y hallazgos actualizados.",
-        "El reporte contiene cobertura JaCoCo, suites ejecutadas y riesgos remanentes.",
-        "Se incluyen siguientes pasos o pendientes identificados durante la ejecución."
+        "El archivo `docs/class-diagram/README.md` existe.",
+        "Incluye instrucciones para renderizar el diagrama.",
+        "Incluye una sección que explique el criterio de inclusión/exclusión."
       ]
     }
   ]

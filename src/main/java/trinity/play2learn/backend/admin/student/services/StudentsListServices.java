@@ -19,7 +19,7 @@ public class StudentsListServices implements IStudentListService {
     
     @Override
     public List<StudentResponseDto> cu20ListStudents() {
-        return StudentMapper.toListDto((List<Student>) studentRepository.findAll());
+        return StudentMapper.toListDto((List<Student>) studentRepository.findByDeletedAtIsNull());
     }
     
 }

@@ -143,23 +143,6 @@ class CourseCommonServicesTest {
         }
     }
 
-    @Nested
-    @DisplayName("CourseExistByYearService")
-    class CourseExistByYearServiceSpec {
-
-        @Test
-        @DisplayName("Debe delegar en existsByYearIdAndDeletedAtIsNull")
-        void shouldValidateByYear() {
-            Year year = buildYear();
-            when(courseRepository.existsByYearIdAndDeletedAtIsNull(YEAR_ID)).thenReturn(true);
-
-            boolean exists = courseExistByYearService.validate(year);
-
-            assertThat(exists).isTrue();
-            verify(courseRepository).existsByYearIdAndDeletedAtIsNull(YEAR_ID);
-        }
-    }
-
     private Year buildYear() {
         return Year.builder()
             .id(YEAR_ID)

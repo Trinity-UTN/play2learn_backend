@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import trinity.play2learn.backend.profile.avatar.dtos.request.AspectRegisterRequestDto;
 import trinity.play2learn.backend.profile.avatar.dtos.response.AspectResponseDto;
+import trinity.play2learn.backend.profile.avatar.dtos.response.AspectSimpleResponseDto;
 import trinity.play2learn.backend.profile.avatar.models.Aspect;
 import trinity.play2learn.backend.profile.avatar.models.TypeAspect;
 
@@ -63,6 +64,13 @@ public class AspectMapper {
             .type(aspect.getType())
             .available(aspect.isAvailable())
             .bought(bought)
+            .build();
+    }
+
+    public static AspectSimpleResponseDto toSimpleDto (Aspect aspect) {
+        return AspectSimpleResponseDto.builder()
+            .image(aspect.getImage())
+            .type(aspect.getType())
             .build();
     }
 }

@@ -47,18 +47,19 @@ public final class AhorcadoTestMother {
         return ahorcadoRequestDto(DEFAULT_WORD, errorsPermited);
     }
 
-    public static AhorcadoResponseDto ahorcadoResponseDto(Long id, String word, int errorsPermited) {
+    public static AhorcadoResponseDto ahorcadoResponseDto(Long id, String word, Errors errorsPermited) {
         return AhorcadoResponseDto.builder()
             .id(id)
             .name("Ahorcado")
             .description("Descripción del ahorcado")
             .word(word)
-            .errorsPermited(errorsPermited)
+            .errorsPermited(errorsPermited.name())
+            .errorsPermitedValue(errorsPermited.getValue())
             .build();
     }
 
     public static AhorcadoResponseDto validAhorcadoResponseDto(Long id) {
-        return ahorcadoResponseDto(id, DEFAULT_WORD, Errors.TRES.getValue());
+        return ahorcadoResponseDto(id, DEFAULT_WORD, Errors.TRES);
     }
 
     public static Ahorcado savedAhorcado(Long id, Subject subject, String word, Errors errorsPermited) {

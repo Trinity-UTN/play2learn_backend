@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.admin.student.mappers;
 
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 import trinity.play2learn.backend.admin.course.mappers.CourseMapper;
@@ -25,18 +27,20 @@ public class StudentMapper {
             .dni(studentDto.getDni())
             .user(user)
             .course(course)
-            .birthdate(studentDto.getBirthDate())
+            .birthDate(studentDto.getBirthDate())
             .emailTutor(studentDto.getEmailTutor())
             .build();
     }
 
     public static StudentResponseDto toDto(Student student) {
+        int age = student.getBirthDate() != null ? Period.between(student.getBirthDate(), LocalDate.now()).getYears() : 0;
         return StudentResponseDto.builder()
             .id(student.getId())
             .name(student.getName())
             .lastname(student.getLastname())
             .dni(student.getDni())
-            .birthdate(student.getBirthdate())
+            .birthDate(student.getBirthDate())
+            .age(age)
             .emailTutor(student.getEmailTutor())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
@@ -52,7 +56,7 @@ public class StudentMapper {
             .name(student.getName())
             .lastname(student.getLastname())
             .dni(student.getDni())
-            .birthdate(student.getBirthdate())
+            .birthDate(student.getBirthDate())
             .emailTutor(student.getEmailTutor())
             .user(UserMapper.toUserDto(student.getUser()))
             .course(CourseMapper.toDto(student.getCourse()))
@@ -69,7 +73,7 @@ public class StudentMapper {
             .name(dto.getName())
             .lastname(dto.getLastname())
             .dni(dto.getDni())
-            .birthdate(dto.getBirthDate())
+            .birthDate(dto.getBirthDate())
             .emailTutor(dto.getEmailTutor())
             .course(course)
             .user(model.getUser())
@@ -83,6 +87,16 @@ public class StudentMapper {
             .name(student.getName())
             .lastname(student.getLastname())
             .dni(student.getDni())
+            .build();
+    }
+
+    public static StudentSimplificatedResponse toSimplificatedDto (Student student, boolean registered) {
+        return StudentSimplificatedResponse.builder()
+            .id(student.getId())
+            .name(student.getName())
+            .lastname(student.getLastname())
+            .dni(student.getDni())
+            .registered(registered)
             .build();
     }
 

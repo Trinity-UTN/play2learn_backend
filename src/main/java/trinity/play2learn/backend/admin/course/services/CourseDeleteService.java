@@ -28,7 +28,7 @@ public class CourseDeleteService implements ICourseDeleteService{
 
         subjectsExistsByCourseService.validate(course); //Lanza un 409 si hay materias asociadas al curso
 
-        course.delete();
-        courseRepository.save(course);
+        //Eliminado fisico del curso
+        courseRepository.delete(course);
     }
 }

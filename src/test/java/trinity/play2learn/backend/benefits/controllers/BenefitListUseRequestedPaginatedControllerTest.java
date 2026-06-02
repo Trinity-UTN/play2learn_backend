@@ -30,9 +30,11 @@ class BenefitListUseRequestedPaginatedControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private IBenefitListUseRequestedPaginatedService benefitListUseRequestedPaginatedService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

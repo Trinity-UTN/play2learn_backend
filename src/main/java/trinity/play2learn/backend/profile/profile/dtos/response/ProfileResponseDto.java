@@ -15,5 +15,8 @@ public class ProfileResponseDto {
     private AspectResponseDto selectedShirt;
     private AspectResponseDto selectedHat;
     private List<AspectResponseDto> ownedAspects;
-    
+
+    private Long level;
+    private Long xp;
+    private Long xpToNextLevel;
 }

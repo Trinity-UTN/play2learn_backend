@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.BadRequestException;
+import trinity.play2learn.backend.configs.levels.ValueXp;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
@@ -18,6 +19,7 @@ import trinity.play2learn.backend.investment.savingAccount.models.SavingAccount;
 import trinity.play2learn.backend.investment.savingAccount.repositories.ISavingAccountRepository;
 import trinity.play2learn.backend.investment.savingAccount.services.interfaces.ISavingAccountExistsByNameAndWalletService;
 import trinity.play2learn.backend.investment.savingAccount.services.interfaces.ISavingAccountRegisterService;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -33,6 +35,8 @@ public class SavingAccountRegisterService implements ISavingAccountRegisterServi
     private final ITransactionGenerateService transactionGenerateService;
 
     private final IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
+
+    private final IProfileUpdateLevelService profileUpdateLevelService;
     
     @Override
     @Transactional
@@ -66,6 +70,8 @@ public class SavingAccountRegisterService implements ISavingAccountRegisterServi
         );
         
         walletUpdateInvestedBalanceService.execute(wallet);
+
+        profileUpdateLevelService.execute(wallet.getStudent().getProfile(), ValueXp.SAVING_ACCOUNT_DEPOSIT.getValue());
         
         return SavingAccountMapper.toDto(savingAccount);
     }

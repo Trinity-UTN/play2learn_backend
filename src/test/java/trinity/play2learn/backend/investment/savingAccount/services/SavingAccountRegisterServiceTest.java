@@ -61,7 +61,7 @@ class SavingAccountRegisterServiceTest {
             savingAccountExistsByNameAndWalletService,
             savingAccountRepository,
             transactionGenerateService,
-            walletUpdateInvestedBalanceService
+            walletUpdateInvestedBalanceService, null
         );
     }
 

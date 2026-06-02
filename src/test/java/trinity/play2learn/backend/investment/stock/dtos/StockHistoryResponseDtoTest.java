@@ -2,7 +2,6 @@ package trinity.play2learn.backend.investment.stock.dtos;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.databind.ObjectMapper;

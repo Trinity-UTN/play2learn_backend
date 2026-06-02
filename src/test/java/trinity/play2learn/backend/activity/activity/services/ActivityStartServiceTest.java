@@ -31,6 +31,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetRemainingAttemptsService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityValidatePublishedStatusService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityStartService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
@@ -63,16 +64,7 @@ class ActivityStartServiceTest {
 
     @BeforeEach
     void setUp() {
-        activityStartService = new ActivityStartService(
-            studentGetByEmailService,
-            activityFindByIdService,
-            activityValidatePublishedStatusService,
-            activityGetCompletedStateService,
-            activityGetRemainingAttemptsService,
-            activityCompletedGetLastStartedService,
-            activityCompletedRepository,
-            activityCompletedService
-        );
+        
     }
 
     @Nested

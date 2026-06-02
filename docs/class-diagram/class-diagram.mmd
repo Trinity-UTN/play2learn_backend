@@ -1,0 +1,104 @@
+classDiagram
+  %% Entidades (sólo las que aparecen en el índice)
+  class Activity__entity
+  class ActivityCompleted__entity
+  class NoLudicaAttempt__entity
+  class Ahorcado__entity
+  class ConsecuenceArbolDecision__entity
+  class DecisionArbolDecision__entity
+  class ArbolDeDecisionActivity__entity
+  class CategoryClasificacion__entity
+  class ConceptClasificacion__entity
+  class ClasificacionActivity__entity
+  class CompletarOracionActivity__entity
+  class WordCompletarOracion__entity
+  class SentenceCompletarOracion__entity
+  class CouplesMemorama__entity
+  class Memorama__entity
+  class NoLudica__entity
+  class Event__entity
+  class OrdenarSecuencia__entity
+  class Question__entity
+  class Option__entity
+  class Preguntados__entity
+  class Course__entity
+  class Student__entity
+  class Subject__entity
+  class Teacher__entity
+  class Year__entity
+  class Benefit__entity
+  class BenefitPurchase__entity
+  class StoredFile__entity
+  class Reserve__entity
+  class Transaction__entity
+  class Wallet__entity
+  class FixedTermDeposit__entity
+  class SavingAccount__entity
+  class Stock__entity
+  class StockHistory__entity
+  class Order__entity
+  class Notification__entity
+  class Aspect__entity
+  class Profile__entity
+  class User__entity
+
+  %% Enums (sólo las que aparecen en el índice)
+  class Difficulty__enum
+  class TypeReward__enum
+  class ActivityStatus__enum
+  class ActivityCompletedState__enum
+  class Errors__enum
+  class BenefitCategory__enum
+  class BenefitColor__enum
+  class BenefitIcon__enum
+  class BenefitPurchaseState__enum
+  class BenefitState__enum
+  class BenefitStudentState__enum
+  class ValueXp__enum
+  class LogLevel__enum
+  class TypeTransaction__enum
+  class TransactionActor__enum
+  class FixedTermState__enum
+  class FixedTermDays__enum
+  class RiskLevel__enum
+  class RangeValue__enum
+  class OrderState__enum
+  class OrderStop__enum
+  class OrderType__enum
+  class NotificationType__enum
+  class TypeAspect__enum
+  class Role__enum
+
+  %% Herencia (actividad -> Activity)
+  Ahorcado__entity <|-- Activity__entity
+  Preguntados__entity <|-- Activity__entity
+  Memorama__entity <|-- Activity__entity
+  ClasificacionActivity__entity <|-- Activity__entity
+  OrdenarSecuencia__entity <|-- Activity__entity
+  ArbolDeDecisionActivity__entity <|-- Activity__entity
+  CompletarOracionActivity__entity <|-- Activity__entity
+  NoLudica__entity <|-- Activity__entity
+
+  %% Asociaciones: Preguntados -> Question -> Option
+  Preguntados__entity --> Question__entity : questions
+  Question__entity --> Preguntados__entity : preguntados
+  Question__entity --> Option__entity : options
+
+  %% Asociaciones: Memorama -> CouplesMemorama
+  Memorama__entity --> CouplesMemorama__entity : couples
+  CouplesMemorama__entity --> Memorama__entity : memorama
+
+  %% Asociaciones: OrdenarSecuencia -> Event
+  OrdenarSecuencia__entity --> Event__entity : events
+  Event__entity --> OrdenarSecuencia__entity : activity
+
+  %% Asociaciones: ArbolDeDecisionActivity -> DecisionArbolDecision
+  ArbolDeDecisionActivity__entity --> DecisionArbolDecision__entity : decisionTree
+  DecisionArbolDecision__entity --> ArbolDeDecisionActivity__entity : activity
+  DecisionArbolDecision__entity --> ConsecuenceArbolDecision__entity : consecuence
+  DecisionArbolDecision__entity --> DecisionArbolDecision__entity : previousDecision
+  DecisionArbolDecision__entity --> DecisionArbolDecision__entity : options
+
+  %% Asociaciones: Ahorcado -> Errors (enum)
+  Ahorcado__entity --> Errors__enum : errorsPermited
+

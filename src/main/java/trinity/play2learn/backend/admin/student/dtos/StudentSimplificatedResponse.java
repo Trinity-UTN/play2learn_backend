@@ -13,4 +13,5 @@ public class StudentSimplificatedResponse { //DTO de respuesta simplificado de e
     private String name;
     private String lastname;
     private String dni;
+    private boolean registered;
 }

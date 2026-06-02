@@ -19,7 +19,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -30,7 +29,6 @@ import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.memorama.MemoramaTestMother;
 import trinity.play2learn.backend.activity.memorama.dtos.MemoramaResponseDto;
 import trinity.play2learn.backend.activity.memorama.services.interfaces.IMemoramaGenerateService;
-import trinity.play2learn.backend.configs.exceptions.BadRequestException;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.exceptions.GlobalExceptionHandler;
 import trinity.play2learn.backend.configs.messages.SuccessfulMessages;
@@ -51,7 +49,7 @@ class MemoramaRegisterControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new MemoramaRegisterController(memoramaRegisterService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         reset(memoramaRegisterService);

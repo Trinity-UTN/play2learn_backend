@@ -51,7 +51,7 @@ class CompletarOracionGenerateControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new CompletarOracionGenerateController(generateCompletarOracionService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         reset(generateCompletarOracionService);

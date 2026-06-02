@@ -85,6 +85,7 @@ public final class CompletarOracionTestMother {
             .build();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static CompletarOracionActivityResponseDto completarOracionResponseDto(
         Long id,
         List<?> sentences

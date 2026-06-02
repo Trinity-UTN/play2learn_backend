@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,6 +45,18 @@ public class ActivityCompleted {
     @NotNull
     private Student student;
 
+    @Column(nullable = true)
+    private Integer score; //Puntaje obtenido en la actividad
+
+    @Column(nullable = true)
+    private Integer correctAnswers; //Cantidad de respuestas correctas
+
+    @Column(nullable = true)
+    private Integer incorrectAnswers; //Cantidad de respuestas incorrectas
+
+    @Column(nullable = true)
+    private Integer unanswered; //Cantidad de respuestas sin responder
+    
     private LocalDateTime completedAt;
 
     private LocalDateTime startedAt;
@@ -52,6 +65,9 @@ public class ActivityCompleted {
     @JoinColumn(name = "no_ludica_attempt_id", nullable = true)
     @OneToOne(cascade = CascadeType.ALL)
     private NoLudicaAttempt noLudicaAttempt;
+
+    @Column(nullable = true)
+    private String comment;
 
     @PrePersist //Antes de persistir la actividad se guarda su fecha de creacion
     private void setStartedAt(){

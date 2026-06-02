@@ -37,6 +37,7 @@ import trinity.play2learn.backend.investment.stock.repositories.IOrderRepository
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockCalculateByWalletService;
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockHistoryFindLastService;
 import trinity.play2learn.backend.investment.stock.services.interfaces.IStockMoveService;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 
 @ExtendWith(MockitoExtension.class)
 class OrderStopExecuteServiceTest {
@@ -59,6 +60,9 @@ class OrderStopExecuteServiceTest {
     @Mock
     private IWalletUpdateInvestedBalanceService walletUpdateInvestedBalanceService;
 
+    @Mock
+    private INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
+    
     private OrderStopExecuteService orderStopExecuteService;
 
     @BeforeEach
@@ -69,7 +73,8 @@ class OrderStopExecuteServiceTest {
             stockHistoryFindLastService,
             transactionGenerateService,
             stockMoveService,
-            walletUpdateInvestedBalanceService
+            walletUpdateInvestedBalanceService,
+            notificationCreateSingleWithTitleService
         );
     }
 

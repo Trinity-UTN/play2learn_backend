@@ -13,7 +13,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import trinity.play2learn.backend.activity.activity.dtos.activityCreated.ActivityRequestDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.ahorcado.dtos.AhorcadoRequestDto;
 import trinity.play2learn.backend.activity.ahorcado.models.Errors;
@@ -179,6 +178,7 @@ class ActivityCreatedDtoValidationTest {
         return dto;
     }
 
+    @SuppressWarnings("unused")
     private <T> void assertViolation(Set<ConstraintViolation<T>> violations, String expectedMessage, String expectedPath) {
         assertViolation(violations, expectedMessage, expectedPath, null);
     }

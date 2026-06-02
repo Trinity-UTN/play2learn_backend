@@ -2,6 +2,8 @@ package trinity.play2learn.backend.activity.activity.dtos.activityCreated;
 
 import java.time.LocalDateTime;
 
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public abstract class ActivityRequestDto {
     @Size(max = 1000, message = ValidationMessages.MAX_LENGTH_DESCRIPTION_1000)
     private String description;
 
+    @Future(message = ValidationMessages.FUTURE_START_DATE)
     private LocalDateTime startDate; //En caso de llegar null, se setea como la fecha y hora actual
 
     @NotNull (message = ValidationMessages.NOT_NULL_END_DATE)
@@ -39,4 +42,9 @@ public abstract class ActivityRequestDto {
     private Double initialBalance;
 
     private TypeReward typeReward;
+
+    @AssertTrue(message = "La fecha de fin debe ser posterior a la fecha de inicio")
+    public boolean isValidDateRange() {
+        return endDate == null || startDate == null || endDate.isAfter(startDate);
+    }
 }

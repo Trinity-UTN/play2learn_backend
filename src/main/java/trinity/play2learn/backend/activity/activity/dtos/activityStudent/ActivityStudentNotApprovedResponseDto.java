@@ -29,5 +29,5 @@ public class ActivityStudentNotApprovedResponseDto {
     private ActivityStatus status; //CREATED, PUBLISHED, EXPIRED
     private Double minReward; //Recompensa minima que le entregara la actividad si la realiza correctamente
     private Double maxReward; //Recompensa maxima que le entregara la actividad si la realiza correctamente
-    private Boolean pending;
+    private boolean isBeingDone; //Indica si el estudiante esta realizando la actividad
 }

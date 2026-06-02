@@ -27,6 +27,7 @@ public class ValidationMessages {
     //--------------------------------------- ACTIVITY ------------------------------------------
     public static final String MAX_LENGTH_DESCRIPTION_1000 = "La descripcion no puede tener mas de 1000 caracteres.";
     public static final String NOT_NULL_START_DATE = "La fecha de inicio no puede estar vacia.";
+    public static final String FUTURE_START_DATE = "La fecha de inicio debe ser una fecha futura.";
     public static final String NOT_NULL_END_DATE = "La fecha de finalizacion no puede estar vacia.";
     public static final String NOT_NULL_DIFFICULTY = "La dificultad no puede estar vacia.";
     public static final String NOT_NULL_SUBJECT = "La materia no puede estar vacia.";
@@ -82,6 +83,11 @@ public class ValidationMessages {
     public static final String NOT_NULL_ACTIVITY_ID = "El id de la actividad no puede estar vacio.";
     public static final String NOT_NULL_STATE = "El estado no puede estar vacio.";
 
+    public static final String NOT_NULL_SCORE = "El puntaje no puede estar vacio.";
+    public static final String NOT_NULL_CORRECT_ANSWERS = "La cantidad de respuestas correctas no puede estar vacia.";
+    public static final String NOT_NULL_INCORRECT_ANSWERS = "La cantidad de respuestas incorrectas no puede estar vacia.";
+    public static final String NOT_NULL_UNANSWERED = "La cantidad de respuestas sin responder no puede estar vacia.";
+    
     //------------------------------------- ARBOL DE DECISION ------------------------------------------------------
     public static final String NOT_NULL_DECISION_TREE = "El arbol de decision no puede estar vacio.";
     public static final String OPTIONS_SIZE = "Una decisión debe tener exactamente 2 opciones o ninguna.";
@@ -110,6 +116,11 @@ public class ValidationMessages {
     public static final String NOT_NULL_END_AT = "La fecha de finalizacion no puede estar vacia.";
     public static final String FUTURE_END_AT = "La fecha de finalizacion debe ser mayor a la fecha actual.";
     public static final String NOT_NULL_BENEFIT_ID = "El id del beneficio no puede estar vacio.";
+
+    //------------------------------------- LOGS ------------------------------------------------------
+    public static final String NOT_EMPTY_MESSAGE = "El mensaje no puede estar vacio.";
+    public static final String MAX_LENGTH_MESSAGE_5000 = "El mensaje no puede tener mas de 5000 caracteres.";
+    public static final String NOT_NULL_LOG_LEVEL = "El nivel de log no puede estar vacio.";
 
 }
 

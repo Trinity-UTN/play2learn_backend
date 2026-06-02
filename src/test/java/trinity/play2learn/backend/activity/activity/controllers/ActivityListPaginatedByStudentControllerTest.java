@@ -20,7 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityApprovedListPaginatedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNotApprovedListPaginatedService;
@@ -47,18 +47,16 @@ class ActivityListPaginatedByStudentControllerTest {
     private IActivityApprovedListPaginatedService activityApprovedListPaginatedService;
 
     private PaginatedData<ActivityStudentNotApprovedResponseDto> notApprovedPaginated;
-    private PaginatedData<ActivityStudentApprovedResponseDto> approvedPaginated;
+    private PaginatedData<ActivityStudentStateResponseDto> approvedPaginated;
 
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ActivityListPaginatedByStudentController(
-                    activityNotApprovedListPaginatedService,
-                    activityApprovedListPaginatedService
-                )
-            )
-            .setControllerAdvice(new GlobalExceptionHandler())
-            .build();
+                        activityNotApprovedListPaginatedService,
+                        activityApprovedListPaginatedService))
+                .setControllerAdvice(new GlobalExceptionHandler(null))
+                .build();
 
         notApprovedPaginated = buildNotApprovedPaginated();
         approvedPaginated = buildApprovedPaginated();
@@ -68,34 +66,32 @@ class ActivityListPaginatedByStudentControllerTest {
 
     private PaginatedData<ActivityStudentNotApprovedResponseDto> buildNotApprovedPaginated() {
         List<ActivityStudentNotApprovedResponseDto> content = List.of(
-            ActivityStudentNotApprovedResponseDto.builder()
-                .id(1L)
-                .name("Ahorcado")
-                .remainingAttempts(2)
-                .build()
-        );
+                ActivityStudentNotApprovedResponseDto.builder()
+                        .id(1L)
+                        .name("Ahorcado")
+                        .remainingAttempts(2)
+                        .build());
         return buildPaginatedData(content, 1);
     }
 
-    private PaginatedData<ActivityStudentApprovedResponseDto> buildApprovedPaginated() {
-        List<ActivityStudentApprovedResponseDto> content = List.of(
-            ActivityStudentApprovedResponseDto.builder()
-                .id(2L)
-                .name("Preguntados")
-                .reward(50.0)
-                .build()
-        );
+    private PaginatedData<ActivityStudentStateResponseDto> buildApprovedPaginated() {
+        List<ActivityStudentStateResponseDto> content = List.of(
+                ActivityStudentStateResponseDto.builder()
+                        .id(2L)
+                        .name("Preguntados")
+                        .reward(50.0)
+                        .build());
         return buildPaginatedData(content, 1);
     }
 
     private <T> PaginatedData<T> buildPaginatedData(List<T> content, int count) {
         return PaginatedData.<T>builder()
-            .results(content)
-            .count(count)
-            .currentPage(PAGE)
-            .totalPages(1)
-            .pageSize(PAGE_SIZE)
-            .build();
+                .results(content)
+                .count(count)
+                .currentPage(PAGE)
+                .totalPages(1)
+                .pageSize(PAGE_SIZE)
+                .build();
     }
 
     @Nested
@@ -107,37 +103,35 @@ class ActivityListPaginatedByStudentControllerTest {
         void shouldReturnNotApprovedActivitiesPaginated() throws Exception {
             // Given
             when(activityNotApprovedListPaginatedService.cu66listNotApprovedActivitiesPaginated(
-                org.mockito.ArgumentMatchers.eq(PAGE),
-                org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(User.class)
-            )).thenReturn(notApprovedPaginated);
+                    org.mockito.ArgumentMatchers.eq(PAGE),
+                    org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(User.class))).thenReturn(notApprovedPaginated);
 
             // When & Then
             performGetNotApprovedPaginated()
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.count").value(1))
-                .andExpect(jsonPath("$.data.currentPage").value(PAGE))
-                .andExpect(jsonPath("$.data.totalPages").value(1))
-                .andExpect(jsonPath("$.data.pageSize").value(PAGE_SIZE))
-                .andExpect(jsonPath("$.data.results.length()").value(1))
-                .andExpect(jsonPath("$.data.results[0].id").value(1L))
-                .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.count").value(1))
+                    .andExpect(jsonPath("$.data.currentPage").value(PAGE))
+                    .andExpect(jsonPath("$.data.totalPages").value(1))
+                    .andExpect(jsonPath("$.data.pageSize").value(PAGE_SIZE))
+                    .andExpect(jsonPath("$.data.results.length()").value(1))
+                    .andExpect(jsonPath("$.data.results[0].id").value(1L))
+                    .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
 
             verify(activityNotApprovedListPaginatedService).cu66listNotApprovedActivitiesPaginated(
-                org.mockito.ArgumentMatchers.eq(PAGE),
-                org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(User.class)
-            );
+                    org.mockito.ArgumentMatchers.eq(PAGE),
+                    org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(User.class));
         }
     }
 
@@ -150,51 +144,48 @@ class ActivityListPaginatedByStudentControllerTest {
         void shouldReturnApprovedActivitiesPaginated() throws Exception {
             // Given
             when(activityApprovedListPaginatedService.cu69ListApprovedActivitiesPaginated(
-                org.mockito.ArgumentMatchers.eq(PAGE),
-                org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(User.class)
-            )).thenReturn(approvedPaginated);
+                    org.mockito.ArgumentMatchers.eq(PAGE),
+                    org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(User.class))).thenReturn(approvedPaginated);
 
             // When & Then
             performGetApprovedPaginated()
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data.count").value(1))
-                .andExpect(jsonPath("$.data.currentPage").value(PAGE))
-                .andExpect(jsonPath("$.data.totalPages").value(1))
-                .andExpect(jsonPath("$.data.pageSize").value(PAGE_SIZE))
-                .andExpect(jsonPath("$.data.results.length()").value(1))
-                .andExpect(jsonPath("$.data.results[0].id").value(2L))
-                .andExpect(jsonPath("$.data.results[0].reward").value(50.0))
-                .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.data.count").value(1))
+                    .andExpect(jsonPath("$.data.currentPage").value(PAGE))
+                    .andExpect(jsonPath("$.data.totalPages").value(1))
+                    .andExpect(jsonPath("$.data.pageSize").value(PAGE_SIZE))
+                    .andExpect(jsonPath("$.data.results.length()").value(1))
+                    .andExpect(jsonPath("$.data.results[0].id").value(2L))
+                    .andExpect(jsonPath("$.data.results[0].reward").value(50.0))
+                    .andExpect(jsonPath("$.message").value(SuccessfulMessages.okSuccessfully()));
 
             verify(activityApprovedListPaginatedService).cu69ListApprovedActivitiesPaginated(
-                org.mockito.ArgumentMatchers.eq(PAGE),
-                org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.anyString(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(),
-                org.mockito.ArgumentMatchers.any(User.class)
-            );
+                    org.mockito.ArgumentMatchers.eq(PAGE),
+                    org.mockito.ArgumentMatchers.eq(PAGE_SIZE),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.anyString(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(),
+                    org.mockito.ArgumentMatchers.any(User.class));
         }
     }
 
     private ResultActions performGetNotApprovedPaginated() throws Exception {
         return mockMvc.perform(get(NOT_APPROVED_PATH)
-            .param("page", String.valueOf(PAGE))
-            .param("page_size", String.valueOf(PAGE_SIZE)));
+                .param("page", String.valueOf(PAGE))
+                .param("page_size", String.valueOf(PAGE_SIZE)));
     }
 
     private ResultActions performGetApprovedPaginated() throws Exception {
         return mockMvc.perform(get(APPROVED_PATH)
-            .param("page", String.valueOf(PAGE))
-            .param("page_size", String.valueOf(PAGE_SIZE)));
+                .param("page", String.valueOf(PAGE))
+                .param("page_size", String.valueOf(PAGE_SIZE)));
     }
 }
-

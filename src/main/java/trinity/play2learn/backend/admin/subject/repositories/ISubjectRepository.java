@@ -3,7 +3,9 @@ package trinity.play2learn.backend.admin.subject.repositories;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.student.models.Student;
@@ -33,5 +35,12 @@ public interface ISubjectRepository extends CrudRepository<Subject , Long> {
     List<Subject> findAllByStudentsContainingAndDeletedAtIsNull(Student student);
 
     List<Subject> findByTeacher(Teacher teacher);
-    
+
+    @Query("""
+        SELECT DISTINCT s FROM Subject sub
+        JOIN sub.students s
+        WHERE sub.id = :subjectId
+        AND s.deletedAt IS NULL
+        """)
+    List<Student> findStudentsBySubjectId(@Param("subjectId") Long subjectId);
 }

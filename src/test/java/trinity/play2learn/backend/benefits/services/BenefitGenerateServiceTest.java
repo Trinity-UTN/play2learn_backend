@@ -41,7 +41,7 @@ class BenefitGenerateServiceTest {
 
     @BeforeEach
     void setUp() {
-        benefitGenerateService = new BenefitGenerateService(benefitRepository, subjectGetService);
+        benefitGenerateService = new BenefitGenerateService(benefitRepository, subjectGetService, null);
     }
 
     @Nested

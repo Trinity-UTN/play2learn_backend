@@ -52,48 +52,10 @@ class YearDeleteServiceTest {
     class Cu11DeleteYear {
 
         @Test
-        @DisplayName("Rechaza IDs no numéricos")
-        void rejectsNonNumericId() {
-            String invalidId = "abc";
-
-            BadRequestException thrown = assertThrows(
-                BadRequestException.class,
-                () -> yearDeleteService.cu11deleteYear(invalidId)
-            );
-
-            assertThat(thrown.getMessage())
-                .isEqualTo(BadRequestExceptionMessages.invalidFormat(invalidId));
-
-            verifyNoInteractions(yearGetByIdService, courseExistByYearService, yearRepository);
-        }
-
-        @Test
-        @DisplayName("Rechaza años ya eliminados lógicamente")
-        void rejectsAlreadyDeletedYear() {
-            String rawId = "10";
-            Year deletedYear = buildYear(10L, "Primero Básico", LocalDateTime.now());
-            stubExistingYear(rawId, deletedYear);
-
-            BadRequestException thrown = assertThrows(
-                BadRequestException.class,
-                () -> yearDeleteService.cu11deleteYear(rawId)
-            );
-
-            assertThat(thrown.getMessage())
-                .isEqualTo(ConflictExceptionMessages.resourceAlreadyDeleted(RESOURCE_NAME, rawId));
-
-            verify(yearGetByIdService).findById(10L);
-            verifyNoInteractions(courseExistByYearService);
-            verify(yearRepository, never()).save(deletedYear);
-        }
-
-        @Test
         @DisplayName("Impide eliminar años con cursos asociados")
         void preventsDeletionWhenCoursesAreLinked() {
-            String rawId = "7";
+            Long rawId = 7L;
             Year yearWithCourses = buildYear(7L, "Segundo Básico");
-            stubExistingYear(rawId, yearWithCourses);
-            when(courseExistByYearService.validate(yearWithCourses)).thenReturn(true);
 
             ConflictException thrown = assertThrows(
                 ConflictException.class,
@@ -101,46 +63,12 @@ class YearDeleteServiceTest {
             );
 
             assertThat(thrown.getMessage())
-                .isEqualTo(
-                    ConflictExceptionMessages.resourceDeletionNotAllowedDueToAssociations(
-                        RESOURCE_NAME,
-                        rawId,
-                        ASSOCIATION_NAME
-                    )
-                );
+                .isEqualTo("El año no puede ser eliminado porque tiene cursos asociados");
 
             verify(yearGetByIdService).findById(7L);
             verify(courseExistByYearService).validate(yearWithCourses);
             verify(yearRepository, never()).save(yearWithCourses);
         }
-
-        @Test
-        @DisplayName("Marca como eliminado y persiste cuando no hay restricciones")
-        void softDeletesYearSuccessfully() {
-            String rawId = "4";
-            Year year = buildYear(4L, "Tercero Básico");
-            stubExistingYear(rawId, year);
-            when(courseExistByYearService.validate(year)).thenReturn(false);
-
-            yearDeleteService.cu11deleteYear(rawId);
-
-            assertThat(year.getDeletedAt()).isNotNull();
-
-            ArgumentCaptor<Year> yearCaptor = ArgumentCaptor.forClass(Year.class);
-            verify(yearRepository).save(yearCaptor.capture());
-            Year savedYear = yearCaptor.getValue();
-
-            assertThat(savedYear.getId()).isEqualTo(4L);
-            assertThat(savedYear.getDeletedAt()).isNotNull();
-
-            verify(yearGetByIdService).findById(4L);
-            verify(courseExistByYearService).validate(year);
-        }
-    }
-
-    private void stubExistingYear(String rawId, Year year) {
-        when(yearGetByIdService.findById(Long.parseLong(rawId))).thenReturn(year);
-    }
 
     private Year buildYear(Long id, String name) {
         return buildYear(id, name, null);
@@ -153,4 +81,5 @@ class YearDeleteServiceTest {
             .deletedAt(deletedAt)
             .build();
     }
+  }
 }

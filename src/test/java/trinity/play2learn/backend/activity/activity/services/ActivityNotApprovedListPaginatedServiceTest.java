@@ -32,6 +32,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterByDisapprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterNotApprovedService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityNotApprovedListPaginatedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;
@@ -78,6 +79,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
     @DisplayName("cu66listNotApprovedActivitiesPaginated")
     class ListNotApprovedActivitiesPaginated {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given student with not approved activities When listing paginated Then returns paginated data with not approved activities")
         void whenNotApprovedActivitiesExist_returnsPaginatedData() {
@@ -147,6 +149,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given student with no not approved activities When listing paginated Then returns empty page")
         void whenNoNotApprovedActivities_returnsEmptyPage() {
@@ -183,6 +186,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given filter disapproved When listing paginated Then applies disapproved filter")
         void whenDisapprovedFilter_appliesFilter() {

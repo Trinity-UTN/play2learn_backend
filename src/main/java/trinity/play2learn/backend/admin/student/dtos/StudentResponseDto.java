@@ -25,8 +25,10 @@ public class StudentResponseDto {
 
     private String dni;
 
-    private LocalDate birthdate;
+    private LocalDate birthDate;
 
+    private int age;
+    
     private String emailTutor;
     
     private UserResponseDto user;
@@ -38,6 +40,4 @@ public class StudentResponseDto {
     private ProfileResponseDto profile;
 
     private WalletResponseDto wallet;
-
-
 }

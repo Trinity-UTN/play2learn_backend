@@ -31,9 +31,11 @@ class WalletGetLastTransactionsControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private IWalletGetLastTransactionsService walletGetLastTransactionsService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

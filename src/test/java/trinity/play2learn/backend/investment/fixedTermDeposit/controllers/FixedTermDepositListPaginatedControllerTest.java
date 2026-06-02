@@ -31,9 +31,11 @@ class FixedTermDepositListPaginatedControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    @SuppressWarnings("removal")
     @MockBean
     private IFixedTermDepositListPaginatedService fixedTermDepositListPaginatedService;
 
+    @SuppressWarnings("removal")
     @MockBean
     private SessionUserArgumentResolver sessionUserArgumentResolver;
 

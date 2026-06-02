@@ -28,6 +28,7 @@ import trinity.play2learn.backend.activity.activity.dtos.activityTeacher.Activit
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateTeacherSimpleDtosService;
+import trinity.play2learn.backend.activity.activity.services.teacher.ActivityListByTeacherPaginatedService;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
 import trinity.play2learn.backend.admin.teacher.services.interfaces.ITeacherGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;
@@ -67,6 +68,7 @@ class ActivityListByTeacherPaginatedServiceTest {
     @DisplayName("cu111ListActivityByTeacherPaginated")
     class ListActivityByTeacherPaginated {
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given teacher with activities When listing paginated Then returns paginated data with teacher's activities")
         void whenTeacherHasActivities_returnsPaginatedData() {
@@ -133,6 +135,7 @@ class ActivityListByTeacherPaginatedServiceTest {
             }
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         @DisplayName("Given teacher with no activities When listing paginated Then returns empty paginated data")
         void whenNoActivities_returnsEmptyPage() {

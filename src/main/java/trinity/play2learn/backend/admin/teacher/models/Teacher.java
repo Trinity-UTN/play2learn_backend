@@ -56,4 +56,7 @@ public class Teacher {
         user.restore(); //Al restaurar al docente, tambien se restaura a su usuario
     }
 
+    public String getCompleteName(){
+        return this.name + " " + this.lastname;
+    }
 }

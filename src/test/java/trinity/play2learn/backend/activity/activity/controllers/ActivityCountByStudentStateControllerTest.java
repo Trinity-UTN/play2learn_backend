@@ -41,7 +41,7 @@ class ActivityCountByStudentStateControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(
                 new ActivityCountByStudentStateController(activityStudentCountService)
             )
-            .setControllerAdvice(new GlobalExceptionHandler())
+            .setControllerAdvice(new GlobalExceptionHandler(null))
             .build();
 
         countResponse = buildCountResponse(5, 3, 2, 1);

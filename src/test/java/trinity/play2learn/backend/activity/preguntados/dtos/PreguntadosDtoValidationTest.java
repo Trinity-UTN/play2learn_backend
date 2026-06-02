@@ -14,8 +14,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import trinity.play2learn.backend.activity.activity.ActivityTestMother;
-import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.preguntados.PreguntadosTestMother;
 import trinity.play2learn.backend.activity.preguntados.dtos.request.OptionRequestDto;
 import trinity.play2learn.backend.activity.preguntados.dtos.request.PreguntadosRequestDto;

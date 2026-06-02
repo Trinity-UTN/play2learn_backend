@@ -11,25 +11,24 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.mappers.ActivityMapper;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activity.ActivityStatus;
-import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCalculateRewardStrategyService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateNotApprovedDtosService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetCompletedStateService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetRemainingAttemptsService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetStatusService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityIsBeingDoneService;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 @Service
 @AllArgsConstructor
 public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotApprovedDtosService {
 
-    private final IActivityGetCompletedStateService activityGetCompletedStateService;
-
     private final IActivityGetRemainingAttemptsService activityGetRemainingAttemptsService;
 
     private final IActivityGetStatusService activityGetStatusService;
 
     private final Map<String, IActivityCalculateRewardStrategyService> activityCalculateRewardStrategyServiceMap;
+
+    private final IActivityIsBeingDoneService activityIsBeingDoneService;
 
     @Override
     public List<ActivityStudentNotApprovedResponseDto> createNotApprovedDtos(List<Activity> activities, Student student) {
@@ -48,13 +47,14 @@ public class ActivityCreateNotApprovedDtosService implements IActivityCreateNotA
             
             Double maxReward = Math.floor(rewardStrategyService.execute(activity));
             
-            Boolean pending = false;
-
-            if (activityGetCompletedStateService.getActivityCompletedState(activity, student) == ActivityCompletedState.PENDING) {
-                pending = true;
-            }
-            
-            activitiesDto.add(ActivityMapper.toNotApprovedDto(activity, remainingAttempts, pending, activityStatus, minReward, maxReward));
+            activitiesDto.add(ActivityMapper.toNotApprovedDto(
+                activity, 
+                remainingAttempts, 
+                activityStatus, 
+                minReward, 
+                maxReward, 
+                activityIsBeingDoneService.execute(activity, student)
+            ));
 
         }
 

@@ -2,8 +2,6 @@ package trinity.play2learn.backend.activity.ordenarSecuencia.dtos;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import jakarta.validation.ConstraintViolation;
@@ -14,8 +12,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import trinity.play2learn.backend.activity.activity.ActivityTestMother;
-import trinity.play2learn.backend.activity.activity.models.activity.Difficulty;
 import trinity.play2learn.backend.activity.ordenarSecuencia.OrdenarSecuenciaTestMother;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request.EventRequestDto;
 import trinity.play2learn.backend.activity.ordenarSecuencia.dtos.request.OrdenarSecuenciaRequestDto;

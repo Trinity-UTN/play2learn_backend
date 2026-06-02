@@ -34,8 +34,13 @@ public class TeacherListPaginatedService implements ITeacherListPaginatedService
         List<String> filters, 
         List<String> filterValues) {
         
+        if ("active".equalsIgnoreCase(orderBy)) {
+            orderBy = "deletedAt";
+            orderType = "DESC".equalsIgnoreCase(orderType) ? "ASC" : "DESC";
+        }
+        
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
-        Specification<Teacher> spec = Specification.where(null); //Quite reestriccion notDeleted
+        Specification<Teacher> spec = Specification.where(null); // Quite reestriccion notDeleted
         
         if (search != null && !search.isBlank()) {
         spec = spec.and(TeacherSpecs.nameOrLastnameContains(search));

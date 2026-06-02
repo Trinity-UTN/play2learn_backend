@@ -16,10 +16,11 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import trinity.play2learn.backend.activity.activity.ActivityTestMother;
-import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateApprovedDtosService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
+import trinity.play2learn.backend.activity.activity.services.student.ActivityListApprovedByStudentService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.user.models.User;
@@ -39,10 +40,9 @@ class ActivityListApprovedByStudentServiceTest {
     @BeforeEach
     void setUp() {
         activityListApprovedByStudentService = new ActivityListApprovedByStudentService(
-            studentGetByEmailService,
-            activityGetByStudentService,
-            activityCreateApprovedDtosService
-        );
+                studentGetByEmailService,
+                activityGetByStudentService,
+                activityCreateApprovedDtosService);
     }
 
     @Nested
@@ -53,59 +53,58 @@ class ActivityListApprovedByStudentServiceTest {
         @DisplayName("Given student with approved activities When listing approved activities Then returns approved DTOs")
         void whenApprovedActivitiesExist_returnsApprovedDtos() {
             User user = ActivityTestMother.studentUser(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            
+            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID,
+                    ActivityTestMother.STUDENT_EMAIL);
+
             List<Activity> activities = List.of(
-                ActivityTestMother.ahorcadoActivity(1L),
-                ActivityTestMother.ahorcadoActivity(2L)
-            );
-            
-            List<ActivityStudentApprovedResponseDto> expectedDtos = List.of(
-                ActivityStudentApprovedResponseDto.builder()
-                    .id(1L)
-                    .name("Ahorcado")
-                    .build(),
-                ActivityStudentApprovedResponseDto.builder()
-                    .id(2L)
-                    .name("Ahorcado")
-                    .build()
-            );
+                    ActivityTestMother.ahorcadoActivity(1L),
+                    ActivityTestMother.ahorcadoActivity(2L));
+
+            List<ActivityStudentStateResponseDto> expectedDtos = List.of(
+                    ActivityStudentStateResponseDto.builder()
+                            .id(1L)
+                            .name("Ahorcado")
+                            .build(),
+                    ActivityStudentStateResponseDto.builder()
+                            .id(2L)
+                            .name("Ahorcado")
+                            .build());
 
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetByStudentService.getByStudent(student)).thenReturn(activities);
             when(activityCreateApprovedDtosService.createApprovedDtos(activities, student)).thenReturn(expectedDtos);
 
-            List<ActivityStudentApprovedResponseDto> response = 
-                activityListApprovedByStudentService.cu63ListApprovedActivitiesByStudent(user);
+            List<ActivityStudentStateResponseDto> response = activityListApprovedByStudentService
+                    .cu63ListApprovedActivitiesByStudent(user);
 
             verify(studentGetByEmailService).getByEmail(ActivityTestMother.STUDENT_EMAIL);
             verify(activityGetByStudentService).getByStudent(student);
             verify(activityCreateApprovedDtosService).createApprovedDtos(activities, student);
-            
+
             assertThat(response)
-                .isNotNull()
-                .hasSize(2)
-                .extracting(ActivityStudentApprovedResponseDto::getId)
-                .containsExactly(1L, 2L);
+                    .isNotNull()
+                    .hasSize(2)
+                    .extracting(ActivityStudentStateResponseDto::getId)
+                    .containsExactly(1L, 2L);
         }
 
         @Test
         @DisplayName("Given student with no activities When listing approved activities Then returns empty list")
         void whenNoActivities_returnsEmptyList() {
             User user = ActivityTestMother.studentUser(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
+            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID,
+                    ActivityTestMother.STUDENT_EMAIL);
             List<Activity> emptyActivities = new ArrayList<>();
 
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
             when(activityGetByStudentService.getByStudent(student)).thenReturn(emptyActivities);
             when(activityCreateApprovedDtosService.createApprovedDtos(emptyActivities, student))
-                .thenReturn(new ArrayList<>());
+                    .thenReturn(new ArrayList<>());
 
-            List<ActivityStudentApprovedResponseDto> response = 
-                activityListApprovedByStudentService.cu63ListApprovedActivitiesByStudent(user);
+            List<ActivityStudentStateResponseDto> response = activityListApprovedByStudentService
+                    .cu63ListApprovedActivitiesByStudent(user);
 
             assertThat(response).isNotNull().isEmpty();
         }
     }
 }
-

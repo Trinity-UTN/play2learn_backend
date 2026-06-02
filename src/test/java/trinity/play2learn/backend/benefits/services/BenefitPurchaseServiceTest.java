@@ -37,7 +37,9 @@ import trinity.play2learn.backend.configs.exceptions.NotFoundException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
+import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 
 @ExtendWith(MockitoExtension.class)
 class BenefitPurchaseServiceTest {
@@ -58,7 +60,11 @@ class BenefitPurchaseServiceTest {
     private ITransactionGenerateService transactionGenerateService;
     @Mock
     private IBenefitPurchaseRepository benefitPurchaseRepository;
-
+    @Mock
+    private IProfileUpdateLevelService profileUpdateLevelService;   
+    @Mock
+    private INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
+    
     private BenefitPurchaseService benefitPurchaseService;
 
     @BeforeEach
@@ -71,7 +77,9 @@ class BenefitPurchaseServiceTest {
             benefitGetPurchasesPerStudentService,
             benefitValidateIfPurchasedByStudentService,
             transactionGenerateService,
-            benefitPurchaseRepository
+            benefitPurchaseRepository,
+            notificationCreateSingleWithTitleService,
+            profileUpdateLevelService
         );
     }
 

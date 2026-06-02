@@ -8,5 +8,45 @@
     "name": "upload.care.api.key",
     "type": "java.lang.String",
     "description": "A description for 'upload.care.api.key'"
+  },
+  {
+    "name": "logs.api.base.url",
+    "type": "java.lang.String",
+    "description": "A description for 'logs.api.base.url'"
+  },
+  {
+    "name": "logs.api.private.key",
+    "type": "java.lang.String",
+    "description": "A description for 'logs.api.private.key'"
+  },
+  {
+    "name": "google.drive.credentials.path",
+    "type": "java.lang.String",
+    "description": "A description for 'google.drive.credentials.path'"
+  },
+  {
+    "name": "google.drive.folder.id",
+    "type": "java.lang.String",
+    "description": "A description for 'google.drive.folder.id'"
+  },
+  {
+    "name": "google.drive.tokens.path",
+    "type": "java.lang.String",
+    "description": "A description for 'google.drive.tokens.path'"
+  },
+  {
+    "name": "cloudinary.cloud-name",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.cloud-name'"
+  },
+  {
+    "name": "cloudinary.api-key",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.api-key'"
+  },
+  {
+    "name": "cloudinary.api-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'cloudinary.api-secret'"
   }
 ]}

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
-import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentApprovedResponseDto;
+import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityListApproveByStudentService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityListNotApprovedByStudentService;
@@ -24,23 +24,26 @@ import trinity.play2learn.backend.user.models.User;
 @AllArgsConstructor
 @RequestMapping("/activity/student")
 public class ActivityListByStudentController {
-    
+
     private final IActivityListNotApprovedByStudentService activityGetNotApprovedByStudentService;
     private final IActivityListApproveByStudentService activityGetApprovedByStudentService;
 
     @GetMapping("/not-approved")
-    @SessionRequired(roles = {Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<List<ActivityStudentNotApprovedResponseDto>>> listNotApprovedActivities(@SessionUser User user) {
+    @SessionRequired(roles = { Role.ROLE_STUDENT })
+    public ResponseEntity<BaseResponse<List<ActivityStudentNotApprovedResponseDto>>> listNotApprovedActivities(
+            @SessionUser User user) {
 
-        return ResponseFactory.ok(activityGetNotApprovedByStudentService.cu62ListNotApprovedActivitiesByStudent(user), SuccessfulMessages.okSuccessfully());
+        return ResponseFactory.ok(activityGetNotApprovedByStudentService.cu62ListNotApprovedActivitiesByStudent(user),
+                SuccessfulMessages.okSuccessfully());
     }
 
     @GetMapping("/approved")
-    @SessionRequired(roles = {Role.ROLE_STUDENT})
-    public ResponseEntity<BaseResponse<List<ActivityStudentApprovedResponseDto>>> listApprovedActivities(@SessionUser User user) {
+    @SessionRequired(roles = { Role.ROLE_STUDENT })
+    public ResponseEntity<BaseResponse<List<ActivityStudentStateResponseDto>>> listApprovedActivities(
+            @SessionUser User user) {
 
-        return ResponseFactory.ok(activityGetApprovedByStudentService.cu63ListApprovedActivitiesByStudent(user), SuccessfulMessages.okSuccessfully());
+        return ResponseFactory.ok(activityGetApprovedByStudentService.cu63ListApprovedActivitiesByStudent(user),
+                SuccessfulMessages.okSuccessfully());
     }
-
 
 }

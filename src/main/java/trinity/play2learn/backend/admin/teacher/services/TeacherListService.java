@@ -20,6 +20,6 @@ public class TeacherListService implements ITeacherListService {
     @Override
     public List<TeacherResponseDto> cu25ListTeachers() {
 
-        return TeacherMapper.toListDto( (List<Teacher>) teacherRepository.findAll()); //Casteo a de iterable a List
+        return TeacherMapper.toListDto( (List<Teacher>) teacherRepository.findByDeletedAtIsNull());
     }
 }
