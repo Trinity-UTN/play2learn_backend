@@ -47,22 +47,28 @@ public class JwtSessionAspect {
 
         HttpServletRequest request = attrs.getRequest();
         
-        String jwt = null;
+        // String jwt = null;
 
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            jwt = Arrays.stream(cookies)
-                .filter(c -> "access_token".equals(c.getName()))
-                .map(Cookie::getValue)
-                .findFirst()
-                .orElse(null);
-        }
+        // Cookie[] cookies = request.getCookies();
+        // if (cookies != null) {
+        //     jwt = Arrays.stream(cookies)
+        //         .filter(c -> "access_token".equals(c.getName()))
+        //         .map(Cookie::getValue)
+        //         .findFirst()
+        //         .orElse(null);
+        // }
 
-        if (jwt == null) {
+        // if (jwt == null) {
+
+        String authHeader = request.getHeader("Authorization"); //Obtiene el encabezado de autorizacion donde se ubica el token
+
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+        
             throw new UnauthorizedException(
                 UnauthorizedExceptionMessages.INVALID_ACCESS_TOKEN
             );
         }
+        String jwt = authHeader.substring(7);
 
 
         //Chequeo que el token no haya expirado
