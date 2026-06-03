@@ -43,7 +43,7 @@ public class ActivityCompletedMapper {
             .id(activityCompleted.getId())
             .activityId(activityCompleted.getActivity().getId())
             .state(activityCompleted.getState())
-            .reward(activityCompleted.getReward() == null ? 0.0 : (Math.round(activityCompleted.getReward() * 100.0) / 100.0))
+            .reward((double) activityCompleted.getReward().intValue())
             .remainingAttempts(activityCompleted.getRemainingAttempts())
             .build();
     }

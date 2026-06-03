@@ -51,7 +51,7 @@ public class ActivityMapper {
                                 .attempts(activity.getAttempts())
                                 .remainingAttempts(remainingAttempts)
                                 .completedAt(completedAt)
-                                .reward(reward)
+                                .reward((double) reward.intValue())
                                 .state(state)
                                 .build();
         }
