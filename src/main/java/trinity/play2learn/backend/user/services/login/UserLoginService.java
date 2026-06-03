@@ -1,11 +1,6 @@
 package trinity.play2learn.backend.user.services.login;
 
-import java.time.Duration;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
-
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.admin.student.mappers.StudentMapper;
@@ -40,25 +35,25 @@ public class UserLoginService implements IUserLoginService {
         //El JWT contiene: email, role, issuedAt, expiration
         String refreshToken = jwtService.generateRefreshToken(userToLogin); //El jwtService genera y devuelve el refresh token.
 
-        ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
-            .httpOnly(true)
-            .secure(true)
-            .path("/")
-            .maxAge(Duration.ofMinutes(15))
-            .sameSite("Strict")  
-            .build();
+        // ResponseCookie accessCookie = ResponseCookie.from("access_token", accessToken)
+        //     .httpOnly(true)
+        //     .secure(true)
+        //     .path("/")
+        //     .maxAge(Duration.ofMinutes(15))
+        //     .sameSite("Strict")  
+        //     .build();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
+        // response.addHeader(HttpHeaders.SET_COOKIE, accessCookie.toString());
         
-        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
-            .httpOnly(true)
-            .secure(true)
-            .path("/refresh") 
-            .maxAge(Duration.ofDays(7))
-            .sameSite("Strict")
-            .build();
+        // ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
+        //     .httpOnly(true)
+        //     .secure(true)
+        //     .path("/refresh") 
+        //     .maxAge(Duration.ofDays(7))
+        //     .sameSite("Strict")
+        //     .build();
 
-        response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+        // response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
         Object roleData = switch (userToLogin.getRole()) {
             case ROLE_TEACHER -> TeacherMapper.toDto(
@@ -70,6 +65,6 @@ public class UserLoginService implements IUserLoginService {
             default -> null;
         };
 
-        return UserMapper.toLoginDto(userToLogin, roleData);
+        return UserMapper.toLoginDto(userToLogin, roleData, accessToken, refreshToken);
     }
 }

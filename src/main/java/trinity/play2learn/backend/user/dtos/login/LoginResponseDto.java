@@ -17,4 +17,6 @@ public class LoginResponseDto {
     private String email;   
     private Role role;
     private Object roleData; //StudentResponseDto, TeacherResponseDto o null si es ADMIN o DEV
+    private String accessToken;
+    private String refreshToken;
 }
