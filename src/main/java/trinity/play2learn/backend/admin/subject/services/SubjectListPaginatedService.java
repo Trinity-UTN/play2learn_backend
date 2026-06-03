@@ -41,7 +41,7 @@ public class SubjectListPaginatedService implements ISubjectListPaginatedService
         }
 
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
-        Specification<Subject> spec = Specification.where(SubjectSpecs.notDeleted());
+        Specification<Subject> spec = Specification.where(null);
         
         if (search != null && !search.isBlank()) {
         spec = spec.and(SubjectSpecs.nameContains(search));

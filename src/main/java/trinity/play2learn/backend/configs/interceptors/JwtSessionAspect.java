@@ -2,15 +2,12 @@ package trinity.play2learn.backend.configs.interceptors;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.configs.annotations.SessionRequired;
