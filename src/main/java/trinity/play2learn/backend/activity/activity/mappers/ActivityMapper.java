@@ -41,6 +41,8 @@ public class ActivityMapper {
         public static ActivityStudentStateResponseDto toStudentStateDto(Activity activity, Integer remainingAttempts,
                         Double reward, LocalDateTime completedAt, ActivityCompletedState state) {
 
+                double rewardValue = (reward == null) ? 0.0 : ((double) reward.intValue());
+
                 return ActivityStudentStateResponseDto.builder()
                                 .id(activity.getId())
                                 .name(activity.getName())
@@ -51,7 +53,7 @@ public class ActivityMapper {
                                 .attempts(activity.getAttempts())
                                 .remainingAttempts(remainingAttempts)
                                 .completedAt(completedAt)
-                                .reward((double) reward.intValue())
+                                .reward(rewardValue)
                                 .state(state)
                                 .build();
         }
