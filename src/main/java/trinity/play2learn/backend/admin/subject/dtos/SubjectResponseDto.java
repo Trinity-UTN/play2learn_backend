@@ -22,5 +22,5 @@ public class SubjectResponseDto {
     private Double actualBalance;
     private Double initialBalance;
     private List<StudentSimplificatedResponse> students;
-
+    private boolean active;
 }

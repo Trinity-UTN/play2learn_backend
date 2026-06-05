@@ -39,6 +39,7 @@ public class SubjectMapper {
             .actualBalance(subject.getActualBalance())
             .initialBalance(subject.getInitialBalance())
             .students(StudentMapper.toSimplificatedDtos(subject.getStudents()))
+            .active(subject.isActive())
             .build();
     }
 

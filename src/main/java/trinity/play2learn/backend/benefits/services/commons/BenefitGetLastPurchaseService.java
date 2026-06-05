@@ -22,7 +22,10 @@ public class BenefitGetLastPurchaseService implements IBenefitGetLastPurchaseSer
     
         return benefitPurchaseRepository.findTopByBenefitAndStudentOrderByPurchasedAtDesc(benefit, student);
     }
-    
 
+    @Override
+    public Optional<BenefitPurchase> getLastPurchase(Benefit benefit) {
     
+        return benefitPurchaseRepository.findTopByBenefitOrderByPurchasedAtDesc(benefit);
+    }    
 }

@@ -29,6 +29,7 @@ import trinity.play2learn.backend.benefits.models.Benefit;
 import trinity.play2learn.backend.benefits.models.BenefitPurchase;
 import trinity.play2learn.backend.benefits.repositories.IBenefitPurchaseRepository;
 import trinity.play2learn.backend.benefits.services.commons.BenefitGetByIdService;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetLastPurchaseService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetPurchasesLeftByStudentService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidateIfPurchasedByStudentService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidatePurchaseLimitService;
@@ -64,7 +65,9 @@ class BenefitPurchaseServiceTest {
     private IProfileUpdateLevelService profileUpdateLevelService;   
     @Mock
     private INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
-    
+    @Mock
+    private IBenefitGetLastPurchaseService benefitGetLastPurchaseService;
+
     private BenefitPurchaseService benefitPurchaseService;
 
     @BeforeEach
@@ -79,7 +82,8 @@ class BenefitPurchaseServiceTest {
             transactionGenerateService,
             benefitPurchaseRepository,
             notificationCreateSingleWithTitleService,
-            profileUpdateLevelService
+            profileUpdateLevelService,
+            benefitGetLastPurchaseService
         );
     }
 

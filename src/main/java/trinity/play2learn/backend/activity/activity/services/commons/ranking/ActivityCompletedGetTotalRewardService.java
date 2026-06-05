@@ -9,7 +9,7 @@ import trinity.play2learn.backend.activity.activity.models.activityCompleted.Act
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedGetTotalRewardService;
 import trinity.play2learn.backend.admin.student.models.Student;
-import trinity.play2learn.backend.profile.ranking.dtos.StudentWithRewardTotalDto;
+import trinity.play2learn.backend.profile.ranking.dtos.StudentWithTotalDto;
 
 @Service
 @AllArgsConstructor
@@ -25,20 +25,20 @@ public class ActivityCompletedGetTotalRewardService implements IActivityComplete
     }
 
     @Override
-    public List<StudentWithRewardTotalDto> getTotalRewardByStudents(List<Student> students) {
+    public List<StudentWithTotalDto> getTotalRewardByStudents(List<Student> students) {
 
-        //Realiza una consulta optimizada a la base de datos para obtener el total de recompensas obtenidas por cada estudiante en una sola consulta.
+        // Realiza una consulta optimizada a la base de datos para obtener el total de
+        // recompensas obtenidas por cada estudiante en una sola consulta.
         Map<Student, Double> rewardByStudent = activityCompletedRepository
                 .sumRewardByStateGroupedByStudent(ActivityCompletedState.APPROVED)
                 .stream()
                 .collect(Collectors.toMap(
-                        StudentWithRewardTotalDto::getStudent,
-                        StudentWithRewardTotalDto::getTotalReward
-                ));
+                        StudentWithTotalDto::getStudent,
+                        StudentWithTotalDto::getTotal));
 
-        //Agrega los que no tienen ninguna actividad con 0.0
+        // Agrega los que no tienen ninguna actividad con 0.0
         return students.stream()
-                .map(s -> new StudentWithRewardTotalDto(s, rewardByStudent.getOrDefault(s, 0.0)))
+                .map(s -> new StudentWithTotalDto(s, rewardByStudent.getOrDefault(s, 0.0)))
                 .collect(Collectors.toList());
     }
 }

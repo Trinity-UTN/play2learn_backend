@@ -10,8 +10,8 @@ import trinity.play2learn.backend.admin.student.models.Student;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentWithRewardTotalDto {
-    
+public class StudentWithTotalDto {
+
     private Student student;
-    private Double totalReward; //Total de monedas conseguidas (Puede ser el total o solo de una materia)
+    private Double total; // Total de monedas conseguidas (Puede ser el total o solo de una materia)
 }

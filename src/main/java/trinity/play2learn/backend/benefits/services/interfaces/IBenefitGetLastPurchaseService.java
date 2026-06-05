@@ -9,4 +9,6 @@ import trinity.play2learn.backend.benefits.models.BenefitPurchase;
 public interface IBenefitGetLastPurchaseService {
     
     Optional<BenefitPurchase> getLastPurchase(Benefit benefit, Student student);
+
+    Optional<BenefitPurchase> getLastPurchase(Benefit benefit);
 }

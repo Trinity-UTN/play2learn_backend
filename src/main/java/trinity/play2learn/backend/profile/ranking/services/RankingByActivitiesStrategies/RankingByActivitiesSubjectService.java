@@ -4,31 +4,34 @@ import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingByActivitiesStrategyService;
+import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingFindDtoService;
+import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingGetStudentPositionService;
+import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingGetTop10StudentsService;
+import trinity.play2learn.backend.profile.ranking.dtos.StudentWithTotalDto;
 import trinity.play2learn.backend.profile.ranking.dtos.request.LeaderboardRequestDto;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardResponseDto;
-import trinity.play2learn.backend.profile.ranking.mappers.LeaderboardByActivitiesMapper;
+import trinity.play2learn.backend.profile.ranking.mappers.LeaderboardByCoinsMapper;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardParticipantResponseDto;
+import java.util.ArrayList;
 import java.util.List;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectGetByIdService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.admin.subject.models.Subject;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetRankingByStudentsService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetPositionRankingByStudentsService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCompletedGetSubjectTotalService;
 
-@Service ("ACTIVITIES_MATERIA")
+@Service("ACTIVITIES_MATERIA")
 @AllArgsConstructor
 public class RankingByActivitiesSubjectService implements IRankingByActivitiesStrategyService {
-    
+
     private final ISubjectGetByIdService subjectGetByIdService;
-
-    private final IActivityGetRankingByStudentsService activityGetRankingByStudentsService;
-
-    private final IActivityGetPositionRankingByStudentsService activityGetPositionRankingByStudentsService;
-
+    private final IActivityCompletedGetSubjectTotalService activityCompletedGetSubjectTotalService;
+    private final IRankingGetTop10StudentsService rankingGetTop10StudentsService;
+    private final IRankingFindDtoService rankingFindCoinsDtoService;
+    private final IRankingGetStudentPositionService rankingGetStudentPositionService;
 
     @Override
-    public LeaderboardResponseDto execute (LeaderboardRequestDto leaderboardRequestDto, Student student) {
+    public LeaderboardResponseDto execute(LeaderboardRequestDto leaderboardRequestDto, Student student) {
 
         if (leaderboardRequestDto.getId() == null) {
             throw new ConflictException("El ID de la materia es requerido para el ranking de materia");
@@ -39,21 +42,39 @@ public class RankingByActivitiesSubjectService implements IRankingByActivitiesSt
         if (!subject.getStudents().contains(student)) {
             throw new ConflictException("El estudiante no puede ver el ranking de esta materia");
         }
-        
 
-        List<Object[]> results = activityGetRankingByStudentsService.execute(subject.getStudents());
+        List<Student> students = subject.getStudents();
 
-        List<LeaderboardParticipantResponseDto> participants = LeaderboardByActivitiesMapper.toParticipantDtoList(results);
+        // Crea un listado de dtos con el estudiante y el total de recompensas
+        // acumuladas únicamente en esta materia.
+        List<StudentWithTotalDto> studentsWithTotal = new ArrayList<>();
+        for (Student s : students) {
 
-        Object[] positionResult = activityGetPositionRankingByStudentsService.execute(student, subject.getStudents());
-        
-        LeaderboardParticipantResponseDto currentUserPosition = null;
-        if (positionResult != null && positionResult.length >= 2) {
-            Object countObj = positionResult[1];
-            Double count = countObj instanceof Long ? ((Long) countObj).doubleValue() : (Double) countObj;
-            currentUserPosition = LeaderboardByActivitiesMapper.toParticipantDto(student, (Long) positionResult[0], count);
+            // Cuenta las actividades de la materia aprobadas por el estudiante
+            Double subjectRankingBalance = activityCompletedGetSubjectTotalService
+                    .getSubjectTotalApprovedByStudent(s, subject);
+
+            studentsWithTotal.add(LeaderboardByCoinsMapper.toStudentWithTotalDto(s, subjectRankingBalance));
         }
 
-        return LeaderboardByActivitiesMapper.toDto(participants, currentUserPosition);
+        // Obtiene el top 10 de estudiantes
+        List<StudentWithTotalDto> top10Students = rankingGetTop10StudentsService
+                .getTop10StudentsByCoins(studentsWithTotal);
+
+        List<LeaderboardParticipantResponseDto> participants = LeaderboardByCoinsMapper
+                .toDtoListByStudentWithTotalDto(top10Students);
+
+        StudentWithTotalDto studentDto = rankingFindCoinsDtoService.findDtoByStudent(studentsWithTotal,
+                student);
+
+        // Obtiene la posicion del estudiante en el ranking
+        Long studentPosition = rankingGetStudentPositionService
+                .getStudentRankingPositionByCoins(studentsWithTotal, studentDto);
+
+        LeaderboardParticipantResponseDto currentUserPosition = LeaderboardByCoinsMapper.toParticipantDto(
+                studentDto,
+                studentPosition);
+
+        return LeaderboardByCoinsMapper.toDto(participants, currentUserPosition, students.size());
     }
 }

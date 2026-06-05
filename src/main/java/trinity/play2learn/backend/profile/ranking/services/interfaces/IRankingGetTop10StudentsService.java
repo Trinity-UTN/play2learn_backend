@@ -2,9 +2,9 @@ package trinity.play2learn.backend.profile.ranking.services.interfaces;
 
 import java.util.List;
 
-import trinity.play2learn.backend.profile.ranking.dtos.StudentWithRewardTotalDto;
+import trinity.play2learn.backend.profile.ranking.dtos.StudentWithTotalDto;
 
 public interface IRankingGetTop10StudentsService {
-    
-    List<StudentWithRewardTotalDto> getTop10StudentsByCoins(List<StudentWithRewardTotalDto> students);
+
+    List<StudentWithTotalDto> getTop10StudentsByCoins(List<StudentWithTotalDto> students);
 }

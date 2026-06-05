@@ -39,11 +39,14 @@ public class ActivityCompletedMapper {
     }
 
     public static ActivityCompletedResponseDto toDto(ActivityCompleted activityCompleted) {
+
+        double reward = activityCompleted.getReward() == null ? 0.0 : (double) activityCompleted.getReward().intValue();
+
         return ActivityCompletedResponseDto.builder()
             .id(activityCompleted.getId())
             .activityId(activityCompleted.getActivity().getId())
             .state(activityCompleted.getState())
-            .reward(activityCompleted.getReward() == null ? 0.0 : (Math.round(activityCompleted.getReward() * 100.0) / 100.0))
+            .reward(reward)
             .remainingAttempts(activityCompleted.getRemainingAttempts())
             .build();
     }

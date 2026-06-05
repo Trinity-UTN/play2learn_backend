@@ -81,6 +81,10 @@ public class Subject {
         this.deletedAt = null;
     }
 
+    public boolean isActive(){
+        return this.deletedAt == null;
+    }
+
     public void removeStudents(List<Student> studentsToRemove) {
         this.students.removeAll(studentsToRemove);
     }
