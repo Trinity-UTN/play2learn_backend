@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import trinity.play2learn.backend.profile.ranking.dtos.StudentWithRewardTotalDto;
+import trinity.play2learn.backend.profile.ranking.dtos.StudentWithTotalDto;
 import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingGetStudentPositionService;
 
 @Service
@@ -12,11 +12,11 @@ public class RankingGetStudentPositionService implements IRankingGetStudentPosit
 
     // Devuelve la posicion del estudiante en el ranking de monedas
     @Override
-    public Long getStudentRankingPositionByCoins(List<StudentWithRewardTotalDto> list,
-            StudentWithRewardTotalDto targetDto) {
+    public Long getStudentRankingPositionByCoins(List<StudentWithTotalDto> list,
+            StudentWithTotalDto targetDto) {
         // Ordenamos la lista de mayor a menor recompensa
-        List<StudentWithRewardTotalDto> sortedList = list.stream()
-                .sorted(Comparator.comparing(StudentWithRewardTotalDto::getTotalReward).reversed())
+        List<StudentWithTotalDto> sortedList = list.stream()
+                .sorted(Comparator.comparing(StudentWithTotalDto::getTotal).reversed())
                 .collect(Collectors.toList());
 
         // Buscamos la posición comparando el ID del estudiante dentro del DTO
