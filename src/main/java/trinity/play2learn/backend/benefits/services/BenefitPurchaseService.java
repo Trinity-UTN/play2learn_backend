@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.benefits.services;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,8 +13,10 @@ import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseR
 import trinity.play2learn.backend.benefits.dtos.benefitPurchase.BenefitPurchaseResponseDto;
 import trinity.play2learn.backend.benefits.mappers.BenefitPurchaseMapper;
 import trinity.play2learn.backend.benefits.models.Benefit;
+import trinity.play2learn.backend.benefits.models.BenefitPurchase;
 import trinity.play2learn.backend.benefits.repositories.IBenefitPurchaseRepository;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetByIdService;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetLastPurchaseService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitPurchaseService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidatePurchaseLimitService;
 import trinity.play2learn.backend.benefits.services.interfaces.IBenefitValidateIfPurchasedByStudentService;
@@ -41,6 +45,7 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
     private final IBenefitPurchaseRepository benefitPurchaseRepository;
     private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
     private final IProfileUpdateLevelService profileUpdateLevelService;
+    private final IBenefitGetLastPurchaseService benefitGetLastPurchaseService;
 
     @Override
     @Transactional
@@ -90,6 +95,10 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
             null
         );
 
+        //Trae la última compra del beneficio
+        Optional<BenefitPurchase> lastPurchase = benefitGetLastPurchaseService.getLastPurchase(benefit);
+        int purchaseNumber = lastPurchase.isPresent() ? lastPurchase.get().getPurchaseNumber() + 1 : 1; //Calcula el numero de compra del beneficio
+
         //Decrementa el número de compras restantes si el beneficio tiene un límite
         benefit.decrementPurchasesLeft();
 
@@ -103,7 +112,9 @@ public class BenefitPurchaseService implements IBenefitPurchaseService {
         // Actualiza el nivel del estudiante
         profileUpdateLevelService.execute(student.getProfile(), ValueXp.BENEFIT_BOUGHT.getValue());
 
+        BenefitPurchase benefitPurchaseSaved = benefitPurchaseRepository.save(BenefitPurchaseMapper.toModel(benefit, student, purchaseNumber));
+        
         // Retorna el beneficio comprado
-        return BenefitPurchaseMapper.toDto(benefitPurchaseRepository.save(BenefitPurchaseMapper.toModel(benefit, student)), purchasesLeftByStudent);
+        return BenefitPurchaseMapper.toDto(benefitPurchaseSaved, purchasesLeftByStudent);
     }
 }

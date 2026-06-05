@@ -13,17 +13,19 @@ import trinity.play2learn.backend.benefits.models.BenefitPurchaseState;
 
 public class BenefitPurchaseMapper {
     
-    public static BenefitPurchase toModel(Benefit benefit, Student student) {
+    public static BenefitPurchase toModel(Benefit benefit, Student student, int purchaseNumber) {
         return BenefitPurchase.builder()
             .benefit(benefit)
             .student(student)
             .state(BenefitPurchaseState.PURCHASED)
+            .purchaseNumber(purchaseNumber)
             .build();
     }
 
     public static BenefitPurchaseResponseDto toDto(BenefitPurchase benefitPurchase, Integer purchasesLeftByStudent) {
         return BenefitPurchaseResponseDto.builder()
             .id(benefitPurchase.getId())
+            .purchaseNumber(benefitPurchase.getPurchaseNumber())
             .student(StudentMapper.toSimplificatedDto(benefitPurchase.getStudent()))
             .state(benefitPurchase.getState())
             .purchasedAt(benefitPurchase.getPurchasedAt())
@@ -37,6 +39,7 @@ public class BenefitPurchaseMapper {
         BenefitPurchase benefitPurchase) {
         return BenefitPurchaseSimpleResponseDto.builder()
             .id(benefitPurchase.getId())
+            .purchaseNumber(benefitPurchase.getPurchaseNumber())
             .benefitId(benefitPurchase.getBenefit().getId())
             .benefitName(benefitPurchase.getBenefit().getName())
             .benefitCategory(benefitPurchase.getBenefit().getCategory())

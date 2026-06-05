@@ -18,6 +18,8 @@ public class BenefitPurchaseResponseDto {
     
     private Long id;
 
+    private int purchaseNumber; //Numero de compra del beneficio
+
     private BenefitPurchaseState state;
 
     private LocalDateTime purchasedAt;

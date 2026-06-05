@@ -2,8 +2,8 @@ package trinity.play2learn.backend.benefits.models;
 
 
 import java.time.LocalDateTime;
-
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -43,6 +43,9 @@ public class BenefitPurchase {
     @Enumerated(EnumType.STRING)
     @NotNull
     private BenefitPurchaseState state;
+
+    @Column(nullable = true)
+    private Integer purchaseNumber; //Numero de compra del beneficio
 
     @NotNull
     private LocalDateTime purchasedAt;

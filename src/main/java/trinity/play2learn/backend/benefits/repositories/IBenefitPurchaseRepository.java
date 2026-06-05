@@ -16,6 +16,8 @@ public interface IBenefitPurchaseRepository extends CrudRepository<BenefitPurcha
 
     Optional<BenefitPurchase> findTopByBenefitAndStudentOrderByPurchasedAtDesc(Benefit benefit, Student student);
 
+    Optional<BenefitPurchase> findTopByBenefitOrderByPurchasedAtDesc(Benefit benefit);
+
     // Trae todos las solicitudes de uso de un beneficio que no este expirado ni
     // eliminado
     List<BenefitPurchase> findAllByBenefitAndState(Benefit benefit, BenefitPurchaseState state);
