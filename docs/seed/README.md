@@ -76,12 +76,31 @@ Content-Type: application/json
 | 3 | Docentes crean beneficios |
 | 4 | Compra parcial → solicitud de uso → aceptación |
 | 5 | Compra parcial de skins REMERA/SOMBRERO |
+| 6 | Catálogo de acciones simuladas (precios accesibles) |
+| 7a | Cajas de ahorro (tenencia 7–15 días, interés 0.1% diario) |
+| 7b | Plazos fijos (7/15/30 días, ~75% vencidos) |
+| 7c | Compra/venta de acciones |
+| 8 | Evolución diaria de precios (StockHistory) |
 
 ### Respuesta (`SimulationResultDto`)
 
 - `message`: resumen
 - `fromDate` / `toDate`: rango aplicado
-- `counts`: actividades, intentos, aprobados, beneficios, compras, usos, skins
+- `counts`: actividades, intentos, aprobados, beneficios, compras, usos, skins, **stocks, cajas, plazos, trades, historial**
+
+### Simulación de inversiones
+
+Ver `docs/seed/simulation-investment-architecture.md` para reglas temporales R9–R15, algoritmo de precios y contadores.
+
+#### Checklist manual
+
+1. Ejecutar bootstrap + simulate con rango de ~3 meses (`toDate <= hoy`).
+2. Verificar cajas con `accumulatedInterest > 0` tras 7+ días.
+3. Verificar plazos `FINISHED` con `endDate <= hoy` y transacción de retorno.
+4. Verificar plazos `IN_PROGRESS` con `endDate > hoy`.
+5. Verificar orders COMPRA/VENTA y saldos wallet coherentes.
+6. Verificar `StockHistory` diario y candlestick no vacío.
+7. Consultar BD: `endDate = startDate + plazo` para todos los plazos fijos.
 
 ### Configuración adicional
 

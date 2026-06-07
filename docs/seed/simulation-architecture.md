@@ -26,6 +26,11 @@ Ejecutar `POST /api/dev/seed` o `POST /api/dev/seed/bootstrap` antes de simular.
 | `BenefitSimulationGenerateService` | Creación de beneficios |
 | `BenefitSimulationLifecycleService` | Compra, solicitud y aceptación |
 | `AspectSimulationPurchaseService` | Compra de skins de pago |
+| `StockSimulationCatalogService` | Catálogo de acciones |
+| `SavingAccountSimulationService` | Cajas de ahorro simuladas |
+| `FixedTermDepositSimulationService` | Plazos fijos simulados |
+| `StockTradeSimulationService` | Compra/venta de acciones |
+| `StockHistorySimulationService` | Variación diaria de precios |
 | `DatabaseSimulationService` | Orquestación de fases |
 | `SimulationSeedController` | `POST /api/dev/seed/simulate` |
 
@@ -38,7 +43,10 @@ Ejecutar `POST /api/dev/seed` o `POST /api/dev/seed/bootstrap` antes de simular.
 4. Generar beneficios por materia
 5. Ciclo compra → solicitud de uso → aceptación (parcial)
 6. Compra parcial de aspectos REMERA/SOMBRERO
-7. Retornar SimulationResultDto con conteos
+7. Catálogo de acciones simuladas (StockSimulationCatalogService)
+8. Inversiones estudiantes: cajas de ahorro, plazos fijos, compra/venta de acciones
+9. Evolución diaria de precios (StockHistorySimulationService)
+10. Retornar SimulationResultDto con conteos
 ```
 
 ## Reglas de coherencia temporal
@@ -54,6 +62,7 @@ Ejecutar `POST /api/dev/seed` o `POST /api/dev/seed/bootstrap` antes de simular.
 | R6 | `benefit.endAt > benefitCreatedAt` |
 | R7 | `purchase.purchasedAt >= benefitCreatedAt` |
 | R8 | `purchase.usedAt >= purchase.purchasedAt` |
+| R9–R15 | Reglas de inversión — ver `simulation-investment-architecture.md` |
 
 ## Mapeo materia → actividad
 

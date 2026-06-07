@@ -1,4 +1,8 @@
-**Current Task:** Simulador de actividad académica y economía (Database Simulation Seed) — **COMPLETADO**. Implementado módulo `configs/seed/simulation/` con endpoint `POST /api/dev/seed/simulate`, 5 fases (actividades, intentos, beneficios, lifecycle, skins), plantillas temáticas por materia, timestamps históricos, 13 tests unitarios.
+**Current Task:** Simulación del módulo Investment (fases 6–8 del Database Simulation Seed) — **COMPLETADO**. Implementados catálogo de stocks, cajas de ahorro, plazos fijos, compra/venta de acciones y evolución diaria de precios en `configs/seed/simulation/`.
+
+- 2025-06-07 — **COMPLETADO T18-T37** Simulación Investment: fases 6–8 integradas en `DatabaseSimulationService`, reglas R9–R15, `SimulationProperties` extendido, servicios `StockSimulationCatalogService`, `SavingAccountSimulationService`, `FixedTermDepositSimulationService`, `StockTradeSimulationService`, `StockHistorySimulationService`. Docs: `simulation-investment-architecture.md`, README actualizado. Tests unitarios de validación e integración de fases.
+
+**Previous Task (COMPLETADO):** Simulador de actividad académica y economía (Database Simulation Seed) — fases 1–5.
 
 - 2025-05-31 — **FIX** activity_id null en activity_completed: subclases JOINED duplican `@Id` y ocultan el del padre; el collector guarda IDs (`PersistenceUnitUtil`) y fase 2 recarga entidades managed vía `IActivityRepository`.
 

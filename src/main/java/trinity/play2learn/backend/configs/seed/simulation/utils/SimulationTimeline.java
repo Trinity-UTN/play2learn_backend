@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.configs.seed.simulation.utils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
@@ -66,6 +67,32 @@ public final class SimulationTimeline {
 
     public LocalDateTime addMinutes(LocalDateTime base, int minutes) {
         return base.plusMinutes(minutes);
+    }
+
+    public LocalDate randomLocalDateBetween(LocalDate min, LocalDate max) {
+        LocalDate effectiveMin = min;
+        LocalDate effectiveMax = max;
+        if (effectiveMin.isBefore(from.toLocalDate())) {
+            effectiveMin = from.toLocalDate();
+        }
+        if (effectiveMax.isAfter(to.toLocalDate())) {
+            effectiveMax = to.toLocalDate();
+        }
+        if (effectiveMin.isAfter(effectiveMax)) {
+            return effectiveMin;
+        }
+        long days = ChronoUnit.DAYS.between(effectiveMin, effectiveMax);
+        if (days <= 0) {
+            return effectiveMin;
+        }
+        return effectiveMin.plusDays(random.nextLong(days + 1));
+    }
+
+    public int randomIntBetween(int min, int max) {
+        if (min >= max) {
+            return min;
+        }
+        return min + random.nextInt(max - min + 1);
     }
 
     /**

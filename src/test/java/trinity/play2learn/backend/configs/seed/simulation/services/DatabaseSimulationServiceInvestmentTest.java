@@ -22,7 +22,7 @@ import trinity.play2learn.backend.configs.seed.simulation.config.SimulationPrope
 import trinity.play2learn.backend.configs.seed.simulation.dtos.SimulationRequestDto;
 
 @ExtendWith(MockitoExtension.class)
-class DatabaseSimulationServiceTest {
+class DatabaseSimulationServiceInvestmentTest {
 
     @Mock
     private SimulationProperties simulationProperties;
@@ -70,8 +70,8 @@ class DatabaseSimulationServiceTest {
     private DatabaseSimulationService databaseSimulationService;
 
     @Test
-    @DisplayName("Given valid request When executing Then runs phases in order")
-    void execute_runsPhasesInOrder() {
+    @DisplayName("Given valid request When executing Then runs all 8 phases in order")
+    void execute_runsAllPhasesInOrder() {
         when(teacherRepository.count()).thenReturn(6L);
         when(studentRepository.count()).thenReturn(180L);
         when(subjectRepository.findAllByDeletedAtIsNull()).thenReturn(List.of(Subject.builder().id(1L).name("Matemática").build()));
@@ -102,6 +102,9 @@ class DatabaseSimulationServiceTest {
         order.verify(benefitLifecycleService).simulate(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
         order.verify(aspectPurchaseService).simulate(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
         order.verify(stockCatalogService).simulate(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
+        order.verify(savingAccountSimulationService).simulate(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
+        order.verify(fixedTermDepositSimulationService).simulate(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
+        order.verify(stockTradeSimulationService).simulate(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
         order.verify(stockHistorySimulationService).simulate(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.any());
     }
 }
