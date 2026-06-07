@@ -1,4 +1,20 @@
-**Current Task:** Servicio de repoblado de BD (Database Seed) — **COMPLETADO**. Fix aplicado: rollback silencioso por @Transactional + aspectos CUERPO precio 0.
+**Current Task:** Simulador de actividad académica y economía (Database Simulation Seed) — **COMPLETADO**. Implementado módulo `configs/seed/simulation/` con endpoint `POST /api/dev/seed/simulate`, 5 fases (actividades, intentos, beneficios, lifecycle, skins), plantillas temáticas por materia, timestamps históricos, 13 tests unitarios.
+
+- 2025-05-31 — **FIX** activity_id null en activity_completed: subclases JOINED duplican `@Id` y ocultan el del padre; el collector guarda IDs (`PersistenceUnitUtil`) y fase 2 recarga entidades managed vía `IActivityRepository`.
+
+- 2025-05-31 — **FIX** UnexpectedRollbackException en simulate: eliminado `@Transactional` de `DatabaseSimulationService.execute()` (el try-catch de fase 1 capturaba excepciones de `TransactionGenerateService` dentro de la misma transacción). Cada fase conserva su propia transacción.
+
+- 2025-05-31 — **FIX** BadRequestException en simulate (`completedAt` anterior a `startedAt`): `SimulationTimeline.resolveAttemptWindow()` garantiza ventana coherente cuando el cursor queda en el `endDate` de la actividad.
+
+- 2025-05-31 — **FIX** LazyInitializationException en simulate: `@Transactional` en `DatabaseSimulationService.execute()` y carga de estudiantes vía `ISubjectRepository.findStudentsBySubjectId()` en fases de intentos/beneficios/recompensas.
+
+- 2025-05-31 — **FIX** StackOverflowError en simulate: `@Data` generaba hashCode circular entre SentenceCompletarOracion↔WordCompletarOracion (y Category↔Concept). Excluidas relaciones bidireccionales de equals/hashCode/toString. Ajustado saveCompletarOracion para llamar buildCompleteSentences antes del persist.
+
+- 2025-05-31 — **COMPLETADO T01-T17** Database Simulation Seed: implementado simulador completo en `configs/seed/simulation/`. Componentes: SimulationTimeline, SimulationDateValidator, SubjectActivityTemplateFactory (Matemática/Lengua/Geografía), ActivitySimulationGenerateService, ActivitySimulationAttemptService (distribución 35/30/20/15%), BenefitSimulationGenerateService, BenefitSimulationLifecycleService, AspectSimulationPurchaseService, DatabaseSimulationService orquestador, SimulationSeedController. Docs: simulation-architecture.md, README actualizado. Tests: 13 unitarios pasando. Config: `app.seed.simulation.*` via SimulationProperties.
+
+- 2025-05-31 — **PLAN T01-T17** Database Simulation Seed: generado plan estratégico en `docs/tasks.json`.
+
+**Previous Task (COMPLETADO):** Servicio de repoblado de BD (Database Seed). Fix aplicado: rollback silencioso por @Transactional + aspectos CUERPO precio 0.
 
 - 2025-05-30 — **FIX** UnexpectedRollbackException en seed: eliminado @Transactional de execute() (excepciones capturadas marcaban rollback-only). Inventario de aspectos ahora se asigna directo vía IProfileRepository (evita COMPRA con precio 0 que lanzaba ConflictException). Reserve inicial aumentada a 5M para cubrir refill de 36 materias.
 

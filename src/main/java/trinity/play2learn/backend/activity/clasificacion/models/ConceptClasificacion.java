@@ -12,13 +12,17 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Data
+@EqualsAndHashCode(exclude = {"category"})
+@ToString(exclude = {"category"})
 @Table(name = "concept_clasificacion")
 public class ConceptClasificacion {
     

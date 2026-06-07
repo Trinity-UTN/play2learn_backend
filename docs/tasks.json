@@ -1,339 +1,423 @@
 {
-  "feature_title": "Servicio de repoblado de base de datos (Database Seed)",
-  "description": "Tras cambiar ddl-auto a create, implementar un servicio de seed que repueble la BD con datos mínimos operativos: Reserve, usuarios DEV/ADMIN, estructura académica (Year/Course/Teacher/Student/Subject), aspectos desde docs/aspects/, y generación de archivo de credenciales. Límites: máx. 6 years, 2 courses/year, 3 subjects/course, 30 students/year.",
+  "feature_title": "Simulador de actividad académica y economía (Database Simulation Seed)",
+  "description": "Segunda fase del seed de desarrollo: simular en un rango de fechas [from, to] la creación de actividades por docentes (contenido acorde a la materia), realización aleatoria por estudiantes con distribución de intentos, creación y ciclo de vida de beneficios, y compra de skins. Requiere ejecutar previamente POST /api/dev/seed (bootstrap). Endpoint POST /api/dev/seed/simulate con fromDate/toDate, protegido ROLE_DEV, solo app.seed.enabled=true.",
   "constraints": {
-    "max_years": 6,
-    "max_courses_per_year": 2,
-    "max_subjects_per_course": 3,
-    "max_students_per_year": 30,
-    "year_names": ["Primer Año", "Segundo Año", "Tercer Año", "Cuarto Año", "Quinto Año", "Sexto Año"],
-    "course_names": ["A", "B"],
-    "default_subjects": ["Matemática", "Lengua", "Geografía"],
-    "dev_credentials": { "email": "dev@gmail.com", "password": "12345678" },
-    "admin_credentials": { "email": "admin@gmail.com", "password": "12345678" },
-    "student_teacher_password_rule": "DNI del usuario",
-    "initial_reserve": {
-      "initialBalance": 1000000.0,
-      "reserveBalance": 1000000.0,
-      "circulationBalance": 0.0
+    "prerequisite": "DatabaseSeedService ejecutado (teachers, students, subjects con saldo, aspects, wallets fondeadas)",
+    "date_coherence_rules": [
+      "fromDate <= toDate",
+      "activity.createdAt >= fromDate",
+      "activity.startDate >= activity.createdAt",
+      "activity.endDate > activity.startDate",
+      "attempt.startedAt >= activity.startDate",
+      "attempt.completedAt >= attempt.startedAt",
+      "benefit.endAt > benefit.createdAt (o fecha de creación simulada)",
+      "benefitPurchase.purchasedAt >= benefit.createdAt",
+      "benefitPurchase.usedAt >= benefitPurchase.purchasedAt (si aplica)",
+      "aspectPurchase.transaction.createdAt coherente con rango"
+    ],
+    "subjects_default": ["Matemática", "Lengua", "Geografía"],
+    "activity_types_by_subject": {
+      "Matemática": ["Preguntados", "Clasificacion", "Ahorcado"],
+      "Lengua": ["CompletarOracion", "Preguntados", "Ahorcado"],
+      "Geografía": ["OrdenarSecuencia", "Clasificacion", "Preguntados"]
     },
-    "wallet_seed_amount": 1100.0,
-    "aspect_images_path": "docs/aspects/"
+    "attempt_distribution_default": {
+      "pass_on_attempt_1": 0.35,
+      "pass_on_attempt_2": 0.30,
+      "pass_on_attempt_3": 0.20,
+      "fail_all_attempts": 0.15
+    },
+    "participation_rates_default": {
+      "students_per_activity": 0.70,
+      "students_buying_benefit": 0.40,
+      "purchasers_requesting_use": 0.65,
+      "requests_accepted_by_teacher": 0.85,
+      "students_buying_paid_aspects": 0.25
+    },
+    "price_ranges": {
+      "activity_initial_balance": [80, 200],
+      "benefit_cost": [50, 400],
+      "aspect_already_owned_in_bootstrap": "CUERPO gratis; REMERA/SOMBRERO según catálogo seed"
+    },
+    "technical_note": "Los servicios oficiales usan LocalDateTime.now() (@PrePersist, @Future, validatePublishedStatus, isExpired). La simulación debe usar servicios internos dev-only que acepten timestamps explícitos o persistir + re-save con fechas backdated tras el primer insert."
   },
   "tasks": [
     {
       "id": "T01",
-      "title": "Informe de modelos bootstrap obligatorios",
-      "description": "Documentar qué entidades requieren datos iniciales, por qué, en qué orden crearlos y qué servicios fallan sin ellos. Incluir Reserve como singleton crítico, cascada Student→Profile→Wallet, Subject con saldo, Teacher obligatorio para actividades/beneficios, y Aspect como catálogo recomendado.",
-      "command": "/generate",
+      "title": "Análisis y diseño de arquitectura del simulador",
+      "description": "Documentar dependencias del bootstrap seed, flujos a simular (Activity generate/start/complete, Benefit generate/purchase/request/accept, Aspect purchase), restricciones de fechas, mapeo materia→tipo de actividad→plantillas de contenido, y decisión técnica para timestamps históricos (SimulationContext con referenceDateTime vs. re-save post @PrePersist). Definir paquete configs/seed/simulation/, contrato IDatabaseSimulationService, SimulationRequestDto (fromDate, toDate), SimulationResultDto (conteos por fase), SimulationProperties (tasas, densidad de actividades por materia, seed Random).",
+      "command": "/architect",
       "params": {
-        "target_file": "docs/seed/bootstrap-required-models.md",
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/",
+        "design_doc": "docs/seed/simulation-architecture.md",
         "reference_files": [
-          "src/main/java/trinity/play2learn/backend/economy/reserve/services/commons/ReserveFindLastService.java",
-          "src/main/java/trinity/play2learn/backend/admin/student/services/StudentRegisterService.java",
-          "src/main/java/trinity/play2learn/backend/admin/subject/services/SubjectRefillBalanceService.java",
-          "src/main/java/trinity/play2learn/backend/pruebaConfigs/TestController.java"
+          "docs/seed/architecture.md",
+          "docs/seed/bootstrap-required-models.md",
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
+          "src/main/java/trinity/play2learn/backend/activity/activity/services/student/ActivityStartService.java",
+          "src/main/java/trinity/play2learn/backend/activity/activity/services/student/ActivityCompletedService.java",
+          "src/main/java/trinity/play2learn/backend/benefits/services/BenefitGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/benefits/services/BenefitPurchaseService.java",
+          "src/main/java/trinity/play2learn/backend/profile/profile/services/ProfileAddAspectToInventoryService.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo docs/seed/bootstrap-required-models.md existe.",
-        "Lista Reserve como P0 con servicios dependientes.",
-        "Documenta cascada Student→Profile→Wallet y Subject+refill.",
-        "Incluye orden de bootstrap y matriz de dependencias."
+        "Existe docs/seed/simulation-architecture.md.",
+        "Documenta reglas de coherencia temporal y orden de fases.",
+        "Define mapeo Matemática/Lengua/Geografía → tipos y ejemplos de contenido.",
+        "Especifica estrategia para evitar LocalDateTime.now() en simulación histórica.",
+        "Lista servicios oficiales a reutilizar vs. lógica interna dev-only."
       ]
     },
     {
       "id": "T02",
-      "title": "Diseñar arquitectura del servicio de seed",
-      "description": "Definir interfaz IDatabaseSeedService, DTO de resultado SeedResultDto (con listas de credenciales generadas), configuración DatabaseSeedProperties (@ConfigurationProperties) con límites configurables, y orden de ejecución en fases. Decidir estrategia para aspectos: reutilizar AspectRegisterService (ImgBB) vs. persistencia directa en dev. Planificar reemplazo/refactor de TestController.",
-      "command": "/architect",
+      "title": "Utilidades de timeline y validación de fechas",
+      "description": "Implementar SimulationTimeline (distribución uniforme/aleatoria de eventos en [from, to]), SimulationDateValidator (validar from<=to, start>=created, attempt>=start), y SimulationRandom (Random con seed configurable para reproducibilidad). Helpers: randomDateBetween(from, to), nextDateAfter(min, max), addMinutes(base, delta).",
+      "command": "/generate",
       "params": {
-        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/",
-        "design_doc": "docs/seed/architecture.md",
-        "phases": [
-          "Fase 1: Reserve + Users (DEV/ADMIN)",
-          "Fase 2: Years + Courses",
-          "Fase 3: Teachers",
-          "Fase 4: Students (Profile+Wallet automático)",
-          "Fase 5: Subjects + SubjectRefillBalance",
-          "Fase 6: Aspects desde docs/aspects/",
-          "Fase 7: Fondeo wallets + inventario aspectos",
-          "Fase 8: Export credenciales MD"
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationTimeline.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationDateValidator.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/config/SimulationProperties.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "docs/seed/architecture.md documenta interfaces, fases y decisiones.",
-        "Define SeedCredentialsDto con email, password, role, dni, name.",
-        "Especifica distribución de 30 students/year entre 2 courses.",
-        "Documenta estrategia de imágenes de aspectos."
+        "SimulationDateValidator rechaza rangos inválidos y violaciones de orden temporal.",
+        "SimulationTimeline genera fechas estrictamente crecientes dentro del rango.",
+        "SimulationProperties expone app.seed.simulation.* configurable.",
+        "Tests unitarios cubren casos límite (from=to, intentos consecutivos)."
       ]
     },
     {
       "id": "T03",
-      "title": "Implementar fases core: Reserve y usuarios DEV/ADMIN",
-      "description": "Crear DatabaseSeedService con métodos seedReserve() y seedSystemUsers(). Reserve: 1 registro con initialBalance/reserveBalance=1_000_000, circulationBalance=0. Users: SignUpService para dev@gmail.com y admin@gmail.com con password 12345678. Validar idempotencia (no fallar si ya existen en re-ejecución).",
-      "command": "/generate",
+      "title": "Refinar utilidades de timeline",
+      "description": "Refinar helpers: JavaDoc, logging DEBUG, extracción de constantes, manejo de zonas horarias consistente (ZoneId.systemDefault()), mensajes de error claros en validación.",
+      "command": "/refine",
       "params": {
         "target_files": [
-          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
-          "src/main/java/trinity/play2learn/backend/configs/seed/services/interfaces/IDatabaseSeedService.java",
-          "src/main/java/trinity/play2learn/backend/configs/seed/dtos/SeedResultDto.java",
-          "src/main/java/trinity/play2learn/backend/configs/seed/dtos/SeedCredentialsDto.java",
-          "src/main/java/trinity/play2learn/backend/configs/seed/config/DatabaseSeedProperties.java"
-        ],
-        "reuse_services": [
-          "ISignUpService",
-          "IReserveRepository"
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Tras ejecutar seed, existe al menos 1 Reserve.",
-        "Existen usuarios DEV y ADMIN con credenciales definidas.",
-        "ReserveFindLastService.get() no lanza NotFoundException.",
-        "SeedResultDto incluye credenciales de DEV y ADMIN."
+        "Código sigue convenciones del módulo configs/seed.",
+        "Sin warnings de linting.",
+        "Documentación de reglas de coherencia en JavaDoc de SimulationDateValidator."
       ]
     },
     {
       "id": "T04",
-      "title": "Refinar fases core",
-      "description": "Refinar DatabaseSeedService fases 1-2: JavaDoc, logging por fase, manejo de ConflictException en re-ejecución, extracción de constantes, transaccionalidad @Transactional en método execute().",
-      "command": "/refine",
+      "title": "Plantillas de contenido por materia y tipo de actividad",
+      "description": "Crear SubjectActivityTemplateFactory que, dado Subject.name y tipo de actividad, produzca DTOs válidos listos para persistir: Preguntados (preguntas/opciones temáticas), Ahorcado (palabra acorde), Clasificacion (categorías/conceptos), CompletarOracion (oraciones Lengua), OrdenarSecuencia (eventos Geografía sin imágenes). Incluir banco de contenido estático por materia (ej. Matemática: fracciones, ecuaciones; Lengua: gramática; Geografía: capitales, ríos). Selección aleatoria de tipo compatible por materia.",
+      "command": "/generate",
       "params": {
         "target_files": [
-          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java"
-        ]
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/SubjectActivityTemplateFactory.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/MatematicaTemplates.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/LenguaTemplates.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/GeografiaTemplates.java"
+        ],
+        "activity_types_supported": [
+          "Preguntados",
+          "Ahorcado",
+          "Clasificacion",
+          "CompletarOracion",
+          "OrdenarSecuencia"
+        ],
+        "exclude": "NoLudica (requiere corrección manual), Memorama/ArbolDecision (opcional fase 2 por complejidad de assets)"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Método execute() anotado @Transactional.",
-        "Logs INFO por cada fase completada.",
-        "Re-ejecución no rompe por usuarios/reserva existentes."
+        "Cada materia del seed produce al menos 1 plantilla válida por tipo soportado.",
+        "DTOs generados pasan validaciones de servicios (opción correcta única en Preguntados, etc.).",
+        "Nombres y descripciones de actividades reflejan la materia.",
+        "Tests unitarios verifican mapeo materia→tipo y contenido no vacío."
       ]
     },
     {
       "id": "T05",
-      "title": "Implementar estructura académica admin",
-      "description": "Fases 3-5 del seed: crear 6 Years (Primero-Sexto), 2 Courses por year (A, B), Teachers con Faker es-AR (mín. 6, reutilizables entre materias), Students distribuidos equitativamente (máx. 30/year total entre sus 2 courses), 3 Subjects por course (Matemática, Lengua, Geografía) con teacherId asignado y optional=false. Usar servicios oficiales: YearRegisterService, CourseRegisterService, TeacherRegisterService, StudentRegisterService, SubjectRegisterService.",
+      "title": "Fase simulación: creación de actividades por docentes",
+      "description": "Implementar ActivitySimulationGenerateService: por cada Subject con teacher asignado, crear N actividades (configurable, ej. 2-4 por materia) distribuidas en el rango. Usar teacher.user del subject, initialBalance coherente (80-200), attempts=3, difficulty aleatoria, startDate/endDate dentro de [from,to] con startDate>=createdAt. Persistir vía repositorios + ITransactionGenerateService ACTIVIDAD (como servicios Generate existentes). Ajustar createdAt/startDate/endDate post-save si @PrePersist usa now(). Registrar actividades creadas en SimulationDataCollector.",
       "command": "/generate",
       "params": {
-        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
-        "limits": {
-          "years": 6,
-          "courses_per_year": 2,
-          "subjects_per_course": 3,
-          "students_per_year": 30
-        },
-        "student_distribution": "Math.floor(30 / 2) = 15 por course, alternando resto",
-        "reuse_from": "src/main/java/trinity/play2learn/backend/pruebaConfigs/TestController.java"
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/collector/SimulationDataCollector.java"
+        ],
+        "reuse_services": [
+          "ITransactionGenerateService",
+          "IPreguntadosRepository",
+          "IAhorcadoRepository",
+          "IClasificacionActivityRepository",
+          "ICompletarOracionRepository",
+          "IOrdenarSecuenciaRepository"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Existen 6 years y 12 courses (2 por year).",
-        "Existen 36 subjects (3 por course).",
-        "Total students <= 180 (30 × 6 years).",
-        "Cada student tiene Profile y Wallet (verificar vía StudentRegisterService).",
-        "Cada subject tiene teacher asignado.",
-        "SeedResultDto lista credenciales de teachers y students."
+        "Solo el teacher asignado a la materia crea actividades de esa materia.",
+        "Contenido temático acorde al nombre de la materia.",
+        "Fechas createdAt/startDate/endDate coherentes y dentro del rango.",
+        "Transacciones ACTIVIDAD generadas con initialBalance de la actividad.",
+        "SimulationDataCollector acumula actividades para fase de intentos."
       ]
     },
     {
       "id": "T06",
-      "title": "Implementar seed de economía post-estructura",
-      "description": "Fase 6: ejecutar SubjectRefillBalanceService.cu58RefillBalance() tras crear subjects+students. Fase 7: fondear wallets con walletAddAmountService (1100.0) y actualizar circulationBalance de Reserve proporcionalmente, igual que TestController.",
-      "command": "/generate",
+      "title": "Refinar generación de actividades",
+      "description": "Refinar ActivitySimulationGenerateService: idempotencia parcial (no duplicar si re-ejecuta mismo rango), logging por materia, manejo de saldo insuficiente en subject, extracción de builders.",
+      "command": "/refine",
       "params": {
-        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
-        "reuse_services": [
-          "ISubjectRefillBalanceService",
-          "IWalletAddAmountService",
-          "IReserveFindLastService",
-          "IReserveRepository"
-        ]
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationGenerateService.java"
       },
       "status": "done",
       "acceptance_criteria": [
-        "Subjects tienen actualBalance > 0 tras refill.",
-        "Students tienen wallet.balance >= 1100.",
-        "Reserve.circulationBalance refleja monedas en circulación.",
-        "Transacciones ASIGNACION generadas correctamente."
+        "Logs INFO por batch de materia procesada.",
+        "Fallo por saldo insuficiente no aborta todo el seed (skip + warn).",
+        "Código legible con métodos privados por tipo de actividad."
       ]
     },
     {
       "id": "T07",
-      "title": "Implementar seed de aspectos desde docs/aspects/",
-      "description": "Registrar los 9 aspectos mapeando carpeta→TypeAspect: docs/aspects/CUERPO/*.png→CUERPO, REMERA/*.png→REMERA, SOMBRERO/*.png→SOMBRERO. Derivar nombre legible del filename. Asignar precios default (ej. CUERPO=0 gratis, REMERA=500, SOMBRERO=300). Decidir upload: AspectRegisterService con MockMultipartFile o servicio interno que persista URL local/base64 para dev sin ImgBB. Tras crear catálogo, asignar todos los aspectos al inventario de cada student vía ProfileAddAspectToInventoryService.",
+      "title": "Fase simulación: intentos de estudiantes con resultados aleatorios",
+      "description": "Implementar ActivitySimulationAttemptService: por cada actividad creada, seleccionar subconjunto aleatorio de estudiantes de la materia (~70%). Por estudiante, sortear en qué intento aprueba (35% intento 1, 30% intento 2, 20% intento 3, 15% falla todos) o distribución configurable. Simular ciclo start→complete: ActivityCompleted con startedAt/completedAt backdated (>= activity.startDate), score>=60 para APPROVED / <60 para DISAPPROVED, remainingAttempts decrementado en desaprobaciones. Reutilizar lógica de ActivityApprovedStrategyService/DisapprovedStrategyService vía servicio interno que acepte timestamps explícitos, incluyendo RECOMPENSA y XP. Respetar max attempts de la actividad.",
       "command": "/generate",
       "params": {
         "target_files": [
-          "src/main/java/trinity/play2learn/backend/configs/seed/services/AspectSeedService.java",
-          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java"
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationAttemptService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/internal/SimulationActivityCompletionService.java"
         ],
-        "aspect_mapping": {
-          "CUERPO": [
-            "CuerpoMasculinoCastanoSinFondo.png",
-            "CuerpoMasculinoRubioSinFondo.png",
-            "CuerpoFemeninoCastaño.png",
-            "CuerpoFemeninoRubio.png"
-          ],
-          "REMERA": [
-            "CamisetaMasculinaVelez.png",
-            "CamisetaMasculinaCAU.png"
-          ],
-          "SOMBRERO": [
-            "Corona.png",
-            "Tiara.png",
-            "White Hat.png"
-          ]
-        }
+        "reuse_services": [
+          "IActivityCompletedRepository",
+          "ITransactionGenerateService",
+          "IProfileUpdateLevelService",
+          "Map<String, IActivityCalculateRewardStrategyService>"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Existen 9 registros Aspect en BD.",
-        "Cada aspecto tiene type correcto (CUERPO/REMERA/SOMBRERO).",
-        "Cada student tiene los 9 aspectos en ownedAspects.",
-        "Catálogo visible vía AspectListService."
+        "Ningún intento tiene completedAt anterior a startedAt ni startedAt anterior a activity.startDate.",
+        "Distribución de aprobación por intento es configurable y no 100% en primer intento.",
+        "Estudiantes aprobados reciben transacción RECOMPENSA.",
+        "Estudiantes que agotan intentos quedan en estado final coherente (DISAPPROVED, remainingAttempts=0).",
+        "No todos los estudiantes participan en todas las actividades."
       ]
     },
     {
       "id": "T08",
-      "title": "Refinar seed de aspectos y helpers",
-      "description": "Refinar AspectSeedService: helper para convertir File→MultipartFile, sanitizar nombres, evitar duplicados por nombre, logging, manejo de IOException.",
+      "title": "Refinar simulación de intentos",
+      "description": "Refinar ActivitySimulationAttemptService: validar score vs state, evitar notificaciones excesivas (opcional batch o skip en dev), tests de distribución estadística con seed fijo.",
       "command": "/refine",
       "params": {
         "target_files": [
-          "src/main/java/trinity/play2learn/backend/configs/seed/services/AspectSeedService.java"
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationAttemptService.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Re-ejecución no duplica aspectos existentes.",
-        "Nombres de aspectos son legibles y únicos.",
-        "Sin warnings de linting."
+        "Tests con Random seed=42 verifican distribución aproximada de intentos.",
+        "Sin ConflictException por score inconsistente.",
+        "Performance aceptable para ~180 estudiantes × múltiples actividades."
       ]
     },
     {
       "id": "T09",
-      "title": "Generador de archivo de credenciales",
-      "description": "Crear CredentialsMarkdownWriter que genere docs/seed/credentials.md con secciones: DEV, ADMIN, Teachers (tabla email/dni/password/nombre), Students (tabla email/dni/password/curso/año). Password rule: DNI para teachers/students, password explícito para dev/admin. Sobrescribir archivo en cada ejecución del seed.",
+      "title": "Fase simulación: creación de beneficios por docentes",
+      "description": "Implementar BenefitSimulationGenerateService: por cada Subject, crear 1-3 beneficios con nombres/descripciones temáticas (ej. Matemática: 'Puntos extra en parcial', Lengua: 'Eximición de oral', Geografía: 'Consulta material'). cost 50-400 coherente con categoría, purchaseLimit opcional, endAt dentro del rango (posterior a fecha de creación simulada). Icon/category/color aleatorios válidos. Persistir vía IBenefitRepository; timestamps backdated. No requiere @Future porque persistencia directa dev-only.",
       "command": "/generate",
       "params": {
         "target_files": [
-          "src/main/java/trinity/play2learn/backend/configs/seed/services/CredentialsMarkdownWriter.java",
-          "docs/seed/credentials.md"
-        ],
-        "template_sections": [
-          "Usuarios del sistema (DEV, ADMIN)",
-          "Docentes",
-          "Estudiantes"
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/BenefitTemplateFactory.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "docs/seed/credentials.md se genera tras ejecutar seed.",
-        "Incluye email, password, rol, DNI y curso/año para students.",
-        "Formato markdown legible con tablas.",
-        "Archivo .gitignore opcional si contiene credenciales (documentar decisión)."
+        "Beneficios creados solo por teacher de la materia.",
+        "Precios en rango configurable y > 0.",
+        "endAt > createdAt simulado y dentro/extiendo rango según diseño.",
+        "Al menos 1 beneficio por materia en simulación default."
       ]
     },
     {
       "id": "T10",
-      "title": "Endpoint y configuración de activación",
-      "description": "Crear DatabaseSeedController con POST /api/dev/seed protegido por ROLE_DEV (o profile dev-only). Agregar spring.seed.enabled=true en application-dev.properties. Refactorizar TestController para delegar en IDatabaseSeedService o deprecarlo. Documentar uso: 1) cambiar ddl-auto=create, 2) arrancar app, 3) POST /api/dev/seed.",
+      "title": "Fase simulación: compra, solicitud y aceptación de beneficios",
+      "description": "Implementar BenefitSimulationLifecycleService: (1) subconjunto aleatorio de estudiantes (~40%) compra beneficios de su materia si wallet.balance >= cost, generando COMPRA y BenefitPurchase PURCHASED con purchasedAt backdated >= benefit.createdAt; (2) subconjunto de compradores (~65%) solicita uso → USE_REQUESTED; (3) teacher acepta ~85% → USED con usedAt >= purchasedAt. Validar subjectHasStudent, límites de compra, saldo. Saltear estudiantes sin fondos sin abortar.",
       "command": "/generate",
       "params": {
         "target_files": [
-          "src/main/java/trinity/play2learn/backend/configs/seed/controllers/DatabaseSeedController.java"
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationLifecycleService.java"
         ],
-        "security": "ROLE_DEV only, disabled in production profile"
+        "reuse_services": [
+          "IBenefitPurchaseRepository",
+          "IBenefitRepository",
+          "ITransactionGenerateService",
+          "IProfileUpdateLevelService"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "POST /api/dev/seed ejecuta seed completo y retorna SeedResultDto.",
-        "Endpoint rechaza requests sin ROLE_DEV.",
-        "No disponible con profile production.",
-        "README o docs/seed/README.md con instrucciones de uso."
+        "No todos los estudiantes compran ni usan beneficios.",
+        "Fechas purchasedAt/usedAt coherentes con timeline.",
+        "Transacciones COMPRA debitan wallet correctamente.",
+        "Estados BenefitPurchase: PURCHASED → USE_REQUESTED → USED en flujo completo.",
+        "Beneficios expirados al momento simulado no se compran."
       ]
     },
     {
       "id": "T11",
-      "title": "Refinar servicio completo y controller",
-      "description": "Refinamiento final: consolidar fases en execute(), extraer SeedDataCollector para acumular credenciales, mejorar SeedResultDto con resumen (counts by entity), documentación JavaDoc completa.",
+      "title": "Refinar simulación de beneficios",
+      "description": "Refinar servicios de beneficios: manejo de purchaseLimit, logging, skip cuando balance insuficiente, coherencia con reserve/circulation.",
       "command": "/refine",
       "params": {
-        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/"
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationLifecycleService.java"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "execute() orquesta todas las fases en orden documentado.",
-        "SeedResultDto incluye conteos: years, courses, teachers, students, subjects, aspects.",
-        "Código sigue convenciones del proyecto."
+        "Re-ejecución parcial no corrompe purchases existentes (documentar comportamiento).",
+        "Logs resumen: X compras, Y solicitudes, Z aceptadas."
       ]
     },
     {
       "id": "T12",
-      "title": "Escaneo de seguridad del módulo seed",
-      "description": "Verificar que el endpoint de seed no esté expuesto en producción, que credentials.md no se commitee con secretos reales en CI, que passwords de dev sean configurables, y que no haya hardcoded secrets fuera de dev.",
+      "title": "Fase simulación: compra de skins (aspectos de pago)",
+      "description": "Implementar AspectSimulationPurchaseService: subconjunto aleatorio de estudiantes (~25%) compra aspectos REMERA/SOMBRERO que aún no poseen (CUERPO ya en inventario del bootstrap). Verificar balance >= price, generar transacción COMPRA vía ITransactionGenerateService, agregar a profile.ownedAspects. Fecha de compra distribuida en rango. Opcional: equipar aspecto comprado.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/AspectSimulationPurchaseService.java"
+        ],
+        "reuse_services": [
+          "IAspectRepository",
+          "IProfileRepository",
+          "ITransactionGenerateService",
+          "IProfileUpdateLevelService"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Solo compra aspectos con price > 0 no presentes en ownedAspects.",
+        "Estudiantes sin saldo suficiente se omiten.",
+        "Transacciones COMPRA registradas con monto = aspect.price.",
+        "No todos los estudiantes compran skins."
+      ]
+    },
+    {
+      "id": "T13",
+      "title": "Orquestador, DTOs y endpoint POST /api/dev/seed/simulate",
+      "description": "Implementar DatabaseSimulationService.execute(SimulationRequestDto): validar prerequisitos (existen subjects/teachers/students del bootstrap), ejecutar fases en orden (actividades → intentos → beneficios → lifecycle beneficios → skins), retornar SimulationResultDto con conteos y rango aplicado. Agregar SimulationSeedController POST /api/dev/seed/simulate con @RequestBody {fromDate, toDate} y @SessionRequired(ROLE_DEV), @ConditionalOnProperty app.seed.enabled. DTOs: SimulationRequestDto, SimulationResultDto, SimulationCountsDto.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/DatabaseSimulationService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/interfaces/IDatabaseSimulationService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/dtos/SimulationRequestDto.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/dtos/SimulationResultDto.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/controllers/SimulationSeedController.java"
+        ],
+        "endpoint": "POST /api/dev/seed/simulate",
+        "request_body_example": {
+          "fromDate": "2025-01-01T08:00:00",
+          "toDate": "2025-03-31T18:00:00"
+        }
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Endpoint rechaza fromDate > toDate con 400.",
+        "Endpoint rechaza si bootstrap no ejecutado (sin teachers/subjects).",
+        "Respuesta incluye conteos: activities, attempts, approved, benefits, purchases, uses, aspectPurchases.",
+        "Solo disponible con app.seed.enabled=true y ROLE_DEV.",
+        "Ejecución completa en < 120s en local con datos bootstrap default."
+      ]
+    },
+    {
+      "id": "T14",
+      "title": "Refinar orquestador y controller",
+      "description": "Refinar DatabaseSimulationService: logging por fase, manejo de errores parciales (continuar o rollback documentado), JavaDoc, SimulationDataCollector.toCounts(), validación Bean Validation en SimulationRequestDto (@NotNull fechas).",
+      "command": "/refine",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "execute() orquesta fases en orden documentado en simulation-architecture.md.",
+        "Logs INFO al inicio/fin de cada fase con duración.",
+        "SimulationResultDto incluye message y dateRange aplicado."
+      ]
+    },
+    {
+      "id": "T15",
+      "title": "Escaneo de seguridad del módulo simulation",
+      "description": "Verificar que POST /api/dev/seed/simulate no esté expuesto en producción, que no permita inyección de fechas maliciosas fuera de validación, que no bypass auth en prod, y que tasas de participación no agoten reserve de forma inesperada en dev.",
       "command": "/secure",
       "params": {
-        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/",
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/",
         "checks": [
-          "Endpoint protegido por rol",
-          "Profile-guard production",
-          "credentials.md en .gitignore",
-          "No ImgBB API key en código seed"
+          "ConditionalOnProperty app.seed.enabled",
+          "SessionRequired ROLE_DEV",
+          "Validación fromDate/toDate",
+          "No hardcoded credentials",
+          "Límites de volumen en SimulationProperties"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
         "Escaneo sin warnings críticos.",
-        "docs/seed/credentials.md en .gitignore.",
-        "Seed deshabilitado por defecto (opt-in via property)."
+        "Endpoint no registrado con profile production.",
+        "SimulationProperties limita actividades/beneficios por ejecución."
       ]
     },
     {
-      "id": "T13",
-      "title": "Pruebas unitarias del servicio de seed",
-      "description": "Tests para DatabaseSeedService (mock de servicios dependientes): verificar orden de llamadas, límites (6 years, 2 courses, 3 subjects, 30 students/year), generación de credenciales, idempotencia. Test de CredentialsMarkdownWriter. Test de DatabaseSeedController con @WebMvcTest y ROLE_DEV.",
+      "id": "T16",
+      "title": "Pruebas unitarias del simulador",
+      "description": "Tests: SimulationDateValidator, SubjectActivityTemplateFactory, ActivitySimulationAttemptService (distribución intentos con seed fijo), BenefitSimulationLifecycleService (flujo estados), DatabaseSimulationService (orden de fases mockeado), SimulationSeedController (@WebMvcTest 403 sin DEV, 400 fechas inválidas).",
       "command": "/test",
       "params": {
         "target_files": [
-          "src/test/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedServiceTest.java",
-          "src/test/java/trinity/play2learn/backend/configs/seed/services/CredentialsMarkdownWriterTest.java",
-          "src/test/java/trinity/play2learn/backend/configs/seed/controllers/DatabaseSeedControllerTest.java"
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationDateValidatorTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/templates/SubjectActivityTemplateFactoryTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationAttemptServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/DatabaseSimulationServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/controllers/SimulationSeedControllerTest.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Tests verifican límites de volumen configurados.",
-        "Tests verifican que Reserve se crea antes de transacciones.",
+        "Tests verifican coherencia temporal (attempt >= activity.startDate).",
+        "Tests verifican distribución no trivial de intentos.",
         "Controller test valida 403 sin ROLE_DEV.",
         "Todos los tests pasan con mvn test."
       ]
     },
     {
-      "id": "T14",
-      "title": "Refinar pruebas y verificación manual",
-      "description": "Refinar tests, ejecutar seed en BD local con ddl-auto=create, verificar login de dev/admin/teacher/student, wallet con saldo, materias con balance, aspectos en inventario, y que credentials.md sea correcto.",
-      "command": "/refine",
+      "id": "T17",
+      "title": "Documentación y verificación manual",
+      "description": "Actualizar docs/seed/README.md con sección 'Simulación de actividad': prerequisitos, ejemplo curl POST /api/dev/seed/simulate, interpretación de SimulationResultDto, checklist manual (actividades visibles por teacher, intentos en distintos estados, beneficios comprados/usados parcialmente, skins compradas, fechas coherentes en BD).",
+      "command": "/generate",
       "params": {
+        "target_files": [
+          "docs/seed/README.md"
+        ],
         "manual_checklist": [
-          "Login dev@gmail.com",
-          "Login admin@gmail.com",
-          "Login teacher con DNI",
-          "Login student con DNI",
-          "GET /wallet retorna saldo",
-          "Listado aspectos no vacío",
-          "credentials.md generado"
+          "Ejecutar bootstrap seed",
+          "POST simulate con rango 3 meses",
+          "Verificar actividades Matemática con contenido matemático",
+          "Verificar estudiantes con 1er/2do/3er intento aprobado",
+          "Verificar beneficios con compras parciales",
+          "Verificar transacciones COMPRA de skins",
+          "Consultar BD: ninguna completedAt < startedAt"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "Checklist manual completado.",
-        "Seed ejecutable en < 60 segundos en local.",
-        "Documentación actualizada en docs/seed/README.md."
+        "docs/seed/README.md documenta endpoint simulate.",
+        "Checklist manual completado en local.",
+        "docs/active_context.md actualizado."
       ]
     }
   ]
