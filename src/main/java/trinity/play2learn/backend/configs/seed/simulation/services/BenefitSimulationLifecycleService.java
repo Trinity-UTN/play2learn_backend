@@ -49,7 +49,7 @@ public class BenefitSimulationLifecycleService {
         int purchases = 0;
         int requests = 0;
         int accepted = 0;
-
+        
         for (Benefit benefit : collector.getBenefits()) {
             Subject subject = benefit.getSubject();
             List<Student> students = subjectRepository.findStudentsBySubjectId(subject.getId());
@@ -59,12 +59,14 @@ public class BenefitSimulationLifecycleService {
 
             List<Student> buyers = selectSubset(students, properties.getStudentsBuyingBenefitRate(), timeline);
             LocalDateTime benefitCreatedAt = timeline.randomBetween(timeline.getFrom(), benefit.getEndAt().minusDays(1));
+            int purchaseNumberForBenefit = 0;
 
             for (Student student : buyers) {
                 if (benefit.getPurchasesLeft() != null && benefit.getPurchasesLeft() <= 0) {
                     break;
                 }
 
+                purchaseNumberForBenefit++;
                 double cost = benefit.getCost().doubleValue();
                 if (student.getWallet().getBalance() < cost) {
                     continue;
@@ -95,7 +97,7 @@ public class BenefitSimulationLifecycleService {
                 benefitRepository.save(benefit);
 
                 BenefitPurchase purchase = benefitPurchaseRepository.save(
-                    BenefitPurchaseMapper.toModel(benefit, student)
+                    BenefitPurchaseMapper.toModel(benefit, student, purchaseNumberForBenefit)
                 );
                 purchase.setPurchasedAt(purchasedAt);
                 purchase = benefitPurchaseRepository.save(purchase);
