@@ -1,0 +1,474 @@
+{
+  "feature_title": "Simulación del módulo Investment (cajas de ahorro, plazos fijos y stocks)",
+  "description": "Tercera fase del seed de desarrollo: extender POST /api/dev/seed/simulate para poblar inversiones usando estudiantes del bootstrap. Simula cajas de ahorro con tenencia de 7–15 días e interés diario, plazos fijos variados (7/15/30 días) con vencimientos coherentes, catálogo de acciones con precios accesibles según saldo del estudiante, compra/venta de acciones y evolución diaria de precios vía StockCalculateVariationService. Requiere bootstrap + simulación académica previa (fases 1–5) para que los estudiantes tengan saldo y actividad económica realista.",
+  "constraints": {
+    "prerequisite": "POST /api/dev/seed ejecutado + POST /api/dev/seed/simulate (fases académicas) con rango [fromDate, toDate] donde toDate <= hoy para vencimientos de plazos fijos",
+    "date_coherence_rules": [
+      "R0: fromDate <= toDate (existente)",
+      "R9: savingAccount.startDate >= fromDate y lastUpdate >= startDate",
+      "R10: fixedTermDeposit.endDate = startDate + fixedTermDays.valor (exacto)",
+      "R11: fixedTermDeposit con FINISHED solo si endDate <= fecha de cierre simulada (<= hoy)",
+      "R12: order.createdAt >= stock.createdAt y dentro del rango de tenencia del estudiante",
+      "R13: stockHistory.createdAt estrictamente creciente por acción, un registro por día simulado",
+      "R14: transacción PLAZO_FIJO de retorno solo posterior a endDate del plazo",
+      "R15: interés de caja de ahorro: lastUpdate avanza día a día, nunca retrocede"
+    ],
+    "investment_business_rules": {
+      "saving_account_daily_interest": "0.1% sobre currentAmount (SavingAccountUpdateService)",
+      "saving_account_holding_days": [7, 15],
+      "fixed_term_days": ["SEMANAL (7)", "QUINCENAL (15)", "MENSUAL (30)"],
+      "fixed_term_interest": "amountInvested × 1.5 × (días / 365)",
+      "fixed_term_finished_before_today_rate": 0.75,
+      "stock_price_floor": 10.0,
+      "stock_price_ceiling": "initialPrice × 2.5",
+      "stock_risk_levels": ["BAJO", "MEDIO", "ALTO"],
+      "stock_initial_price_strategy": "Precio inicial entre 10 y min(150, wallet.balance × 0.15) para permitir compras de 1–10 acciones"
+    },
+    "participation_rates_default": {
+      "students_using_saving_account": 0.35,
+      "students_using_fixed_term": 0.30,
+      "students_trading_stocks": 0.40,
+      "stock_sell_after_buy_rate": 0.45
+    },
+    "technical_note": "Los servicios oficiales (Register, Buy, Sell, crons) usan LocalDate.now(). La simulación debe persistir vía repositorios + ITransactionGenerateService + segundo save con fechas backdated, replicando lógica de interés/vencimiento/variación sin invocar crons ni notificaciones."
+  },
+  "tasks": [
+    {
+      "id": "T18",
+      "title": "Análisis y diseño de simulación de inversiones",
+      "description": "Documentar extensión del simulador: nuevas fases 6–9, reglas temporales R9–R15, orden cronológico (catálogo stocks → inversiones estudiantes → evolución diaria), estrategia de precios accesibles según wallet.balance post-simulación académica, distribución de plazos fijos terminados vs pendientes, y servicios a reutilizar (ITransactionGenerateService, IWalletUpdateInvestedBalanceService, StockCalculateVariationService) vs lógica dev-only. Actualizar docs/seed/simulation-architecture.md con sección Investment.",
+      "command": "/architect",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/",
+        "design_doc": "docs/seed/simulation-investment-architecture.md",
+        "reference_files": [
+          "docs/seed/simulation-architecture.md",
+          "docs/explicaciones/stock-price-variation.md",
+          "src/main/java/trinity/play2learn/backend/investment/savingAccount/services/SavingAccountUpdateService.java",
+          "src/main/java/trinity/play2learn/backend/investment/fixedTermDeposit/services/FixedTermDepositAutomaticEndsService.java",
+          "src/main/java/trinity/play2learn/backend/investment/stock/services/commons/StockCalculateVariationService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/AspectSimulationPurchaseService.java",
+          "src/test/java/trinity/play2learn/backend/investment/InvestmentTestMother.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Existe docs/seed/simulation-investment-architecture.md.",
+        "Documenta fases 6–9 y reglas R9–R15.",
+        "Define algoritmo de precio inicial de stocks acorde al saldo del estudiante.",
+        "Especifica % de plazos fijos FINISHED (endDate <= hoy) vs IN_PROGRESS.",
+        "Lista entidades a persistir: SavingAccount, FixedTermDeposit, Stock, StockHistory, Order, Transaction."
+      ]
+    },
+    {
+      "id": "T19",
+      "title": "Extender SimulationProperties para inversiones",
+      "description": "Agregar propiedades app.seed.simulation.* para inversiones: tasas de participación (caja, plazo, stocks), cantidad min/max de stocks a crear, rango de precios iniciales (minPrice, maxPriceFactorOfBalance), cantidad min/max de acciones por compra, días de tenencia caja [7,15], distribución de FixedTermDays, ratio plazos terminados antes de hoy, max inversiones por estudiante, nombres de stocks simulados.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/config/SimulationProperties.java",
+          "src/main/resources/application-dev.properties"
+        ],
+        "new_properties_example": {
+          "studentsUsingSavingAccountRate": 0.35,
+          "studentsUsingFixedTermRate": 0.30,
+          "studentsTradingStocksRate": 0.40,
+          "stockSellAfterBuyRate": 0.45,
+          "minStocksToCreate": 5,
+          "maxStocksToCreate": 12,
+          "stockInitialPriceMin": 10.0,
+          "stockInitialPriceMaxBalanceFactor": 0.15,
+          "savingAccountHoldingDaysMin": 7,
+          "savingAccountHoldingDaysMax": 15,
+          "fixedTermFinishedBeforeTodayRate": 0.75,
+          "minInvestmentAmount": 50,
+          "maxInvestmentAmountFactorOfBalance": 0.40
+        }
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "SimulationProperties expone todas las propiedades de inversión con defaults documentados.",
+        "application-dev.properties incluye valores de ejemplo comentados.",
+        "Tasas entre 0 y 1; montos positivos."
+      ]
+    },
+    {
+      "id": "T20",
+      "title": "Validadores temporales para inversiones (R9–R15)",
+      "description": "Extender SimulationDateValidator con métodos: validateSavingAccountDates(startDate, lastUpdate), validateFixedTermDates(startDate, endDate, fixedTermDays, state, referenceDate), validateOrderDate(orderCreatedAt, stockExistsAt), validateStockHistorySequence(previousCreatedAt, currentCreatedAt). Helpers para calcular endDate = startDate.plusDays(fixedTermDays.getValor()).",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationDateValidator.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Rechaza endDate != startDate + días del enum FixedTermDays.",
+        "Rechaza FINISHED si endDate > hoy (cuando referenceDate = LocalDate.now()).",
+        "Rechaza lastUpdate anterior a startDate en caja de ahorro.",
+        "Tests unitarios cubren casos límite."
+      ]
+    },
+    {
+      "id": "T21",
+      "title": "Refinar propiedades y validadores de inversión",
+      "description": "Refinar SimulationProperties y SimulationDateValidator: JavaDoc de reglas R9–R15, mensajes de error descriptivos, extracción de constantes compartidas con servicios de simulación.",
+      "command": "/refine",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/config/SimulationProperties.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationDateValidator.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Código sigue convenciones del módulo configs/seed/simulation.",
+        "Sin warnings de linting.",
+        "JavaDoc referencia docs/seed/simulation-investment-architecture.md."
+      ]
+    },
+    {
+      "id": "T22",
+      "title": "Fase 6: catálogo de stocks simulados",
+      "description": "Implementar StockSimulationCatalogService: crear N acciones (configurable 5–12) con nombres/abreviaturas aleatorias, RiskLevel variado (BAJO/MEDIO/ALTO), initialPrice calculado según percentil de saldos de estudiantes (mediana/P25 de wallet.balance, clamp entre 10 y 150), totalAmount alto (ej. 10000). Persistir Stock + StockHistory inicial (variation=0) replicando lógica de StockRegisterService. Fecha de creación al inicio del rango [fromDate]. Registrar stocks en SimulationDataCollector.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/StockSimulationCatalogService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/StockSimulationTemplateFactory.java"
+        ],
+        "reuse_services": [
+          "IStockRepository",
+          "IStockHistoryRepository",
+          "IStudentRepository"
+        ],
+        "reference_logic": "StockRegisterService"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Se crean entre minStocksToCreate y maxStocksToCreate acciones.",
+        "Cada acción tiene al menos un RiskLevel distinto en el catálogo (mezcla BAJO/MEDIO/ALTO).",
+        "initialPrice >= 10 y permite compra de al menos 1 acción con saldo P25 de estudiantes.",
+        "StockHistory inicial con variation=0 y createdAt coherente.",
+        "availableAmount = totalAmount, soldAmount = 0 al crear."
+      ]
+    },
+    {
+      "id": "T23",
+      "title": "Refinar catálogo de stocks",
+      "description": "Refinar StockSimulationCatalogService: evitar nombres/abreviaturas duplicadas, logging por acción creada, skip si ya existen stocks en BD (documentar idempotencia), validación de techo initialPrice×2.5.",
+      "command": "/refine",
+      "params": {
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/StockSimulationCatalogService.java"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "No hay duplicados de abbreviation en la misma ejecución.",
+        "Log INFO resumen: X stocks creadas por nivel de riesgo.",
+        "Re-ejecución no duplica catálogo si stocks ya existen (warn + skip)."
+      ]
+    },
+    {
+      "id": "T24",
+      "title": "Fase 7a: simulación de cajas de ahorro",
+      "description": "Implementar SavingAccountSimulationService: subconjunto aleatorio de estudiantes (~35%) crea 1 caja de ahorro con depósito inicial (50–40% del balance disponible). Simular tenencia de 7–15 días: avanzar lastUpdate día a día aplicando interés 0.1% (misma fórmula que SavingAccountUpdateService). Opcionalmente retirar total al final del período. Usar ITransactionGenerateService (INGRESO_CAJA_AHORRO/RETIRO_CAJA_AHORRO). Persistir + re-save con startDate/lastUpdate backdated. Validar R9/R15.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/SavingAccountSimulationService.java"
+        ],
+        "reuse_services": [
+          "ISavingAccountRepository",
+          "ITransactionGenerateService",
+          "IWalletUpdateInvestedBalanceService",
+          "IStudentRepository"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Período de tenencia entre 7 y 15 días inclusive.",
+        "accumulatedInterest y currentAmount reflejan interés compuesto diario 0.1%.",
+        "lastUpdate avanza secuencialmente día a día.",
+        "Estudiantes sin saldo suficiente se omiten sin abortar.",
+        "Transacciones INGRESO al depositar; RETIRO si se simula cierre.",
+        "Fechas dentro de [fromDate, toDate]."
+      ]
+    },
+    {
+      "id": "T25",
+      "title": "Refinar simulación de cajas de ahorro",
+      "description": "Refinar SavingAccountSimulationService: nombres únicos por wallet, manejo de soft delete, logging de intereses acumulados, tests de cálculo de interés para 7 y 15 días.",
+      "command": "/refine",
+      "params": {
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/SavingAccountSimulationService.java"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Nombre de caja único por wallet (ej. 'Caja Simulada {n}').",
+        "Tests verifican interés acumulado para 7 y 15 días con seed fijo.",
+        "Log resumen: X cajas, Y días totales de interés simulados."
+      ]
+    },
+    {
+      "id": "T26",
+      "title": "Fase 7b: simulación de plazos fijos",
+      "description": "Implementar FixedTermDepositSimulationService: subconjunto aleatorio (~30%) invierte en plazos fijos con FixedTermDays variado (SEMANAL/QUINCENAL/MENSUAL distribuidos). Calcular amountReward con FixedTermDepositCalculateRewardAmountService. startDate distribuida en [fromDate, toDate - plazo]. endDate = startDate + días. ~75% con endDate <= hoy → FINISHED + transacción PLAZO_FIJO retorno (SISTEMA→ESTUDIANTE). ~25% con endDate > hoy → IN_PROGRESS (pendientes). Transacción inicial PLAZO_FIJO (ESTUDIANTE→SISTEMA) al registrar. Validar R10/R11/R14.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/FixedTermDepositSimulationService.java"
+        ],
+        "reuse_services": [
+          "IFixedTermDepositRepository",
+          "IFixedTermDepositCalculateRewardAmountService",
+          "ITransactionGenerateService",
+          "IWalletUpdateInvestedBalanceService",
+          "IStudentRepository"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Los tres plazos (7/15/30 días) aparecen en la simulación.",
+        "endDate siempre = startDate + fixedTermDays.valor.",
+        "Plazos FINISHED tienen endDate <= hoy y transacción de retorno con amountReward.",
+        "Plazos IN_PROGRESS tienen endDate > hoy sin transacción de retorno.",
+        "Ningún plazo cierra antes de su endDate.",
+        "Montos coherentes con saldo disponible del estudiante."
+      ]
+    },
+    {
+      "id": "T27",
+      "title": "Refinar simulación de plazos fijos",
+      "description": "Refinar FixedTermDepositSimulationService: distribución uniforme de FixedTermDays, skip si startDate + plazo excede toDate sin margen, logging FINISHED vs IN_PROGRESS, recalcular invertedBalance.",
+      "command": "/refine",
+      "params": {
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/FixedTermDepositSimulationService.java"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Log resumen: X plazos creados (7d: a, 15d: b, 30d: c), Y finalizados, Z pendientes.",
+        "Tests verifican endDate y estados según referenceDate=hoy.",
+        "wallet.invertedBalance coherente tras cada plazo."
+      ]
+    },
+    {
+      "id": "T28",
+      "title": "Fase 7c: simulación de compra y venta de acciones",
+      "description": "Implementar StockTradeSimulationService: subconjunto aleatorio (~40%) realiza 1–3 compras de acciones del catálogo. Cantidad y acción aleatorias; validar quantity × currentPrice <= balance y quantity <= availableAmount. Crear Order (COMPRA, EJECUTADA) + transacción STOCK + actualizar soldAmount/availableAmount (StockMoveService logic). ~45% de compradores vende parcial o total días después (Order VENTA, EJECUTADA). NO invocar StockUpdateSpecificService en cada trade (evitar distorsión); el precio se actualizará en fase 8. Backdate order.createdAt. Validar R12.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/StockTradeSimulationService.java"
+        ],
+        "reuse_services": [
+          "IOrderRepository",
+          "IStockRepository",
+          "ITransactionGenerateService",
+          "IWalletUpdateInvestedBalanceService",
+          "StockCalculateByWalletService (validar holdings netos para venta)"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Compras solo si balance >= quantity × price.",
+        "Ventas solo si holdings netos >= quantity vendida.",
+        "Orders con orderState=EJECUTADA y createdAt dentro del rango.",
+        "soldAmount/availableAmount de Stock coherentes tras cada operación.",
+        "Al menos algunos estudiantes tienen compras sin venta (posiciones abiertas).",
+        "Transacciones STOCK con montos = quantity × pricePerUnit."
+      ]
+    },
+    {
+      "id": "T29",
+      "title": "Refinar simulación de compra/venta",
+      "description": "Refinar StockTradeSimulationService: diversificar acciones compradas, evitar quantity=0, manejo de saldo insuficiente, logging por operación, distribución temporal entre compra y venta.",
+      "command": "/refine",
+      "params": {
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/StockTradeSimulationService.java"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Venta.createdAt >= compra.createdAt para la misma posición.",
+        "Log resumen: X compras, Y ventas, Z estudiantes con posición abierta.",
+        "Tests con wallet y stock mockeados verifican validaciones de saldo y holdings."
+      ]
+    },
+    {
+      "id": "T30",
+      "title": "Fase 8: evolución diaria de precios de acciones",
+      "description": "Implementar StockHistorySimulationService: para cada Stock del catálogo, iterar día a día desde fecha de creación hasta min(toDate, hoy). Por cada día invocar StockCalculateVariationService + aplicar clamp(piso=10, techo=initialPrice×2.5) replicando StockUpdateSpecificService. Persistir StockHistory con createdAt backdated y actualizar stock.currentPrice. Respetar sesgo por soldAmount acumulado. Validar R13. Opcional: omitir OrderStopExecute en simulación.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/StockHistorySimulationService.java"
+        ],
+        "reuse_services": [
+          "StockCalculateVariationService",
+          "IStockRepository",
+          "IStockHistoryRepository"
+        ],
+        "reference_doc": "docs/explicaciones/stock-price-variation.md"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Un StockHistory por acción por día simulado.",
+        "Precio nunca < 10 ni > initialPrice × 2.5.",
+        "variation coherente con RiskLevel de la acción.",
+        "createdAt estrictamente creciente por acción.",
+        "currentPrice final del Stock = último historial generado.",
+        "Historial usable por CandleStickGetValuesService (datos no vacíos)."
+      ]
+    },
+    {
+      "id": "T31",
+      "title": "Refinar evolución diaria de stocks",
+      "description": "Refinar StockHistorySimulationService: optimizar batch save, logging por acción, test con seed fijo verificando rango de variación según RiskLevel, documentar interacción con trades (soldAmount afecta sesgo).",
+      "command": "/refine",
+      "params": {
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/StockHistorySimulationService.java"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Performance aceptable para 10 stocks × 90 días.",
+        "Tests con Random seed=42 verifican variación dentro de rango de riesgo ± sesgo.",
+        "Sin duplicados de historial para mismo día y acción."
+      ]
+    },
+    {
+      "id": "T32",
+      "title": "Extender SimulationDataCollector y SimulationCountsDto",
+      "description": "Agregar contadores: stocksCreated, savingAccounts, savingAccountInterestDays, fixedTermDeposits, fixedTermDepositsFinished, fixedTermDepositsPending, stockBuys, stockSells, stockHistoryRecords. Métodos increment en collector y campos en SimulationCountsDto.toCounts().",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/collector/SimulationDataCollector.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/dtos/SimulationCountsDto.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "SimulationCountsDto incluye todos los contadores de inversión.",
+        "toCounts() refleja acumulados de fases 6–8.",
+        "Campos documentados en JavaDoc."
+      ]
+    },
+    {
+      "id": "T33",
+      "title": "Integrar fases de inversión en DatabaseSimulationService",
+      "description": "Extender DatabaseSimulationService: tras fase 5 (aspectos), ejecutar fase 6 StockSimulationCatalogService, fase 7 SavingAccount + FixedTermDeposit + StockTrade (orden: cajas → plazos → trades), fase 8 StockHistorySimulationService. Actualizar logs a 'Fase X/8'. Validar prerequisito: estudiantes con wallets. Retornar conteos ampliados en SimulationResultDto.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/DatabaseSimulationService.java"
+        ],
+        "phase_order": [
+          "6: StockSimulationCatalogService",
+          "7a: SavingAccountSimulationService",
+          "7b: FixedTermDepositSimulationService",
+          "7c: StockTradeSimulationService",
+          "8: StockHistorySimulationService"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "execute() orquesta fases 1–8 en orden documentado.",
+        "Falla con BadRequestException si no hay estudiantes/wallets.",
+        "SimulationResultDto.counts incluye métricas de inversión.",
+        "Logs INFO con duración por fase de inversión.",
+        "Ejecución completa sin agotar reserve en dev default."
+      ]
+    },
+    {
+      "id": "T34",
+      "title": "Refinar orquestador de simulación de inversiones",
+      "description": "Refinar integración: transaccionalidad por fase, manejo de errores parciales (skip estudiante fallido), actualizar docs/seed/simulation-architecture.md, validar que fase 8 corre después de trades para sesgo de mercado.",
+      "command": "/refine",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Orden fase 7c antes de 8 documentado y aplicado.",
+        "Rollback o skip documentado ante fallo parcial.",
+        "simulation-architecture.md actualizado con fases 6–8."
+      ]
+    },
+    {
+      "id": "T35",
+      "title": "Escaneo de seguridad del módulo de simulación de inversiones",
+      "description": "Verificar que las nuevas fases mantienen @ConditionalOnProperty, no bypass de auth en prod, validación de montos (no negativos, no overflow), límites de volumen en SimulationProperties (max stocks, max operaciones por estudiante), y que no se exponen endpoints adicionales sin ROLE_DEV.",
+      "command": "/secure",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/",
+        "checks": [
+          "ConditionalOnProperty app.seed.enabled",
+          "SessionRequired ROLE_DEV en SimulationSeedController",
+          "Montos acotados por balance y properties",
+          "Límites maxStocksToCreate y operaciones por run",
+          "Sin hardcoded credentials"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Escaneo sin warnings críticos.",
+        "SimulationProperties limita volumen de inversiones por ejecución.",
+        "Endpoint simulate sigue protegido en producción."
+      ]
+    },
+    {
+      "id": "T36",
+      "title": "Pruebas unitarias de simulación de inversiones",
+      "description": "Tests: SimulationDateValidator (R9–R15), StockSimulationCatalogService (precios accesibles), SavingAccountSimulationService (interés 7/15 días), FixedTermDepositSimulationService (FINISHED vs IN_PROGRESS), StockTradeSimulationService (compra/venta), StockHistorySimulationService (secuencia diaria), DatabaseSimulationService (orden fases 6–8 mockeado). Reutilizar InvestmentTestMother donde aplique.",
+      "command": "/test",
+      "params": {
+        "target_files": [
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationDateValidatorInvestmentTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/StockSimulationCatalogServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/SavingAccountSimulationServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/FixedTermDepositSimulationServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/StockTradeSimulationServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/StockHistorySimulationServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/DatabaseSimulationServiceInvestmentTest.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Tests verifican endDate = startDate + plazo.",
+        "Tests verifican plazos FINISHED solo con endDate <= hoy.",
+        "Tests verifican interés acumulado caja 7 y 15 días.",
+        "Tests verifican precio stock dentro de [10, initialPrice×2.5].",
+        "Todos los tests pasan con mvn test."
+      ]
+    },
+    {
+      "id": "T37",
+      "title": "Documentación y verificación manual de simulación de inversiones",
+      "description": "Actualizar docs/seed/README.md con sección Investment: prerequisitos, ejemplo curl, interpretación de nuevos contadores, checklist manual (cajas con interés, plazos vencidos/pendientes, compras/ventas, gráfico candlestick, fechas en BD). Actualizar docs/active_context.md.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "docs/seed/README.md",
+          "docs/active_context.md"
+        ],
+        "manual_checklist": [
+          "Ejecutar bootstrap + simulate académico",
+          "Re-ejecutar simulate (o endpoint dedicado) con fases de inversión",
+          "Verificar cajas de ahorro con accumulatedInterest > 0 tras 7+ días",
+          "Verificar plazos FINISHED con transacción de retorno y endDate <= hoy",
+          "Verificar plazos IN_PROGRESS con endDate > hoy",
+          "Verificar orders COMPRA/VENTA y saldos wallet coherentes",
+          "Verificar StockHistory diario y candlestick no vacío",
+          "Consultar BD: ningún endDate != startDate + plazo"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "docs/seed/README.md documenta fases de inversión y contadores.",
+        "Checklist manual completado en local.",
+        "docs/active_context.md actualizado."
+      ]
+    }
+  ]
+}

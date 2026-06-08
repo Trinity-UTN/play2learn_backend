@@ -1,178 +1,423 @@
 {
-  "feature_title": "Diagrama de Clases (Entidades y Enums)",
-  "description": "Generar un diagrama de clases que registre únicamente las clases de entidad (anotadas con JPA) y los enums declarados en el backend, incluyendo sus relaciones basadas en tipos referenciados (sin listar controladores/servicios/repositorios).",
+  "feature_title": "Simulador de actividad académica y economía (Database Simulation Seed)",
+  "description": "Segunda fase del seed de desarrollo: simular en un rango de fechas [from, to] la creación de actividades por docentes (contenido acorde a la materia), realización aleatoria por estudiantes con distribución de intentos, creación y ciclo de vida de beneficios, y compra de skins. Requiere ejecutar previamente POST /api/dev/seed (bootstrap). Endpoint POST /api/dev/seed/simulate con fromDate/toDate, protegido ROLE_DEV, solo app.seed.enabled=true.",
+  "constraints": {
+    "prerequisite": "DatabaseSeedService ejecutado (teachers, students, subjects con saldo, aspects, wallets fondeadas)",
+    "date_coherence_rules": [
+      "fromDate <= toDate",
+      "activity.createdAt >= fromDate",
+      "activity.startDate >= activity.createdAt",
+      "activity.endDate > activity.startDate",
+      "attempt.startedAt >= activity.startDate",
+      "attempt.completedAt >= attempt.startedAt",
+      "benefit.endAt > benefit.createdAt (o fecha de creación simulada)",
+      "benefitPurchase.purchasedAt >= benefit.createdAt",
+      "benefitPurchase.usedAt >= benefitPurchase.purchasedAt (si aplica)",
+      "aspectPurchase.transaction.createdAt coherente con rango"
+    ],
+    "subjects_default": ["Matemática", "Lengua", "Geografía"],
+    "activity_types_by_subject": {
+      "Matemática": ["Preguntados", "Clasificacion", "Ahorcado"],
+      "Lengua": ["CompletarOracion", "Preguntados", "Ahorcado"],
+      "Geografía": ["OrdenarSecuencia", "Clasificacion", "Preguntados"]
+    },
+    "attempt_distribution_default": {
+      "pass_on_attempt_1": 0.35,
+      "pass_on_attempt_2": 0.30,
+      "pass_on_attempt_3": 0.20,
+      "fail_all_attempts": 0.15
+    },
+    "participation_rates_default": {
+      "students_per_activity": 0.70,
+      "students_buying_benefit": 0.40,
+      "purchasers_requesting_use": 0.65,
+      "requests_accepted_by_teacher": 0.85,
+      "students_buying_paid_aspects": 0.25
+    },
+    "price_ranges": {
+      "activity_initial_balance": [80, 200],
+      "benefit_cost": [50, 400],
+      "aspect_already_owned_in_bootstrap": "CUERPO gratis; REMERA/SOMBRERO según catálogo seed"
+    },
+    "technical_note": "Los servicios oficiales usan LocalDateTime.now() (@PrePersist, @Future, validatePublishedStatus, isExpired). La simulación debe usar servicios internos dev-only que acepten timestamps explícitos o persistir + re-save con fechas backdated tras el primer insert."
+  },
   "tasks": [
     {
       "id": "T01",
-      "title": "Definir alcance y criterio de inclusión",
-      "description": "Establecer reglas explícitas para qué se considera 'entidad' y 'enum' para el diagrama: entidades JPA (clases con `@Entity`, y opcionalmente `@Embeddable`/`@MappedSuperclass` si se encuentran en el proyecto) y todos los `enum` de Java dentro del backend. Documentar el alcance en un archivo de trabajo.",
-      "command": "/generate",
+      "title": "Análisis y diseño de arquitectura del simulador",
+      "description": "Documentar dependencias del bootstrap seed, flujos a simular (Activity generate/start/complete, Benefit generate/purchase/request/accept, Aspect purchase), restricciones de fechas, mapeo materia→tipo de actividad→plantillas de contenido, y decisión técnica para timestamps históricos (SimulationContext con referenceDateTime vs. re-save post @PrePersist). Definir paquete configs/seed/simulation/, contrato IDatabaseSimulationService, SimulationRequestDto (fromDate, toDate), SimulationResultDto (conteos por fase), SimulationProperties (tasas, densidad de actividades por materia, seed Random).",
+      "command": "/architect",
       "params": {
-        "target_file": "docs/class-diagram/alcance.md",
-        "content_outline": [
-          "Definición de Entidad (anotaciones a detectar).",
-          "Definición de Enum (declara `enum` en Java).",
-          "Regla para relaciones: solo asociaciones entre tipos entidad/enum.",
-          "Regla de exclusión: no incluir controladores, servicios, repositorios ni DTOs si no son entidades."
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/",
+        "design_doc": "docs/seed/simulation-architecture.md",
+        "reference_files": [
+          "docs/seed/architecture.md",
+          "docs/seed/bootstrap-required-models.md",
+          "src/main/java/trinity/play2learn/backend/configs/seed/services/DatabaseSeedService.java",
+          "src/main/java/trinity/play2learn/backend/activity/activity/services/student/ActivityStartService.java",
+          "src/main/java/trinity/play2learn/backend/activity/activity/services/student/ActivityCompletedService.java",
+          "src/main/java/trinity/play2learn/backend/benefits/services/BenefitGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/benefits/services/BenefitPurchaseService.java",
+          "src/main/java/trinity/play2learn/backend/profile/profile/services/ProfileAddAspectToInventoryService.java"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/alcance.md` existe.",
-        "Incluye criterios de inclusión para entidades y enums.",
-        "Incluye reglas de relaciones y exclusión."
+        "Existe docs/seed/simulation-architecture.md.",
+        "Documenta reglas de coherencia temporal y orden de fases.",
+        "Define mapeo Matemática/Lengua/Geografía → tipos y ejemplos de contenido.",
+        "Especifica estrategia para evitar LocalDateTime.now() en simulación histórica.",
+        "Lista servicios oficiales a reutilizar vs. lógica interna dev-only."
       ]
     },
     {
       "id": "T02",
-      "title": "Indexar entidades y enums del backend",
-      "description": "Analizar `src/main/java` para construir un índice completo de tipos a representar en el diagrama: todas las clases con anotación JPA relevante y todos los enums. El índice debe incluir nombre simple, FQCN, tipo (entity/embeddable/mappedsuperclass/enum) y ubicación de archivo.",
-      "command": "/analyze",
+      "title": "Utilidades de timeline y validación de fechas",
+      "description": "Implementar SimulationTimeline (distribución uniforme/aleatoria de eventos en [from, to]), SimulationDateValidator (validar from<=to, start>=created, attempt>=start), y SimulationRandom (Random con seed configurable para reproducibilidad). Helpers: randomDateBetween(from, to), nextDateAfter(min, max), addMinutes(base, delta).",
+      "command": "/generate",
       "params": {
-        "target_directory": "src/main/java/trinity/play2learn/backend",
-        "output_file": "docs/class-diagram/entity-enum-index.json",
-        "detect": {
-          "entities": {
-            "jpa_annotations": [
-              "@jakarta.persistence.Entity",
-              "@javax.persistence.Entity",
-              "@jakarta.persistence.Embeddable",
-              "@javax.persistence.Embeddable",
-              "@jakarta.persistence.MappedSuperclass",
-              "@javax.persistence.MappedSuperclass"
-            ]
-          },
-          "enums": {
-            "java_construct": "enum"
-          }
-        }
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationTimeline.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationDateValidator.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/config/SimulationProperties.java"
+        ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/entity-enum-index.json` existe.",
-        "El índice contiene al menos 1 entidad y 1 enum.",
-        "Cada entrada del índice incluye `name`, `fqcn`, `kind` y `source_path`."
+        "SimulationDateValidator rechaza rangos inválidos y violaciones de orden temporal.",
+        "SimulationTimeline genera fechas estrictamente crecientes dentro del rango.",
+        "SimulationProperties expone app.seed.simulation.* configurable.",
+        "Tests unitarios cubren casos límite (from=to, intentos consecutivos)."
       ]
     },
     {
       "id": "T03",
-      "title": "Refinar el índice (normalización y consistencia)",
-      "description": "Limpiar y normalizar el índice: asegurar unicidad por FQCN, eliminar duplicados, y verificar que las 'relaciones' potenciales se puedan derivar desde campos tipados hacia otros tipos del índice. Guardar el resultado como índice refinado.",
+      "title": "Refinar utilidades de timeline",
+      "description": "Refinar helpers: JavaDoc, logging DEBUG, extracción de constantes, manejo de zonas horarias consistente (ZoneId.systemDefault()), mensajes de error claros en validación.",
       "command": "/refine",
       "params": {
-        "target_file": "docs/class-diagram/entity-enum-index.json",
-        "output_file": "docs/class-diagram/entity-enum-index.refined.json",
-        "checks": [
-          "Unicidad por FQCN.",
-          "Normalización de nombres (si existen clases internas/estáticas, registrarlas correctamente).",
-          "Agregar/estandarizar metadatos útiles para relaciones (por ejemplo, campos tipados hacia otros FQCN del índice)."
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/utils/"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/entity-enum-index.refined.json` existe.",
-        "No hay FQCN duplicados.",
-        "Las entradas conservan `kind` y `source_path`."
+        "Código sigue convenciones del módulo configs/seed.",
+        "Sin warnings de linting.",
+        "Documentación de reglas de coherencia en JavaDoc de SimulationDateValidator."
       ]
     },
     {
       "id": "T04",
-      "title": "Elegir formato y generar plantilla del diagrama",
-      "description": "Seleccionar un formato de diagrama consistente (por ejemplo PlantUML o Mermaid) y generar una plantilla base que contenga solo nodos de entidad/enum según el índice refinado.",
+      "title": "Plantillas de contenido por materia y tipo de actividad",
+      "description": "Crear SubjectActivityTemplateFactory que, dado Subject.name y tipo de actividad, produzca DTOs válidos listos para persistir: Preguntados (preguntas/opciones temáticas), Ahorcado (palabra acorde), Clasificacion (categorías/conceptos), CompletarOracion (oraciones Lengua), OrdenarSecuencia (eventos Geografía sin imágenes). Incluir banco de contenido estático por materia (ej. Matemática: fracciones, ecuaciones; Lengua: gramática; Geografía: capitales, ríos). Selección aleatoria de tipo compatible por materia.",
       "command": "/generate",
       "params": {
-        "target_file": "docs/class-diagram/class-diagram-template.mmd",
-        "diagram_type": "mermaid",
-        "template_only": true,
-        "source_index": "docs/class-diagram/entity-enum-index.refined.json"
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/SubjectActivityTemplateFactory.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/MatematicaTemplates.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/LenguaTemplates.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/GeografiaTemplates.java"
+        ],
+        "activity_types_supported": [
+          "Preguntados",
+          "Ahorcado",
+          "Clasificacion",
+          "CompletarOracion",
+          "OrdenarSecuencia"
+        ],
+        "exclude": "NoLudica (requiere corrección manual), Memorama/ArbolDecision (opcional fase 2 por complejidad de assets)"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/class-diagram-template.mmd` existe.",
-        "La plantilla contiene referencias a clases y enums basadas en el índice (sin relaciones aún).",
-        "No aparecen tipos fuera de entidades/enums del índice."
+        "Cada materia del seed produce al menos 1 plantilla válida por tipo soportado.",
+        "DTOs generados pasan validaciones de servicios (opción correcta única en Preguntados, etc.).",
+        "Nombres y descripciones de actividades reflejan la materia.",
+        "Tests unitarios verifican mapeo materia→tipo y contenido no vacío."
       ]
     },
     {
       "id": "T05",
-      "title": "Refinar el diagrama (incluir relaciones y estilo)",
-      "description": "Completar el diagrama con relaciones inferidas únicamente entre tipos entidad/enum (p.ej. campos cuyo tipo coincide con otro FQCN del índice). Aplicar una convención visual: agrupar por paquete si aplica, y usar estereotipos (entity/enum) para legibilidad.",
-      "command": "/refine",
+      "title": "Fase simulación: creación de actividades por docentes",
+      "description": "Implementar ActivitySimulationGenerateService: por cada Subject con teacher asignado, crear N actividades (configurable, ej. 2-4 por materia) distribuidas en el rango. Usar teacher.user del subject, initialBalance coherente (80-200), attempts=3, difficulty aleatoria, startDate/endDate dentro de [from,to] con startDate>=createdAt. Persistir vía repositorios + ITransactionGenerateService ACTIVIDAD (como servicios Generate existentes). Ajustar createdAt/startDate/endDate post-save si @PrePersist usa now(). Registrar actividades creadas en SimulationDataCollector.",
+      "command": "/generate",
       "params": {
-        "target_file": "docs/class-diagram/class-diagram.mmd",
-        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
-        "rules": [
-          "Solo relaciones entre miembros del índice (entidad/enum).",
-          "Si hay campos parametrizados (`List<Foo>`), inferir relación hacia `Foo` si `Foo` está en el índice.",
-          "Evitar relaciones hacia tipos no indexados."
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/collector/SimulationDataCollector.java"
+        ],
+        "reuse_services": [
+          "ITransactionGenerateService",
+          "IPreguntadosRepository",
+          "IAhorcadoRepository",
+          "IClasificacionActivityRepository",
+          "ICompletarOracionRepository",
+          "IOrdenarSecuenciaRepository"
         ]
       },
       "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/class-diagram.mmd` contiene relaciones entre nodos que existen en el índice refinado.",
-        "No incluye tipos fuera del conjunto entidad/enum.",
-        "El estilo del diagrama sigue la convención documentada en `docs/class-diagram/alcance.md`."
+        "Solo el teacher asignado a la materia crea actividades de esa materia.",
+        "Contenido temático acorde al nombre de la materia.",
+        "Fechas createdAt/startDate/endDate coherentes y dentro del rango.",
+        "Transacciones ACTIVIDAD generadas con initialBalance de la actividad.",
+        "SimulationDataCollector acumula actividades para fase de intentos."
       ]
     },
     {
       "id": "T06",
-      "title": "Escaneo de seguridad del artefacto generado",
-      "description": "Ejecutar un escaneo sobre los artefactos generados del diagrama para asegurar que no se haya incluido información sensible (por ejemplo, rutas internas inesperadas, secretos, o datos hardcodeados) y que el archivo Mermaid no contenga contenido peligroso.",
-      "command": "/secure",
+      "title": "Refinar generación de actividades",
+      "description": "Refinar ActivitySimulationGenerateService: idempotencia parcial (no duplicar si re-ejecuta mismo rango), logging por materia, manejo de saldo insuficiente en subject, extracción de builders.",
+      "command": "/refine",
       "params": {
-        "target_file": "docs/class-diagram/class-diagram.mmd",
-        "also_scan_files": [
-          "docs/class-diagram/entity-enum-index.refined.json",
-          "docs/class-diagram/alcance.md"
-        ]
+        "target_file": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationGenerateService.java"
       },
       "status": "done",
       "acceptance_criteria": [
-        "El escaneo no reporta hallazgos críticos.",
-        "No se detectan secretos o credenciales.",
-        "No se detecta contenido potencialmente peligroso en el archivo del diagrama."
+        "Logs INFO por batch de materia procesada.",
+        "Fallo por saldo insuficiente no aborta todo el seed (skip + warn).",
+        "Código legible con métodos privados por tipo de actividad."
       ]
     },
     {
       "id": "T07",
-      "title": "Validar cobertura (solo entidades/enums)",
-      "description": "Verificar programáticamente o por comprobación determinista que el diagrama contiene exactamente los tipos del índice refinado (o un subconjunto controlado si hay limitaciones del formato) y que no hay clases externas al índice.",
-      "command": "/test",
+      "title": "Fase simulación: intentos de estudiantes con resultados aleatorios",
+      "description": "Implementar ActivitySimulationAttemptService: por cada actividad creada, seleccionar subconjunto aleatorio de estudiantes de la materia (~70%). Por estudiante, sortear en qué intento aprueba (35% intento 1, 30% intento 2, 20% intento 3, 15% falla todos) o distribución configurable. Simular ciclo start→complete: ActivityCompleted con startedAt/completedAt backdated (>= activity.startDate), score>=60 para APPROVED / <60 para DISAPPROVED, remainingAttempts decrementado en desaprobaciones. Reutilizar lógica de ActivityApprovedStrategyService/DisapprovedStrategyService vía servicio interno que acepte timestamps explícitos, incluyendo RECOMPENSA y XP. Respetar max attempts de la actividad.",
+      "command": "/generate",
       "params": {
-        "source_index": "docs/class-diagram/entity-enum-index.refined.json",
-        "target_diagram": "docs/class-diagram/class-diagram.mmd",
-        "validation_rules": [
-          "Conteo de clases/enums en el diagrama debe ser >= conteo de entries con kind entidad/enum.",
-          "Cada entry del índice debe aparecer al menos una vez en el diagrama (por FQCN o nombre).",
-          "No deben existir líneas `class`/`enum` que no correspondan al índice."
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationAttemptService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/internal/SimulationActivityCompletionService.java"
+        ],
+        "reuse_services": [
+          "IActivityCompletedRepository",
+          "ITransactionGenerateService",
+          "IProfileUpdateLevelService",
+          "Map<String, IActivityCalculateRewardStrategyService>"
         ]
       },
-      "status": "todo",
+      "status": "done",
       "acceptance_criteria": [
-        "La validación completa sin fallos.",
-        "Se reporta el número de entidades/enums detectadas vs. representadas.",
-        "No hay clases externas al índice presentes en el diagrama."
+        "Ningún intento tiene completedAt anterior a startedAt ni startedAt anterior a activity.startDate.",
+        "Distribución de aprobación por intento es configurable y no 100% en primer intento.",
+        "Estudiantes aprobados reciben transacción RECOMPENSA.",
+        "Estudiantes que agotan intentos quedan en estado final coherente (DISAPPROVED, remainingAttempts=0).",
+        "No todos los estudiantes participan en todas las actividades."
       ]
     },
     {
       "id": "T08",
-      "title": "Documentar el uso del diagrama",
-      "description": "Generar una guía breve para renderizar el diagrama localmente (con Mermaid) y explicar cómo actualizarlo cuando cambien las entidades/enums.",
-      "command": "/generate",
+      "title": "Refinar simulación de intentos",
+      "description": "Refinar ActivitySimulationAttemptService: validar score vs state, evitar notificaciones excesivas (opcional batch o skip en dev), tests de distribución estadística con seed fijo.",
+      "command": "/refine",
       "params": {
-        "target_file": "docs/class-diagram/README.md",
-        "template_outline": [
-          "Qué incluye el diagrama (entidades y enums únicamente).",
-          "Cómo renderizar `class-diagram.mmd`.",
-          "Cómo regenerar: pasos recomendados usando los scripts/herramientas del proyecto.",
-          "Limitaciones conocidas (si aplica)."
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationAttemptService.java"
         ]
       },
-      "status": "todo",
+      "status": "done",
       "acceptance_criteria": [
-        "El archivo `docs/class-diagram/README.md` existe.",
-        "Incluye instrucciones para renderizar el diagrama.",
-        "Incluye una sección que explique el criterio de inclusión/exclusión."
+        "Tests con Random seed=42 verifican distribución aproximada de intentos.",
+        "Sin ConflictException por score inconsistente.",
+        "Performance aceptable para ~180 estudiantes × múltiples actividades."
+      ]
+    },
+    {
+      "id": "T09",
+      "title": "Fase simulación: creación de beneficios por docentes",
+      "description": "Implementar BenefitSimulationGenerateService: por cada Subject, crear 1-3 beneficios con nombres/descripciones temáticas (ej. Matemática: 'Puntos extra en parcial', Lengua: 'Eximición de oral', Geografía: 'Consulta material'). cost 50-400 coherente con categoría, purchaseLimit opcional, endAt dentro del rango (posterior a fecha de creación simulada). Icon/category/color aleatorios válidos. Persistir vía IBenefitRepository; timestamps backdated. No requiere @Future porque persistencia directa dev-only.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/templates/BenefitTemplateFactory.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Beneficios creados solo por teacher de la materia.",
+        "Precios en rango configurable y > 0.",
+        "endAt > createdAt simulado y dentro/extiendo rango según diseño.",
+        "Al menos 1 beneficio por materia en simulación default."
+      ]
+    },
+    {
+      "id": "T10",
+      "title": "Fase simulación: compra, solicitud y aceptación de beneficios",
+      "description": "Implementar BenefitSimulationLifecycleService: (1) subconjunto aleatorio de estudiantes (~40%) compra beneficios de su materia si wallet.balance >= cost, generando COMPRA y BenefitPurchase PURCHASED con purchasedAt backdated >= benefit.createdAt; (2) subconjunto de compradores (~65%) solicita uso → USE_REQUESTED; (3) teacher acepta ~85% → USED con usedAt >= purchasedAt. Validar subjectHasStudent, límites de compra, saldo. Saltear estudiantes sin fondos sin abortar.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationLifecycleService.java"
+        ],
+        "reuse_services": [
+          "IBenefitPurchaseRepository",
+          "IBenefitRepository",
+          "ITransactionGenerateService",
+          "IProfileUpdateLevelService"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "No todos los estudiantes compran ni usan beneficios.",
+        "Fechas purchasedAt/usedAt coherentes con timeline.",
+        "Transacciones COMPRA debitan wallet correctamente.",
+        "Estados BenefitPurchase: PURCHASED → USE_REQUESTED → USED en flujo completo.",
+        "Beneficios expirados al momento simulado no se compran."
+      ]
+    },
+    {
+      "id": "T11",
+      "title": "Refinar simulación de beneficios",
+      "description": "Refinar servicios de beneficios: manejo de purchaseLimit, logging, skip cuando balance insuficiente, coherencia con reserve/circulation.",
+      "command": "/refine",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationGenerateService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/BenefitSimulationLifecycleService.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Re-ejecución parcial no corrompe purchases existentes (documentar comportamiento).",
+        "Logs resumen: X compras, Y solicitudes, Z aceptadas."
+      ]
+    },
+    {
+      "id": "T12",
+      "title": "Fase simulación: compra de skins (aspectos de pago)",
+      "description": "Implementar AspectSimulationPurchaseService: subconjunto aleatorio de estudiantes (~25%) compra aspectos REMERA/SOMBRERO que aún no poseen (CUERPO ya en inventario del bootstrap). Verificar balance >= price, generar transacción COMPRA vía ITransactionGenerateService, agregar a profile.ownedAspects. Fecha de compra distribuida en rango. Opcional: equipar aspecto comprado.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/AspectSimulationPurchaseService.java"
+        ],
+        "reuse_services": [
+          "IAspectRepository",
+          "IProfileRepository",
+          "ITransactionGenerateService",
+          "IProfileUpdateLevelService"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Solo compra aspectos con price > 0 no presentes en ownedAspects.",
+        "Estudiantes sin saldo suficiente se omiten.",
+        "Transacciones COMPRA registradas con monto = aspect.price.",
+        "No todos los estudiantes compran skins."
+      ]
+    },
+    {
+      "id": "T13",
+      "title": "Orquestador, DTOs y endpoint POST /api/dev/seed/simulate",
+      "description": "Implementar DatabaseSimulationService.execute(SimulationRequestDto): validar prerequisitos (existen subjects/teachers/students del bootstrap), ejecutar fases en orden (actividades → intentos → beneficios → lifecycle beneficios → skins), retornar SimulationResultDto con conteos y rango aplicado. Agregar SimulationSeedController POST /api/dev/seed/simulate con @RequestBody {fromDate, toDate} y @SessionRequired(ROLE_DEV), @ConditionalOnProperty app.seed.enabled. DTOs: SimulationRequestDto, SimulationResultDto, SimulationCountsDto.",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/DatabaseSimulationService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/services/interfaces/IDatabaseSimulationService.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/dtos/SimulationRequestDto.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/dtos/SimulationResultDto.java",
+          "src/main/java/trinity/play2learn/backend/configs/seed/simulation/controllers/SimulationSeedController.java"
+        ],
+        "endpoint": "POST /api/dev/seed/simulate",
+        "request_body_example": {
+          "fromDate": "2025-01-01T08:00:00",
+          "toDate": "2025-03-31T18:00:00"
+        }
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Endpoint rechaza fromDate > toDate con 400.",
+        "Endpoint rechaza si bootstrap no ejecutado (sin teachers/subjects).",
+        "Respuesta incluye conteos: activities, attempts, approved, benefits, purchases, uses, aspectPurchases.",
+        "Solo disponible con app.seed.enabled=true y ROLE_DEV.",
+        "Ejecución completa en < 120s en local con datos bootstrap default."
+      ]
+    },
+    {
+      "id": "T14",
+      "title": "Refinar orquestador y controller",
+      "description": "Refinar DatabaseSimulationService: logging por fase, manejo de errores parciales (continuar o rollback documentado), JavaDoc, SimulationDataCollector.toCounts(), validación Bean Validation en SimulationRequestDto (@NotNull fechas).",
+      "command": "/refine",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/"
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "execute() orquesta fases en orden documentado en simulation-architecture.md.",
+        "Logs INFO al inicio/fin de cada fase con duración.",
+        "SimulationResultDto incluye message y dateRange aplicado."
+      ]
+    },
+    {
+      "id": "T15",
+      "title": "Escaneo de seguridad del módulo simulation",
+      "description": "Verificar que POST /api/dev/seed/simulate no esté expuesto en producción, que no permita inyección de fechas maliciosas fuera de validación, que no bypass auth en prod, y que tasas de participación no agoten reserve de forma inesperada en dev.",
+      "command": "/secure",
+      "params": {
+        "target_package": "src/main/java/trinity/play2learn/backend/configs/seed/simulation/",
+        "checks": [
+          "ConditionalOnProperty app.seed.enabled",
+          "SessionRequired ROLE_DEV",
+          "Validación fromDate/toDate",
+          "No hardcoded credentials",
+          "Límites de volumen en SimulationProperties"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Escaneo sin warnings críticos.",
+        "Endpoint no registrado con profile production.",
+        "SimulationProperties limita actividades/beneficios por ejecución."
+      ]
+    },
+    {
+      "id": "T16",
+      "title": "Pruebas unitarias del simulador",
+      "description": "Tests: SimulationDateValidator, SubjectActivityTemplateFactory, ActivitySimulationAttemptService (distribución intentos con seed fijo), BenefitSimulationLifecycleService (flujo estados), DatabaseSimulationService (orden de fases mockeado), SimulationSeedController (@WebMvcTest 403 sin DEV, 400 fechas inválidas).",
+      "command": "/test",
+      "params": {
+        "target_files": [
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/utils/SimulationDateValidatorTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/templates/SubjectActivityTemplateFactoryTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/ActivitySimulationAttemptServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/services/DatabaseSimulationServiceTest.java",
+          "src/test/java/trinity/play2learn/backend/configs/seed/simulation/controllers/SimulationSeedControllerTest.java"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "Tests verifican coherencia temporal (attempt >= activity.startDate).",
+        "Tests verifican distribución no trivial de intentos.",
+        "Controller test valida 403 sin ROLE_DEV.",
+        "Todos los tests pasan con mvn test."
+      ]
+    },
+    {
+      "id": "T17",
+      "title": "Documentación y verificación manual",
+      "description": "Actualizar docs/seed/README.md con sección 'Simulación de actividad': prerequisitos, ejemplo curl POST /api/dev/seed/simulate, interpretación de SimulationResultDto, checklist manual (actividades visibles por teacher, intentos en distintos estados, beneficios comprados/usados parcialmente, skins compradas, fechas coherentes en BD).",
+      "command": "/generate",
+      "params": {
+        "target_files": [
+          "docs/seed/README.md"
+        ],
+        "manual_checklist": [
+          "Ejecutar bootstrap seed",
+          "POST simulate con rango 3 meses",
+          "Verificar actividades Matemática con contenido matemático",
+          "Verificar estudiantes con 1er/2do/3er intento aprobado",
+          "Verificar beneficios con compras parciales",
+          "Verificar transacciones COMPRA de skins",
+          "Consultar BD: ninguna completedAt < startedAt"
+        ]
+      },
+      "status": "done",
+      "acceptance_criteria": [
+        "docs/seed/README.md documenta endpoint simulate.",
+        "Checklist manual completado en local.",
+        "docs/active_context.md actualizado."
       ]
     }
   ]

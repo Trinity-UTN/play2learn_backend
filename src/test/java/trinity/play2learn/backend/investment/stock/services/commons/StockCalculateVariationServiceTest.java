@@ -62,8 +62,7 @@ class StockCalculateVariationServiceTest {
             // Then - Debe retornar valor dentro del rango esperado
             verify(stockHistoryFindLastService).execute(stock);
             verify(stockHistoryCalculateTrendService).execute(stock);
-            // El rango mínimo debería estar ajustado por la tendencia alcista (min/2)
-            // El rango máximo debería estar ajustado por la tendencia alcista (max/2)
+            // Tendencia alcista: se limita el alza (max/2) para evitar momentum sostenido
             assertThat(result).isNotNull();
             // Verificamos que está dentro de un rango razonable basado en el nivel de riesgo
             assertThat(Math.abs(result)).isLessThanOrEqualTo(stock.getRiskLevel().getValor() * 2.0);
@@ -87,8 +86,7 @@ class StockCalculateVariationServiceTest {
             // Then - Debe retornar valor dentro del rango esperado
             verify(stockHistoryFindLastService).execute(stock);
             verify(stockHistoryCalculateTrendService).execute(stock);
-            // El rango mínimo debería estar ajustado por la tendencia bajista (min)
-            // El rango máximo debería estar ajustado por la tendencia bajista (max/2)
+            // Tendencia bajista: se limita la caida (min/2) para evitar momentum sostenido
             assertThat(result).isNotNull();
             assertThat(Math.abs(result)).isLessThanOrEqualTo(stock.getRiskLevel().getValor() * 2.0);
         }
@@ -122,6 +120,50 @@ class StockCalculateVariationServiceTest {
             assertThat(highRiskResult).isNotNull();
             // El rango de variación debería ser proporcional al nivel de riesgo
             assertThat(Math.abs(highRiskResult)).isGreaterThanOrEqualTo(Math.abs(lowRiskResult) - 5.0);
+        }
+
+        @Test
+        @DisplayName("Given stock near price floor When calculating variation Then average tends positive")
+        void whenNearPriceFloor_averageVariationIsPositive() {
+            Stock stock = InvestmentTestMother.stock(1003L, "Acción Piso", "AP",
+                    1000.0, 10.0,
+                    InvestmentTestMother.DEFAULT_TOTAL_AMOUNT, InvestmentTestMother.DEFAULT_AVAILABLE_AMOUNT,
+                    InvestmentTestMother.DEFAULT_SOLD_AMOUNT, RiskLevel.MEDIO);
+            StockHistory lastHistory = InvestmentTestMother.defaultStockHistory();
+            lastHistory.setSoldAmount(stock.getSoldAmount());
+
+            when(stockHistoryFindLastService.execute(stock)).thenReturn(lastHistory);
+            when(stockHistoryCalculateTrendService.execute(stock)).thenReturn(false);
+
+            double sum = 0;
+            int iterations = 500;
+            for (int i = 0; i < iterations; i++) {
+                sum += stockCalculateVariationService.execute(stock);
+            }
+
+            assertThat(sum / iterations).isGreaterThan(0.0);
+        }
+
+        @Test
+        @DisplayName("Given stock near price ceiling When calculating variation Then average tends negative")
+        void whenNearPriceCeiling_averageVariationIsNegative() {
+            Stock stock = InvestmentTestMother.stock(1004L, "Acción Techo", "AT",
+                    1000.0, 2500.0,
+                    InvestmentTestMother.DEFAULT_TOTAL_AMOUNT, InvestmentTestMother.DEFAULT_AVAILABLE_AMOUNT,
+                    InvestmentTestMother.DEFAULT_SOLD_AMOUNT, RiskLevel.MEDIO);
+            StockHistory lastHistory = InvestmentTestMother.defaultStockHistory();
+            lastHistory.setSoldAmount(stock.getSoldAmount());
+
+            when(stockHistoryFindLastService.execute(stock)).thenReturn(lastHistory);
+            when(stockHistoryCalculateTrendService.execute(stock)).thenReturn(true);
+
+            double sum = 0;
+            int iterations = 500;
+            for (int i = 0; i < iterations; i++) {
+                sum += stockCalculateVariationService.execute(stock);
+            }
+
+            assertThat(sum / iterations).isLessThan(0.0);
         }
     }
 }
