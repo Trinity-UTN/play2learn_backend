@@ -146,4 +146,22 @@ public interface IActivityCompletedRepository
                         @Param("subject") Subject subject,
                         @Param("state") ActivityCompletedState state,
                         @Param("student") Student student);
+
+        @Query("SELECT ac FROM ActivityCompleted ac " +
+                        "WHERE ac.student = :student AND ac.activity.id IN :activityIds " +
+                        "AND ac.completedAt = (" +
+                        "  SELECT MAX(ac2.completedAt) FROM ActivityCompleted ac2 " +
+                        "  WHERE ac2.student = :student AND ac2.activity = ac.activity" +
+                        ")")
+        List<ActivityCompleted> findLatestByStudentAndActivityIds(
+                        @Param("student") Student student,
+                        @Param("activityIds") List<Long> activityIds);
+
+        @Query("SELECT DISTINCT ac.activity.id FROM ActivityCompleted ac " +
+                        "WHERE ac.student = :student AND ac.activity.id IN :activityIds " +
+                        "AND ac.state = :state")
+        List<Long> findActivityIdsByStudentAndActivityIdsAndState(
+                        @Param("student") Student student,
+                        @Param("activityIds") List<Long> activityIds,
+                        @Param("state") ActivityCompletedState state);
 }
