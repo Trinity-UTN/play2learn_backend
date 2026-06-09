@@ -62,9 +62,17 @@ public class ActivityCompletedSpecs {
                     cb.equal(subRoot.get("activity"), root.get("activity")),
                     cb.equal(subRoot.get("student"), student));
 
+            Subquery<Long> latestCompletionId = query.subquery(Long.class);
+            Root<ActivityCompleted> acAtMax = latestCompletionId.from(ActivityCompleted.class);
+            latestCompletionId.select(cb.max(acAtMax.get("id")));
+            latestCompletionId.where(
+                    cb.equal(acAtMax.get("activity"), root.get("activity")),
+                    cb.equal(acAtMax.get("student"), student),
+                    cb.equal(acAtMax.get("completedAt"), maxCompleted));
+
             return cb.and(
                     cb.equal(root.get("student"), student),
-                    cb.equal(root.get("completedAt"), maxCompleted));
+                    cb.equal(root.get("id"), latestCompletionId));
         };
     }
 

@@ -4,11 +4,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +19,11 @@ import trinity.play2learn.backend.activity.activity.dtos.activityStudent.Activit
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
 import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
+import trinity.play2learn.backend.activity.activity.repositories.ActivityNotApprovedNativeRepository;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateNotApprovedDtosService;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNotApprovedListPaginatedService;
-import trinity.play2learn.backend.activity.activity.specs.ActivitySpecs;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;
@@ -34,6 +36,7 @@ import trinity.play2learn.backend.utils.PaginatorUtils;
 public class ActivityNotApprovedListPaginatedService implements IActivityNotApprovedListPaginatedService {
 
     private final IActivityPaginatedRepository activityRepository;
+    private final ActivityNotApprovedNativeRepository activityNotApprovedNativeRepository;
     private final IActivityCompletedRepository activityCompletedRepository;
     private final IActivityCreateNotApprovedDtosService activityCreateNotApprovedDtosService;
     private final IStudentGetByEmailService studentGetByEmailService;
@@ -54,29 +57,16 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
 
         Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
 
-        Specification<Activity> spec = Specification.where(ActivitySpecs.belongsToStudent(student));
-        spec = spec.and(ActivitySpecs.notApprovedNorPendingForStudent(student));
+        Page<Long> idPage = activityNotApprovedNativeRepository.findNotApprovedActivityIds(
+                student, pageable, search, filters, filterValues);
 
-        if (search != null && !search.isBlank()) {
-            spec = spec.and(ActivitySpecs.nameContains(search));
+        if (idPage.isEmpty()) {
+            return PaginationHelper.fromPage(Page.empty(pageable), List.of());
         }
 
-        if (filters != null && filterValues != null && filters.size() == filterValues.size()) {
-            for (int i = 0; i < filters.size(); i++) {
-                String field = filters.get(i);
-                String value = filterValues.get(i);
+        List<Activity> activities = loadActivitiesPreservingOrder(idPage.getContent());
+        Page<Activity> pageResult = new PageImpl<>(activities, pageable, idPage.getTotalElements());
 
-                if (field.equals("disapproved")) {
-                    spec = spec.and(ActivitySpecs.filterByDisapprovedForStudent(student, Boolean.parseBoolean(value)));
-                } else {
-                    spec = spec.and(ActivitySpecs.genericFilter(field, value));
-                }
-            }
-        }
-
-        Page<Activity> pageResult = activityRepository.findAll(spec, pageable);
-
-        List<Activity> activities = pageResult.getContent();
         List<Long> activityIds = activities.stream().map(Activity::getId).toList();
 
         Map<Long, ActivityCompleted> latestCompletionByActivityId = loadLatestCompletions(student, activityIds);
@@ -86,6 +76,17 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
                 .createNotApprovedDtos(activities, student, latestCompletionByActivityId, activityIdsInProgress);
 
         return PaginationHelper.fromPage(pageResult, dtos);
+    }
+
+    private List<Activity> loadActivitiesPreservingOrder(List<Long> orderedIds) {
+        Map<Long, Activity> activitiesById = StreamSupport
+                .stream(activityRepository.findAllById(orderedIds).spliterator(), false)
+                .collect(Collectors.toMap(Activity::getId, Function.identity()));
+
+        return orderedIds.stream()
+                .map(activitiesById::get)
+                .filter(activity -> activity != null)
+                .toList();
     }
 
     private Map<Long, ActivityCompleted> loadLatestCompletions(Student student, List<Long> activityIds) {
