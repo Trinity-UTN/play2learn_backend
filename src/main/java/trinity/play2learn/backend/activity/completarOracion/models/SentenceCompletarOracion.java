@@ -15,10 +15,14 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = {"words", "activity"})
+@ToString(exclude = {"words", "activity"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

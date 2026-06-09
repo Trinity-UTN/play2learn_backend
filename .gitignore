@@ -36,3 +36,6 @@ build/
 ### Envoirment ###
 .env
 
+### Seed credentials (generado localmente) ###
+docs/seed/credentials.md
+

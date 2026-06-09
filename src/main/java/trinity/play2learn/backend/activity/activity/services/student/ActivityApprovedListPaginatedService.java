@@ -1,20 +1,22 @@
 package trinity.play2learn.backend.activity.activity.services.student;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
-import trinity.play2learn.backend.activity.activity.models.activity.Activity;
-import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
+import trinity.play2learn.backend.activity.activity.mappers.ActivityMapper;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
+import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityApprovedListPaginatedService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateApprovedDtosService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterApprovedService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
-import trinity.play2learn.backend.activity.activity.specs.ActivitySpecs;
+import trinity.play2learn.backend.activity.activity.specs.ActivityCompletedSpecs;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.response.PaginatedData;
@@ -27,10 +29,7 @@ import trinity.play2learn.backend.utils.PaginatorUtils;
 public class ActivityApprovedListPaginatedService implements IActivityApprovedListPaginatedService {
 
     private final IStudentGetByEmailService studentGetByEmailService;
-    private final IActivityGetByStudentService activityGetByStudentService;
-    private final IActivityFilterApprovedService activityFilterApprovedService;
-    private final IActivityPaginatedRepository activityPaginatedRepository;
-    private final IActivityCreateApprovedDtosService activityCreateApprovedDtosService;
+    private final IActivityCompletedRepository activityCompletedRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -40,45 +39,36 @@ public class ActivityApprovedListPaginatedService implements IActivityApprovedLi
 
         Student student = studentGetByEmailService.getByEmail(user.getEmail());
 
-        List<Activity> activities = activityGetByStudentService.getByStudent(student);
+        Pageable pageable = PaginatorUtils.buildPageableWithSortPrefix(page, size, orderBy, orderType, "activity");
 
-        List<Activity> approvedActivities = activityFilterApprovedService.filterByApproved(activities, student);
-
-        // Creo una lista con los ids de las actividades no aprobadas del estudiante
-        List<Long> activityIds = approvedActivities.stream()
-                .map(Activity::getId)
-                .toList();
-
-        Pageable pageable = PaginatorUtils.buildPageable(page, size, orderBy, orderType);
-        Specification<Activity> spec = Specification.where(ActivitySpecs.notDeleted());
+        Specification<ActivityCompleted> spec = Specification.where(ActivityCompletedSpecs.filterByStudent(student));
+        spec = spec.and(ActivityCompletedSpecs.filterByState(ActivityCompletedState.APPROVED));
+        spec = spec.and(ActivityCompletedSpecs.isLatestCompletionForStudent(student));
+        spec = spec.and(ActivityCompletedSpecs.activityNotDeleted());
+        spec = spec.and(ActivityCompletedSpecs.activityBelongsToStudent(student));
 
         if (search != null && !search.isBlank()) {
-            spec = spec.and(ActivitySpecs.nameContains(search));
+            spec = spec.and(ActivityCompletedSpecs.activityNameContains(search));
         }
 
         if (filters != null && filterValues != null && filters.size() == filterValues.size()) {
             for (int i = 0; i < filters.size(); i++) {
-                String field = filters.get(i);
-                String value = filterValues.get(i);
-                spec = spec.and(ActivitySpecs.genericFilter(field, value));
+                spec = spec.and(ActivityCompletedSpecs.activityGenericFilter(filters.get(i), filterValues.get(i)));
             }
         }
 
-        // Restricción por estudiante: solo actividades dentro de la lista obtenida
-        if (!activityIds.isEmpty()) {
-            spec = spec.and((root, query, cb) -> root.get("id").in(activityIds));
-        } else {
-            // Si el estudiante no tiene actividades, devolvemos un Page vacío
-            return PaginationHelper.fromPage(Page.empty(pageable), List.of());
-        }
+        Page<ActivityCompleted> pageResult = activityCompletedRepository.findAll(spec, pageable);
 
-        Page<Activity> pageResult = activityPaginatedRepository.findAll(spec, pageable);
-
-        List<ActivityStudentStateResponseDto> dtos = activityCreateApprovedDtosService
-                .createApprovedDtos(pageResult.getContent(), student);
+        List<ActivityStudentStateResponseDto> dtos = pageResult.getContent().stream()
+                .map(activityCompleted -> ActivityMapper.toStudentStateDto(
+                        activityCompleted.getActivity(),
+                        activityCompleted.getRemainingAttempts(),
+                        activityCompleted.getReward(),
+                        activityCompleted.getCompletedAt(),
+                        activityCompleted.getState()))
+                .collect(Collectors.toList());
 
         return PaginationHelper.fromPage(pageResult, dtos);
-
     }
 
 }

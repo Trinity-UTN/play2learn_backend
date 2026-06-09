@@ -6,8 +6,10 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,11 +29,10 @@ import org.springframework.data.jpa.domain.Specification;
 import trinity.play2learn.backend.activity.activity.ActivityTestMother;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentNotApprovedResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
+import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateNotApprovedDtosService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterByDisapprovedService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterNotApprovedService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
 import trinity.play2learn.backend.activity.activity.services.student.ActivityNotApprovedListPaginatedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
@@ -51,28 +52,21 @@ class ActivityNotApprovedListPaginatedServiceTest {
     @Mock
     private IActivityPaginatedRepository activityRepository;
     @Mock
+    private IActivityCompletedRepository activityCompletedRepository;
+    @Mock
     private IActivityCreateNotApprovedDtosService activityCreateNotApprovedDtosService;
     @Mock
     private IStudentGetByEmailService studentGetByEmailService;
-    @Mock
-    private IActivityGetByStudentService activityGetByStudentService;
-    @Mock
-    private IActivityFilterNotApprovedService activityFilterNotApprovedService;
-    @Mock
-    private IActivityFilterByDisapprovedService activityFilterByDisapprovedService;
 
     private ActivityNotApprovedListPaginatedService activityNotApprovedListPaginatedService;
 
     @BeforeEach
     void setUp() {
         activityNotApprovedListPaginatedService = new ActivityNotApprovedListPaginatedService(
-            activityRepository,
-            activityCreateNotApprovedDtosService,
-            studentGetByEmailService,
-            activityGetByStudentService,
-            activityFilterNotApprovedService,
-            activityFilterByDisapprovedService
-        );
+                activityRepository,
+                activityCompletedRepository,
+                activityCreateNotApprovedDtosService,
+                studentGetByEmailService);
     }
 
     @Nested
@@ -84,68 +78,64 @@ class ActivityNotApprovedListPaginatedServiceTest {
         @DisplayName("Given student with not approved activities When listing paginated Then returns paginated data with not approved activities")
         void whenNotApprovedActivitiesExist_returnsPaginatedData() {
             User user = ActivityTestMother.studentUser(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            
-            List<Activity> allActivities = List.of(
-                ActivityTestMother.ahorcadoActivity(1L),
-                ActivityTestMother.ahorcadoActivity(2L),
-                ActivityTestMother.ahorcadoActivity(3L)
-            );
-            
+            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID,
+                    ActivityTestMother.STUDENT_EMAIL);
+
             List<Activity> notApprovedActivities = List.of(
-                ActivityTestMother.ahorcadoActivity(2L),
-                ActivityTestMother.ahorcadoActivity(3L)
-            );
-            
+                    ActivityTestMother.ahorcadoActivity(2L),
+                    ActivityTestMother.ahorcadoActivity(3L));
+
             Page<Activity> pageResult = buildPage(notApprovedActivities, 0, SIZE, 2);
             Pageable pageable = pageResult.getPageable();
-            
+
             List<ActivityStudentNotApprovedResponseDto> dtos = List.of(
-                ActivityStudentNotApprovedResponseDto.builder()
-                    .id(2L)
-                    .name("Ahorcado")
-                    .build(),
-                ActivityStudentNotApprovedResponseDto.builder()
-                    .id(3L)
-                    .name("Ahorcado")
-                    .build()
-            );
+                    ActivityStudentNotApprovedResponseDto.builder()
+                            .id(2L)
+                            .name("Ahorcado")
+                            .build(),
+                    ActivityStudentNotApprovedResponseDto.builder()
+                            .id(3L)
+                            .name("Ahorcado")
+                            .build());
             PaginatedData<ActivityStudentNotApprovedResponseDto> expected = buildPaginated(dtos, 2, 1, 1, SIZE);
 
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
-            when(activityGetByStudentService.getByStudent(student)).thenReturn(allActivities);
-            when(activityFilterNotApprovedService.filterByNotApproved(allActivities, student))
-                .thenReturn(notApprovedActivities);
-            
+            when(activityCompletedRepository.findLatestByStudentAndActivityIds(eq(student), eq(List.of(2L, 3L))))
+                    .thenReturn(Collections.emptyList());
+            when(activityCompletedRepository.findActivityIdsByStudentAndActivityIdsAndState(
+                    eq(student), eq(List.of(2L, 3L)), eq(ActivityCompletedState.IN_PROGRESS)))
+                    .thenReturn(Collections.emptyList());
+
             try (MockedStatic<PaginatorUtils> paginatorMock = org.mockito.Mockito.mockStatic(PaginatorUtils.class);
-                 MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito.mockStatic(PaginationHelper.class)) {
+                    MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito
+                            .mockStatic(PaginationHelper.class)) {
 
                 paginatorMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
-                    .thenReturn(pageable);
+                        .thenReturn(pageable);
                 when(activityRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(pageResult);
-                when(activityCreateNotApprovedDtosService.createNotApprovedDtos(pageResult.getContent(), student))
-                    .thenReturn(dtos);
+                when(activityCreateNotApprovedDtosService.createNotApprovedDtos(
+                        eq(notApprovedActivities), eq(student), any(Map.class), any(Set.class)))
+                        .thenReturn(dtos);
                 paginationMock.when(() -> PaginationHelper.fromPage(pageResult, dtos)).thenReturn(expected);
 
                 PaginatedData<ActivityStudentNotApprovedResponseDto> result = activityNotApprovedListPaginatedService
-                    .cu66listNotApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null, null, null, user);
+                        .cu66listNotApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null, null, null,
+                                user);
 
                 verify(studentGetByEmailService).getByEmail(ActivityTestMother.STUDENT_EMAIL);
-                verify(activityGetByStudentService).getByStudent(student);
-                verify(activityFilterNotApprovedService).filterByNotApproved(allActivities, student);
-                
+
                 ArgumentCaptor<Specification<Activity>> specCaptor = createSpecificationCaptor();
                 verify(activityRepository).findAll(specCaptor.capture(), eq(pageable));
 
                 assertThat(result)
-                    .isNotNull()
-                    .extracting(PaginatedData::getCount, PaginatedData::getTotalPages)
-                    .containsExactly(2, 1);
-                
+                        .isNotNull()
+                        .extracting(PaginatedData::getCount, PaginatedData::getTotalPages)
+                        .containsExactly(2, 1);
+
                 assertThat(result.getResults())
-                    .hasSize(2)
-                    .extracting(ActivityStudentNotApprovedResponseDto::getId)
-                    .containsExactly(2L, 3L);
+                        .hasSize(2)
+                        .extracting(ActivityStudentNotApprovedResponseDto::getId)
+                        .containsExactly(2L, 3L);
             }
         }
 
@@ -154,90 +144,87 @@ class ActivityNotApprovedListPaginatedServiceTest {
         @DisplayName("Given student with no not approved activities When listing paginated Then returns empty page")
         void whenNoNotApprovedActivities_returnsEmptyPage() {
             User user = ActivityTestMother.studentUser(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            List<Activity> allActivities = List.of(ActivityTestMother.ahorcadoActivity(1L));
-            List<Activity> emptyNotApproved = new ArrayList<>();
+            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID,
+                    ActivityTestMother.STUDENT_EMAIL);
             Pageable pageable = PageRequest.of(0, SIZE);
+            Page<Activity> emptyPage = new PageImpl<>(List.of(), pageable, 0);
             PaginatedData<ActivityStudentNotApprovedResponseDto> expected = buildPaginated(List.of(), 0, 0, 1, SIZE);
 
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
-            when(activityGetByStudentService.getByStudent(student)).thenReturn(allActivities);
-            when(activityFilterNotApprovedService.filterByNotApproved(allActivities, student))
-                .thenReturn(emptyNotApproved);
-            
+
             try (MockedStatic<PaginatorUtils> paginatorMock = org.mockito.Mockito.mockStatic(PaginatorUtils.class);
-                 MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito.mockStatic(PaginationHelper.class)) {
+                    MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito
+                            .mockStatic(PaginationHelper.class)) {
 
                 paginatorMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
-                    .thenReturn(pageable);
-                paginationMock.when(() -> PaginationHelper.fromPage(Page.empty(pageable), List.of()))
-                    .thenReturn(expected);
+                        .thenReturn(pageable);
+                when(activityRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(emptyPage);
+                when(activityCreateNotApprovedDtosService.createNotApprovedDtos(
+                        eq(List.of()), eq(student), any(Map.class), any(Set.class)))
+                        .thenReturn(List.of());
+                paginationMock.when(() -> PaginationHelper.fromPage(emptyPage, List.of())).thenReturn(expected);
 
                 PaginatedData<ActivityStudentNotApprovedResponseDto> result = activityNotApprovedListPaginatedService
-                    .cu66listNotApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null, null, null, user);
+                        .cu66listNotApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null, null, null,
+                                user);
 
-                verify(activityRepository, org.mockito.Mockito.never()).findAll(any(org.springframework.data.jpa.domain.Specification.class), any(org.springframework.data.domain.Pageable.class));
                 assertThat(result)
-                    .isNotNull()
-                    .extracting(PaginatedData::getCount, PaginatedData::getTotalPages)
-                    .containsExactly(0, 0);
-                
+                        .isNotNull()
+                        .extracting(PaginatedData::getCount, PaginatedData::getTotalPages)
+                        .containsExactly(0, 0);
+
                 assertThat(result.getResults()).isEmpty();
             }
         }
 
         @SuppressWarnings("unchecked")
         @Test
-        @DisplayName("Given filter disapproved When listing paginated Then applies disapproved filter")
+        @DisplayName("Given filter disapproved When listing paginated Then applies disapproved filter via specification")
         void whenDisapprovedFilter_appliesFilter() {
             User user = ActivityTestMother.studentUser(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
-            
-            List<Activity> allActivities = List.of(
-                ActivityTestMother.ahorcadoActivity(1L),
-                ActivityTestMother.ahorcadoActivity(2L)
-            );
-            
-            List<Activity> notApprovedActivities = new ArrayList<>(allActivities);
+            Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID,
+                    ActivityTestMother.STUDENT_EMAIL);
+
             List<Activity> filteredDisapproved = List.of(ActivityTestMother.ahorcadoActivity(2L));
-            
+
             Page<Activity> pageResult = buildPage(filteredDisapproved, 0, SIZE, 1);
             Pageable pageable = pageResult.getPageable();
-            
+
             List<ActivityStudentNotApprovedResponseDto> dtos = List.of(
-                ActivityStudentNotApprovedResponseDto.builder()
-                    .id(2L)
-                    .name("Ahorcado")
-                    .build()
-            );
+                    ActivityStudentNotApprovedResponseDto.builder()
+                            .id(2L)
+                            .name("Ahorcado")
+                            .build());
             PaginatedData<ActivityStudentNotApprovedResponseDto> expected = buildPaginated(dtos, 1, 1, 1, SIZE);
 
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
-            when(activityGetByStudentService.getByStudent(student)).thenReturn(allActivities);
-            when(activityFilterNotApprovedService.filterByNotApproved(allActivities, student))
-                .thenReturn(notApprovedActivities);
-            when(activityFilterByDisapprovedService.filterByDisapproved(notApprovedActivities, student, true))
-                .thenReturn(filteredDisapproved);
-            
+            when(activityCompletedRepository.findLatestByStudentAndActivityIds(eq(student), eq(List.of(2L))))
+                    .thenReturn(Collections.emptyList());
+            when(activityCompletedRepository.findActivityIdsByStudentAndActivityIdsAndState(
+                    eq(student), eq(List.of(2L)), eq(ActivityCompletedState.IN_PROGRESS)))
+                    .thenReturn(Collections.emptyList());
+
             try (MockedStatic<PaginatorUtils> paginatorMock = org.mockito.Mockito.mockStatic(PaginatorUtils.class);
-                 MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito.mockStatic(PaginationHelper.class)) {
+                    MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito
+                            .mockStatic(PaginationHelper.class)) {
 
                 paginatorMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
-                    .thenReturn(pageable);
+                        .thenReturn(pageable);
                 when(activityRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(pageResult);
-                when(activityCreateNotApprovedDtosService.createNotApprovedDtos(pageResult.getContent(), student))
-                    .thenReturn(dtos);
+                when(activityCreateNotApprovedDtosService.createNotApprovedDtos(
+                        eq(filteredDisapproved), eq(student), any(Map.class), any(Set.class)))
+                        .thenReturn(dtos);
                 paginationMock.when(() -> PaginationHelper.fromPage(pageResult, dtos)).thenReturn(expected);
 
                 PaginatedData<ActivityStudentNotApprovedResponseDto> result = activityNotApprovedListPaginatedService
-                    .cu66listNotApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null,
-                        List.of("disapproved"), List.of("true"), user);
+                        .cu66listNotApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null,
+                                List.of("disapproved"), List.of("true"), user);
 
-                verify(activityFilterByDisapprovedService).filterByDisapproved(notApprovedActivities, student, true);
+                verify(activityRepository).findAll(any(Specification.class), eq(pageable));
                 assertThat(result)
-                    .isNotNull()
-                    .extracting(PaginatedData::getCount)
-                    .isEqualTo(1);
+                        .isNotNull()
+                        .extracting(PaginatedData::getCount)
+                        .isEqualTo(1);
             }
         }
     }
@@ -247,19 +234,18 @@ class ActivityNotApprovedListPaginatedServiceTest {
     }
 
     private PaginatedData<ActivityStudentNotApprovedResponseDto> buildPaginated(
-        List<ActivityStudentNotApprovedResponseDto> dtos,
-        int count,
-        int totalPages,
-        int currentPage,
-        int pageSize
-    ) {
+            List<ActivityStudentNotApprovedResponseDto> dtos,
+            int count,
+            int totalPages,
+            int currentPage,
+            int pageSize) {
         return PaginatedData.<ActivityStudentNotApprovedResponseDto>builder()
-            .results(dtos)
-            .count(count)
-            .totalPages(totalPages)
-            .currentPage(currentPage)
-            .pageSize(pageSize)
-            .build();
+                .results(dtos)
+                .count(count)
+                .totalPages(totalPages)
+                .currentPage(currentPage)
+                .pageSize(pageSize)
+                .build();
     }
 
     @SuppressWarnings("unchecked")
@@ -267,4 +253,3 @@ class ActivityNotApprovedListPaginatedServiceTest {
         return ArgumentCaptor.forClass((Class<Specification<Activity>>) (Class<?>) Specification.class);
     }
 }
-

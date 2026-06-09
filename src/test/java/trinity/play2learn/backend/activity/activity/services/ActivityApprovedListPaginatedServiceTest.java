@@ -6,7 +6,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -27,10 +26,9 @@ import org.springframework.data.jpa.domain.Specification;
 import trinity.play2learn.backend.activity.activity.ActivityTestMother;
 import trinity.play2learn.backend.activity.activity.dtos.activityStudent.ActivityStudentStateResponseDto;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
-import trinity.play2learn.backend.activity.activity.repositories.IActivityPaginatedRepository;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCreateApprovedDtosService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityFilterApprovedService;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityGetByStudentService;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompleted;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
+import trinity.play2learn.backend.activity.activity.repositories.IActivityCompletedRepository;
 import trinity.play2learn.backend.activity.activity.services.student.ActivityApprovedListPaginatedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
@@ -50,13 +48,7 @@ class ActivityApprovedListPaginatedServiceTest {
     @Mock
     private IStudentGetByEmailService studentGetByEmailService;
     @Mock
-    private IActivityGetByStudentService activityGetByStudentService;
-    @Mock
-    private IActivityFilterApprovedService activityFilterApprovedService;
-    @Mock
-    private IActivityPaginatedRepository activityPaginatedRepository;
-    @Mock
-    private IActivityCreateApprovedDtosService activityCreateApprovedDtosService;
+    private IActivityCompletedRepository activityCompletedRepository;
 
     private ActivityApprovedListPaginatedService activityApprovedListPaginatedService;
 
@@ -64,10 +56,7 @@ class ActivityApprovedListPaginatedServiceTest {
     void setUp() {
         activityApprovedListPaginatedService = new ActivityApprovedListPaginatedService(
                 studentGetByEmailService,
-                activityGetByStudentService,
-                activityFilterApprovedService,
-                activityPaginatedRepository,
-                activityCreateApprovedDtosService);
+                activityCompletedRepository);
     }
 
     @Nested
@@ -82,54 +71,50 @@ class ActivityApprovedListPaginatedServiceTest {
             Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID,
                     ActivityTestMother.STUDENT_EMAIL);
 
-            List<Activity> allActivities = List.of(
-                    ActivityTestMother.ahorcadoActivity(1L),
-                    ActivityTestMother.ahorcadoActivity(2L),
-                    ActivityTestMother.ahorcadoActivity(3L));
+            Activity activity1 = ActivityTestMother.ahorcadoActivity(1L);
+            Activity activity2 = ActivityTestMother.ahorcadoActivity(2L);
 
-            List<Activity> approvedActivities = List.of(
-                    ActivityTestMother.ahorcadoActivity(1L),
-                    ActivityTestMother.ahorcadoActivity(2L));
+            List<ActivityCompleted> approvedCompletions = List.of(
+                    buildApprovedCompletion(1L, activity1),
+                    buildApprovedCompletion(2L, activity2));
 
-            Page<Activity> pageResult = buildPage(approvedActivities, 0, SIZE, 2);
+            Page<ActivityCompleted> pageResult = buildPage(approvedCompletions, 0, SIZE, 2);
             Pageable pageable = pageResult.getPageable();
 
-            List<ActivityStudentStateResponseDto> dtos = List.of(
-                    ActivityStudentStateResponseDto.builder()
-                            .id(1L)
-                            .name("Ahorcado")
-                            .build(),
-                    ActivityStudentStateResponseDto.builder()
-                            .id(2L)
-                            .name("Ahorcado")
-                            .build());
-            PaginatedData<ActivityStudentStateResponseDto> expected = buildPaginated(dtos, 2, 1, 1, SIZE);
-
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
-            when(activityGetByStudentService.getByStudent(student)).thenReturn(allActivities);
-            when(activityFilterApprovedService.filterByApproved(allActivities, student)).thenReturn(approvedActivities);
 
             try (MockedStatic<PaginatorUtils> paginatorMock = org.mockito.Mockito.mockStatic(PaginatorUtils.class);
                     MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito
                             .mockStatic(PaginationHelper.class)) {
 
-                paginatorMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
+                paginatorMock
+                        .when(() -> PaginatorUtils.buildPageableWithSortPrefix(PAGE, SIZE, ORDER_BY, ORDER_TYPE,
+                                "activity"))
                         .thenReturn(pageable);
-                when(activityPaginatedRepository.findAll(any(Specification.class), eq(pageable)))
+                when(activityCompletedRepository.findAll(any(Specification.class), eq(pageable)))
                         .thenReturn(pageResult);
-                when(activityCreateApprovedDtosService.createApprovedDtos(pageResult.getContent(), student))
-                        .thenReturn(dtos);
-                paginationMock.when(() -> PaginationHelper.fromPage(pageResult, dtos)).thenReturn(expected);
+
+                PaginatedData<ActivityStudentStateResponseDto> expected = PaginatedData
+                        .<ActivityStudentStateResponseDto>builder()
+                        .results(List.of(
+                                ActivityStudentStateResponseDto.builder().id(1L).name("Ahorcado").build(),
+                                ActivityStudentStateResponseDto.builder().id(2L).name("Ahorcado").build()))
+                        .count(2)
+                        .totalPages(1)
+                        .currentPage(1)
+                        .pageSize(SIZE)
+                        .build();
+
+                paginationMock.when(() -> PaginationHelper.fromPage(eq(pageResult), any(List.class)))
+                        .thenReturn(expected);
 
                 PaginatedData<ActivityStudentStateResponseDto> result = activityApprovedListPaginatedService
                         .cu69ListApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null, null, null, user);
 
                 verify(studentGetByEmailService).getByEmail(ActivityTestMother.STUDENT_EMAIL);
-                verify(activityGetByStudentService).getByStudent(student);
-                verify(activityFilterApprovedService).filterByApproved(allActivities, student);
 
-                ArgumentCaptor<Specification<Activity>> specCaptor = createSpecificationCaptor();
-                verify(activityPaginatedRepository).findAll(specCaptor.capture(), eq(pageable));
+                ArgumentCaptor<Specification<ActivityCompleted>> specCaptor = createSpecificationCaptor();
+                verify(activityCompletedRepository).findAll(specCaptor.capture(), eq(pageable));
 
                 assertThat(result)
                         .isNotNull()
@@ -150,29 +135,36 @@ class ActivityApprovedListPaginatedServiceTest {
             User user = ActivityTestMother.studentUser(ActivityTestMother.STUDENT_ID, ActivityTestMother.STUDENT_EMAIL);
             Student student = ActivityTestMother.student(ActivityTestMother.STUDENT_ID,
                     ActivityTestMother.STUDENT_EMAIL);
-            List<Activity> allActivities = List.of(ActivityTestMother.ahorcadoActivity(1L));
-            List<Activity> emptyApproved = new ArrayList<>();
             Pageable pageable = PageRequest.of(0, SIZE);
-            PaginatedData<ActivityStudentStateResponseDto> expected = buildPaginated(List.of(), 0, 0, 1, SIZE);
+            Page<ActivityCompleted> emptyPage = new PageImpl<>(List.of(), pageable, 0);
 
             when(studentGetByEmailService.getByEmail(ActivityTestMother.STUDENT_EMAIL)).thenReturn(student);
-            when(activityGetByStudentService.getByStudent(student)).thenReturn(allActivities);
-            when(activityFilterApprovedService.filterByApproved(allActivities, student)).thenReturn(emptyApproved);
 
             try (MockedStatic<PaginatorUtils> paginatorMock = org.mockito.Mockito.mockStatic(PaginatorUtils.class);
                     MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito
                             .mockStatic(PaginationHelper.class)) {
 
-                paginatorMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
+                paginatorMock
+                        .when(() -> PaginatorUtils.buildPageableWithSortPrefix(PAGE, SIZE, ORDER_BY, ORDER_TYPE,
+                                "activity"))
                         .thenReturn(pageable);
-                paginationMock.when(() -> PaginationHelper.fromPage(Page.empty(pageable), List.of()))
-                        .thenReturn(expected);
+                when(activityCompletedRepository.findAll(any(Specification.class), eq(pageable)))
+                        .thenReturn(emptyPage);
+
+                PaginatedData<ActivityStudentStateResponseDto> expected = PaginatedData
+                        .<ActivityStudentStateResponseDto>builder()
+                        .results(List.of())
+                        .count(0)
+                        .totalPages(0)
+                        .currentPage(1)
+                        .pageSize(SIZE)
+                        .build();
+
+                paginationMock.when(() -> PaginationHelper.fromPage(emptyPage, List.of())).thenReturn(expected);
 
                 PaginatedData<ActivityStudentStateResponseDto> result = activityApprovedListPaginatedService
                         .cu69ListApprovedActivitiesPaginated(PAGE, SIZE, ORDER_BY, ORDER_TYPE, null, null, null, user);
 
-                verify(activityPaginatedRepository, org.mockito.Mockito.never()).findAll(any(Specification.class),
-                        any(Pageable.class));
                 assertThat(result)
                         .isNotNull()
                         .extracting(PaginatedData::getCount, PaginatedData::getTotalPages)
@@ -183,28 +175,24 @@ class ActivityApprovedListPaginatedServiceTest {
         }
     }
 
-    private Page<Activity> buildPage(List<Activity> content, int pageNumber, int pageSize, long totalElements) {
-        return new PageImpl<>(content, PageRequest.of(pageNumber, pageSize), totalElements);
-    }
-
-    private PaginatedData<ActivityStudentStateResponseDto> buildPaginated(
-            List<ActivityStudentStateResponseDto> dtos,
-            int count,
-            int totalPages,
-            int currentPage,
-            int pageSize) {
-        return PaginatedData.<ActivityStudentStateResponseDto>builder()
-                .results(dtos)
-                .count(count)
-                .totalPages(totalPages)
-                .currentPage(currentPage)
-                .pageSize(pageSize)
+    private ActivityCompleted buildApprovedCompletion(Long id, Activity activity) {
+        return ActivityCompleted.builder()
+                .id(id)
+                .activity(activity)
+                .state(ActivityCompletedState.APPROVED)
+                .remainingAttempts(1)
+                .reward(10.0)
                 .build();
     }
 
+    private Page<ActivityCompleted> buildPage(List<ActivityCompleted> content, int pageNumber, int pageSize,
+            long totalElements) {
+        return new PageImpl<>(content, PageRequest.of(pageNumber, pageSize), totalElements);
+    }
+
     @SuppressWarnings("unchecked")
-    private ArgumentCaptor<Specification<Activity>> createSpecificationCaptor() {
-        return ArgumentCaptor.forClass((Class<Specification<Activity>>) (Class<?>) Specification.class);
+    private ArgumentCaptor<Specification<ActivityCompleted>> createSpecificationCaptor() {
+        return ArgumentCaptor.forClass((Class<Specification<ActivityCompleted>>) (Class<?>) Specification.class);
     }
 
 }

@@ -1,4 +1,30 @@
-**Current Task:** Corrección de error en repositorio IActivityCompletedRepository — **COMPLETADO**. Corregido método `findTopByActivityAndStudentAndNotStateOrderByCompletedAtDesc` que causaba error de Spring Data JPA al intentar interpretar `AndNotState` como propiedad. Solucionado usando anotación `@Query` con JPQL explícita.
+**Current Task:** Simulación del módulo Investment (fases 6–8 del Database Simulation Seed) — **COMPLETADO**. Implementados catálogo de stocks, cajas de ahorro, plazos fijos, compra/venta de acciones y evolución diaria de precios en `configs/seed/simulation/`.
+
+- 2025-06-07 — **COMPLETADO T18-T37** Simulación Investment: fases 6–8 integradas en `DatabaseSimulationService`, reglas R9–R15, `SimulationProperties` extendido, servicios `StockSimulationCatalogService`, `SavingAccountSimulationService`, `FixedTermDepositSimulationService`, `StockTradeSimulationService`, `StockHistorySimulationService`. Docs: `simulation-investment-architecture.md`, README actualizado. Tests unitarios de validación e integración de fases.
+
+**Previous Task (COMPLETADO):** Simulador de actividad académica y economía (Database Simulation Seed) — fases 1–5.
+
+- 2025-05-31 — **FIX** activity_id null en activity_completed: subclases JOINED duplican `@Id` y ocultan el del padre; el collector guarda IDs (`PersistenceUnitUtil`) y fase 2 recarga entidades managed vía `IActivityRepository`.
+
+- 2025-05-31 — **FIX** UnexpectedRollbackException en simulate: eliminado `@Transactional` de `DatabaseSimulationService.execute()` (el try-catch de fase 1 capturaba excepciones de `TransactionGenerateService` dentro de la misma transacción). Cada fase conserva su propia transacción.
+
+- 2025-05-31 — **FIX** BadRequestException en simulate (`completedAt` anterior a `startedAt`): `SimulationTimeline.resolveAttemptWindow()` garantiza ventana coherente cuando el cursor queda en el `endDate` de la actividad.
+
+- 2025-05-31 — **FIX** LazyInitializationException en simulate: `@Transactional` en `DatabaseSimulationService.execute()` y carga de estudiantes vía `ISubjectRepository.findStudentsBySubjectId()` en fases de intentos/beneficios/recompensas.
+
+- 2025-05-31 — **FIX** StackOverflowError en simulate: `@Data` generaba hashCode circular entre SentenceCompletarOracion↔WordCompletarOracion (y Category↔Concept). Excluidas relaciones bidireccionales de equals/hashCode/toString. Ajustado saveCompletarOracion para llamar buildCompleteSentences antes del persist.
+
+- 2025-05-31 — **COMPLETADO T01-T17** Database Simulation Seed: implementado simulador completo en `configs/seed/simulation/`. Componentes: SimulationTimeline, SimulationDateValidator, SubjectActivityTemplateFactory (Matemática/Lengua/Geografía), ActivitySimulationGenerateService, ActivitySimulationAttemptService (distribución 35/30/20/15%), BenefitSimulationGenerateService, BenefitSimulationLifecycleService, AspectSimulationPurchaseService, DatabaseSimulationService orquestador, SimulationSeedController. Docs: simulation-architecture.md, README actualizado. Tests: 13 unitarios pasando. Config: `app.seed.simulation.*` via SimulationProperties.
+
+- 2025-05-31 — **PLAN T01-T17** Database Simulation Seed: generado plan estratégico en `docs/tasks.json`.
+
+**Previous Task (COMPLETADO):** Servicio de repoblado de BD (Database Seed). Fix aplicado: rollback silencioso por @Transactional + aspectos CUERPO precio 0.
+
+- 2025-05-30 — **FIX** UnexpectedRollbackException en seed: eliminado @Transactional de execute() (excepciones capturadas marcaban rollback-only). Inventario de aspectos ahora se asigna directo vía IProfileRepository (evita COMPRA con precio 0 que lanzaba ConflictException). Reserve inicial aumentada a 5M para cubrir refill de 36 materias.
+
+- 2025-05-30 — **COMPLETADO T02-T14** Database Seed: implementado servicio completo de repoblado (`configs/seed/`). Fases: Reserve, DEV/ADMIN, 6 years × 2 courses, 6 teachers, 30 students/year, 3 subjects/course, refill economía, 9 aspectos desde `docs/aspects/`, inventario y `docs/seed/credentials.md`. Config: `app.seed.enabled=true` en desarrollo, false en producción. Endpoints: `POST /api/dev/seed/bootstrap` (BD vacía sin auth), `POST /api/dev/seed` (ROLE_DEV). Seguridad: credentials.md en .gitignore. Tests: 8 unitarios (DatabaseSeedServiceTest, AspectSeedServiceTest, CredentialsMarkdownWriterTest, DatabaseSeedControllerTest). Docs: architecture.md, README.md.
+
+- 2025-05-30 — **COMPLETADO T01** Plan estratégico de repoblado de BD: analizado codebase (Reserve singleton P0, cascada Student→Profile→Wallet, Subject+refill, Teacher obligatorio para actividades/beneficios, Aspect catálogo, Stock+History condicional). Generado informe en `docs/seed/bootstrap-required-models.md` con matriz de dependencias, orden de bootstrap y referencia al TestController existente. Generado plan JSON en `docs/tasks.json` con 14 tareas (T01 done, T02-T14 todo) para implementar `DatabaseSeedService`, seed de aspectos, endpoint DEV-only, escaneo seguridad, tests y generador de credenciales MD.
 
 - 2025-01-XX — **COMPLETADO** Corrección de error en repositorio: corregido método `findTopByActivityAndStudentAndNotStateOrderByCompletedAtDesc` en `IActivityCompletedRepository` que causaba error `No property 'notState' found for type 'ActivityCompleted'` al iniciar la aplicación. El problema era que Spring Data JPA no puede interpretar automáticamente `AndNotState` como una condición de negación. Solucionado agregando anotación `@Query` con consulta JPQL explícita: `SELECT ac FROM ActivityCompleted ac WHERE ac.activity = :activity AND ac.student = :student AND ac.state != :state ORDER BY ac.completedAt DESC`. Spring Data JPA aplica automáticamente `setMaxResults(1)` porque el método comienza con `findTop`. El error impedía que la aplicación iniciara correctamente debido a la creación fallida del bean del repositorio.
 
