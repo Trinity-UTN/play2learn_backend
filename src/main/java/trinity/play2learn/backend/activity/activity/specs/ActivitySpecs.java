@@ -161,50 +161,75 @@ public class ActivitySpecs {
 
     public static Specification<Activity> filterByDisapprovedForStudent(Student student, boolean disapproved) {
         return (root, query, cb) -> {
-            Subquery<LocalDateTime> maxCompleted = latestCompletedAtSubquery(cb, student, root, query);
-
-            Subquery<Integer> latestRemaining = query.subquery(Integer.class);
-            Root<ActivityCompleted> acLatest = latestRemaining.from(ActivityCompleted.class);
-            latestRemaining.select(acLatest.get("remainingAttempts"));
-            latestRemaining.where(
-                    cb.equal(acLatest.get("activity"), root),
-                    cb.equal(acLatest.get("student"), student),
-                    cb.equal(acLatest.get("completedAt"), maxCompleted));
-
-            Subquery<Long> hasCompletion = query.subquery(Long.class);
-            Root<ActivityCompleted> acExist = hasCompletion.from(ActivityCompleted.class);
-            hasCompletion.select(cb.literal(1L));
-            hasCompletion.where(
-                    cb.equal(acExist.get("activity"), root),
-                    cb.equal(acExist.get("student"), student));
+            Subquery<Long> latestCompletionMatches = latestCompletionMatchingSubquery(cb, student, root, query,
+                    disapproved
+                            ? (acLatest) -> cb.equal(acLatest.get("remainingAttempts"), 0)
+                            : (acLatest) -> cb.greaterThan(acLatest.get("remainingAttempts"), 0));
 
             if (disapproved) {
-                return cb.and(
-                        cb.exists(hasCompletion),
-                        cb.equal(latestRemaining, 0));
+                return cb.exists(latestCompletionMatches);
             }
 
             return cb.or(
-                    cb.not(cb.exists(hasCompletion)),
-                    cb.greaterThan(latestRemaining, 0));
+                    cb.not(cb.exists(anyCompletionSubquery(cb, student, root, query))),
+                    cb.exists(latestCompletionMatches));
         };
     }
 
     private static Subquery<Long> latestApprovedOrPendingCompletion(CriteriaBuilder cb, Student student,
             Root<Activity> root, CriteriaQuery<?> query) {
-        Subquery<Long> latestIsApprovedOrPending = query.subquery(Long.class);
-        Root<ActivityCompleted> acLatest = latestIsApprovedOrPending.from(ActivityCompleted.class);
-        latestIsApprovedOrPending.select(cb.literal(1L));
+        return latestCompletionMatchingSubquery(cb, student, root, query,
+                (acLatest) -> acLatest.get("state").in(
+                        ActivityCompletedState.APPROVED,
+                        ActivityCompletedState.PENDING));
+    }
 
-        Subquery<LocalDateTime> maxCompleted = latestCompletedAtSubquery(cb, student, root, query);
+    private static Subquery<Long> anyCompletionSubquery(CriteriaBuilder cb, Student student, Root<Activity> root,
+            CriteriaQuery<?> query) {
+        Subquery<Long> hasCompletion = query.subquery(Long.class);
+        Root<ActivityCompleted> acExist = hasCompletion.from(ActivityCompleted.class);
+        hasCompletion.select(cb.literal(1L));
+        hasCompletion.where(
+                cb.equal(acExist.get("activity"), root),
+                cb.equal(acExist.get("student"), student));
+        return hasCompletion;
+    }
 
-        latestIsApprovedOrPending.where(
+    private static Subquery<Long> latestCompletionMatchingSubquery(
+            CriteriaBuilder cb,
+            Student student,
+            Root<Activity> root,
+            CriteriaQuery<?> query,
+            java.util.function.Function<Root<ActivityCompleted>, jakarta.persistence.criteria.Predicate> extraCondition) {
+
+        Subquery<Long> latestCompletionMatches = query.subquery(Long.class);
+        Root<ActivityCompleted> acLatest = latestCompletionMatches.from(ActivityCompleted.class);
+        latestCompletionMatches.select(cb.literal(1L));
+
+        Subquery<Long> latestCompletionId = latestCompletionIdSubquery(cb, student, root, query);
+
+        latestCompletionMatches.where(
                 cb.equal(acLatest.get("activity"), root),
                 cb.equal(acLatest.get("student"), student),
-                cb.equal(acLatest.get("completedAt"), maxCompleted),
-                acLatest.get("state").in(ActivityCompletedState.APPROVED, ActivityCompletedState.PENDING));
+                cb.equal(acLatest.get("id"), latestCompletionId),
+                extraCondition.apply(acLatest));
 
-        return latestIsApprovedOrPending;
+        return latestCompletionMatches;
+    }
+
+    private static Subquery<Long> latestCompletionIdSubquery(CriteriaBuilder cb, Student student, Root<Activity> root,
+            CriteriaQuery<?> query) {
+        Subquery<LocalDateTime> maxCompleted = latestCompletedAtSubquery(cb, student, root, query);
+
+        Subquery<Long> latestCompletionId = query.subquery(Long.class);
+        Root<ActivityCompleted> acAtMax = latestCompletionId.from(ActivityCompleted.class);
+        latestCompletionId.select(cb.max(acAtMax.get("id")));
+        latestCompletionId.where(
+                cb.equal(acAtMax.get("activity"), root),
+                cb.equal(acAtMax.get("student"), student),
+                cb.equal(acAtMax.get("completedAt"), maxCompleted));
+
+        return latestCompletionId;
     }
 
     private static Subquery<LocalDateTime> latestCompletedAtSubquery(CriteriaBuilder cb, Student student,
