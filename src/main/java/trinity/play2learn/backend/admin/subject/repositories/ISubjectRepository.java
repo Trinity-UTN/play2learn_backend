@@ -43,4 +43,12 @@ public interface ISubjectRepository extends CrudRepository<Subject , Long> {
         AND s.deletedAt IS NULL
         """)
     List<Student> findStudentsBySubjectId(@Param("subjectId") Long subjectId);
+
+    @Query(value = """
+            SELECT subject_id, COUNT(student_id)
+            FROM subject_students
+            WHERE subject_id IN :subjectIds
+            GROUP BY subject_id
+            """, nativeQuery = true)
+    List<Object[]> countStudentsGroupedBySubjectId(@Param("subjectIds") List<Long> subjectIds);
 }
