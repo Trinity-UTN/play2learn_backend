@@ -33,7 +33,7 @@ public class ActivityApprovedStrategyService implements IActivityCompletedStrate
     
     @Override
     public ActivityCompletedResponseDto execute(ActivityCompleted activityCompleted) {
-
+        
         //Valido consistencia entre estado y score
         if (activityCompleted.getScore() < 60) {
             throw new ConflictException("La actividad no puede ser aprobada con un puntaje menor a 60.");

@@ -26,7 +26,6 @@ public class ActivityDisapprovedStrategyService implements IActivityCompletedStr
     @Override
     @Transactional
     public ActivityCompletedResponseDto execute(ActivityCompleted activityCompleted) {
-        
         if (activityCompleted.getScore() >= 60) {
             throw new ConflictException("La actividad no puede ser desaprobada con un puntaje mayor o igual a 60.");
         }

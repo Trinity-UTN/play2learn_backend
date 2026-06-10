@@ -23,6 +23,8 @@ import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.configs.fileUpload.models.StoredFile;
+import trinity.play2learn.backend.notification.models.NotificationType;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -37,7 +39,8 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
     private final IActivityCompletedRepository activityCompletedRepository;
     private final INoLudicaValidationsService noLudicaValidationsService;
     private final IActivityGetRemainingAttemptsService activityGetRemainingAttemptsService;
-    
+    private final INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
+
     @Override
     public ActivityCompletedResponseDto cu72ActivityNoLudicaCompleted(Long activityId, String plainText,
             MultipartFile file, User user) {
@@ -82,7 +85,15 @@ public class ActivityNoLudicaCompletedService implements IActivityNoLudicaComple
             activity, student, null, remainingAttempts, ActivityCompletedState.PENDING, noLudicaAttempt, 0, 0, 0, 0);
 
         activityCompleted.setCompletedAt(LocalDateTime.now());
-            
+         
+        notificationCreateSingleWithTitleService.createSingleNotificationWithTitle(
+            activityCompleted.getActivity().getSubject().getTeacher().getUser(),
+            NotificationType.STUDENT_COMPLETE_ACTIVITY,
+            "Tienes pendiente corregir la actividad " 
+            + activityCompleted.getActivity().getName() 
+            + " a " + activityCompleted.getStudent().getCompleteName()
+        );
+        
         return ActivityCompletedMapper.toDto(activityCompletedRepository.save(activityCompleted));
     }
 
