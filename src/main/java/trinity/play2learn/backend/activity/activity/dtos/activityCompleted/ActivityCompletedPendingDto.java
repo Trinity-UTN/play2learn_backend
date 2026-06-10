@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.activity.activity.dtos.activityCompleted;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +19,6 @@ public class ActivityCompletedPendingDto {
     private ActivityCompletedState state; //PENDING
     private String studentName;
     private String studentLastName;
+    private LocalDateTime completedAt;
     private NoLudicaResponseDto activityDto;
 }
