@@ -37,6 +37,7 @@ import trinity.play2learn.backend.configs.exceptions.NotFoundException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateByUsersService;
 import trinity.play2learn.backend.user.models.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -65,6 +66,9 @@ class CompletarOracionGenerateServiceTest {
 
     private CompletarOracionGenerateService completarOracionGenerateService;
 
+    @Mock
+    private INotificationCreateByUsersService createUsersNotifications;
+    
     @BeforeEach
     void setUp() {
         completarOracionGenerateService = new CompletarOracionGenerateService(
@@ -73,7 +77,8 @@ class CompletarOracionGenerateServiceTest {
             completarOracionValidateWordsOrderService,
             completarOracionValidateWordMissingService,
             transactionGenerateService,
-            teacherGetByEmailService
+            teacherGetByEmailService,
+            createUsersNotifications
         );
     }
 

@@ -26,6 +26,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityNotApprovedListPaginatedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
+import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.utils.PaginationHelper;
@@ -38,6 +39,7 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
     private final IActivityPaginatedRepository activityRepository;
     private final ActivityNotApprovedNativeRepository activityNotApprovedNativeRepository;
     private final IActivityCompletedRepository activityCompletedRepository;
+    private final ISubjectRepository subjectRepository;
     private final IActivityCreateNotApprovedDtosService activityCreateNotApprovedDtosService;
     private final IStudentGetByEmailService studentGetByEmailService;
 
@@ -71,9 +73,12 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
 
         Map<Long, ActivityCompleted> latestCompletionByActivityId = loadLatestCompletions(student, activityIds);
         Set<Long> activityIdsInProgress = loadActivityIdsInProgress(student, activityIds);
+        Map<Long, Integer> studentsCountBySubjectId = loadStudentsCountBySubjectId(activities);
+        Map<Long, Integer> approvedCountByActivityId = loadApprovedCountByActivityId(activityIds);
 
         List<ActivityStudentNotApprovedResponseDto> dtos = activityCreateNotApprovedDtosService
-                .createNotApprovedDtos(activities, student, latestCompletionByActivityId, activityIdsInProgress);
+                .createNotApprovedDtos(activities, student, latestCompletionByActivityId, activityIdsInProgress,
+                        studentsCountBySubjectId, approvedCountByActivityId);
 
         return PaginationHelper.fromPage(pageResult, dtos);
     }
@@ -105,5 +110,34 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
 
         return Set.copyOf(activityCompletedRepository.findActivityIdsByStudentAndActivityIdsAndState(
                 student, activityIds, ActivityCompletedState.IN_PROGRESS));
+    }
+
+    private Map<Long, Integer> loadStudentsCountBySubjectId(List<Activity> activities) {
+        List<Long> subjectIds = activities.stream()
+                .map(activity -> activity.getSubject().getId())
+                .distinct()
+                .toList();
+
+        if (subjectIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        return subjectRepository.countStudentsGroupedBySubjectId(subjectIds).stream()
+                .collect(Collectors.toMap(
+                        row -> ((Number) row[0]).longValue(),
+                        row -> ((Number) row[1]).intValue()));
+    }
+
+    private Map<Long, Integer> loadApprovedCountByActivityId(List<Long> activityIds) {
+        if (activityIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        return activityCompletedRepository
+                .countApprovedGroupedByActivityId(activityIds, ActivityCompletedState.APPROVED.ordinal())
+                .stream()
+                .collect(Collectors.toMap(
+                        row -> ((Number) row[0]).longValue(),
+                        row -> ((Number) row[1]).intValue()));
     }
 }

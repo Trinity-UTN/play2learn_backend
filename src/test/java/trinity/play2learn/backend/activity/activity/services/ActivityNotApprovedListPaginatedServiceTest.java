@@ -35,6 +35,7 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.activity.activity.services.student.ActivityNotApprovedListPaginatedService;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
+import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.configs.response.PaginatedData;
 import trinity.play2learn.backend.user.models.User;
 import trinity.play2learn.backend.utils.PaginationHelper;
@@ -58,6 +59,8 @@ class ActivityNotApprovedListPaginatedServiceTest {
     private IActivityCreateNotApprovedDtosService activityCreateNotApprovedDtosService;
     @Mock
     private IStudentGetByEmailService studentGetByEmailService;
+    @Mock
+    private ISubjectRepository subjectRepository;
 
     private ActivityNotApprovedListPaginatedService activityNotApprovedListPaginatedService;
 
@@ -67,6 +70,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
                 activityRepository,
                 activityNotApprovedNativeRepository,
                 activityCompletedRepository,
+                subjectRepository,
                 activityCreateNotApprovedDtosService,
                 studentGetByEmailService);
     }
@@ -110,6 +114,9 @@ class ActivityNotApprovedListPaginatedServiceTest {
             when(activityCompletedRepository.findActivityIdsByStudentAndActivityIdsAndState(
                     eq(student), eq(List.of(2L, 3L)), eq(ActivityCompletedState.IN_PROGRESS)))
                     .thenReturn(Collections.emptyList());
+            when(subjectRepository.countStudentsGroupedBySubjectId(any())).thenReturn(Collections.emptyList());
+            when(activityCompletedRepository.countApprovedGroupedByActivityId(eq(List.of(2L, 3L)), eq(0)))
+                    .thenReturn(Collections.emptyList());
 
             try (MockedStatic<PaginatorUtils> paginatorMock = org.mockito.Mockito.mockStatic(PaginatorUtils.class);
                     MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito
@@ -118,7 +125,8 @@ class ActivityNotApprovedListPaginatedServiceTest {
                 paginatorMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
                         .thenReturn(pageable);
                 when(activityCreateNotApprovedDtosService.createNotApprovedDtos(
-                        eq(notApprovedActivities), eq(student), any(Map.class), any(Set.class)))
+                        eq(notApprovedActivities), eq(student), any(Map.class), any(Set.class),
+                        any(Map.class), any(Map.class)))
                         .thenReturn(dtos);
                 paginationMock.when(() -> PaginationHelper.fromPage(any(Page.class), eq(dtos))).thenReturn(expected);
 
@@ -207,6 +215,9 @@ class ActivityNotApprovedListPaginatedServiceTest {
             when(activityCompletedRepository.findActivityIdsByStudentAndActivityIdsAndState(
                     eq(student), eq(List.of(2L)), eq(ActivityCompletedState.IN_PROGRESS)))
                     .thenReturn(Collections.emptyList());
+            when(subjectRepository.countStudentsGroupedBySubjectId(any())).thenReturn(Collections.emptyList());
+            when(activityCompletedRepository.countApprovedGroupedByActivityId(eq(List.of(2L)), eq(0)))
+                    .thenReturn(Collections.emptyList());
 
             try (MockedStatic<PaginatorUtils> paginatorMock = org.mockito.Mockito.mockStatic(PaginatorUtils.class);
                     MockedStatic<PaginationHelper> paginationMock = org.mockito.Mockito
@@ -215,7 +226,8 @@ class ActivityNotApprovedListPaginatedServiceTest {
                 paginatorMock.when(() -> PaginatorUtils.buildPageable(PAGE, SIZE, ORDER_BY, ORDER_TYPE))
                         .thenReturn(pageable);
                 when(activityCreateNotApprovedDtosService.createNotApprovedDtos(
-                        eq(filteredDisapproved), eq(student), any(Map.class), any(Set.class)))
+                        eq(filteredDisapproved), eq(student), any(Map.class), any(Set.class),
+                        any(Map.class), any(Map.class)))
                         .thenReturn(dtos);
                 paginationMock.when(() -> PaginationHelper.fromPage(any(Page.class), eq(dtos))).thenReturn(expected);
 

@@ -32,6 +32,7 @@ import trinity.play2learn.backend.configs.exceptions.NotFoundException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateByUsersService;
 import trinity.play2learn.backend.user.models.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -53,14 +54,17 @@ class ArbolDecisionGenerateServiceTest {
     private ITeacherGetByEmailService teacherGetByEmailService;
 
     private ArbolDecisionGenerateService arbolDecisionGenerateService;
-
+    @Mock
+    private INotificationCreateByUsersService createUsersNotifications;
+    
     @BeforeEach
     void setUp() {
         arbolDecisionGenerateService = new ArbolDecisionGenerateService(
             arbolDeDecisionRepository,
             getSubjectByIdService,
             transactionGenerateService,
-            teacherGetByEmailService
+            teacherGetByEmailService,
+            createUsersNotifications
         );
     }
 

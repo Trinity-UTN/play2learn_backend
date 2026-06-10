@@ -101,6 +101,7 @@ public class ActivityCompletedService implements IActivityCompletedService {
         lastStarted.setIncorrectAnswers(activityCompletedRequestDto.getIncorrectAnswers());
         lastStarted.setUnanswered(activityCompletedRequestDto.getUnanswered());
 
+        System.out.println("ESTADO FINAL: " + activityCompletedRequestDto.getState().name());
         IActivityCompletedStrategyService strategyService = activityCompletedStrategyServiceMap
                 .get(activityCompletedRequestDto.getState().name());
 
@@ -111,7 +112,7 @@ public class ActivityCompletedService implements IActivityCompletedService {
         } else {
             profileUpdateLevelService.execute(student.getProfile(), ValueXp.ACTIVITY_FACIL.getValue());
         }
-
+    
         return strategyService.execute(lastStarted);
     }
 

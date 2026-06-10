@@ -1,5 +1,8 @@
 package trinity.play2learn.backend.activity.preguntados.services;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +22,8 @@ import trinity.play2learn.backend.configs.exceptions.ConflictException;
 import trinity.play2learn.backend.economy.transaction.models.TransactionActor;
 import trinity.play2learn.backend.economy.transaction.models.TypeTransaction;
 import trinity.play2learn.backend.economy.transaction.services.interfaces.ITransactionGenerateService;
+import trinity.play2learn.backend.notification.models.NotificationType;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateByUsersService;
 import trinity.play2learn.backend.user.models.User;
 
 @Service
@@ -30,9 +35,9 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
     private final ISubjectGetByIdService getSubjectByIdService;
 
     private final IPreguntadosValidateCorrectOptionService preguntadosValidateCorrectOptionService;
-
     private final ITransactionGenerateService transactionGenerateService;
     private final ITeacherGetByEmailService teacherGetByEmailService;
+    private final INotificationCreateByUsersService createUsersNotifications;
     @Transactional
     @Override
     public PreguntadosResponseDto cu40GeneratePreguntados(PreguntadosRequestDto preguntadosRequestDto, User user) {
@@ -64,7 +69,16 @@ public class PreguntadosGenerateService implements IPreguntadosGenerateService{
             null,
             null
         );
-        
+
+        if (preguntadosRequestDto.getStartDate() == null) {
+            
+            List<User> users = subject.getStudents().stream()
+                .map(student -> student.getUser())
+                .collect(Collectors.toList());
+                
+            createUsersNotifications.createUsersNotifications(users,NotificationType.NEW_ACTIVITY_PUBLISHED);
+        }
+
         return PreguntadosMapper.toDto(preguntados);
     }
 

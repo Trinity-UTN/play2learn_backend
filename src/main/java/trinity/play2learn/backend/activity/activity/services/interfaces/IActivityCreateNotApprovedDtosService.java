@@ -18,4 +18,12 @@ public interface IActivityCreateNotApprovedDtosService {
             Student student,
             Map<Long, ActivityCompleted> latestCompletionByActivityId,
             Set<Long> activityIdsInProgress);
+
+    List<ActivityStudentNotApprovedResponseDto> createNotApprovedDtos(
+            List<Activity> activities,
+            Student student,
+            Map<Long, ActivityCompleted> latestCompletionByActivityId,
+            Set<Long> activityIdsInProgress,
+            Map<Long, Integer> studentsCountBySubjectId,
+            Map<Long, Integer> approvedCountByActivityId);
 }

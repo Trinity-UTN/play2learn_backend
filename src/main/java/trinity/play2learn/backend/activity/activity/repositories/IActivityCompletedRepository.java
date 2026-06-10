@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.activity.repositories;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -164,4 +165,17 @@ public interface IActivityCompletedRepository
                         @Param("student") Student student,
                         @Param("activityIds") List<Long> activityIds,
                         @Param("state") ActivityCompletedState state);
+
+        @Query("SELECT DISTINCT ac FROM ActivityCompleted ac JOIN FETCH ac.activity a JOIN FETCH a.subject WHERE ac.id IN :ids")
+        List<ActivityCompleted> findAllByIdInWithActivityAndSubject(@Param("ids") Collection<Long> ids);
+
+        @Query(value = """
+                        SELECT activity_id, COUNT(*)
+                        FROM activity_completed
+                        WHERE activity_id IN :activityIds AND state = :state
+                        GROUP BY activity_id
+                        """, nativeQuery = true)
+        List<Object[]> countApprovedGroupedByActivityId(
+                        @Param("activityIds") List<Long> activityIds,
+                        @Param("state") int state);
 }

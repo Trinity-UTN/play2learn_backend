@@ -25,7 +25,6 @@ public class ActivityPendingStrategyService implements IActivityCompletedStrateg
     @Override
     @Transactional
     public ActivityCompletedResponseDto execute(ActivityCompleted activityCompleted) {
-        
         activityCompleted.setRemainingAttempts(activityCompleted.getRemainingAttempts()-1);
         
         activityCompleted.setState(ActivityCompletedState.PENDING);

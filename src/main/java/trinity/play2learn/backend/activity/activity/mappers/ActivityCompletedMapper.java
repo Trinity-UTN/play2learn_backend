@@ -95,6 +95,7 @@ public class ActivityCompletedMapper {
             .state(activityCompleted.getState())
             .studentName(activityCompleted.getStudent().getName())
             .studentLastName(activityCompleted.getStudent().getLastname())
+            .completedAt(activityCompleted.getCompletedAt())
             .activityDto(NoLudicaMapper.toDto(noLudica))
             .build();
     }
