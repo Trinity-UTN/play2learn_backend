@@ -108,7 +108,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
             when(activityNotApprovedNativeRepository.findNotApprovedActivityIds(
                     eq(student), eq(pageable), eq(null), eq(null), eq(null)))
                     .thenReturn(idPage);
-            when(activityRepository.findAllByIdInWithSubject(List.of(2L, 3L))).thenReturn(notApprovedActivities);
+            when(activityRepository.findAllById(List.of(2L, 3L))).thenReturn(notApprovedActivities);
             when(activityCompletedRepository.findLatestByStudentAndActivityIds(eq(student), eq(List.of(2L, 3L))))
                     .thenReturn(Collections.emptyList());
             when(activityCompletedRepository.findActivityIdsByStudentAndActivityIdsAndState(
@@ -209,7 +209,7 @@ class ActivityNotApprovedListPaginatedServiceTest {
             when(activityNotApprovedNativeRepository.findNotApprovedActivityIds(
                     eq(student), eq(pageable), eq(null), eq(List.of("disapproved")), eq(List.of("true"))))
                     .thenReturn(idPage);
-            when(activityRepository.findAllByIdInWithSubject(List.of(2L))).thenReturn(filteredDisapproved);
+            when(activityRepository.findAllById(List.of(2L))).thenReturn(filteredDisapproved);
             when(activityCompletedRepository.findLatestByStudentAndActivityIds(eq(student), eq(List.of(2L))))
                     .thenReturn(Collections.emptyList());
             when(activityCompletedRepository.findActivityIdsByStudentAndActivityIdsAndState(

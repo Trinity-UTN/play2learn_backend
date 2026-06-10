@@ -18,13 +18,24 @@ import org.springframework.stereotype.Repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import trinity.play2learn.backend.activity.activity.models.activityCompleted.ActivityCompletedState;
 import trinity.play2learn.backend.admin.student.models.Student;
 
 @Repository
 public class ActivityNotApprovedNativeRepository {
 
+    private static final String LATEST_COMPLETION_ID = """
+            (SELECT ac_latest.id FROM activity_completed ac_latest
+             WHERE ac_latest.activity_id = a.id AND ac_latest.student_id = :studentId
+             ORDER BY ac_latest.completed_at DESC NULLS LAST, ac_latest.id DESC
+             LIMIT 1)
+            """;
+
     private static final Set<String> ALLOWED_ORDER_COLUMNS = Set.of(
             "id", "name", "startdate", "enddate", "difficulty", "createdat");
+
+    private static final int STATE_APPROVED = ActivityCompletedState.APPROVED.ordinal();
+    private static final int STATE_PENDING = ActivityCompletedState.PENDING.ordinal();
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -36,17 +47,24 @@ public class ActivityNotApprovedNativeRepository {
             List<String> filters,
             List<String> filterValues) {
 
+        Long studentId = student.getId();
         Map<String, Object> params = new HashMap<>();
-        params.put("studentId", student.getId());
+        params.put("studentId", studentId);
 
         StringBuilder where = new StringBuilder("""
-                FROM activity a
-                INNER JOIN subjects s ON s.id = a.subject_id AND s.deleted_at IS NULL
-                INNER JOIN subject_students ss ON ss.subject_id = s.id AND ss.student_id = :studentId
-                LEFT JOIN latest_completion lc ON lc.activity_id = a.id
                 WHERE a.deleted_at IS NULL
-                AND (lc.completion_id IS NULL OR lc.state NOT IN (%d, %d))
-                """.formatted(STATE_APPROVED, STATE_PENDING));
+                AND EXISTS (
+                    SELECT 1 FROM subjects s
+                    INNER JOIN subject_students ss ON ss.subject_id = s.id
+                    WHERE s.id = a.subject_id AND ss.student_id = :studentId AND s.deleted_at IS NULL
+                )
+                AND NOT EXISTS (
+                    SELECT 1 FROM activity_completed ac
+                    WHERE ac.activity_id = a.id AND ac.student_id = :studentId
+                    AND ac.id = %s
+                    AND ac.state IN (%d, %d)
+                )
+                """.formatted(LATEST_COMPLETION_ID, STATE_APPROVED, STATE_PENDING));
 
         if (search != null && !search.isBlank()) {
             where.append(" AND LOWER(a.name) LIKE :search");
@@ -60,9 +78,8 @@ public class ActivityNotApprovedNativeRepository {
         }
 
         String orderClause = buildOrderClause(pageable);
-        String fromWhere = where.toString();
 
-        String countSql = LATEST_COMPLETION_CTE + "SELECT COUNT(a.id) " + fromWhere;
+        String countSql = "SELECT COUNT(a.id) FROM activity a " + where;
         Query countQuery = entityManager.createNativeQuery(countSql);
         params.forEach(countQuery::setParameter);
         long total = ((Number) countQuery.getSingleResult()).longValue();
@@ -71,7 +88,7 @@ public class ActivityNotApprovedNativeRepository {
             return new PageImpl<>(List.of(), pageable, 0);
         }
 
-        String dataSql = LATEST_COMPLETION_CTE + "SELECT a.id " + fromWhere + orderClause;
+        String dataSql = "SELECT a.id FROM activity a " + where + orderClause;
         Query dataQuery = entityManager.createNativeQuery(dataSql);
         params.forEach(dataQuery::setParameter);
         dataQuery.setFirstResult((int) pageable.getOffset());
@@ -97,15 +114,15 @@ public class ActivityNotApprovedNativeRepository {
             }
             case "courseId" -> appendLongFilter(where, params, "courseId", value, """
                      AND EXISTS (
-                        SELECT 1 FROM subjects s2
-                        WHERE s2.id = a.subject_id AND s2.course_id = :courseId
+                        SELECT 1 FROM subjects s
+                        WHERE s.id = a.subject_id AND s.course_id = :courseId
                      )
                     """);
             case "yearId" -> appendLongFilter(where, params, "yearId", value, """
                      AND EXISTS (
-                        SELECT 1 FROM subjects s2
-                        INNER JOIN courses c ON c.id = s2.course_id
-                        WHERE s2.id = a.subject_id AND c.year_id = :yearId
+                        SELECT 1 FROM subjects s
+                        INNER JOIN courses c ON c.id = s.course_id
+                        WHERE s.id = a.subject_id AND c.year_id = :yearId
                      )
                     """);
             default -> {
@@ -138,10 +155,31 @@ public class ActivityNotApprovedNativeRepository {
 
     private void appendDisapprovedFilter(StringBuilder where, boolean disapproved) {
         if (disapproved) {
-            where.append(" AND lc.completion_id IS NOT NULL AND lc.remaining_attempts = 0");
+            where.append("""
+                     AND EXISTS (
+                        SELECT 1 FROM activity_completed ac
+                        WHERE ac.activity_id = a.id AND ac.student_id = :studentId
+                        AND ac.id = %s
+                        AND ac.remaining_attempts = 0
+                     )
+                    """.formatted(LATEST_COMPLETION_ID));
             return;
         }
-        where.append(" AND (lc.completion_id IS NULL OR lc.remaining_attempts > 0)");
+
+        where.append("""
+                 AND (
+                    NOT EXISTS (
+                        SELECT 1 FROM activity_completed ac
+                        WHERE ac.activity_id = a.id AND ac.student_id = :studentId
+                    )
+                    OR EXISTS (
+                        SELECT 1 FROM activity_completed ac
+                        WHERE ac.activity_id = a.id AND ac.student_id = :studentId
+                        AND ac.id = %s
+                        AND ac.remaining_attempts > 0
+                    )
+                 )
+                """.formatted(LATEST_COMPLETION_ID));
     }
 
     private String buildOrderClause(Pageable pageable) {

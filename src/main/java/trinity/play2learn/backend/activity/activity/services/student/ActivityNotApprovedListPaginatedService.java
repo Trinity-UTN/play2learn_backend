@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -83,7 +84,8 @@ public class ActivityNotApprovedListPaginatedService implements IActivityNotAppr
     }
 
     private List<Activity> loadActivitiesPreservingOrder(List<Long> orderedIds) {
-        Map<Long, Activity> activitiesById = activityRepository.findAllByIdInWithSubject(orderedIds).stream()
+        Map<Long, Activity> activitiesById = StreamSupport
+                .stream(activityRepository.findAllById(orderedIds).spliterator(), false)
                 .collect(Collectors.toMap(Activity::getId, Function.identity()));
 
         return orderedIds.stream()
