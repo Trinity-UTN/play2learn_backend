@@ -32,6 +32,7 @@ import trinity.play2learn.backend.activity.activity.services.student.ActivityNoL
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
 import trinity.play2learn.backend.configs.exceptions.ConflictException;
+import trinity.play2learn.backend.notification.services.interfaces.INotificationCreateSingleWithTitleService;
 import trinity.play2learn.backend.user.models.User;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,12 +63,23 @@ class ActivityNoLudicaCompletedServiceTest {
     private IActivityCompletedService activityCompletedService;
     @Mock
     private MultipartFile file;
-
+    @Mock
+    private INotificationCreateSingleWithTitleService notificationCreateSingleWithTitleService;
     private ActivityNoLudicaCompletedService activityNoLudicaCompletedService;
 
     @BeforeEach
     void setUp() {
-        activityNoLudicaCompletedService = new ActivityNoLudicaCompletedService(activityFindByIdService, studentGetByEmailService, activityValidatePublishedStatusService, activityGetCompletedStateService, noLudicaCreateAttemptService, activityCompletedRepository, noLudicaValidationsService, null);
+        activityNoLudicaCompletedService = new ActivityNoLudicaCompletedService(
+                activityFindByIdService,
+                studentGetByEmailService,
+                activityValidatePublishedStatusService,
+                activityGetCompletedStateService,
+                noLudicaCreateAttemptService,
+                activityCompletedRepository,
+                noLudicaValidationsService,
+                null,
+                notificationCreateSingleWithTitleService
+        );
     }
 
     @Nested

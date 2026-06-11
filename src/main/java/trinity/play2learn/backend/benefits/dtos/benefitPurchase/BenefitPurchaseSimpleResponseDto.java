@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.benefits.dtos.benefitPurchase;
 
+import java.time.LocalDateTime;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,4 +29,6 @@ public class BenefitPurchaseSimpleResponseDto {
     private String subjectName;
     private Long studentId;
     private String studentName;
+
+    private LocalDateTime usedAt;
 }

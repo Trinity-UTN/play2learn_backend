@@ -50,6 +50,7 @@ public class BenefitPurchaseMapper {
             .state(benefitPurchase.getState())
             .studentId(benefitPurchase.getStudent().getId())
             .studentName(benefitPurchase.getStudent().getCompleteName())
+            .usedAt(benefitPurchase.getUsedAt())
             .build();
     }
 
