@@ -27,7 +27,7 @@ public class NoLudicaAttempt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = true)
+    @Column(columnDefinition = "TEXT",nullable = true)
     private String plainText;
 
     @OneToOne(cascade = CascadeType.ALL)
