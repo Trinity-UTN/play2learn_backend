@@ -9,16 +9,14 @@ public class StatisticsHomeStudentMapper {
 
     public static StatisticsHomeStudentResponseDto toDto (
         int totalPoints, 
-        int positionRanking, 
-        int totalActivities, 
-        int totalCompletedActivities, 
+        int positionCourseRanking, 
+        int totalActivitiesAvailable,
         List<StatisticsActivityRealizationResponseDto> lastRealizations
     ) {
         return StatisticsHomeStudentResponseDto.builder()
             .totalPoints(totalPoints)
-            .positionRanking(positionRanking)
-            .totalActivities(totalActivities)
-            .totalCompletedActivities(totalCompletedActivities)
+            .positionCourseRanking(positionCourseRanking)
+            .totalActivitiesAvailable(totalActivitiesAvailable)
             .lastRealizations(lastRealizations)
             .build();
 

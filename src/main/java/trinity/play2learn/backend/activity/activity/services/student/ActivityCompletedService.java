@@ -101,7 +101,6 @@ public class ActivityCompletedService implements IActivityCompletedService {
         lastStarted.setIncorrectAnswers(activityCompletedRequestDto.getIncorrectAnswers());
         lastStarted.setUnanswered(activityCompletedRequestDto.getUnanswered());
 
-        System.out.println("ESTADO FINAL: " + activityCompletedRequestDto.getState().name());
         IActivityCompletedStrategyService strategyService = activityCompletedStrategyServiceMap
                 .get(activityCompletedRequestDto.getState().name());
 

@@ -13,12 +13,10 @@ public class StatisticsHomeStudentResponseDto {
 
     private int totalPoints;
 
-    private int positionRanking;
+    private int positionCourseRanking;
 
-    private int totalActivities;
-
-    private int totalCompletedActivities;
-
+    private int totalActivitiesAvailable;
+    
     private List<StatisticsActivityRealizationResponseDto> lastRealizations;
     
 }
