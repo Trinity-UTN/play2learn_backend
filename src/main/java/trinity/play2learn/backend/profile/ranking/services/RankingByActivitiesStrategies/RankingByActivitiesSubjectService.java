@@ -10,6 +10,7 @@ import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingGe
 import trinity.play2learn.backend.profile.ranking.dtos.StudentWithTotalDto;
 import trinity.play2learn.backend.profile.ranking.dtos.request.LeaderboardRequestDto;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardResponseDto;
+import trinity.play2learn.backend.profile.ranking.mappers.LeaderboardByActivitiesMapper;
 import trinity.play2learn.backend.profile.ranking.mappers.LeaderboardByCoinsMapper;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardParticipantResponseDto;
 import java.util.ArrayList;
@@ -75,6 +76,6 @@ public class RankingByActivitiesSubjectService implements IRankingByActivitiesSt
                 studentDto,
                 studentPosition);
 
-        return LeaderboardByCoinsMapper.toDto(participants, currentUserPosition, students.size());
+        return LeaderboardByActivitiesMapper.toDto(participants, currentUserPosition, students.size());
     }
 }

@@ -9,6 +9,7 @@ import trinity.play2learn.backend.profile.ranking.services.interfaces.IRankingBy
 import trinity.play2learn.backend.profile.ranking.dtos.request.LeaderboardRequestDto;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardResponseDto;
 import trinity.play2learn.backend.admin.student.models.Student;
+import trinity.play2learn.backend.admin.student.services.interfaces.IStudentFindAllService;
 import trinity.play2learn.backend.profile.ranking.mappers.LeaderboardByActivitiesMapper;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardParticipantResponseDto;
 import java.util.List;
@@ -20,10 +21,14 @@ public class RankingByActivitiesInstitutionService implements IRankingByActiviti
     private final IActivityGetTotalRankingService activityGetTotalRankingService;
 
     private final IActivityGetPositionRankingService activityGetPositionRankingService;
+    private final IStudentFindAllService studentFindAllService;
 
     @Override
     public LeaderboardResponseDto execute (LeaderboardRequestDto leaderboardRequestDto, Student student) {
         
+        List<Student> students = studentFindAllService.findAll();
+        Integer totalParticipants = students.size();
+
         List<Object[]> results = activityGetTotalRankingService.execute();
 
         List<LeaderboardParticipantResponseDto> participants = LeaderboardByActivitiesMapper.toParticipantDtoList(results);
@@ -37,6 +42,6 @@ public class RankingByActivitiesInstitutionService implements IRankingByActiviti
             currentUserPosition = LeaderboardByActivitiesMapper.toParticipantDto(student, (Long) positionResult[0], count);
         }
 
-        return LeaderboardByActivitiesMapper.toDto(participants, currentUserPosition);
+        return LeaderboardByActivitiesMapper.toDto(participants, currentUserPosition, totalParticipants);
     }
 }

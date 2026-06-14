@@ -6,6 +6,7 @@ import java.util.List;
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.economy.wallet.models.Wallet;
 import trinity.play2learn.backend.profile.avatar.mappers.AspectMapper;
+import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.profile.ranking.dtos.StudentWithTotalDto;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardParticipantResponseDto;
 import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardResponseDto;
@@ -13,19 +14,16 @@ import trinity.play2learn.backend.profile.ranking.dtos.response.LeaderboardRespo
 public class LeaderboardByCoinsMapper {
 
     public static LeaderboardParticipantResponseDto toParticipantDto(Wallet wallet, Long position) {
+        Profile profile = wallet.getStudent().getProfile();
+
         return LeaderboardParticipantResponseDto.builder()
                 .position(position)
                 .name(wallet.getStudent().getLastname() + " " + wallet.getStudent().getName())
                 .quantity(Math.round((wallet.getBalance() + wallet.getInvertedBalance()) * 100.0) / 100.0)
-                .selectedBody(wallet.getStudent().getProfile().getSelectedBody() != null
-                        ? AspectMapper.toSimpleDto(wallet.getStudent().getProfile().getSelectedBody())
-                        : null)
-                .selectedShirt(wallet.getStudent().getProfile().getSelectedShirt() != null
-                        ? AspectMapper.toSimpleDto(wallet.getStudent().getProfile().getSelectedShirt())
-                        : null)
-                .selectedHat(wallet.getStudent().getProfile().getSelectedHat() != null
-                        ? AspectMapper.toSimpleDto(wallet.getStudent().getProfile().getSelectedHat())
-                        : null)
+                .selectedBody(profile.getSelectedBody() != null ? AspectMapper.toSimpleDto(profile.getSelectedBody()) : null)
+                .selectedShirt(profile.getSelectedShirt() != null ? AspectMapper.toSimpleDto(profile.getSelectedShirt()) : null)
+                .selectedHat(profile.getSelectedHat() != null ? AspectMapper.toSimpleDto(profile.getSelectedHat()) : null)
+                .experienceLevel(profile.getCurrentLevel())
                 .build();
     }
 
@@ -75,6 +73,7 @@ public class LeaderboardByCoinsMapper {
                 .selectedHat(studentWithRewardTotalDto.getStudent().getProfile().getSelectedHat() != null
                         ? AspectMapper.toSimpleDto(studentWithRewardTotalDto.getStudent().getProfile().getSelectedHat())
                         : null)
+                .experienceLevel(studentWithRewardTotalDto.getStudent().getProfile().getCurrentLevel())
                 .build();
     }
 

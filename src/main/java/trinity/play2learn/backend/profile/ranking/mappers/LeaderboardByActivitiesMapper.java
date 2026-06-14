@@ -18,6 +18,7 @@ public class LeaderboardByActivitiesMapper {
             .selectedBody(student.getProfile().getSelectedBody() != null ? AspectMapper.toSimpleDto(student.getProfile().getSelectedBody()) : null)
             .selectedShirt(student.getProfile().getSelectedShirt() != null ? AspectMapper.toSimpleDto(student.getProfile().getSelectedShirt()) : null)
             .selectedHat(student.getProfile().getSelectedHat() != null ? AspectMapper.toSimpleDto(student.getProfile().getSelectedHat()) : null)
+            .experienceLevel(student.getProfile().getCurrentLevel())
             .build();
     }
 
@@ -37,10 +38,11 @@ public class LeaderboardByActivitiesMapper {
         return participants;
     }
 
-    public static LeaderboardResponseDto toDto (List<LeaderboardParticipantResponseDto> participants, LeaderboardParticipantResponseDto currentUserPosition) {
+    public static LeaderboardResponseDto toDto (List<LeaderboardParticipantResponseDto> participants, LeaderboardParticipantResponseDto currentUserPosition, Integer totalParticipants) {
         return LeaderboardResponseDto.builder()
             .participants(participants)
             .currentUserPosition(currentUserPosition)
+            .totalParticipants(totalParticipants)
             .build();
     }
 }

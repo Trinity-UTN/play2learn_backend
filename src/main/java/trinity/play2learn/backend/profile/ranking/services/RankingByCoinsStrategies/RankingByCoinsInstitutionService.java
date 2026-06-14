@@ -29,7 +29,7 @@ public class RankingByCoinsInstitutionService implements IRankingByCoinsStrategy
         @Override
         public LeaderboardResponseDto execute(LeaderboardRequestDto leaderboardRequestDto, Student student) {
 
-                // //Trae todos los estudiantes activos. Si agregamos la clase Institucion
+                // Trae todos los estudiantes activos. Si agregamos la clase Institucion
                 // habria que cambiar este metodo
                 List<Student> students = studentFindAllService.findAll();
 

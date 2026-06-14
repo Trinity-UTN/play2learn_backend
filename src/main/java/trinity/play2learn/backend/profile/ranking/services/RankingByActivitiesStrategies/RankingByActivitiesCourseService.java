@@ -42,6 +42,6 @@ public class RankingByActivitiesCourseService implements IRankingByActivitiesStr
             currentUserPosition = LeaderboardByActivitiesMapper.toParticipantDto(student, (Long) positionResult[0], count);
         }
 
-        return LeaderboardByActivitiesMapper.toDto(participants, currentUserPosition);
+        return LeaderboardByActivitiesMapper.toDto(participants, currentUserPosition, students.size());
     }
 }

@@ -24,4 +24,5 @@ public class LeaderboardParticipantResponseDto {
 
     private AspectSimpleResponseDto selectedHat; 
 
+    private Long experienceLevel;
 }
