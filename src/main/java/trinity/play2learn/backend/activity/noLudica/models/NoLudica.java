@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.noLudica.models;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -27,6 +28,6 @@ public class NoLudica extends Activity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 300, message = "Maximum length for exercise is 300 characters.")
+    @Column(columnDefinition = "TEXT")
     private String exercise;
 }
