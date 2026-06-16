@@ -1,5 +1,7 @@
 package trinity.play2learn.backend.statistics.home.dtos.response;
 
+import java.time.LocalDateTime; 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,5 +16,9 @@ public class StatisticsActivityDataDto {
     public int totalRealizations;
 
     public int createdDaysAgo;
+
+    public LocalDateTime startDate;
+
+    public int totalStudents;
     
 }

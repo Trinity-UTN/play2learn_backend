@@ -141,7 +141,13 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
                 activity.getCreatedAt().toLocalDate(), // pasa a LocalDate
                 LocalDate.now()
             );
-            activitiesData.add(StatisticsActivityDataMapper.toDto(activity.getName(), totalRealizations, createdDaysAgo));
+            activitiesData.add(StatisticsActivityDataMapper.toDto(
+                activity.getName(), 
+                totalRealizations, 
+                createdDaysAgo, 
+                activity.getSubject().getStudents().size(),
+                activity.getStartDate()
+            ));
         }
         
         return activitiesData;
