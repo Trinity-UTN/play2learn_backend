@@ -47,9 +47,16 @@ public class SimulationProperties {
 
     private double failAllAttemptsRate = 0.15;
 
-    private int activityInitialBalanceMin = 80;
+    /**
+     * Presupuesto mínimo (monedas) asignado al crear una actividad simulada.
+     * La recompensa por estudiante aprobado ≈ {@code initialBalance / alumnosEnMateria}.
+     */
+    private int activityInitialBalanceMin = 1000;
 
-    private int activityInitialBalanceMax = 200;
+    /**
+     * Presupuesto máximo (monedas) asignado al crear una actividad simulada.
+     */
+    private int activityInitialBalanceMax = 3000;
 
     private int benefitCostMin = 50;
 

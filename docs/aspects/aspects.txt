@@ -1,0 +1,37 @@
+CUERPO;"Cuerpo Masculino 1";"https://i.ibb.co/WNBgmk74/78ec3de94a34.png";10
+CUERPO;"Cuerpo Masculino 2";"https://i.ibb.co/60rRcbDS/046f6987894a.png";10
+CUERPO;"Cuerpo Masculino 3";"https://i.ibb.co/XrXbxWWk/75a57b9fac42.png";10
+CUERPO;"Cuerpo Masculino 4";"https://i.ibb.co/5xSPfq6v/77eb92ca5a57.png";10
+CUERPO;"Cuerpo Masculino 5";"https://i.ibb.co/fdwhZkpp/f0433647ede0.png";10
+CUERPO;"Cuerpo Masculino 6";"https://i.ibb.co/PvTRzH0B/86d13793e955.png";10
+CUERPO;"Cuerpo Masculino 7";"https://i.ibb.co/5g94xxkX/Messi.png";10
+CUERPO;"Cuerpo Masculino 8";"https://i.ibb.co/qYxpPTWz/Cuerpo-Masculino-Castano-Sin-Fondo.png";10
+CUERPO;"Cuerpo Masculino 9";"https://i.ibb.co/XZdPT2jt/Cuerpo-Masculino-Rubio-Sin-Fondo.png";10
+CUERPO;"Cuerpo Femenino 1";"https://i.ibb.co/p67gTYG6/f5b3022b1e11.png";10
+CUERPO;"Cuerpo Femenino 2";"https://i.ibb.co/27HGCpWb/db4a099300b9.png";10
+CUERPO;"Cuerpo Femenino 3";"https://i.ibb.co/4gsCZdMT/3a0925c1f8ab.png";10
+CUERPO;"Cuerpo Femenino 4";"https://i.ibb.co/sJbkgZcM/37861ded43e5.png";10
+CUERPO;"Cuerpo Robot 1";"https://i.ibb.co/sdBhyqPf/eb4b3701a36b.png";10
+CUERPO;"Cuerpo Robot 2";"https://i.ibb.co/d0M1rcND/bde34a30cd9d.png";10
+CUERPO;"Cuerpo Alien";"https://i.ibb.co/1f2dfCcq/c0c3bf7fc237.png";10
+SOMBRERO;"Corona";"https://i.ibb.co/ksH5QdXv/d58a569dd670.png";10
+SOMBRERO;"Gorro 1";"https://i.ibb.co/tTRPr8xy/0472ca225a77.png";10
+SOMBRERO;"Gorra Policia";"https://i.ibb.co/whWJDG2C/0962ba988798.png";10
+SOMBRERO;"Gorro Marinero";"https://i.ibb.co/yBPQNFNr/0433f11d9fd9.png";10
+SOMBRERO;"Tiara";"https://i.ibb.co/WWdTNPg2/19c2b1de7aab.png";10
+SOMBRERO;"Pañuelo Pirata";"https://i.ibb.co/6cPdrHcp/73bca4244e8a.png";10
+SOMBRERO;"Gorro Invernal";"https://i.ibb.co/bRNXxpBr/5bbb54fe2cc1.png";10
+SOMBRERO;"Casco Vikingo";"https://i.ibb.co/0jP3p9np/1941c8435563.png";10
+SOMBRERO;"White Hat";"https://i.ibb.co/nNdmsz6d/4f579a2dcd88.png";10
+REMERA;"Remera 1";"https://i.ibb.co/FkgYGbtH/11ecedf3cf00.png";10
+REMERA;"Remera 2";"https://i.ibb.co/mrP20sMw/6ee1f548ae02.png";10
+REMERA;"Remera 3";"https://i.ibb.co/svww9bJJ/b822e7d29772.png";10
+REMERA;"Remera 4";"https://i.ibb.co/bgMpg3MM/d0f84a5058cd.png";10
+REMERA;"Remera 5";"https://i.ibb.co/dwTfbCnL/2be7ae652058.png";10
+REMERA;"Remera 6";"https://i.ibb.co/wZD5QWZX/f8e047b2494d.png";10
+REMERA;"Remera 7";"https://i.ibb.co/CXHJhS8/d3716b3f2859.png";10
+REMERA;"Remera 8";"https://i.ibb.co/cc5bpHJt/4b9fddf64062.png";10
+REMERA;"Remera 9";"https://i.ibb.co/spTwrBC5/37347fc75251.png";10
+REMERA;"Remera 10";"https://i.ibb.co/nNT2kXgv/f6b22f73c310.png";10
+REMERA;"Remera 11";"https://i.ibb.co/MDqRNFxJ/4ebc71344322.png";10
+

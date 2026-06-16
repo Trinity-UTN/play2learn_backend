@@ -1,4 +1,12 @@
-**Current Task:** Simulación del módulo Investment (fases 6–8 del Database Simulation Seed) — **COMPLETADO**. Implementados catálogo de stocks, cajas de ahorro, plazos fijos, compra/venta de acciones y evolución diaria de precios en `configs/seed/simulation/`.
+**Current Task:** Recompensas más generosas en simulation seed — **COMPLETADO**. Aumentado rango de monedas al crear actividades (`activityInitialBalanceMin/Max`: 500–1500).
+
+- 2025-06-16 — **COMPLETADO** Simulation activity balance: `activityInitialBalanceMin` 80→500, `activityInitialBalanceMax` 200→1500 en `SimulationProperties`. Recompensa por alumno ≈ presupuesto / estudiantes en materia.
+
+**Previous Task (COMPLETADO):** Seed de aspectos desde CSV.
+
+- 2025-06-16 — **COMPLETADO** Aspect seed CSV: `AspectSeedService` parsea `docs/aspects/aspects.txt` y crea aspectos con nombre, URL de imagen y precio por fila. Nueva propiedad `app.seed.aspect-catalog-path`. Eliminadas `aspectImagesPath` y precios fijos por tipo. Tests de `parseCatalogLine` actualizados.
+
+**Previous Task (COMPLETADO):** Simulación del módulo Investment (fases 6–8 del Database Simulation Seed).
 
 - 2025-06-07 — **COMPLETADO T18-T37** Simulación Investment: fases 6–8 integradas en `DatabaseSimulationService`, reglas R9–R15, `SimulationProperties` extendido, servicios `StockSimulationCatalogService`, `SavingAccountSimulationService`, `FixedTermDepositSimulationService`, `StockTradeSimulationService`, `StockHistorySimulationService`. Docs: `simulation-investment-architecture.md`, README actualizado. Tests unitarios de validación e integración de fases.
 

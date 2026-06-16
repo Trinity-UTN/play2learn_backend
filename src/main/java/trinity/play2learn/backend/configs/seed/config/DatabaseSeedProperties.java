@@ -59,13 +59,10 @@ public class DatabaseSeedProperties {
      */
     private double walletSeedAmount = 3000.0;
 
-    private String aspectImagesPath = "docs/aspects/";
+    /**
+     * CSV con columnas: tipo;nombre;url_imagen;precio (ver {@code docs/aspects/aspects.txt}).
+     */
+    private String aspectCatalogPath = "docs/aspects/aspects.txt";
 
     private String credentialsOutputPath = "docs/seed/credentials.md";
-
-    private double aspectPriceCuerpo = 0.0;
-
-    private double aspectPriceRemera = 500.0;
-
-    private double aspectPriceSombrero = 300.0;
 }
