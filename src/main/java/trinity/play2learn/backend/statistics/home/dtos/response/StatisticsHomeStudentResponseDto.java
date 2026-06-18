@@ -17,6 +17,7 @@ public class StatisticsHomeStudentResponseDto {
 
     private int totalActivitiesAvailable;
     
+    private int totalBenefitsAvailable;
+
     private List<StatisticsActivityRealizationResponseDto> lastRealizations;
-    
 }

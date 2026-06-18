@@ -9,6 +9,10 @@ import trinity.play2learn.backend.activity.activity.services.interfaces.IActivit
 import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByCourseService;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentGetByEmailService;
+import trinity.play2learn.backend.benefits.models.Benefit;
+import trinity.play2learn.backend.benefits.models.BenefitStudentState;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitFilterByStudentStateService;
+import trinity.play2learn.backend.benefits.services.interfaces.IBenefitGetByStudentService;
 import trinity.play2learn.backend.statistics.home.dtos.response.StatisticsHomeStudentResponseDto;
 import trinity.play2learn.backend.statistics.home.mappers.StatisticsHomeStudentMapper;
 import trinity.play2learn.backend.statistics.home.services.interfaces.IStatisticsHomeStudentService;
@@ -23,7 +27,9 @@ public class StatisticsHomeStudentService implements IStatisticsHomeStudentServi
     private final ActivityCountAvailableByStudentService activityCountAvailableByStudentService;
     private final IActivityGetPositionRankingByStudentsService activityGetPositionRankingByStudentsService;
     private final IStudentGetByCourseService studentGetByCourseService;
-
+    private final IBenefitGetByStudentService benefitGetByStudentService;
+    private final IBenefitFilterByStudentStateService benefitFilterByStudentStateService;
+    
     @Override
     public StatisticsHomeStudentResponseDto cu73StatisticsHomeStudent(User user) {
         /**
@@ -48,6 +54,9 @@ public class StatisticsHomeStudentService implements IStatisticsHomeStudentServi
         //Trae la cantidad de actividades disponibles para realizar del estudiante (Actividades publicadas que no fueron aprobadas o desaprobadas)
         int totalActivitiesAvailable = activityCountAvailableByStudentService.countAvailableByStudent(student);
 
+        //Trae todos los beneficios asociados al estudiante
+        int totalBenefitsAvailable = countBenefitsAvailable(student);
+
         List<Student> students = studentGetByCourseService.getStudentsByCourseId(student.getCourse().getId());
 
         //Trae la posicion del estudiante en el ranking del curso por actividades aprobadas
@@ -59,8 +68,18 @@ public class StatisticsHomeStudentService implements IStatisticsHomeStudentServi
             student.getWallet().getBalance().intValue()+student.getWallet().getInvertedBalance().intValue(), 
             courseRankingByActivitiesPosition, 
             totalActivitiesAvailable, 
+            totalBenefitsAvailable,
             activityGetLast5RealizationsService.execute(student)
         );
     }
-    
+
+    private int countBenefitsAvailable(Student student) {
+        //Trae todos los beneficios asociados al estudiante
+        List<Benefit> benefits = benefitGetByStudentService.getByStudent(student);
+
+        //Filtra los beneficios disponibles para el estudiante
+        List<Benefit> benefitsAvailable = benefitFilterByStudentStateService.filterByStudentState(benefits, student, BenefitStudentState.AVAILABLE);
+
+        return benefitsAvailable.size();
+    }
 }

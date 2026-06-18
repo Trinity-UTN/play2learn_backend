@@ -20,13 +20,14 @@ public class BenefitAvailableFilterService implements IBenefitFilterStrategyServ
     @Override
     public List<Benefit> filter(List<Benefit> benefits, Student student) {
         
-        return benefits
+        List<Benefit> benefitList = benefits
             .stream()
             .filter(b -> b.getEndAt().isAfter(LocalDateTime.now())) //Quito los beneficios expirados
             .filter(b -> !benefitIsPurchasedService.isPurchased(student, b)) //Quito los beneficios que estan comprados por el estudiante
             .filter(b -> !benefitIsUseRequestedService.isUseRequested(b, student)) //Quito los beneficios que estan en solicitud de uso
             .toList();
         
+        return benefitList;
     }
     
 }
