@@ -21,7 +21,9 @@ Después de cambiar `spring.jpa.hibernate.ddl-auto=create` y reiniciar la aplica
 | Teachers | 6 mínimo |
 | Students | 180 (30 por año, 15 por curso) |
 | Subjects | 36 (3 por curso) |
-| Aspects | 9 (desde `docs/aspects/`) |
+| Aspects | Catálogo completo desde `docs/aspects/aspects.txt` |
+
+Cada estudiante recibe un **skin inicial aleatorio**: 1 cuerpo, 1 remera y 1 sombrero, ya equipados en su perfil.
 
 ## Credenciales
 
@@ -43,6 +45,16 @@ Tras ejecutar el seed se genera `docs/seed/credentials.md` (ignorado por git).
 ## Configuración
 
 Propiedades bajo `app.seed.*` en `DatabaseSeedProperties`. Ver `docs/seed/architecture.md`.
+
+Opcional: `app.seed.aspect-random-seed` fija la semilla para skins iniciales reproducibles.
+
+### Checklist manual (bootstrap)
+
+1. `ddl-auto=create` + `POST /api/dev/seed`
+2. `SELECT profile_id, COUNT(*) FROM profile_aspects GROUP BY profile_id` → 3 por estudiante
+3. Verificar `selected_body_id`, `selected_shirt_id`, `selected_hat_id` NOT NULL en `profile`
+4. Comparar 2+ estudiantes: combinaciones de aspectos pueden diferir
+5. Ejecutar `POST /api/dev/seed/simulate` y confirmar compras de skins adicionales sin error
 
 ---
 

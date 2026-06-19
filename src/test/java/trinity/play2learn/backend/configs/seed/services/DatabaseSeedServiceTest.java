@@ -3,10 +3,13 @@ package trinity.play2learn.backend.configs.seed.services;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.io.IOException;
 import java.util.List;
@@ -16,6 +19,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -25,6 +30,7 @@ import org.mockito.quality.Strictness;
 import trinity.play2learn.backend.admin.course.models.Course;
 import trinity.play2learn.backend.admin.course.repositories.ICourseRepository;
 import trinity.play2learn.backend.admin.course.services.interfaces.ICourseRegisterService;
+import trinity.play2learn.backend.admin.student.models.Student;
 import trinity.play2learn.backend.admin.student.repositories.IStudentRepository;
 import trinity.play2learn.backend.admin.student.services.interfaces.IStudentRegisterService;
 import trinity.play2learn.backend.admin.subject.services.interfaces.ISubjectRefillBalanceService;
@@ -41,6 +47,9 @@ import trinity.play2learn.backend.economy.reserve.models.Reserve;
 import trinity.play2learn.backend.economy.reserve.repositories.IReserveRepository;
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
+import trinity.play2learn.backend.profile.avatar.models.Aspect;
+import trinity.play2learn.backend.profile.avatar.models.TypeAspect;
+import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.profile.profile.repositories.IProfileRepository;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpResponseDto;
 import trinity.play2learn.backend.user.services.signUp.interfaces.ISignUpService;
@@ -102,10 +111,16 @@ class DatabaseSeedServiceTest {
     private AspectSeedService aspectSeedService;
 
     @Mock
+    private StudentAspectInventorySeedService studentAspectInventorySeedService;
+
+    @Mock
     private IProfileRepository profileRepository;
 
     @Mock
     private CredentialsMarkdownWriter credentialsMarkdownWriter;
+
+    @Captor
+    private ArgumentCaptor<Profile> profileCaptor;
 
     @InjectMocks
     private DatabaseSeedService databaseSeedService;
@@ -128,8 +143,11 @@ class DatabaseSeedServiceTest {
         when(properties.getCourseNames()).thenReturn(List.of("A", "B"));
         when(properties.getDefaultSubjects()).thenReturn(List.of("Matemática", "Lengua", "Geografía"));
         when(properties.getWalletSeedAmount()).thenReturn(3000.0);
+        when(properties.getAspectRandomSeed()).thenReturn(42L);
         when(credentialsMarkdownWriter.write(any(), any())).thenReturn("docs/seed/credentials.md");
         when(aspectSeedService.seedCatalog(any())).thenReturn(List.of());
+        when(studentAspectInventorySeedService.groupByType(any())).thenReturn(java.util.Map.of());
+        when(studentAspectInventorySeedService.pickRandomStarterKit(any(), any())).thenReturn(List.of());
     }
 
     private void stubEmptyAcademicStructure() {
@@ -232,5 +250,70 @@ class DatabaseSeedServiceTest {
 
         verify(subjectRefillBalanceService).cu58RefillBalance();
         verify(aspectSeedService).seedCatalog(any());
+    }
+
+    @Test
+    @DisplayName("Given students When execute Then assigns starter kit with equipped profile")
+    void whenExecute_assignsStarterKitToStudents() throws IOException {
+        when(reserveRepository.findFirstByOrderByCreatedAtDesc()).thenReturn(Optional.of(new Reserve()));
+        when(userExistService.validate(any())).thenReturn(true);
+        stubEmptyAcademicStructure();
+        when(reserveFindLastService.get()).thenReturn(Reserve.builder().circulationBalance(0.0).build());
+
+        Aspect body = aspect(1L, "Cuerpo", TypeAspect.CUERPO);
+        Aspect shirt = aspect(2L, "Remera", TypeAspect.REMERA);
+        Aspect hat = aspect(3L, "Sombrero", TypeAspect.SOMBRERO);
+        List<Aspect> catalog = List.of(body, shirt, hat, aspect(4L, "Otro cuerpo", TypeAspect.CUERPO));
+
+        Profile profileOne = Profile.builder().id(10L).ownedAspects(new ArrayList<>()).build();
+        Profile profileTwo = Profile.builder().id(20L).ownedAspects(new ArrayList<>()).build();
+        Student studentOne = Student.builder().id(1L).profile(profileOne).build();
+        Student studentTwo = Student.builder().id(2L).profile(profileTwo).build();
+
+        when(aspectSeedService.seedCatalog(any())).thenReturn(catalog);
+        when(studentRepository.findAll()).thenReturn(List.of(studentOne, studentTwo));
+        when(profileRepository.findById(10L)).thenReturn(Optional.of(profileOne));
+        when(profileRepository.findById(20L)).thenReturn(Optional.of(profileTwo));
+
+        StudentAspectInventorySeedService realAspectService = new StudentAspectInventorySeedService();
+        when(studentAspectInventorySeedService.groupByType(catalog))
+            .thenReturn(realAspectService.groupByType(catalog));
+        when(studentAspectInventorySeedService.pickRandomStarterKit(any(), any()))
+            .thenAnswer(invocation -> realAspectService.pickRandomStarterKit(
+                invocation.getArgument(0),
+                invocation.getArgument(1)
+            ));
+        doAnswer(invocation -> {
+            realAspectService.applyStarterKit(invocation.getArgument(0), invocation.getArgument(1));
+            return null;
+        }).when(studentAspectInventorySeedService).applyStarterKit(any(), any());
+
+        databaseSeedService.execute();
+
+        verify(profileRepository, atLeastOnce()).save(profileCaptor.capture());
+        List<Profile> savedProfiles = profileCaptor.getAllValues();
+
+        assertThat(savedProfiles).hasSizeGreaterThanOrEqualTo(2);
+        for (Profile saved : savedProfiles) {
+            assertThat(saved.getOwnedAspects()).hasSize(3);
+            assertThat(saved.getSelectedBody()).isNotNull();
+            assertThat(saved.getSelectedShirt()).isNotNull();
+            assertThat(saved.getSelectedHat()).isNotNull();
+            assertThat(saved.getOwnedAspects()).contains(
+                saved.getSelectedBody(),
+                saved.getSelectedShirt(),
+                saved.getSelectedHat()
+            );
+        }
+    }
+
+    private static Aspect aspect(Long id, String name, TypeAspect type) {
+        return Aspect.builder()
+            .id(id)
+            .name(name)
+            .image("https://example.com/" + name)
+            .price(BigDecimal.TEN)
+            .type(type)
+            .build();
     }
 }

@@ -1,4 +1,12 @@
-**Current Task:** Recompensas más generosas en simulation seed — **COMPLETADO**. Aumentado rango de monedas al crear actividades (`activityInitialBalanceMin/Max`: 500–1500).
+**Current Task:** Seed de aspectos — un skin aleatorio por tipo por estudiante — **COMPLETADO (T01–T07)**. Pendiente verificación manual T08 en entorno local.
+
+- 2025-06-18 — **COMPLETADO T01-T07** Seed aspectos aleatorios: `StudentAspectInventorySeedService` (groupByType, pickRandomStarterKit, applyStarterKit), `DatabaseSeedService.seedAspectsAndInventory()` asigna 3 aspectos aleatorios equipados por estudiante, `app.seed.aspect-random-seed` opcional. Docs actualizados. Tests: 6 + 5 unitarios pasando. Escaneo seguridad: sin endpoints nuevos, dev-only, logs sin credenciales.
+
+**Previous Task (COMPLETADO):** Plan estratégico seed aspectos aleatorios.
+
+- 2025-06-18 — **PLAN T01-T08** Seed aspectos aleatorios: analizado comportamiento actual en `DatabaseSeedService.seedAspectsAndInventory()` (asigna catálogo completo a todos). Plan define `StudentAspectInventorySeedService`, equipado vía `TypeAspect.assign()`, tests y actualización de docs. Sin blockers.
+
+**Previous Task (COMPLETADO):** Recompensas más generosas en simulation seed — Aumentado rango de monedas al crear actividades (`activityInitialBalanceMin/Max`: 500–1500).
 
 - 2025-06-16 — **COMPLETADO** Simulation activity balance: `activityInitialBalanceMin` 80→500, `activityInitialBalanceMax` 200→1500 en `SimulationProperties`. Recompensa por alumno ≈ presupuesto / estudiantes en materia.
 

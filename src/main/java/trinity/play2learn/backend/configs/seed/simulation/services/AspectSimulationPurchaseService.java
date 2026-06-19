@@ -26,7 +26,8 @@ import trinity.play2learn.backend.profile.profile.repositories.IProfileRepositor
 import trinity.play2learn.backend.profile.profile.services.interfaces.IProfileUpdateLevelService;
 
 /**
- * Simula compra parcial de skins de pago (REMERA/SOMBRERO).
+ * Simula compra parcial de skins de pago (REMERA/SOMBRERO) no poseídos por el estudiante.
+ * El bootstrap asigna 1 CUERPO + 1 REMERA + 1 SOMBRERO equipados; aquí se compran piezas adicionales.
  */
 @Slf4j
 @Service

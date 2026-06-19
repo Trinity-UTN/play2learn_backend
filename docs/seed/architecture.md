@@ -16,6 +16,7 @@ Repoblar la base de datos tras `ddl-auto=create` con datos mínimos operativos, 
 | `IDatabaseSeedService` | Contrato: `SeedResultDto execute()` |
 | `DatabaseSeedService` | Orquestación de fases 1–8 |
 | `AspectSeedService` | Catálogo de aspectos desde `docs/aspects/` |
+| `StudentAspectInventorySeedService` | Kit inicial aleatorio (1 por tipo) + equipado en perfil |
 | `CredentialsMarkdownWriter` | Exporta `docs/seed/credentials.md` |
 | `SeedDataCollector` | Acumula credenciales y conteos durante el seed |
 | `DatabaseSeedController` | `POST /api/dev/seed` (solo si `app.seed.enabled=true`) |
@@ -51,7 +52,7 @@ Repoblar la base de datos tras `ddl-auto=create` con datos mínimos operativos, 
 5. Students (30/year, 15/course) → Profile + Wallet automático
 6. Subjects (3/course) + SubjectRefillBalance
 7. Fondeo wallets + circulationBalance
-8. Aspects (9) + inventario por alumno
+8. Aspects (catálogo completo) + kit inicial aleatorio por alumno
 9. Export credentials.md
 ```
 
@@ -65,10 +66,25 @@ Repoblar la base de datos tras `ddl-auto=create` con datos mínimos operativos, 
 
 **Decisión:** persistencia directa vía `IAspectRepository` (sin ImgBB en seed).
 
-- Imagen: URL sintética `seed://{type}/{filename}` (referencia local para dev).
+- Catálogo: todas las filas de `docs/aspects/aspects.txt` (CSV `tipo;nombre;url_imagen;precio`).
 - Idempotencia: `existsByName` antes de insertar.
-- Inventario: `ProfileAddAspectToInventoryService` (genera transacción COMPRA).
-- `walletSeedAmount = 3000` para cubrir compras (2×500 + 3×300 = 1900 máx.).
+- Inventario por estudiante: **1 CUERPO + 1 REMERA + 1 SOMBRERO** elegidos al azar (`StudentAspectInventorySeedService`).
+- Equipado: los 3 aspectos se asignan a `selectedBody`, `selectedShirt` y `selectedHat` vía `TypeAspect.assign()`.
+- Sin transacción COMPRA en bootstrap (asignación directa vía `IProfileRepository`).
+- `app.seed.aspect-random-seed` opcional para reproducibilidad en dev/tests.
+- `walletSeedAmount = 3000` para compras adicionales en simulación (bootstrap entrega solo 3 aspectos).
+
+### Contrato del helper de selección
+
+```
+groupByType(List<Aspect> catalog) → Map<TypeAspect, List<Aspect>>
+pickRandomStarterKit(Map<TypeAspect, List<Aspect>>, Random) → List<Aspect> (tamaño 3)
+applyStarterKit(Profile, List<Aspect>) → ownedAspects + selectedBody/Shirt/Hat
+```
+
+### Impacto en simulación
+
+`AspectSimulationPurchaseService` compra REMERA/SOMBRERO que el estudiante **no posee**. Con 1 de cada tipo en bootstrap, la simulación sigue comprando skins adicionales del catálogo sin cambios de lógica.
 
 ## Seguridad
 

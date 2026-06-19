@@ -55,7 +55,7 @@ public class DatabaseSeedProperties {
     private double circulationBalance = 0.0;
 
     /**
-     * Monto por wallet de estudiante. Debe cubrir compra de aspectos de seed (máx. ~1900).
+     * Monto por wallet de estudiante. Cubre compras adicionales en simulación (bootstrap asigna solo 3 aspectos).
      */
     private double walletSeedAmount = 3000.0;
 
@@ -63,6 +63,12 @@ public class DatabaseSeedProperties {
      * CSV con columnas: tipo;nombre;url_imagen;precio (ver {@code docs/aspects/aspects.txt}).
      */
     private String aspectCatalogPath = "docs/aspects/aspects.txt";
+
+    /**
+     * Semilla opcional para la selección aleatoria de skins iniciales (reproducibilidad en dev/tests).
+     * Si es {@code null}, la aleatoriedad no es determinista.
+     */
+    private Long aspectRandomSeed = null;
 
     private String credentialsOutputPath = "docs/seed/credentials.md";
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.stream.StreamSupport;
@@ -45,6 +46,7 @@ import trinity.play2learn.backend.economy.reserve.repositories.IReserveRepositor
 import trinity.play2learn.backend.economy.reserve.services.interfaces.IReserveFindLastService;
 import trinity.play2learn.backend.economy.wallet.services.interfaces.IWalletAddAmountService;
 import trinity.play2learn.backend.profile.avatar.models.Aspect;
+import trinity.play2learn.backend.profile.avatar.models.TypeAspect;
 import trinity.play2learn.backend.profile.profile.models.Profile;
 import trinity.play2learn.backend.profile.profile.repositories.IProfileRepository;
 import trinity.play2learn.backend.user.dtos.signUp.SignUpRequestDto;
@@ -78,6 +80,8 @@ public class DatabaseSeedService implements IDatabaseSeedService {
     private final ISubjectRefillBalanceService subjectRefillBalanceService;
     private final IWalletAddAmountService walletAddAmountService;
     private final AspectSeedService aspectSeedService;
+
+    private final StudentAspectInventorySeedService studentAspectInventorySeedService;
 
     private final IProfileRepository profileRepository;
 
@@ -375,20 +379,34 @@ public class DatabaseSeedService implements IDatabaseSeedService {
             throw new IllegalStateException("Error al registrar aspectos", e);
         }
 
+        Map<TypeAspect, List<Aspect>> grouped = studentAspectInventorySeedService.groupByType(aspects);
+        Random random = properties.getAspectRandomSeed() != null
+            ? new Random(properties.getAspectRandomSeed())
+            : new Random();
+
+        int studentsProcessed = 0;
         for (Student student : studentRepository.findAll()) {
             Profile profile = profileRepository.findById(student.getProfile().getId())
                 .orElseThrow(() -> new IllegalStateException(
                     "Perfil no encontrado para estudiante " + student.getId()));
 
-            for (Aspect aspect : aspects) {
-                if (!profile.getOwnedAspects().contains(aspect)) {
-                    profile.getOwnedAspects().add(aspect);
-                }
-            }
+            List<Aspect> starterKit = studentAspectInventorySeedService.pickRandomStarterKit(grouped, random);
+            studentAspectInventorySeedService.applyStarterKit(profile, starterKit);
             profileRepository.save(profile);
+            studentsProcessed++;
+
+            if (log.isDebugEnabled()) {
+                log.debug(
+                    "Skin inicial estudiante {}: cuerpo={}, remera={}, sombrero={}",
+                    student.getId(),
+                    profile.getSelectedBody().getName(),
+                    profile.getSelectedShirt().getName(),
+                    profile.getSelectedHat().getName()
+                );
+            }
         }
 
-        log.info("Fase Aspectos: inventario asignado a estudiantes");
+        log.info("Fase Aspectos: inventario y skin inicial asignados a {} estudiantes", studentsProcessed);
     }
 
     private String generateUniqueDni(Set<String> usedDnis, Faker faker) {
