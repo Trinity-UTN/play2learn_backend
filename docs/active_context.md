@@ -1,4 +1,8 @@
-**Current Task:** Seed de aspectos — un skin aleatorio por tipo por estudiante — **COMPLETADO (T01–T07)**. Pendiente verificación manual T08 en entorno local.
+**Current Task:** Home teacher — últimas actividades con realizaciones aprobadas — **COMPLETADO**.
+
+- 2026-08-06 — **COMPLETADO** `StatisticsHomeTeacherService`: `totalRealizations` de las últimas 3 actividades ahora usa `IActivityStudentsApprovedCountService` (`countByActivityAndState` APPROVED) en lugar de `IActivityCalculateTotalRealizationsService` (todas las realizaciones).
+
+**Previous Task (COMPLETADO):** Seed de aspectos — un skin aleatorio por tipo por estudiante — **COMPLETADO (T01–T07)**. Pendiente verificación manual T08 en entorno local.
 
 - 2025-06-18 — **COMPLETADO T01-T07** Seed aspectos aleatorios: `StudentAspectInventorySeedService` (groupByType, pickRandomStarterKit, applyStarterKit), `DatabaseSeedService.seedAspectsAndInventory()` asigna 3 aspectos aleatorios equipados por estudiante, `app.seed.aspect-random-seed` opcional. Docs actualizados. Tests: 6 + 5 unitarios pasando. Escaneo seguridad: sin endpoints nuevos, dev-only, logs sin credenciales.
 

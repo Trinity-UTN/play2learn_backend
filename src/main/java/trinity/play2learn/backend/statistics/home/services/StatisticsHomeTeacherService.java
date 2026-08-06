@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.AllArgsConstructor;
 import trinity.play2learn.backend.activity.activity.models.activity.Activity;
 import trinity.play2learn.backend.activity.activity.repositories.IActivityRepository;
-import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityCalculateTotalRealizationsService;
+import trinity.play2learn.backend.activity.activity.services.interfaces.IActivityStudentsApprovedCountService;
 import trinity.play2learn.backend.admin.subject.models.Subject;
 import trinity.play2learn.backend.admin.subject.repositories.ISubjectRepository;
 import trinity.play2learn.backend.admin.teacher.models.Teacher;
@@ -45,7 +45,7 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
 
     private final IBenefitRepository benefitRepository;
 
-    private final IActivityCalculateTotalRealizationsService activityCalculateTotalRealizationsService;
+    private final IActivityStudentsApprovedCountService activityStudentsApprovedCountService;
 
     @Override
     @Transactional(readOnly = true)
@@ -136,7 +136,8 @@ public class StatisticsHomeTeacherService implements IStatisticsHomeTeacherServi
         List<StatisticsActivityDataDto> activitiesData = new ArrayList<>();
 
         for (Activity activity : activities) {
-            int totalRealizations = activityCalculateTotalRealizationsService.execute(activity);
+            int totalRealizations = activityStudentsApprovedCountService
+                    .activityGetStudentsApprovedCount(activity);
             int createdDaysAgo = (int) ChronoUnit.DAYS.between(
                 activity.getCreatedAt().toLocalDate(), // pasa a LocalDate
                 LocalDate.now()
