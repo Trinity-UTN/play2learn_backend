@@ -1,9 +1,5 @@
 package trinity.play2learn.backend.activity.activity.repositories;
 
-import static trinity.play2learn.backend.activity.activity.repositories.ActivityStudentNativeQuerySupport.LATEST_COMPLETION_CTE;
-import static trinity.play2learn.backend.activity.activity.repositories.ActivityStudentNativeQuerySupport.STATE_APPROVED;
-import static trinity.play2learn.backend.activity.activity.repositories.ActivityStudentNativeQuerySupport.STATE_PENDING;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +23,16 @@ public class ActivityNotApprovedNativeRepository {
     private static final String LATEST_COMPLETION_ID = """
             (SELECT ac_latest.id FROM activity_completed ac_latest
              WHERE ac_latest.activity_id = a.id AND ac_latest.student_id = :studentId
-             ORDER BY ac_latest.completed_at DESC NULLS LAST, ac_latest.id DESC
+             ORDER BY COALESCE(ac_latest.completed_at, ac_latest.started_at) DESC, ac_latest.id DESC
+             LIMIT 1)
+            """;
+
+    /** Último intento finalizado (con completed_at); criterio de remaining_attempts. */
+    private static final String LATEST_FINISHED_COMPLETION_ID = """
+            (SELECT ac_latest.id FROM activity_completed ac_latest
+             WHERE ac_latest.activity_id = a.id AND ac_latest.student_id = :studentId
+               AND ac_latest.completed_at IS NOT NULL
+             ORDER BY ac_latest.completed_at DESC, ac_latest.id DESC
              LIMIT 1)
             """;
 
@@ -35,6 +40,7 @@ public class ActivityNotApprovedNativeRepository {
             "id", "name", "startdate", "enddate", "difficulty", "createdat");
 
     private static final int STATE_APPROVED = ActivityCompletedState.APPROVED.ordinal();
+    private static final int STATE_DISAPPROVED = ActivityCompletedState.DISAPPROVED.ordinal();
     private static final int STATE_PENDING = ActivityCompletedState.PENDING.ordinal();
 
     @PersistenceContext
@@ -155,17 +161,21 @@ public class ActivityNotApprovedNativeRepository {
 
     private void appendDisapprovedFilter(StringBuilder where, boolean disapproved) {
         if (disapproved) {
+            // Solo actividades totalmente desaprobadas: último intento FINALIZADO
+            // DISAPPROVED sin intentos restantes (alineado con remainingAttempts del DTO)
             where.append("""
                      AND EXISTS (
                         SELECT 1 FROM activity_completed ac
                         WHERE ac.activity_id = a.id AND ac.student_id = :studentId
                         AND ac.id = %s
+                        AND ac.state = %d
                         AND ac.remaining_attempts = 0
                      )
-                    """.formatted(LATEST_COMPLETION_ID));
+                    """.formatted(LATEST_FINISHED_COMPLETION_ID, STATE_DISAPPROVED));
             return;
         }
 
+        // Sin intentos hechos, o último intento (incl. en curso) aún con intentos restantes
         where.append("""
                  AND (
                     NOT EXISTS (

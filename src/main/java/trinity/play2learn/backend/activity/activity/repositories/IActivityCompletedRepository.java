@@ -148,12 +148,20 @@ public interface IActivityCompletedRepository
                         @Param("state") ActivityCompletedState state,
                         @Param("student") Student student);
 
-        @Query("SELECT ac FROM ActivityCompleted ac " +
-                        "WHERE ac.student = :student AND ac.activity.id IN :activityIds " +
-                        "AND ac.completedAt = (" +
-                        "  SELECT MAX(ac2.completedAt) FROM ActivityCompleted ac2 " +
-                        "  WHERE ac2.student = :student AND ac2.activity = ac.activity" +
-                        ")")
+        @Query(value = """
+                        SELECT ac.* FROM activity_completed ac
+                        WHERE ac.student_id = :#{#student.id}
+                          AND ac.activity_id IN (:activityIds)
+                          AND ac.completed_at IS NOT NULL
+                          AND ac.id = (
+                            SELECT ac_latest.id FROM activity_completed ac_latest
+                            WHERE ac_latest.activity_id = ac.activity_id
+                              AND ac_latest.student_id = :#{#student.id}
+                              AND ac_latest.completed_at IS NOT NULL
+                            ORDER BY ac_latest.completed_at DESC, ac_latest.id DESC
+                            LIMIT 1
+                          )
+                        """, nativeQuery = true)
         List<ActivityCompleted> findLatestByStudentAndActivityIds(
                         @Param("student") Student student,
                         @Param("activityIds") List<Long> activityIds);

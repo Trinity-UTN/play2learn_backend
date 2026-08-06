@@ -1,4 +1,16 @@
-**Current Task:** Home teacher — últimas actividades con realizaciones aprobadas — **COMPLETADO**.
+**Current Task:** Revert exclusión de vencidas en paginado not-approved — **COMPLETADO**.
+
+- 2026-08-06 — **REVERTIDO** Exclusión por defecto de `end_date` en `ActivityNotApprovedNativeRepository`. Las desaprobadas vencidas vuelven a aparecer con `disapproved=true`. Se mantienen el filtro de último intento finalizado y la alineación del DTO.
+
+**Previous Task (COMPLETADO):** Alinear filtro `disapproved` y DTO (último intento finalizado) — **COMPLETADO**.
+
+- 2026-08-06 — **COMPLETADO** `disapproved=true` usa último intento con `completed_at IS NOT NULL` (`DISAPPROVED` + `remaining_attempts = 0`). `findLatestByStudentAndActivityIds` unificado al mismo criterio (native query), para que `remainingAttempts` del DTO coincida con el filtro.
+
+**Previous Task (COMPLETADO):** Filtro paginado `disapproved=true` — solo sin intentos — **COMPLETADO**.
+
+- 2026-08-06 — **COMPLETADO** `ActivityNotApprovedNativeRepository`: último intento con `COALESCE(completed_at, started_at)`; `disapproved=true` exige estado `DISAPPROVED` y `remaining_attempts = 0` (excluye nunca hechas y con intentos restantes).
+
+**Previous Task (COMPLETADO):** Home teacher — últimas actividades con realizaciones aprobadas — **COMPLETADO**.
 
 - 2026-08-06 — **COMPLETADO** `StatisticsHomeTeacherService`: `totalRealizations` de las últimas 3 actividades ahora usa `IActivityStudentsApprovedCountService` (`countByActivityAndState` APPROVED) en lugar de `IActivityCalculateTotalRealizationsService` (todas las realizaciones).
 

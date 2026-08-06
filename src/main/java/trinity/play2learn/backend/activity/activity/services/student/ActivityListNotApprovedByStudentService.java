@@ -1,5 +1,6 @@
 package trinity.play2learn.backend.activity.activity.services.student;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +38,14 @@ public class ActivityListNotApprovedByStudentService implements IActivityListNot
         //Filtro las actividades que aun no han sido aprobadas por el estudiante
         List<Activity> notApprovedActivities = activityFilterNotApprovedService.filterByNotApproved(activities, student);
 
+        //Excluye actividades vencidas (endDate anterior a ahora)
+        LocalDateTime now = LocalDateTime.now();
+        List<Activity> activeNotApprovedActivities = notApprovedActivities.stream()
+                .filter(activity -> !activity.getEndDate().isBefore(now))
+                .toList();
+
         //Crea los dtos
-        return activityCreateNotApprovedDtosService.createNotApprovedDtos(notApprovedActivities, student);
+        return activityCreateNotApprovedDtosService.createNotApprovedDtos(activeNotApprovedActivities, student);
     }
         
 }
- 
